@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: 70 135 243;
+    --color-secondary: 23 106 244;
+    --color-background: 255 255 255;
+    --color-background-secondary: 217 217 217;
+  }
+
+  .theme-blue {
+    --color-primary: 14 165 233;
+    --color-secondary: 59 130 246;
+  }
+
+  .theme-green {
+    --color-primary: 68 156 80;
+    --color-secondary: 142 205 150;
+  }
+
+  .theme-red {
+    --color-primary: 189 24 14;
+    --color-secondary: 155 23 15;
+  }
+
+  .theme-purple {
+    --color-primary: 109 6 210;
+    --color-secondary: 82 9 185;
+  }
+}

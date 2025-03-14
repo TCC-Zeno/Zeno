@@ -1,7 +1,11 @@
 export default function Dashboard() {
   return (
     <>
-      <h1>dashboard, casinha do Nicollas</h1>
+      <div className="h-screen flex items-center justify-center bg-primary">
+        <h1 className="text-white text-3xl font-bold">
+          Nicollas
+        </h1>
+      </div>
     </>
   );
 }
