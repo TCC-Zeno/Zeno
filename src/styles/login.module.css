@@ -15,16 +15,17 @@
   );
   display: flex;
   justify-content: center;
+  transition: all 15s;
 }
 .containerLogo {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20% 0;
+  margin: 10% 0;
 }
 .containerLogo img {
-  width: 30%;
+  width: 20%;
 }
 .containerLogin {
   width: 60%;
@@ -37,15 +38,104 @@
   display: block;
   text-align: center;
   padding: 10%;
-  
 }
 .wrapperText h3 {
   font-family: "Coolvetica Rg", sans;
-  font-size: 30pt;
+  font-size: 40pt;
   color: #ffffff;
 }
 .wrapperText p {
   font-family: "Louis George Cafe", sans-serif;
   color: #ffffff;
-  font-size: 17pt;
+  font-size: 20pt;
+  margin: 50px 0;
+}
+.wrapperText button {
+  font-family: "Coolvetica Rg", sans;
+  color: #ffffff;
+  font-size: 20pt;
+  border: 5px solid #ffffff;
+  border-radius: 15px;
+  padding: 5px 55px;
+  transition: 1s all;
+}
+.wrapperText button:hover {
+  transition: 1s all;
+  transform: scale(1.05);
+  color: #000;
+  background-color: #ffffff;
+}
+
+.containerLogin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapperForm {
+  width: 70%;
+}
+
+.wrapperForm h3 {
+  font-family: "Coolvetica Rg", sans;
+  color: rgb(var(--color-secondary));
+  text-align: center;
+  font-size: 40pt;
+}
+
+.wrapperForm input {
+  background-color: rgb(var(--color-background-secondary));
+  width: 100%;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px 0;
+}
+.wrapperForm  button {
+  margin-top: 50px;
+  background-color: rgb(var(--color-primary));
+  border-radius: 15px;
+  padding: 5px 55px;
+  color: #ffffff;
+  font-size: 20pt;
+  font-family: "Coolvetica Rg", sans;
+  transition: 1s all ;
+}
+
+.wrapperForm  button:hover {
+  transform: scale(1.05);
+}
+.containerButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ccc;
+  margin: 5px;
+}
+
+.divider span {
+  font-weight: bold;
+  color: #666;
+  padding: 0 10px;
+}
+
+/* Sliding effect classes */
+.slideIn {
+  transform: translateX(0); /* Slide in from the left */
+}
+.slideOut {
+  transform: translateX(-100%); /* Slide out to the left */
 }
