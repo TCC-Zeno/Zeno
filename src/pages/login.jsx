@@ -15,6 +15,12 @@ export default function Login() {
           loginOption === "signUp" ? S.signUpToggle : S.signInToggle
         }`}
       >
+        <div className={S.particlesContainer}>
+          {Array.from({ length: 1000 }).map((_, i) => (
+            <div key={i} className={S.particle}></div>
+          ))}
+        </div>
+
         <div className={S.wrapperContent}>
           <div className={S.containerLogo}>
             <img src={Logo} alt="Logo com arco colorido e o nome Zeno" />
