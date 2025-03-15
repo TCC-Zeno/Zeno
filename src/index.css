@@ -3,11 +3,26 @@
 @tailwind utilities;
 
 @layer base {
+  @font-face {
+    font-family: "Louis George Café";
+    src: url("/fonts/LouisGeorgeCafe.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Coolvetica Rg";
+    src: url("/fonts/CoolveticaRg.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
   :root {
-    --color-primary: 70 135 243;
-    --color-secondary: 23 106 244;
+    --color-primary: 70, 135, 243;
+    --color-secondary: 23, 106, 244;
     --color-background: 255 255 255;
     --color-background-secondary: 217 217 217;
+
+    font-family: "Louis George Café", sans-serif;
   }
 
   .theme-blue {

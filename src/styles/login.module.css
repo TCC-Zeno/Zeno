@@ -1,0 +1,51 @@
+.authPage {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.containerToggle {
+  width: 40%;
+  height: 100vh;
+  background-color: rgb(var(--color-primary));
+  background: linear-gradient(
+    to right,
+    rgb(var(--color-secondary)),
+    rgba(var(--color-secondary), 0.5) /* Tom mais claro */
+  );
+  display: flex;
+  justify-content: center;
+}
+.containerLogo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20% 0;
+}
+.containerLogo img {
+  width: 30%;
+}
+.containerLogin {
+  width: 60%;
+  background-color: rgb(var(--color-background));
+}
+.wrapperContent {
+  display: block;
+}
+.wrapperText {
+  display: block;
+  text-align: center;
+  padding: 10%;
+  
+}
+.wrapperText h3 {
+  font-family: "Coolvetica Rg", sans;
+  font-size: 30pt;
+  color: #ffffff;
+}
+.wrapperText p {
+  font-family: "Louis George Cafe", sans-serif;
+  color: #ffffff;
+  font-size: 17pt;
+}

@@ -8,11 +8,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: 'rgb(var(--color-primary) / <alpha-value>)',
-        secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
-        background: 'rgb(var(--color-background) / <alpha-value>)',
-        'background-secondary': 'rgb(var(--color-background-secondary) / <alpha-value>)',
-      }
+        primary: 'rgb(var(--color-primary))',
+        secondary: 'rgb(var(--color-secondary))',
+        background: 'rgb(var(--color-background))',
+        backgroundSecondary: 'rgb(var(--color-background-secondary))',
+      },
+      fontFamily: {
+        louis: ['"Louis George Café"', 'sans-serif'],
+        coolvetica: ['"Coolvetica Rg"', 'sans-serif'],
+      },
     }
   },
   darkMode: "class",
