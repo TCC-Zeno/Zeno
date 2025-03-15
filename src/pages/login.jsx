@@ -8,9 +8,13 @@ export default function Login() {
   const [loginOption, setLoginOption] = useState("signUp");
 
   return (
-    <main className={S.authPage}>
+    <main className={S.loginPage}>
       {loginOption === "signIn" ? <SignIn /> : null}
-      <section className={S.containerToggle}>
+      <section
+        className={`${S.containerToggle} ${
+          loginOption === "signUp" ? S.signUpToggle : S.signInToggle
+        }`}
+      >
         <div className={S.wrapperContent}>
           <div className={S.containerLogo}>
             <img src={Logo} alt="Logo com arco colorido e o nome Zeno" />

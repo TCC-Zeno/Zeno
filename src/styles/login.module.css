@@ -1,4 +1,4 @@
-.authPage {
+.loginPage {
   background-color: #ffffff;
   display: flex;
   justify-content: center;
@@ -8,14 +8,23 @@
   width: 40%;
   height: 100vh;
   background-color: rgb(var(--color-primary));
-  background: linear-gradient(
-    to right,
-    rgb(var(--color-secondary)),
-    rgba(var(--color-secondary), 0.5) /* Tom mais claro */
-  );
   display: flex;
   justify-content: center;
   transition: all 15s;
+}
+.signUpToggle {
+  background: linear-gradient(
+    to right,
+    rgb(var(--color-secondary)),
+    rgba(var(--color-secondary), 0.5) 
+  );
+}
+.signInToggle {
+  background: linear-gradient(
+    to left,
+    rgb(var(--color-secondary)),
+    rgba(var(--color-secondary), 0.5)
+  );
 }
 .containerLogo {
   width: 100%;
@@ -90,7 +99,7 @@
   padding: 10px;
   margin: 10px 0;
 }
-.wrapperForm  button {
+.wrapperForm button {
   margin-top: 50px;
   background-color: rgb(var(--color-primary));
   border-radius: 15px;
@@ -98,10 +107,10 @@
   color: #ffffff;
   font-size: 20pt;
   font-family: "Coolvetica Rg", sans;
-  transition: 1s all ;
+  transition: 1s all;
 }
 
-.wrapperForm  button:hover {
+.wrapperForm button:hover {
   transform: scale(1.05);
 }
 .containerButton {
