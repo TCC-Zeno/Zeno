@@ -234,11 +234,10 @@
     margin: 10px 10px;
   }
   .wrapperText button {
-    font-size: 20pt;
+    font-size: 17pt;
     border: 2.5px solid #ffffff;
     border-radius: 10px;
     padding: 2px 25px;
-    transition: 1s all;
   }
   .signUpToggle {
     border-radius: 0 0 15px 15px;
@@ -258,7 +257,7 @@
   }
   .containerLogin {
     width: 100%;
-    height: calc(100vh - 320px);
+    height: calc(85vh);
   }
   .wrapperForm {
     width: 90%;
@@ -267,6 +266,9 @@
     font-size: 25pt;
     padding: 20px 0;
   }
-  
+  .wrapperForm button {
+    font-size: 17pt;
+    border-radius: 10px;
+  }
 }
 
