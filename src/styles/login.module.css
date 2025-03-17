@@ -50,7 +50,7 @@
 .wrapperContent {
   display: block;
   position: relative;
-  z-index: 2; /* Acima das partículas */
+  z-index: 2;
 }
 
 .wrapperText {
@@ -157,7 +157,6 @@
   padding: 0 10px;
 }
 
-/* Configuração das partículas */
 .particlesContainer {
   position: absolute;
   width: 100%;
@@ -207,3 +206,67 @@
     opacity: 0;
   }
 }
+
+@media only screen and (max-width: 750px) {
+  .loginPage {
+    display: block;
+  }
+
+  .containerToggle {
+    width: 100%;
+    height: 320px;
+    background-color: rgb(var(--color-primary));
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  .containerLogo {
+    margin: 15px 0;
+  }
+  .wrapperText {
+    padding: 10px 0;
+  }
+  .wrapperText h3 {
+    font-size: 25pt;
+  }
+  .wrapperText p {
+    font-size: 15pt;
+    margin: 10px 10px;
+  }
+  .wrapperText button {
+    font-size: 20pt;
+    border: 2.5px solid #ffffff;
+    border-radius: 10px;
+    padding: 2px 25px;
+    transition: 1s all;
+  }
+  .signUpToggle {
+    border-radius: 0 0 15px 15px;
+    background: linear-gradient(
+      to bottom,
+      rgb(var(--color-secondary)),
+      rgba(var(--color-secondary), 0.5)
+    );
+  }
+  .signInToggle {
+    border-radius: 15px 15px 0 0;
+    background: linear-gradient(
+      to top,
+      rgb(var(--color-secondary)),
+      rgba(var(--color-secondary), 0.5)
+    );
+  }
+  .containerLogin {
+    width: 100%;
+    height: calc(100vh - 320px);
+  }
+  .wrapperForm {
+    width: 90%;
+  }
+  .wrapperForm h3{ 
+    font-size: 25pt;
+    padding: 20px 0;
+  }
+  
+}
+
