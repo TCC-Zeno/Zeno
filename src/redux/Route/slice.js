@@ -9,7 +9,7 @@ export const rotaSlice = createSlice({
   initialState,
   reducers: {
     dashboard: (state) => {
-      state.rota = "dashboard"; // Modifique a propriedade rota
+      state.rota = "dashboard"; 
     },
     stock: (state) => {
       state.rota = "stock";
