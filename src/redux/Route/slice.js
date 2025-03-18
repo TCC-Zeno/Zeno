@@ -1,39 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { 
-    rota : null}
+const initialState = {
+  rota: null,
+};
 
 export const rotaSlice = createSlice({
-    name: 'rota',
-    initialState,
-    reducers: {
-        dashboard : (state)=>{
-            state.dashboard = true
-        },
-        stock : (state)=>{
-            state.stock = "stock"
-        },
-        finance : (state)=>{
-            state.finance = "finance"
-        },
-        calendar : (state)=>{
-            state.calendar = "calendar"
-        },
-        list : (state)=>{
-            state.list = "list"
-        },
-        report : (state)=>{
-            state.report = "report"
-        },
-        service : (state)=>{
-            state.service = "service"
-        },
-        settings : (state)=>{
-            state.settings = "settings"
-        },
-        support : (state)=>{
-            state.support = "support"
-        }}
-    })
-    export const {dashboard, stock, finance, calendar, list, report, service, settings, support} = rotaSlice.actions;
+  name: "rota",
+  initialState,
+  reducers: {
+    dashboard: (state) => {
+      state.rota = "dashboard"; // Modifique a propriedade rota
+    },
+    stock: (state) => {
+      state.rota = "stock";
+    },
+    finance: (state) => {
+      state.rota = "finance";
+    },
+    calendar: (state) => {
+      state.rota = "calendar";
+    },
+    list: (state) => {
+      state.rota = "list";
+    },
+    report: (state) => {
+      state.rota = "report";
+    },
+    service: (state) => {
+      state.rota = "service";
+    },
+    settings: (state) => {
+      state.rota = "settings";
+    },
+    support: (state) => {
+      state.rota = "support";
+    },
+  },
+});
+
+export const {
+  dashboard,
+  stock,
+  finance,
+  calendar,
+  list,
+  report,
+  service,
+  settings,
+  support,
+} = rotaSlice.actions;
 
