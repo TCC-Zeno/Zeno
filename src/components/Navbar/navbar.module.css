@@ -40,3 +40,8 @@
   right: 10%;
 
 }
+.nav_link:active{
+  background-color: rgb(var(--color-secondary));
+  border-radius: 5px;
+  padding: 3%;
+}

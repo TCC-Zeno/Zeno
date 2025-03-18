@@ -13,6 +13,9 @@ import { BiSupport } from "react-icons/bi";
 import Logo from "../../assets/logo/LogoZeno_LogoPretoSFundo.png";
 
 export function Navbar() {
+
+  // const rotaStatus = useSelector(state => state.rotaReducer.rota);  
+  const dashboard = "";
   return (
     <nav className={styles.navbar}>
       <div>
@@ -20,7 +23,7 @@ export function Navbar() {
         </div>
         <div>
         <ul>
-          <Link className={styles.nav_link} to="/dashboard">
+          <Link className={`${styles.nav_link} ${dashboard === "/dashboard" ? styles.active : styles.nav_link}`} to="/dashboard" >
             <BsFillHouseFill className={styles.icons} />
             <span>Inicio</span>
           </Link>
