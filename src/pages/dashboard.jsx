@@ -1,22 +1,26 @@
 import { useDispatch } from "react-redux";
 import Header from "../components/Header/Header";
 import { Navbar } from "../components/Navbar/Navbar";
-import styles from "../styles/dashboard.module.css";
+import style from "../styles/dashboard.module.css";
 import { useEffect } from "react";
 import { dashboard } from "../redux/Route/slice";
+import { Footer } from "../components/Footer/Footer";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(dashboard());
-  }, [dispatch]); 
+  }, [dispatch]);
   return (
     <>
-      <div className={styles.body}>
+      <div className={style.body}>
         <Navbar />
-        <main className={styles.dashboardPage}>
+        <main className={style.dashboardPage}>
           <Header />
         </main>
+        <footer className={style.footer}>
+          <Footer />
+        </footer>
       </div>
     </>
   );

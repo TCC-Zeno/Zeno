@@ -1,6 +1,9 @@
 .body {
   background-color: white;
 }
-.dashboardPage{
+.dashboardPage {
   margin-left: 18%;
+}
+.footer {
+  background-color: white;
 }
