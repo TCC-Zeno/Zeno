@@ -63,10 +63,10 @@
   display: block;
   width: 100%;
 }
-.containerUser{
-    display: flex;
-    justify-content: left;
-    gap: 15px;
+.containerUser {
+  display: flex;
+  justify-content: left;
+  gap: 15px;
 }
 
 .userPhoto {
@@ -153,4 +153,89 @@ button.manegerOption {
   margin: 10px 0;
   width: 100%;
   cursor: pointer;
+}
+.modalContent h1 {
+  text-align: center;
+  font-size: 15pt;
+  font-weight: bold;
+  margin-bottom: 3%;
+}
+.modalContainerInfo {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+}
+
+.modalContainerImg {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+.modalContainerInfo img {
+  width: 25%;
+  justify-content: center;
+}
+.modalContainerInfo input {
+  width: 50%;
+  padding: 5px 10px;
+  border-radius: 15px;
+  background-color: rgb(var(--color-background-secondary));
+}
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+.modalButtonEdit {
+  transition: all 50ms;
+  color: #fff;
+  background-color: #0084ff;
+  padding: 12px 20px;
+  border-radius: 10px;
+}
+.modalButtonEdit:hover {
+  transform: scale(1.1);
+  transition: all 50ms;
+}
+.modalButtonClose {
+  transition: all 50ms;
+  color: #fff;
+  background-color: #c70606;
+  padding: 5px 15px;
+  border-radius: 10px;
+}
+.modalButtonClose:hover {
+  transform: scale(1.1);
+  transition: all 50ms;
+}
+.icon{
+  width: 100%;
+  height: 100%;
+}
+.iconContainer{
+  width: 20%;
+}
+@media screen and (max-width: 768px) {
+  .header {
+    height: 75px;
+  }
+  .containerLogo {
+    width: 80%;
+  }
+  .containerIcons {
+    width: 20%;
+  }
+  .containerLogo img{
+    width: 15%;
+  }
+  .iconContainer {
+    width: 200%;
+  }
+  .icon{
+    width: 50%;
+    height: auto;
+  }
 }

@@ -8,6 +8,8 @@ import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import S from "./header.module.css";
 import { Link } from "react-router-dom";
 import { BsFillHouseFill } from "react-icons/bs";
+import Modal from "../Modal/Modal";
+import { useState } from "react";
 // conteudos possiveis
 export function NotificationContent() {
   return (
@@ -38,6 +40,7 @@ export function NotificationContent() {
 }
 
 export function ProfileContent() {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <div className={S.containerProfile}>
       <div className={S.containerUser}>
@@ -51,7 +54,7 @@ export function ProfileContent() {
       </div>
       <div className={S.divider}></div>
       <div className={S.userManeger}>
-        <Link className={S.manegerOption} to="/account">
+        <Link className={S.manegerOption} onClick={() => setModalOpen(true)}>
           <MdManageAccounts />
           <span>Conta</span>
         </Link>
@@ -75,6 +78,44 @@ export function ProfileContent() {
         <TbLogout />
         <span>Sair</span>
       </button>
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+        <div className={S.modalContent}>
+          <h1>Conta</h1>
+          <div className={S.modalContainerInfo}>
+            <p>Nome da empresa:</p>
+            <input type="text" disabled value="nome da empresa" />
+          </div>
+          <div className={S.modalContainerInfo}>
+            <p>Email da empresa:</p>
+            <input type="email" disabled value="empresa@gmail.com" />
+          </div>
+          <div className={S.modalContainerInfo}>
+            <p>Cor tema:</p>
+            <input type="text" disabled value="Branco e Azul" />
+          </div>
+          <div className={S.modalContainerInfo}>
+            <p>Opção de acessibilidade:</p>
+            <input type="text" disabled value="Padrão" />
+          </div>
+          <div className={S.modalContainerInfo}>
+            <p>Logo da empresa:</p>
+            <div className={(S.modalContainerImg)}>
+              <img src={Logo} alt="Sua Logo em miniatura" />
+            </div>
+          </div>
+          <div className={S.modalButtons}>
+            <button
+              className={S.modalButtonClose}
+              onClick={() => setModalOpen(false)}
+            >
+              Fechar
+            </button>
+            <Link className={S.modalButtonEdit} to="/settings">
+              Editar
+            </Link>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
