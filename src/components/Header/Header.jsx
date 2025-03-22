@@ -18,14 +18,13 @@ export default function Header() {
         <img src={Logo} alt="Logo Zeno" />
       </div>
       <div className={S.containerIcons}>
-        
         <DropdownHeader
-          icon={<IoMdNotifications size="50%" />}
+          icon={<IoMdNotifications className={S.icon}  />}
           modalContent={<NotificationContent />}
         />
 
         <DropdownHeader
-          icon={<CgProfile size="50%" />}
+          icon={<CgProfile className={S.icon}  />}
           modalContent={<ProfileContent />}
         />
       </div>
