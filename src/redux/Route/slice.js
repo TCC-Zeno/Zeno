@@ -20,8 +20,8 @@ export const rotaSlice = createSlice({
     calendar: (state) => {
       state.rota = "calendar";
     },
-    list: (state) => {
-      state.rota = "list";
+    organizer: (state) => {
+      state.rota = "organizer";
     },
     report: (state) => {
       state.rota = "report";
@@ -43,7 +43,7 @@ export const {
   stock,
   finance,
   calendar,
-  list,
+  organizer,
   report,
   service,
   settings,

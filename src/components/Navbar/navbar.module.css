@@ -1,5 +1,5 @@
 .navbar {
-  background-color: #4687f3;
+  background-color: rgb(var(--color-primary));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,7 +80,7 @@
   position: fixed;
   top: 15px;
   left: 15px;
-  background-color: #4687f3;
+  background-color: rgb(var(--color-primary));
   color: white;
   border: none;
   border-radius: 5px;
@@ -132,6 +132,12 @@
 
   .menuButton {
     display: block;
+    background-color: transparent;
+  }
+  .burguerIcon {
+    color: #000;
+    width: 150%;
+    height: 150%;
   }
 
   .closeMenuButton {

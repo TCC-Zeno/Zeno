@@ -25,13 +25,10 @@ export function Navbar() {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    // Initial check
     checkIfMobile();
 
-    // Add event listener
     window.addEventListener("resize", checkIfMobile);
 
-    // Clean up
     return () => {
       window.removeEventListener("resize", checkIfMobile);
     };
@@ -50,7 +47,7 @@ export function Navbar() {
   return (
     <>
       <div className={styles.menuButton} onClick={toggleMenu}>
-        <TfiMenu />
+        <TfiMenu className={styles.burguerIcon} />
       </div>
 
       <nav className={`${styles.navbar} ${isMenuOpen ? styles.menuOpen : ""}`}>
@@ -110,9 +107,9 @@ export function Navbar() {
 
           <Link
             className={`${styles.nav_link} ${
-              rotaStatus === "list" ? styles.active : ""
+              rotaStatus === "organizer" ? styles.active : ""
             }`}
-            to="/list"
+            to="/organizer"
             onClick={closeMenu}
           >
             <PiListChecksFill className={styles.icons} />

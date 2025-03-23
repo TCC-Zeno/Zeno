@@ -7,3 +7,209 @@
 .footer {
   background-color: white;
 }
+.sectionDashboard {
+  margin: 0 10%;
+  margin-bottom: 50px;
+}
+.sectionDashboard h1 {
+  font-weight: bold;
+  font-size: 15pt;
+}
+.cashTitle {
+  display: flex;
+}
+.cashTitle h1 {
+  margin-right: 15px;
+}
+.cashSelectPeriod {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-background));
+  padding: 0 10px;
+  border-radius: 5px;
+}
+.cashContainer {
+  background-color: rgb(var(--color-background-secondary));
+  display: flex;
+  padding: 10px;
+  justify-content: space-around;
+  margin: 15px 0;
+  border-radius: 15px;
+  box-shadow: 5px 3px 0px 5px rgb(var(--color-secondary));
+  -webkit-box-shadow: 5px 5px 0px 2px rgb(var(--color-secondary));
+  -moz-box-shadow: 5px 5px 0px 2px rgb(var(--color-secondary));
+}
+.cashContainer > div {
+  background-color: rgb(var(--color-background));
+  padding: 15px 6%;
+  border-radius: 10px;
+  text-align: center;
+}
+.cashContainer > div h4 {
+  font-size: 14pt;
+}
+.cashContainer > div p {
+  font-weight: bold;
+}
+.cashAmount p {
+  color: black;
+}
+.cashProfit p {
+  color: #64e244;
+}
+.cashExpenses p {
+  color: #d61414;
+}
+.organizerContainer {
+  background-color: rgb(var(--color-background-secondary));
+  display: flex;
+  padding: 10px;
+  justify-content: space-around;
+  margin: 15px 0;
+  border-radius: 15px;
+  box-shadow: 5px 3px 0px 5px rgb(var(--color-secondary));
+  -webkit-box-shadow: 5px 5px 0px 2px rgb(var(--color-secondary));
+  -moz-box-shadow: 5px 5px 0px 2px rgb(var(--color-secondary));
+}
+.organizerContainer > div {
+  padding: 10px;
+  width: 30%;
+}
+.organizerContainer p {
+  padding: 0 15px;
+}
+.organizerContainer li {
+  color: #ffffff;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  list-style: disc;
+  list-style-position: inside;
+}
+.organizerToDo > div {
+  background-color: rgb(var(--color-secondary));
+  padding: 15px 10%;
+  border-radius: 10px;
+  max-height: 175px;
+  overflow-y: auto;
+  padding-right: 5px;
+  scrollbar-width: none; 
+  scrollbar-color: #ffffff rgb(var(--color-primary)); 
+}
+
+.organizerProgress > div {
+  background-color: rgb(var(--color-primary));
+  padding: 15px 10%;
+  border-radius: 10px;
+}
+.organizerDone > div {
+  background-color: color-mix(in srgb, rgb(var(--color-primary)) 70%, white);
+  padding: 15px 10%;
+  border-radius: 10px;
+}
+.financeContainer {
+  background-color: rgb(var(--color-background-secondary));
+  display: flex;
+  padding: 10px;
+  margin: 15px 0;
+  border-radius: 15px;
+  box-shadow: 5px 3px 0px 5px rgb(var(--color-secondary));
+  -webkit-box-shadow: 5px 5px 0px 2px rgb(var(--color-secondary));
+  -moz-box-shadow: 5px 5px 0px 2px rgb(var(--color-secondary));
+  width: 100%;
+}
+.financeForm {
+  width: 100%;
+}
+.financeSelect {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-background));
+  font-size: 12pt;
+  padding: 6px 20px;
+  border-radius: 5px;
+  width: 26%;
+}
+.row01 {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+.row02 {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.inputName {
+  background-color: rgb(var(--color-background));
+  color: #000;
+  font-size: 10pt;
+  padding: 0px 20px;
+  border-radius: 5px;
+  width: 34%;
+}
+.inputPrice {
+  background-color: rgb(var(--color-background));
+  color: #000;
+  font-size: 10pt;
+  padding: 0px 20px;
+  border-radius: 5px;
+  width: 19%;
+}
+
+.button {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-background));
+  font-size: 12pt;
+  padding: 6px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+  width: 25%;
+}
+.button:hover {
+  transform: scale(1.05);
+  transition: all 0.5s;
+}
+@media screen and (max-width: 1200px) {
+  .organizerContainer > div {
+    padding: 0;
+  }
+}
+@media screen and (max-width: 768px) {
+  .sectionDashboard {
+    margin: 0 5%;
+  }
+  .cashContainer > div {
+    padding: 0 5%;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .cashContainer > div p {
+    font-size: 10pt;
+  }
+  .cashContainer > div h4 {
+    font-size: 10pt;
+  }
+  .organizerContainer > div p {
+    font-size: 7pt;
+    font-weight: bold;
+  }
+  .financeSelect {
+    font-size: 9pt;
+    padding: 6px;
+  }
+}
+/* @media screen and (max-width: 768px) {
+  .cashContainer {
+    display: block;
+  }
+  .cashContainer > div:not(.cashExpenses) {
+    margin-bottom: 15px;
+  }
+  .organizerContainer {
+    display: block;
+  }
+  .organizerContainer > div{
+    width: 100%;
+  }
+} */

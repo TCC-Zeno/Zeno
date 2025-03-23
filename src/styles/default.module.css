@@ -1,0 +1,28 @@
+.body {
+  background-color: white;
+}
+.main {
+  margin-left: 18%;
+}
+.footer {
+  background-color: white;
+}
+.content {
+  padding-top: 7%;
+}
+@media screen and (max-width: 1024px) {
+  .main {
+    margin-left: 25%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .main header {
+    margin-left: 18%;
+  }
+  .main {
+    margin-left: 0%;
+  }
+  .content {
+    padding-top: 20%;
+  }
+}
