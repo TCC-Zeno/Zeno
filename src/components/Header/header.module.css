@@ -19,6 +19,9 @@
   width: 10%;
   justify-content: space-around;
 }
+.none {
+  display: none;
+}
 .none img {
   display: none;
 }

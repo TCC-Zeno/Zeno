@@ -1,0 +1,33 @@
+.sectionSettings h1{
+    font-family: "Coolvetica Rg";
+    font-size: 30pt;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.formSettings{
+    display: block;
+
+}
+
+.inputName, .inputCompany{
+    display: block;
+    width: 50vw;
+    padding: 10px;
+    background-color: rgb(var(--color-background-secondary));
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.containerForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.selectColorBlindness {
+    display: block;
+    width: 30vw;
+    padding: 10px;
+    background-color: rgb(var(--color-background-secondary));
+    border-radius: 10px;
+    margin-bottom: 20px;
+}

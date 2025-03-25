@@ -1,12 +1,45 @@
 .container {
-  margin-top: auto;
-  margin-bottom: 1px;
-  position: relative;
-  left: 10%;
   width: 100%;
+  background-color: rgb(var(--color-secondary));
+  height: 100%;
+}
+.footer{
+  margin-left: 18%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #4687f3;
-  gap: 10%;
+
 }
+.containerLogo{
+  width: 20%;
+  height: auto;
+}
+.containerLogo > img{
+  width: 35%;
+  height: auto;
+  margin: 3%;
+}
+.conteudo{
+  width:50%;
+  height: auto;
+}
+.links{
+  font-family: "Louis George Cafe", sans-serif;
+  color: white;
+  padding-right: 10%;
+  width: 100%;
+  font-weight: 700;
+  cursor: pointer;
+
+}
+.links:hover{
+  transform: scale(1.10);
+}
+.icons{
+  width: 30%;
+  height: auto;
+}
+.icons .a{
+ color: white;
+}
+
+
