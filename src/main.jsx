@@ -8,6 +8,7 @@ import { store } from "./redux/store";
 import Dashboard from "./pages/dashboard";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import Login from "./pages/login";
+import Settings from "./pages/settings";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route element={<Login />} path="/login" />
             <Route element={<ProtectedRoutes />}>
               <Route element={<Dashboard />} path="/dashboard" />
+              <Route element={<Settings />} path="/settings" />
             </Route>
           </Routes>
         </BrowserRouter>
