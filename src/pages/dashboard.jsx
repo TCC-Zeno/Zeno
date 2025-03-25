@@ -159,20 +159,61 @@ export default function Dashboard() {
                   <option value="Entrada">Entrada</option>
                   <option value="Saída">Saída</option>
                 </select>
+                <input className={S.buttonM} type="submit" />
               </div>
             </form>
           </div>
         </section>
+        <section className={`${S.sectionDashboard} ${S.sectionStock}`}>
+          <div className={S.stockTitle}>
+            <h1>Estoque</h1>
+          </div>
+          <div className={S.stockContainer}>
+            <div className={S.stockInStock}>
+              <p>Em estoque</p>
+              <div>
+                <ul>
+                  <li>aaaaaaaaaaaaaaaaaaaaaaaaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                </ul>
+              </div>
+            </div>
+            <div className={S.stockRefill}>
+              <p>Para repor</p>
+              <div>
+                <ul>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                </ul>
+              </div>
+            </div>
+            <div className={S.stockBuy}>
+              <p>Para comprar</p>
+              <div>
+                <ul>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                  <li>aaaaa</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </DefaultLayout>
-      {/* <div className={style.body}>
-        <Navbar />
-        <main className={style.dashboardPage}>
-          <Header />
-        </main>
-        <footer className={style.footer}>
-          <Footer />
-        </footer>
-      </div> */}
     </>
   );
 }

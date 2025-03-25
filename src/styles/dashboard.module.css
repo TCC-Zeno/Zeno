@@ -90,27 +90,40 @@
   background-color: rgb(var(--color-secondary));
   padding: 15px 10%;
   border-radius: 10px;
+  height: 175px;
   max-height: 175px;
   overflow-y: auto;
   padding-right: 5px;
-  scrollbar-width: none; 
-  scrollbar-color: #ffffff rgb(var(--color-primary)); 
+  scrollbar-width: none;
+  scrollbar-color: #ffffff rgb(var(--color-primary));
 }
 
 .organizerProgress > div {
   background-color: rgb(var(--color-primary));
   padding: 15px 10%;
   border-radius: 10px;
+  height: 175px;
+  max-height: 175px;
+  overflow-y: auto;
+  padding-right: 5px;
+  scrollbar-width: none;
+  scrollbar-color: #ffffff rgb(var(--color-primary));
 }
 .organizerDone > div {
   background-color: color-mix(in srgb, rgb(var(--color-primary)) 70%, white);
   padding: 15px 10%;
   border-radius: 10px;
+  height: 175px;
+  max-height: 175px;
+  overflow-y: auto;
+  padding-right: 5px;
+  scrollbar-width: none;
+  scrollbar-color: #ffffff rgb(var(--color-primary));
 }
 .financeContainer {
   background-color: rgb(var(--color-background-secondary));
   display: flex;
-  padding: 10px;
+  padding: 25px;
   margin: 15px 0;
   border-radius: 15px;
   box-shadow: 5px 3px 0px 5px rgb(var(--color-secondary));
@@ -127,12 +140,14 @@
   font-size: 12pt;
   padding: 6px 20px;
   border-radius: 5px;
-  width: 26%;
+  width: 25.5%;
+  height: 36px;
 }
 .row01 {
   display: flex;
   justify-content: space-evenly;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
+  align-items: center;
 }
 .row02 {
   width: 100%;
@@ -142,18 +157,20 @@
 .inputName {
   background-color: rgb(var(--color-background));
   color: #000;
-  font-size: 10pt;
+  font-size: 14pt;
   padding: 0px 20px;
   border-radius: 5px;
-  width: 34%;
+  width: 32%;
+  height: 36px;
 }
 .inputPrice {
   background-color: rgb(var(--color-background));
   color: #000;
-  font-size: 10pt;
+  font-size: 14pt;
   padding: 0px 20px;
   border-radius: 5px;
   width: 19%;
+  height: 36px;
 }
 
 .button {
@@ -166,50 +183,145 @@
   transition: all 0.5s;
   width: 25%;
 }
+.buttonM {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-background));
+  font-size: 12pt;
+  padding: 6px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+  width: 100%;
+  display: none;
+}
 .button:hover {
   transform: scale(1.05);
   transition: all 0.5s;
+}
+
+.stockContainer {
+  background-color: rgb(var(--color-background-secondary));
+  display: flex;
+  padding: 10px;
+  justify-content: space-around;
+  margin: 15px 0;
+  border-radius: 15px;
+  box-shadow: 5px 3px 0px 5px rgb(var(--color-secondary));
+  -webkit-box-shadow: 5px 5px 0px 2px rgb(var(--color-secondary));
+  -moz-box-shadow: 5px 5px 0px 2px rgb(var(--color-secondary));
+}
+.stockContainer > div {
+  padding: 10px;
+  width: 30%;
+}
+.stockContainer p {
+  padding: 0 15px;
+}
+.stockContainer li {
+  color: #ffffff;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  list-style: none;
+}
+.stockInStock > div {
+  background-color: rgb(var(--color-secondary));
+  padding: 15px 10%;
+  border-radius: 10px;
+  height: 175px;
+  max-height: 175px;
+  overflow-y: auto;
+  padding-right: 5px;
+  scrollbar-width: none;
+  scrollbar-color: #ffffff rgb(var(--color-primary));
+}
+
+.stockRefill > div {
+  background-color: rgb(var(--color-primary));
+  padding: 15px 10%;
+  border-radius: 10px;
+  height: 175px;
+  max-height: 175px;
+  overflow-y: auto;
+  padding-right: 5px;
+  scrollbar-width: none;
+  scrollbar-color: #ffffff rgb(var(--color-primary));
+}
+.stockBuy > div {
+  background-color: color-mix(in srgb, rgb(var(--color-primary)) 70%, white);
+  padding: 15px 10%;
+  border-radius: 10px;
+  height: 175px;
+  max-height: 175px;
+  overflow-y: auto;
+  padding-right: 5px;
+  scrollbar-width: none;
+  scrollbar-color: #ffffff rgb(var(--color-primary));
 }
 @media screen and (max-width: 1200px) {
   .organizerContainer > div {
     padding: 0;
   }
+  .stockContainer > div {
+    padding: 0;
+  }
 }
+
 @media screen and (max-width: 768px) {
-  .sectionDashboard {
-    margin: 0 5%;
-  }
-  .cashContainer > div {
-    padding: 0 5%;
-    border-radius: 10px;
-    text-align: center;
-  }
-  .cashContainer > div p {
-    font-size: 10pt;
-  }
-  .cashContainer > div h4 {
-    font-size: 10pt;
-  }
-  .organizerContainer > div p {
-    font-size: 7pt;
-    font-weight: bold;
-  }
-  .financeSelect {
-    font-size: 9pt;
-    padding: 6px;
-  }
-}
-/* @media screen and (max-width: 768px) {
   .cashContainer {
     display: block;
   }
   .cashContainer > div:not(.cashExpenses) {
     margin-bottom: 15px;
   }
+  .cashContainer > div {
+    margin: 15px 25px;
+  }
   .organizerContainer {
     display: block;
   }
-  .organizerContainer > div{
-    width: 100%;
+  .organizerContainer p {
+    font-size: 12pt;
   }
-} */
+  .organizerContainer > div {
+    width: 90%;
+    margin: 15px;
+  }
+  .row01 {
+    display: block;
+    margin-bottom: 0;
+  }
+  .row01 > input:not(.button){
+    display: block;
+    width: 100%;
+    height: 35px;
+    margin: 15px 0;
+  }
+  .row02 {
+    width: 100%;
+    display: block;
+  }
+  .row02 > select {
+    display: block;
+    width: 100%;
+    height: 35px;
+    margin: 15px 0;
+  }
+  .button {
+    display: none;
+  }
+  .buttonM {
+    display: block;
+  }
+  .stockContainer {
+    display: block;
+  }
+  .stockContainer p {
+    font-size: 12pt;
+  }
+  .stockContainer > div {
+    width: 90%;
+    margin: 15px;
+  }
+}
