@@ -3,43 +3,71 @@
   background-color: rgb(var(--color-secondary));
   height: 100%;
 }
-.footer{
+.footer {
   margin-left: 18%;
   display: flex;
   align-items: center;
-
 }
-.containerLogo{
+.containerLogo {
   width: 20%;
   height: auto;
 }
-.containerLogo > img{
+.img {
   width: 35%;
   height: auto;
   margin: 3%;
 }
-.conteudo{
-  width:50%;
+.conteudo {
+  width: 50%;
   height: auto;
 }
-.links{
+.links {
   font-family: "Louis George Cafe", sans-serif;
   color: white;
   padding-right: 10%;
-  width: 100%;
+  font-size: 100%;
   font-weight: 700;
   cursor: pointer;
-
+  transition: 0.3s ease;
 }
-.links:hover{
-  transform: scale(1.10);
+.links:hover {
+  font-size: 14pt;
 }
-.icons{
+.icons {
   width: 30%;
   height: auto;
+  display: inline-flex;
+  flex-direction: row;
+  gap: 18%;
 }
-.icons .a{
- color: white;
+.a {
+  color: white;
+  width: 140%;
+  height: auto;
 }
 
+@media screen and (max-width: 768px) {
+  .footer {
+    margin-left: 3%;
+    font-size: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 
+  .conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .img {
+    width: 90%;
+    height: auto;
+    margin: 6%;
+  }
+  .icons {
+    flex-direction: row;
+    width: 40%;
+    margin-top: 3%;
+  }
+}
