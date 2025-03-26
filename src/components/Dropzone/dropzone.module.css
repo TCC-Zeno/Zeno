@@ -1,0 +1,138 @@
+::selection {
+    background: #2d59fa;
+    color: #F2F7FE;
+  }
+  
+  .dropzoneBox {
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 576px;
+    border: 1px solid #EDF1F3;
+    width: 100%;
+    background: rgb(var(--color-background-secondary));
+  }
+  
+  .dropzoneBox h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #211E30;
+  }
+  
+  .dropzoneBox p {
+    font-size: 18px;
+    color: #767676;
+  }
+  
+  .dropzoneArea {
+    padding: 16px;
+    position: relative;
+    margin-top: 24px;
+    aspect-ratio: 2 / 1;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 2px dashed #747474;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .dropzoneDescription {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .dropzoneArea .fileInfo {
+    font-size: 18px;
+  }
+  
+  .dropzoneArea [type="file"] {
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .dropzoneArea .fileUploadIcon svg {
+    height: 96px;
+    max-width: 96px;
+    width: 100%;
+    margin-bottom: 8px;
+    stroke: #211E30;
+  }
+  
+  .dropzoneArea:hover {
+    background: #F2F7FE;
+  }
+  
+  .dropzone--over {
+    border: 2px solid #2d59fa;
+    background: #F2F7FE;
+  }
+  
+  .dropzoneActions {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-top: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .dropzoneActions button {
+    flex-grow: 1;
+    min-height: 48px;
+    font-size: 19px;
+    border: none;
+    transition: background 0.3s ease;
+  }
+  
+  .dropzoneHelp {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dropzoneActions button[type='reset'] {
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #0a090c;
+    background: #FEFFFF;
+    cursor: pointer;
+    border: 1px solid #D4DCE6;
+    transition: all 0.3s ease;
+  }
+  
+  .dropzoneActions button[type='reset']:hover {
+    border: 1px solid #2d59fa;
+    color: #2d59fa;
+  }
+  
+  .dropzoneActions button[type='submit'] {
+    background: rgb(var(--color-primary));
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #F2F7FE;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropzoneActions button[type='submit']:hover {
+    background: rgb(var(--color-secondary));
+  }
+  
+  .actionButtons {
+    display: flex;
+    gap: 8px;
+    max-width: 192px;
+  }

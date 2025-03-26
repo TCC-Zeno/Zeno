@@ -1,33 +1,131 @@
-.sectionSettings h1{
-    font-family: "Coolvetica Rg";
-    font-size: 30pt;
-    text-align: center;
-    margin-bottom: 20px;
+.sectionSettings h1 {
+  font-family: "Coolvetica Rg";
+  font-size: 30pt;
+  text-align: center;
+  margin-bottom: 20px;
 }
-.formSettings{
-    display: block;
-
+.sectionSettings h2 {
+  font-family: "Coolvetica Rg";
+  font-size: 20pt;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.containerSettings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.inputName, .inputCompany{
-    display: block;
-    width: 50vw;
-    padding: 10px;
-    background-color: rgb(var(--color-background-secondary));
-    border-radius: 10px;
-    margin-bottom: 20px;
+.inputName,
+.inputCompany {
+  display: block;
+  width: 50vw;
+  padding: 10px;
+  background-color: rgb(var(--color-background-secondary));
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 .containerForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .selectColorBlindness {
-    display: block;
-    width: 30vw;
-    padding: 10px;
-    background-color: rgb(var(--color-background-secondary));
-    border-radius: 10px;
-    margin-bottom: 20px;
+  display: block;
+  width: 30vw;
+  padding: 10px;
+  background-color: rgb(var(--color-background-secondary));
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.containerInternalForm {
+  display: flex;
+  justify-content: center;
+}
+.containerInternalForm > * {
+  display: flex;
+  flex-direction: column;
+}
+
+.toggleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.toggleRow {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.toggleWrapper {
+  width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* From Uiverse.io by Yaya12085 */
+.switch {
+  position: relative;
+  height: 1.5rem;
+  width: 3rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 9999px;
+  background-color: rgba(100, 116, 139, 0.377);
+  transition: all 0.3s ease;
+}
+
+.switch:checked {
+  background-color: rgb(var(--color-secondary));
+}
+
+.switch::before {
+  position: absolute;
+  content: "";
+  left: calc(1.5rem - 1.6rem);
+  top: calc(1.5rem - 1.6rem);
+  display: block;
+  height: 1.6rem;
+  width: 1.6rem;
+  cursor: pointer;
+  border: 1px solid rgba(100, 116, 139, 0.527);
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 3px 10px rgba(100, 116, 139, 0.327);
+  transition: all 0.3s ease;
+}
+
+.switch:hover::before {
+  box-shadow: 0 0 0px 8px rgba(0, 0, 0, 0.15);
+}
+
+.switch:checked:hover::before {
+  box-shadow: 0 0 0px 8px rgba(66, 132, 255, 0.15);
+}
+
+.switch:checked:before {
+  transform: translateX(100%);
+  border-color: rgb(var(--color-secondary));
+}
+
+.toggleLabel {
+  font-size: 16px;
+  color: #333;
+}
+
+@media screen and (max-width: 768px) {
+  .inputName,
+  .inputCompany {
+    width: 70vw;
+  }
+  .selectColorBlindness {
+    width: 50vw;
+  }
 }
