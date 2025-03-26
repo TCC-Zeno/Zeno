@@ -12,7 +12,7 @@ export function Footer() {
       <div className={style.container}>
         <div className={style.footer}>
         <div className={style.containerLogo}>
-          <img src={Logo} alt="Zeno logo" />
+          <img className={style.img} src={Logo} alt="Zeno logo" />
         </div>
         <div className={style.conteudo}>
           <a className={style.links} href="terms">Termos de Serviço</a>
@@ -20,10 +20,10 @@ export function Footer() {
           <a className={style.links} href="support">Fale Conosco</a>
         </div>
         <div className={style.icons}>
-          <a href="https://facebook.com"><FaFacebookF/></a>
-          <a href="https://instagram.com"><FaInstagram/></a>
-          <a href="https://youtube.com"><FaYoutube/></a>
-          <a href="https://github.com"><VscGithubAlt/></a>
+          <a  href="https://facebook.com"><FaFacebookF className={style.a}/></a>
+          <a  href="https://instagram.com"><FaInstagram className={style.a}/></a>
+          <a  href="https://youtube.com"><FaYoutube className={style.a}/></a>
+          <a  href="https://github.com"><VscGithubAlt className={style.a}/></a>
         </div>
         </div>
       </div>
