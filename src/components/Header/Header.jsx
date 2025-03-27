@@ -9,7 +9,11 @@ import { NotificationContent, ProfileContent } from "./dropdownContents";
 export default function Header() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
   return (
-    <header className={S.header}>
+    <header className={`${S.header} ${
+      ["dashboard", "finance", "stock", "agenda"].includes(rotaStatus) 
+        ? null 
+        : S.none
+    }`}>
       <div
         className={`${S.containerLogo} ${
           rotaStatus === "dashboard" ? null : S.none

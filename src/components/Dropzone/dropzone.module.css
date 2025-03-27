@@ -13,6 +13,7 @@
     border: 1px solid #EDF1F3;
     width: 100%;
     background: rgb(var(--color-background-secondary));
+    margin-bottom: 15px;
   }
   
   .dropzoneBox h2 {

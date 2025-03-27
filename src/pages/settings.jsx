@@ -1,12 +1,19 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import Dropzone from "../components/Dropzone/Dropzone";
 import { useEffect } from "react";
 import { settings } from "../redux/Route/slice";
+import { setTheme } from "../redux/User/slice";
 import S from "./../styles/settings.module.css";
 
 export default function Settings() {
+  const theme = useSelector((state) => state.userReducer.theme);
   const dispatch = useDispatch();
+
+  const handleColorSelect = (color) => {
+    dispatch(setTheme(color));
+  };
+
   useEffect(() => {
     dispatch(settings());
   }, [dispatch]);
@@ -31,10 +38,112 @@ export default function Settings() {
             <div className={S.containerInternalForm}>
               <div className={S.containerForm}>
                 <h2>Qual a cor para o site?</h2>
-                <div className={S.containerColor}></div>
+                <div className={S.colorContainer}>
+                  <button
+                    onClick={() => handleColorSelect("blue")}
+                    className={`
+          ${S.colorButton} 
+          ${theme === "blue" ? S.selected : ""}
+        `}
+                  >
+                    <span>Azul</span>
+                    <div className={S.colorDivs}>
+                      <div
+                        style={{
+                          backgroundColor: "rgb(23, 106, 244)",
+                          borderRadius: "8px  0 0 8px",
+                        }}
+                      ></div>
+                      <div
+                        style={{ backgroundColor: "rgb(70, 135, 243)" }}
+                      ></div>
+                      <div
+                        style={{
+                          backgroundColor: "rgb(126,171,247)",
+                          borderRadius: "0 8px   8px 0",
+                        }}
+                      ></div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => handleColorSelect("purple")}
+                    className={`
+          ${S.colorButton} 
+          ${theme === "purple" ? S.selected : ""}
+        `}
+                  >
+                    <span>Roxo</span>
+                    <div className={S.colorDivs}>
+                      <div
+                        style={{
+                          backgroundColor: "rgb(82 9 185)",
+                          borderRadius: "8px  0 0 8px",
+                        }}
+                      ></div>
+                      <div style={{ backgroundColor: "rgb(109 6 210)" }}></div>
+                      <div
+                        style={{
+                          backgroundColor: "rgb(152, 80, 223)",
+                          borderRadius: "0 8px   8px 0",
+                        }}
+                      ></div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => handleColorSelect("green")}
+                    className={`
+          ${S.colorButton} 
+          ${theme === "green" ? S.selected : ""}
+        `}
+                  >
+                    <span>Verde</span>
+                    <div className={S.colorDivs}>
+                      <div
+                        style={{
+                          backgroundColor: "rgb(68 156 80)",
+                          borderRadius: "8px  0 0 8px",
+                        }}
+                      ></div>
+                      <div style={{ backgroundColor: "rgb(96 186 108)" }}></div>
+                      <div
+                        style={{
+                          backgroundColor: "rgb(124, 185, 132)",
+                          borderRadius: "0 8px   8px 0",
+                        }}
+                      ></div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => handleColorSelect("red")}
+                    className={`
+          ${S.colorButton} 
+          ${theme === "red" ? S.selected : ""}
+        `}
+                  >
+                    <span>Vermelho</span>
+                    <div className={S.colorDivs}>
+                      <div
+                        style={{
+                          backgroundColor: "rgb(155 23 15)",
+                          borderRadius: "8px  0 0 8px",
+                        }}
+                      ></div>
+                      <div style={{ backgroundColor: "rgb(189 24 14)" }}></div>
+                      <div
+                        style={{
+                          backgroundColor: "rgb(208, 93, 86)",
+                          borderRadius: "0 8px   8px 0",
+                        }}
+                      ></div>
+                    </div>
+                  </button>
+                </div>
                 <h2>Acessibilidade - Daltonismo</h2>
                 <select className={S.selectColorBlindness}>
-                  <option value="Padrão">Padrão</option>
+                  <option value="Padrão" defaultChecked>Padrão</option>
                   <option value="Protanopia">Protanopia</option>
                   <option value="Deuteranopia">Deuteranopia</option>
                   <option value="Tritanopia">Tritanopia</option>

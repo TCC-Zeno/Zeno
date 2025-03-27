@@ -26,13 +26,13 @@
   }
 
   .theme-blue {
-    --color-primary: 14 165 233;
-    --color-secondary: 59 130 246;
+    --color-primary: 70, 135, 243;
+    --color-secondary: 23, 106, 244;
   }
 
   .theme-green {
-    --color-primary: 68 156 80;
-    --color-secondary: 142 205 150;
+    --color-primary: 96 186 108;
+    --color-secondary: 68 156 80;
   }
 
   .theme-red {
