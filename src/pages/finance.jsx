@@ -4,7 +4,7 @@ import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
 
-export function Finance() {
+export default function Finance() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(finance());

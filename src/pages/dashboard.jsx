@@ -32,7 +32,7 @@ export default function Dashboard() {
               name="cashSummaryPeriod"
               id="cashSummaryPeriod"
             >
-              <option value="daily">Diário</option>
+              <option selected value="daily">Diário</option>
               <option value="monthly">Mensal</option>
               <option value="annual">Anual</option>
             </select>

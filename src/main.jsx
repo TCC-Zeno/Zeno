@@ -9,20 +9,24 @@ import Dashboard from "./pages/dashboard";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import Login from "./pages/login";
 import Settings from "./pages/settings";
+import ThemeSwitcher from "./utils/ThemeSwitcher";
+import Finance from "./pages/finance";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-      <Provider store={store}>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<LandingPage />} path="/" />
-            <Route element={<Login />} path="/login" />
-            <Route element={<ProtectedRoutes />}>
-              <Route element={<Dashboard />} path="/dashboard" />
-              <Route element={<Settings />} path="/settings" />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </Provider>
+    <Provider store={store}>
+      <ThemeSwitcher />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<LandingPage />} path="/" />
+          <Route element={<Login />} path="/login" />
+          <Route element={<ProtectedRoutes />}>
+            <Route element={<Dashboard />} path="/dashboard" />
+            <Route element={<Settings />} path="/settings" />
+            <Route element={<Finance />} path="/finance" />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );

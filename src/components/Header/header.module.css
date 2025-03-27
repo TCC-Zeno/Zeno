@@ -47,6 +47,11 @@
 }
 .icon {
   cursor: pointer;
+  transition: all 0.25s;
+}
+
+.icon:hover {
+  transform: scale(1.2);
 }
 
 .notification {

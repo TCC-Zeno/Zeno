@@ -26,6 +26,12 @@
   color: rgb(var(--color-background));
   padding: 0 10px;
   border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+.cashSelectPeriod:hover,
+.cashSelectPeriod:focus {
+  transform: scale(1.05);
 }
 .cashContainer {
   background-color: rgb(var(--color-background-secondary));
@@ -43,6 +49,10 @@
   padding: 15px 6%;
   border-radius: 10px;
   text-align: center;
+  transition: all 0.5s;
+}
+.cashContainer > div:hover {
+  transform: scale(1.05);
 }
 .cashContainer > div h4 {
   font-size: 14pt;
@@ -73,6 +83,10 @@
 .organizerContainer > div {
   padding: 10px;
   width: 30%;
+  transition: all 0.5s;
+}
+.organizerContainer > div:hover {
+  transform: scale(1.02);
 }
 .organizerContainer p {
   padding: 0 15px;
@@ -142,6 +156,12 @@
   border-radius: 5px;
   width: 25.5%;
   height: 36px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+.financeSelect:hover,
+.financeSelect:focus {
+  transform: scale(1.02);
 }
 .row01 {
   display: flex;
@@ -213,6 +233,10 @@
 .stockContainer > div {
   padding: 10px;
   width: 30%;
+  transition: all 0.5s;
+}
+.stockContainer > div:hover {
+  transform: scale(1.02);
 }
 .stockContainer p {
   padding: 0 15px;
@@ -292,7 +316,7 @@
     display: block;
     margin-bottom: 0;
   }
-  .row01 > input:not(.button){
+  .row01 > input:not(.button) {
     display: block;
     width: 100%;
     height: 35px;
