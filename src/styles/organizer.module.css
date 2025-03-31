@@ -1,0 +1,34 @@
+.sectionOrganizer {
+  margin: 0 8%;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-around;
+}
+.titlePage {
+  font-family: "Coolvetica Rg";
+  font-size: 20pt;
+}
+.sectionOrganizer > div {
+  width: 30%;
+  padding: 1% 2%;
+  border-radius: 8px;
+  font-size: 15pt;
+  font-weight: bold;
+  color: #ffffff;
+}
+.toDoContainer {
+  background-color: color-mix(
+    in srgb,
+    rgb(var(--color-secondary)) 80%,
+    rgb(0, 0, 0)
+  );
+}
+.progressContainer {
+  background-color: rgb(var(--color-secondary));
+}
+.doneContainer {
+  background-color: rgb(var(--color-primary));
+}
+.addTask{
+  font-size: 12pt;
+}

@@ -11,6 +11,7 @@ import Login from "./pages/login";
 import Settings from "./pages/settings";
 import ThemeSwitcher from "./utils/ThemeSwitcher";
 import Finance from "./pages/finance";
+import Organizer from "./pages/organizer";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route element={<Dashboard />} path="/dashboard" />
             <Route element={<Settings />} path="/settings" />
             <Route element={<Finance />} path="/finance" />
+            <Route element={<Organizer />} path="/organizer" />
           </Route>
         </Routes>
       </BrowserRouter>

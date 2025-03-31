@@ -10,7 +10,7 @@ export default function Header() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
   return (
     <header className={`${S.header} ${
-      ["dashboard", "finance", "stock", "agenda"].includes(rotaStatus) 
+      ["dashboard", "finance", "stock", "agenda", "organizer"].includes(rotaStatus) 
         ? null 
         : S.none
     }`}>

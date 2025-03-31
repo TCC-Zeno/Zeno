@@ -1,0 +1,113 @@
+.task {
+  background-color: whitesmoke;
+  border-radius: 5px;
+  margin: 15px 0;
+  padding: 15px 5px;
+  font-size: 11pt;
+  color: black;
+}
+.task input {
+  background-color: rgb(var(--color-background-secondary));
+  border-radius: 5px;
+  padding: 2px 10px;
+  width: 100%;
+}
+.row01 {
+  display: flex;
+  justify-content: space-between;
+}
+.row02 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 5px;
+}
+.row02 span {
+  margin-left: 3px;
+}
+.iconEdit {
+  color: #0066ff;
+}
+.buttonEdit {
+  margin-left: 10px;
+}
+.iconCalendar .checkboxWrapper46 {
+  display: inline;
+}
+.checkboxWrapper46 input[type="checkbox"] {
+  display: none;
+  visibility: hidden;
+}
+
+.checkboxWrapper46 .cbx {
+  margin: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+.checkboxWrapper46 .cbx span {
+  display: inline-block;
+  vertical-align: middle;
+  transform: translate3d(0, 0, 0);
+}
+.checkboxWrapper46 .cbx span:first-child {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  transform: scale(1);
+  vertical-align: middle;
+  border: 1px solid #9098a9;
+  transition: all 0.2s ease;
+}
+.checkboxWrapper46 .cbx span:first-child svg {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16px;
+  stroke-dashoffset: 16px;
+  transition: all 0.3s ease;
+  transition-delay: 0.1s;
+  transform: translate3d(0, 0, 0);
+}
+.checkboxWrapper46 .cbx span:first-child:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #506eec;
+  display: block;
+  transform: scale(0);
+  opacity: 1;
+  border-radius: 50%;
+}
+.checkboxWrapper46 .cbx span:last-child {
+  padding-left: 8px;
+}
+.checkboxWrapper46 .cbx:hover span:first-child {
+  border-color: #506eec;
+}
+
+.checkboxWrapper46 .inpCbx:checked + .cbx span:first-child {
+  background: #506eec;
+  border-color: #506eec;
+  animation: wave-46 0.4s ease;
+}
+.checkboxWrapper46 .inpCbx:checked + .cbx span:first-child svg {
+  stroke-dashoffset: 0;
+}
+.checkboxWrapper46 .inpCbx:checked + .cbx span:first-child:before {
+  transform: scale(3.5);
+  opacity: 0;
+  transition: all 0.6s ease;
+}
+
+@keyframes wave-46 {
+  50% {
+    transform: scale(0.9);
+  }
+}

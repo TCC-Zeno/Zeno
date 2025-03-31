@@ -1,23 +1,36 @@
 .header {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding: 1%;
   position: fixed;
+  width: calc(100% - 250px); 
+  margin-left: 250px; 
+  top: 0;
+  right: 0;
+  z-index: 100;
+  height: 80px;
 }
 .containerLogo {
-  width: 90%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .containerLogo img {
-  width: 8%;
+  width: 80px;
+  height: auto;
 }
 .containerIcons {
   display: flex;
-  width: 10%;
-  justify-content: space-around;
+  margin-left: auto;
+  gap: 20px;
+  padding-right: 2%;
+  z-index: 1;
 }
 .none {
   display: none;
@@ -44,10 +57,16 @@
 }
 .iconContainer {
   position: relative;
+  width: 20%;
+  min-width: 40px;
 }
 .icon {
   cursor: pointer;
   transition: all 0.25s;
+  width: 80%;
+  height: 80%;
+  min-width: 24px;
+  min-height: 24px;
 }
 
 .icon:hover {
@@ -219,31 +238,30 @@ button.manegerOption {
   transform: scale(1.1);
   transition: all 50ms;
 }
-.icon{
-  width: 100%;
-  height: 100%;
-}
 .iconContainer{
   width: 20%;
 }
 @media screen and (max-width: 768px) {
   .header {
-    height: 75px;
+    width: 100%;
+    margin-left: 0;
+    height: 70px;
+    padding: 0 2%;
   }
-  .containerLogo {
-    width: 80%;
+  .containerLogo img {
+    width: 60px;
   }
   .containerIcons {
-    width: 20%;
-  }
-  .containerLogo img{
-    width: 15%;
+    gap: 15px;
   }
   .iconContainer {
-    width: 200%;
+    width: auto;
+    min-width: 30px;
   }
-  .icon{
-    width: 50%;
-    height: auto;
+  .icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
   }
 }

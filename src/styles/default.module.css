@@ -8,7 +8,7 @@
   background-color: white;
 }
 .content {
-  padding-top: 7%;
+  padding-top: 10vh;
 }
 @media screen and (max-width: 1024px) {
   .main {
