@@ -42,9 +42,9 @@ export default function Settings() {
                   <button
                     onClick={() => handleColorSelect("blue")}
                     className={`
-          ${S.colorButton} 
-          ${theme === "blue" ? S.selected : ""}
-        `}
+                    ${S.colorButton} 
+                    ${theme === "blue" ? S.selected : ""}
+                  `}
                   >
                     <span>Azul</span>
                     <div className={S.colorDivs}>

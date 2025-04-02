@@ -114,7 +114,7 @@
   margin: 10px 0;
 }
 
-.wrapperForm button {
+.wrapperForm input[type="submit"] {
   margin-top: 50px;
   background-color: rgb(var(--color-primary));
   border-radius: 15px;
@@ -123,9 +123,10 @@
   font-size: 20pt;
   font-family: "Coolvetica Rg", sans;
   transition: 1s all;
+  width: 30%;
 }
 
-.wrapperForm button:hover {
+.wrapperForm input[type="submit"]:hover {
   transform: scale(1.05);
 }
 
