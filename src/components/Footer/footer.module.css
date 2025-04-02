@@ -16,6 +16,7 @@
   width: 35%;
   height: auto;
   margin: 3%;
+  padding: 3%;
 }
 .conteudo {
   width: 50%;
@@ -38,7 +39,10 @@
   height: auto;
   display: inline-flex;
   flex-direction: row;
-  gap: 18%;
+  gap: 20%;
+}
+.a:hover {
+  font-size: 15pt;
 }
 .a {
   color: white;
@@ -61,13 +65,13 @@
     align-items: center;
   }
   .img {
-    width: 90%;
+    width: 95%;
     height: auto;
-    margin: 6%;
+    margin: 10%;
   }
   .icons {
     flex-direction: row;
     width: 40%;
-    margin-top: 3%;
+    margin-top: 6%;
   }
 }
