@@ -1,5 +1,32 @@
-.h1 {
-  font-family: "Coolvetica Rg";
-  font-size: 30pt;
-  text-align: center;
+.forms {
+  display: flex;
+  align-items: center;
+  gap: 10%;
+}
+.divData {
+  display: flex;
+  gap: 5%;
+  justify-content: space-between;
+}
+.divData h1 {
+  font-size: 25px;
+}
+.date {
+  background-color: #dcdcdc;
+  margin-right: 5%;
+  margin-left: 5%;
+  border-radius: 4px;
+  max-width: 150px;
+  max-height: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.select {
+  display: flex;
+  /* justify-content: space-between; */
+  background-color: #dcdcdc;
+  border-radius: 4px;
+  font-size: 18px;
+  max-width: 250px;
 }

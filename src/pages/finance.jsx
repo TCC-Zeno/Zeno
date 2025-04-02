@@ -3,38 +3,62 @@ import { useEffect } from "react";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
+import { useForm } from "react-hook-form";
 
 export default function Finance() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(finance());
   }, [dispatch]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
+  console.log(errors);
 
   return (
     <>
       <DefaultLayout>
         <header className={style.containerHeader}>
-          <h1>Data:</h1>
-          <div className={style.data}>
-            <p>27/03/25</p>
-          </div>
-          <select name="metodoPagamento" id="MP" className={style.select}>
-            <option value="Cartão de Credito"> Cartão de Crédito</option>
-            <option value="Cartão de Débito"> Cartão de Débito</option>
-            <option value="Dinheiro"> Dinheiro</option>
-            <option value="Pix"> Pix</option>
-            <option value="Outros"> Outros</option>
-          </select>
-          <select name="Categorias" id="C" className={style.select}>
-            <option value="Compras">Compras</option>
-            <option value="Contas">Contas</option>
-            <option value="Manutenção">Manutenção</option>
-            <option value="Outros">Outros</option>
-          </select>
-          <select name="TipoFluxo" id="TF" className={style.select}>
-            <option value="Entrada">Entrada</option>
-            <option value="Saida">Saída</option>
-          </select>
+          <form onSubmit={handleSubmit(onSubmit)} className={style.forms}>
+            <div className={style.divData}>
+              <h1>Data:</h1>
+              <input
+                className={style.date}
+                type="text"
+                placeholder="Data "
+                {...register("Data: ", {
+                  required: true,
+                  max: 10,
+                  min: 6,
+                  maxLength: 80,
+                })}
+              />
+            </div>
+
+            <select name="metodoPagamento" id="MP" className={style.select}>
+              <option value="Metodo de Pagamento"> Método de Pagamento</option>
+              <option value="Cartão de Credito"> Cartão de Crédito</option>
+              <option value="Cartão de Débito"> Cartão de Débito</option>
+              <option value="Dinheiro"> Dinheiro</option>
+              <option value="Pix"> Pix</option>
+              <option value="Outros"> Outros</option>
+            </select>
+            <select name="Categorias" id="C" className={style.select}>
+              <option value="Categorias"> Categorias</option>
+              <option value="Compras">Compras</option>
+              <option value="Contas">Contas</option>
+              <option value="Manutenção">Manutenção</option>
+              <option value="Outros">Outros</option>
+            </select>
+            <select name="TipoFluxo" id="TF" className={style.select}>
+              <option value="Tipo de Fluxo"> Tipo de Fluxo</option>
+              <option value="Entrada">Entrada</option>
+              <option value="Saida">Saída</option>
+            </select>
+          </form>
         </header>
         <div className={style.containerView}>
           <div className={style.entrada}>
