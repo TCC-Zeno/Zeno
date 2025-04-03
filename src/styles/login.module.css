@@ -1,7 +1,7 @@
 .loginPage {
   background-color: #ffffff;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -14,22 +14,6 @@
   position: relative;
 }
 
-.signUpToggle {
-  background: linear-gradient(
-    to right,
-    rgb(var(--color-secondary)),
-    rgba(var(--color-secondary), 0.5)
-  );
-}
-
-.signInToggle {
-  background: linear-gradient(
-    to left,
-    rgb(var(--color-secondary)),
-    rgba(var(--color-secondary), 0.5)
-  );
-}
-
 .containerLogo {
   width: 100%;
   display: flex;
@@ -39,12 +23,7 @@
 }
 
 .containerLogo img {
-  width: 20%;
-}
-
-.containerLogin {
-  width: 60%;
-  background-color: rgb(var(--color-background));
+  width: 250px;
 }
 
 .wrapperContent {
@@ -87,75 +66,6 @@
   transform: scale(1.05);
   color: #000;
   background-color: #ffffff;
-}
-
-.containerLogin {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.wrapperForm {
-  width: 70%;
-}
-
-.wrapperForm h3 {
-  font-family: "Coolvetica Rg", sans;
-  color: rgb(var(--color-secondary));
-  text-align: center;
-  font-size: 40pt;
-}
-
-.wrapperForm input {
-  background-color: rgb(var(--color-background-secondary));
-  width: 100%;
-  border-radius: 15px;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-.wrapperForm input[type="submit"] {
-  margin-top: 50px;
-  background-color: rgb(var(--color-primary));
-  border-radius: 15px;
-  padding: 5px 55px;
-  color: #ffffff;
-  font-size: 20pt;
-  font-family: "Coolvetica Rg", sans;
-  transition: 1s all;
-  width: 30%;
-}
-
-.wrapperForm input[type="submit"]:hover {
-  transform: scale(1.05);
-}
-
-.containerButton {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 20px 0;
-}
-
-.divider::before,
-.divider::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px solid #ccc;
-  margin: 5px;
-}
-
-.divider span {
-  font-weight: bold;
-  color: #666;
-  padding: 0 10px;
 }
 
 .particlesContainer {
@@ -207,7 +117,7 @@
     opacity: 0;
   }
 }
-@media only screen and (max-height: 650px) {
+@media only screen and (max-height: 720px) {
   .containerToggle{
     height: auto;
   }
@@ -216,7 +126,6 @@
   .loginPage {
     display: block;
   }
-
   .containerToggle {
     width: 100%;
     height: 320px;
@@ -243,37 +152,6 @@
     border: 2.5px solid #ffffff;
     border-radius: 10px;
     padding: 2px 25px;
-  }
-  .signUpToggle {
-    border-radius: 0 0 15px 15px;
-    background: linear-gradient(
-      to bottom,
-      rgb(var(--color-secondary)),
-      rgba(var(--color-secondary), 0.5)
-    );
-  }
-  .signInToggle {
-    border-radius: 15px 15px 0 0;
-    background: linear-gradient(
-      to top,
-      rgb(var(--color-secondary)),
-      rgba(var(--color-secondary), 0.5)
-    );
-  }
-  .containerLogin {
-    width: 100%;
-    height: calc(85vh);
-  }
-  .wrapperForm {
-    width: 90%;
-  }
-  .wrapperForm h3{ 
-    font-size: 25pt;
-    padding: 20px 0;
-  }
-  .wrapperForm button {
-    font-size: 17pt;
-    border-radius: 10px;
   }
 }
 
