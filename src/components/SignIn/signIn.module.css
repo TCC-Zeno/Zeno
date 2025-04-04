@@ -77,6 +77,19 @@
   padding: 0 10px;
 }
 
+@media only screen and (max-width: 1200px) {
+  .wrapperForm h3 {
+    font-size: 20pt;
+  }
+  .wrapperForm input[type="submit"] {
+    font-size: 15pt;
+    margin-top: 0;
+  }
+  .wrapperForm input {
+    font-size: 11pt;
+  }
+}
+
 @media only screen and (max-width: 750px) {
   .signInToggle {
     border-radius: 15px 15px 0 0;

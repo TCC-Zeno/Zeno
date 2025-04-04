@@ -44,4 +44,21 @@
     --color-primary: 109 6 210;
     --color-secondary: 82 9 185;
   }
+
+  /* Estilos para daltonismo */
+  .colorblind-protanopia {
+    filter: url('#protanopia');
+  }
+
+  .colorblind-deuteranopia {
+    filter: url('#deuteranopia');
+  }
+
+  .colorblind-tritanopia {
+    filter: url('#tritanopia');
+  }
+
+  .colorblind-achromatopsia {
+    filter: grayscale(100%);
+  }
 }

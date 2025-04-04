@@ -10,6 +10,8 @@ import ProtectedRoutes from "./utils/ProtectedRoutes";
 import Login from "./pages/login";
 import Settings from "./pages/settings";
 import ThemeSwitcher from "./utils/ThemeSwitcher";
+import ColorBlindnessSwitcher from "./utils/ColorBlindnessSwitcher";
+import ColorBlindnessFilters from "./components/ColorBlindnessFilters";
 import Finance from "./pages/finance";
 import Organizer from "./pages/organizer";
 
@@ -17,6 +19,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeSwitcher />
+      <ColorBlindnessSwitcher />
+      <ColorBlindnessFilters />
       <BrowserRouter>
         <Routes>
           <Route element={<LandingPage />} path="/" />

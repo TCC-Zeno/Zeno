@@ -3,7 +3,7 @@ import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import Dropzone from "../components/Dropzone/Dropzone";
 import { useEffect, useState } from "react";
 import { settings } from "../redux/Route/slice";
-import { setTheme } from "../redux/User/slice";
+import { setTheme, setColorBlindness } from "../redux/User/slice";
 import S from "./../styles/settings.module.css";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import Modal from "../components/Modal/Modal";
@@ -13,10 +13,15 @@ export default function Settings() {
   const [blockGuideOpen, setBlockGuideOpen] = useState(false);
 
   const theme = useSelector((state) => state.userReducer.theme);
+  const colorBlindness = useSelector((state) => state.userReducer.colorBlindness);
   const dispatch = useDispatch();
 
   const handleColorSelect = (color) => {
     dispatch(setTheme(color));
+  };
+
+  const handleColorBlindnessSelect = (value) => {
+    dispatch(setColorBlindness(value));
   };
 
   useEffect(() => {
@@ -147,10 +152,12 @@ export default function Settings() {
                   </button>
                 </div>
                 <h2>Acessibilidade - Daltonismo</h2>
-                <select className={S.selectColorBlindness}>
-                  <option value="Padrão" defaultChecked>
-                    Padrão
-                  </option>
+                <select 
+                  className={S.selectColorBlindness}
+                  value={colorBlindness}
+                  onChange={(e) => handleColorBlindnessSelect(e.target.value)}
+                >
+                  <option value="Padrão">Padrão</option>
                   <option value="Protanopia">Protanopia</option>
                   <option value="Deuteranopia">Deuteranopia</option>
                   <option value="Tritanopia">Tritanopia</option>
@@ -197,7 +204,7 @@ export default function Settings() {
                   </button>
                 </h2>
                 <div className={S.blockContainer}>
-                <div className={S.blockRow}>
+                  <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
                       <input type="checkbox" className={S.switch} />
                       <span className={S.blockLabel}>Estoque</span>

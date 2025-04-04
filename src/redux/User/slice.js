@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   login: null,
   theme: "blue",
+  colorBlindness: "Padrão",
 };
 
 export const userSlice = createSlice({
@@ -17,10 +18,13 @@ export const userSlice = createSlice({
     },
     setTheme: (state, action) => {
       state.theme = action.payload;
+    },
+    setColorBlindness: (state, action) => {
+      state.colorBlindness = action.payload;
     }
   },
 });
 
-export const { login, logout, setTheme } = userSlice.actions;
+export const { login, logout, setTheme, setColorBlindness } = userSlice.actions;
 
 export default userSlice.reducer;
