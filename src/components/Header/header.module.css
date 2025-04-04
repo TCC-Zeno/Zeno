@@ -242,6 +242,12 @@ button.manegerOption {
 .iconContainer{
   width: 20%;
 }
+.containerNotifications{
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  scrollbar-color: #ffffff rgb(var(--color-primary));
+}
 @media screen and (max-width: 768px) {
   .header {
     width: 100%;

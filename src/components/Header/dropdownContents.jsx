@@ -34,6 +34,69 @@ export function NotificationContent() {
         </div>
         <p>Repor Feijão Carioca</p>
       </div>
+      <div className={S.notification}>
+        <div className={S.notificationTitle}>
+          <TbAlertHexagon color="red" size="12%" />
+          <h4>Produto acabou:</h4>
+        </div>
+        <p>Compre Feijão Carioca</p>
+      </div>
+      <div className={S.notification}>
+        <div className={S.notificationTitle}>
+          <LuTriangleAlert color="orange" size="12%" />
+          <h4>Produto acabando:</h4>
+        </div>
+        <p>Compre mais Feijão Carioca</p>
+      </div>
+      <div className={S.notification}>
+        <div className={S.notificationTitle}>
+          <LuCircleAlert color="green" size="12%" />
+          <h4>Produto para repor:</h4>
+        </div>
+        <p>Repor Feijão Carioca</p>
+      </div>
+      <div className={S.notification}>
+        <div className={S.notificationTitle}>
+          <TbAlertHexagon color="red" size="12%" />
+          <h4>Produto acabou:</h4>
+        </div>
+        <p>Compre Feijão Carioca</p>
+      </div>
+      <div className={S.notification}>
+        <div className={S.notificationTitle}>
+          <LuTriangleAlert color="orange" size="12%" />
+          <h4>Produto acabando:</h4>
+        </div>
+        <p>Compre mais Feijão Carioca</p>
+      </div>
+      <div className={S.notification}>
+        <div className={S.notificationTitle}>
+          <LuCircleAlert color="green" size="12%" />
+          <h4>Produto para repor:</h4>
+        </div>
+        <p>Repor Feijão Carioca</p>
+      </div>
+      <div className={S.notification}>
+        <div className={S.notificationTitle}>
+          <TbAlertHexagon color="red" size="12%" />
+          <h4>Produto acabou:</h4>
+        </div>
+        <p>Compre Feijão Carioca</p>
+      </div>
+      <div className={S.notification}>
+        <div className={S.notificationTitle}>
+          <LuTriangleAlert color="orange" size="12%" />
+          <h4>Produto acabando:</h4>
+        </div>
+        <p>Compre mais Feijão Carioca</p>
+      </div>
+      <div className={S.notification}>
+        <div className={S.notificationTitle}>
+          <LuCircleAlert color="green" size="12%" />
+          <h4>Produto para repor:</h4>
+        </div>
+        <p>Repor Feijão Carioca</p>
+      </div>
     </div>
   );
 }
