@@ -1,0 +1,111 @@
+.sectionDashboard {
+  margin: 0 10%;
+  margin-bottom: 50px;
+}
+.sectionDashboard h1 {
+  font-weight: bold;
+  font-size: 15pt;
+}
+.sectionBlocked {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(var(--color-background-secondary));
+  border-radius: 15px;
+  padding: 2%;
+  text-align: center;
+}
+.sectionBlocked div {
+  margin-top: 10px;
+}
+
+.inpLock {
+  display: none;
+}
+
+.btnLock {
+  display: inline-block;
+  background: #ff5b5b;
+  width: 64px;
+  height: 64px;
+  box-sizing: border-box;
+  padding: 12px 0 0 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.5s;
+}
+
+.btnLock svg {
+  fill: none;
+  transform: translate3d(0, 0, 0);
+}
+
+.btnLock svg .bling {
+  stroke: #fff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 3;
+  stroke-dashoffset: 15;
+  transition: all 0.3s ease;
+}
+
+.btnLock svg .lock {
+  stroke: #fff;
+  stroke-width: 4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 48;
+  transition: all 0.4s ease;
+}
+
+.btnLock svg .lockb {
+  fill: #fff;
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  transform: rotate(0);
+  transform-origin: 14px 22px;
+  transition: all 0.2s ease;
+}
+
+.btnLock:hover {
+  background: #20cca5;
+  transform: scale(1.05);
+}
+
+.btnLock:hover svg {
+  opacity: 1;
+}
+
+.btnLock:hover svg .bling {
+  animation: bling6132 0.3s linear forwards;
+  animation-delay: 0.2s;
+}
+
+.btnLock:hover svg .lock {
+  stroke-dasharray: 36;
+  animation: unlocking 0.3s linear forwards;
+}
+
+.btnLock:hover svg .lockb {
+  transform: rotate(8deg);
+  transform-origin: 14px 20px;
+}
+
+@keyframes bling6132 {
+  50% {
+    stroke-dasharray: 3;
+    stroke-dashoffset: 12;
+  }
+
+  100% {
+    stroke-dasharray: 3;
+    stroke-dashoffset: 9;
+  }
+}
+
+@keyframes unlocking {
+  50% {
+    transform: translateY(-1px);
+  }
+}

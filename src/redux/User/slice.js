@@ -4,6 +4,15 @@ const initialState = {
   login: null,
   theme: "blue",
   colorBlindness: "Padrão",
+  blockedResources: {
+    cash: false,
+    organizer: false,
+    finance: false,
+    stock: false,
+    agenda: false,
+    calendar: false,
+    service: false,
+  }
 };
 
 export const userSlice = createSlice({
@@ -21,10 +30,14 @@ export const userSlice = createSlice({
     },
     setColorBlindness: (state, action) => {
       state.colorBlindness = action.payload;
+    },
+    toggleBlockedResource: (state, action) => {
+      const { resource, blocked } = action.payload;
+      state.blockedResources[resource] = blocked;
     }
   },
 });
 
-export const { login, logout, setTheme, setColorBlindness } = userSlice.actions;
+export const { login, logout, setTheme, setColorBlindness, toggleBlockedResource } = userSlice.actions;
 
 export default userSlice.reducer;

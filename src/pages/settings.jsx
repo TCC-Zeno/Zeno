@@ -3,7 +3,11 @@ import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import Dropzone from "../components/Dropzone/Dropzone";
 import { useEffect, useState } from "react";
 import { settings } from "../redux/Route/slice";
-import { setTheme, setColorBlindness } from "../redux/User/slice";
+import {
+  setTheme,
+  setColorBlindness,
+  toggleBlockedResource,
+} from "../redux/User/slice";
 import S from "./../styles/settings.module.css";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import Modal from "../components/Modal/Modal";
@@ -13,7 +17,12 @@ export default function Settings() {
   const [blockGuideOpen, setBlockGuideOpen] = useState(false);
 
   const theme = useSelector((state) => state.userReducer.theme);
-  const colorBlindness = useSelector((state) => state.userReducer.colorBlindness);
+  const colorBlindness = useSelector(
+    (state) => state.userReducer.colorBlindness
+  );
+  const blockedResources = useSelector(
+    (state) => state.userReducer.blockedResources
+  );
   const dispatch = useDispatch();
 
   const handleColorSelect = (color) => {
@@ -22,6 +31,10 @@ export default function Settings() {
 
   const handleColorBlindnessSelect = (value) => {
     dispatch(setColorBlindness(value));
+  };
+
+  const handleBlockResource = (resource, blocked) => {
+    dispatch(toggleBlockedResource({ resource, blocked }));
   };
 
   useEffect(() => {
@@ -152,7 +165,7 @@ export default function Settings() {
                   </button>
                 </div>
                 <h2>Acessibilidade - Daltonismo</h2>
-                <select 
+                <select
                   className={S.selectColorBlindness}
                   value={colorBlindness}
                   onChange={(e) => handleColorBlindnessSelect(e.target.value)}
@@ -206,25 +219,71 @@ export default function Settings() {
                 <div className={S.blockContainer}>
                   <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={blockedResources.cash}
+                        onChange={(e) =>
+                          handleBlockResource("cash", e.target.checked)
+                        }
+                      />
+                      <span className={S.blockLabel}>Resumo de caixa</span>
+                    </div>
+                    <div className={S.blockWrapper}>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={blockedResources.stock}
+                        onChange={(e) =>
+                          handleBlockResource("stock", e.target.checked)
+                        }
+                      />
                       <span className={S.blockLabel}>Estoque</span>
                     </div>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={blockedResources.finance}
+                        onChange={(e) =>
+                          handleBlockResource("finance", e.target.checked)
+                        }
+                      />
                       <span className={S.blockLabel}>Fluxo de caixa</span>
                     </div>
                   </div>
                   <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={blockedResources.calendar}
+                        onChange={(e) =>
+                          handleBlockResource("calendar", e.target.checked)
+                        }
+                      />
                       <span className={S.blockLabel}>Agenda</span>
                     </div>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={blockedResources.organizer}
+                        onChange={(e) =>
+                          handleBlockResource("organizer", e.target.checked)
+                        }
+                      />
                       <span className={S.blockLabel}>Organizador</span>
                     </div>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={blockedResources.service}
+                        onChange={(e) =>
+                          handleBlockResource("service", e.target.checked)
+                        }
+                      />
                       <span className={S.blockLabel}>Serviços</span>
                     </div>
                   </div>
