@@ -76,6 +76,9 @@
   color: #666;
   padding: 0 10px;
 }
+.errorInput{
+    border: 2px solid red;
+}
 @media only screen and (max-width: 750px) {
   .signUpToggle {
     border-radius: 0 0 15px 15px;
