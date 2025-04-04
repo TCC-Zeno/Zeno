@@ -9,6 +9,13 @@
   font-size: 20pt;
   text-align: center;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+h2 button{
+  margin:  0 10px;
+  color: #0066ff;
+  cursor: pointer;
 }
 .containerSettings {
   display: flex;
@@ -41,7 +48,7 @@
 
 .selectColorBlindness {
   display: block;
-  width: 30vw;
+  width: 45vw;
   padding: 10px;
   background-color: rgb(var(--color-background-secondary));
   border-radius: 10px;
@@ -66,6 +73,7 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  margin-bottom: 20px;
 }
 
 .toggleRow {
@@ -80,7 +88,29 @@
   align-items: center;
   gap: 10px;
 }
+.blockContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
 
+.blockRow {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.blockWrapper {
+  width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.blockLabel {
+  font-size: 16px;
+  color: #333;
+}
 /* From Uiverse.io by Yaya12085 */
 .switch {
   position: relative;
@@ -166,7 +196,7 @@
 
 .colorDivs div {
   flex: 1;
-  height: 100px;
+  height: 125px;
 }
 
 .colorButton:hover {
@@ -190,6 +220,12 @@
     width: 150px;
   }
   .toggleWrapper span {
+    font-size: 10pt;
+  }
+  .blockWrapper {
+    width: 150px;
+  }
+  .blockWrapper span {
     font-size: 10pt;
   }
   .colorDivs div {

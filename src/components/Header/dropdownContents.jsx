@@ -7,10 +7,9 @@ import { GrHelpBook } from "react-icons/gr";
 import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import S from "./header.module.css";
 import { Link } from "react-router-dom";
-import { BsFillHouseFill } from "react-icons/bs";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
-// conteudos possiveis
+
 export function NotificationContent() {
   return (
     <div className={S.containerNotifications}>

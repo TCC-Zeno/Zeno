@@ -1,12 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import Dropzone from "../components/Dropzone/Dropzone";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { settings } from "../redux/Route/slice";
 import { setTheme } from "../redux/User/slice";
 import S from "./../styles/settings.module.css";
+import { IoHelpCircleOutline } from "react-icons/io5";
+import Modal from "../components/Modal/Modal";
 
 export default function Settings() {
+  const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
+  const [blockGuideOpen, setBlockGuideOpen] = useState(false);
+
   const theme = useSelector((state) => state.userReducer.theme);
   const dispatch = useDispatch();
 
@@ -143,7 +148,9 @@ export default function Settings() {
                 </div>
                 <h2>Acessibilidade - Daltonismo</h2>
                 <select className={S.selectColorBlindness}>
-                  <option value="Padrão" defaultChecked>Padrão</option>
+                  <option value="Padrão" defaultChecked>
+                    Padrão
+                  </option>
                   <option value="Protanopia">Protanopia</option>
                   <option value="Deuteranopia">Deuteranopia</option>
                   <option value="Tritanopia">Tritanopia</option>
@@ -151,7 +158,12 @@ export default function Settings() {
                 </select>
                 <h2>Coloque a sua logo aqui</h2>
                 <Dropzone />
-                <h2>Funções</h2>
+                <h2>
+                  Funções
+                  <button onClick={() => setFunctionGuideOpen(true)}>
+                    <IoHelpCircleOutline />
+                  </button>
+                </h2>
                 <div className={S.toggleContainer}>
                   <div className={S.toggleRow}>
                     <div className={S.toggleWrapper}>
@@ -160,17 +172,53 @@ export default function Settings() {
                     </div>
                     <div className={S.toggleWrapper}>
                       <input type="checkbox" className={S.switch} />
-                      <span className={S.toggleLabel}>Agenda</span>
+                      <span className={S.toggleLabel}>Fluxo de caixa</span>
                     </div>
                   </div>
                   <div className={S.toggleRow}>
                     <div className={S.toggleWrapper}>
                       <input type="checkbox" className={S.switch} />
-                      <span className={S.toggleLabel}>Fluxo de caixa</span>
+                      <span className={S.toggleLabel}>Agenda</span>
                     </div>
                     <div className={S.toggleWrapper}>
                       <input type="checkbox" className={S.switch} />
                       <span className={S.toggleLabel}>Organizador</span>
+                    </div>
+                    <div className={S.toggleWrapper}>
+                      <input type="checkbox" className={S.switch} />
+                      <span className={S.toggleLabel}>Serviços</span>
+                    </div>
+                  </div>
+                </div>
+                <h2>
+                  Bloquear funções com senha
+                  <button onClick={() => setBlockGuideOpen(true)}>
+                    <IoHelpCircleOutline />
+                  </button>
+                </h2>
+                <div className={S.blockContainer}>
+                <div className={S.blockRow}>
+                    <div className={S.blockWrapper}>
+                      <input type="checkbox" className={S.switch} />
+                      <span className={S.blockLabel}>Estoque</span>
+                    </div>
+                    <div className={S.blockWrapper}>
+                      <input type="checkbox" className={S.switch} />
+                      <span className={S.blockLabel}>Fluxo de caixa</span>
+                    </div>
+                  </div>
+                  <div className={S.blockRow}>
+                    <div className={S.blockWrapper}>
+                      <input type="checkbox" className={S.switch} />
+                      <span className={S.blockLabel}>Agenda</span>
+                    </div>
+                    <div className={S.blockWrapper}>
+                      <input type="checkbox" className={S.switch} />
+                      <span className={S.blockLabel}>Organizador</span>
+                    </div>
+                    <div className={S.blockWrapper}>
+                      <input type="checkbox" className={S.switch} />
+                      <span className={S.blockLabel}>Serviços</span>
                     </div>
                   </div>
                 </div>
@@ -178,6 +226,15 @@ export default function Settings() {
             </div>
           </div>
         </div>
+        <Modal
+          isOpen={functionGuideOpen}
+          onClose={() => setFunctionGuideOpen(false)}
+        >
+          Batata da função?
+        </Modal>
+        <Modal isOpen={blockGuideOpen} onClose={() => setBlockGuideOpen(false)}>
+          Batata do block?
+        </Modal>
       </section>
     </DefaultLayout>
   );
