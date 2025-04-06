@@ -26,6 +26,14 @@ const TaskColumn = ({
           ? S.doneContainer
           : ""
       }`}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        e.preventDefault();
+        const draggedIndex = e.dataTransfer.getData("text/plain");
+        if (draggedIndex !== "") {
+          onDrop(status, 0);
+        }
+      }}
     >
       <h2 className={S.task_column_heading}>{title}</h2>
 

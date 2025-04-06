@@ -7,6 +7,7 @@ import { FaCalendarAlt, FaEdit } from "react-icons/fa";
 const TaskCard = ({ title, date, handleDelete, index, setActiveCard }) => {
   const handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", index.toString());
     setActiveCard(index);
   };
 
