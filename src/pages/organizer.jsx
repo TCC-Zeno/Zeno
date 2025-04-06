@@ -1,34 +1,86 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { useDispatch } from "react-redux";
 import { organizer } from "../redux/Route/slice";
 import S from "./../styles/organizer.module.css";
 import { FaCalendarAlt, FaEdit } from "react-icons/fa";
 import Task from "../components/Task/Task";
+import TaskForm from "../components/TaskForm/TaskForm";
+import TaskColumn from "../components/TaskColumn/TaskColumn";
+import { LuListTodo } from "react-icons/lu";
+import { GrInProgress } from "react-icons/gr";
+import { IoMdDoneAll } from "react-icons/io";
+
+const oldTasks = localStorage.getItem("tasks");
 
 export default function Organizer() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(organizer());
   }, [dispatch]);
+
+  const [tasks, setTasks] = useState(JSON.parse(oldTasks) || []);
+  const [activeCard, setActiveCard] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  const handleDelete = (taskIndex) => {
+    const newTasks = tasks.filter((task, index) => index !== taskIndex);
+    setTasks(newTasks);
+  };
+
+  const onDrop = (status, position) => {
+    console.log(
+      `${activeCard} ta indo para ${status} e a posição ${position} `
+    );
+    if(activeCard == null || activeCard === undefined) return;
+
+    const taskToMove = tasks[activeCard];
+    const updatedTasks = tasks.filter((task, index) => index !== activeCard)
+
+    updatedTasks.splice(position, 0, {
+      ...taskToMove,
+      status: status
+    })
+
+    setTasks(updatedTasks)
+  };
   return (
     <DefaultLayout>
       <h1 className={S.titlePage}>Tarefas do mês</h1>
       <section className={S.sectionOrganizer}>
-        <div className={S.toDoContainer}>
-          <h2>A Fazer</h2>
-          <div className={S.taskList}>
-            <Task text="Fechar balanço financeiro" date="30/03" type="view"/>
-            <Task text="Fechar balanço financeiro" date="30/03"/>
-          </div>
-          <button className={S.addTask}>+ Adicionar uma tarefa</button>
-        </div>
-        <div className={S.progressContainer}>
-          <h2>Em andamento</h2>
-        </div>
-        <div className={S.doneContainer}>
-          <h2>Concluído</h2>
-        </div>
+        <TaskColumn
+          title="A fazer"
+          icon={<LuListTodo />}
+          tasks={tasks}
+          status="todo"
+          handleDelete={handleDelete}
+          setActiveCard={setActiveCard}
+          onDrop={onDrop}
+          setTasks={setTasks}
+        />
+        <TaskColumn
+          title="Em andamento"
+          icon={<GrInProgress />}
+          tasks={tasks}
+          status="doing"
+          handleDelete={handleDelete}
+          setActiveCard={setActiveCard}
+          onDrop={onDrop}
+          setTasks={setTasks}
+        />
+        <TaskColumn
+          title="Concluído"
+          icon={<IoMdDoneAll />}
+          tasks={tasks}
+          status="done"
+          handleDelete={handleDelete}
+          setActiveCard={setActiveCard}
+          onDrop={onDrop}
+          setTasks={setTasks}
+        />
       </section>
     </DefaultLayout>
   );

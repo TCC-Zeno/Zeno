@@ -1,0 +1,24 @@
+.toDoContainer {
+  background-color: color-mix(
+    in srgb,
+    rgb(var(--color-secondary)) 80%,
+    rgb(0, 0, 0)
+  );
+}
+.progressContainer {
+  background-color: rgb(var(--color-secondary));
+}
+.doneContainer {
+  background-color: rgb(var(--color-primary));
+}
+
+.task_column_heading {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.task_column_icon {
+  width: 30px;
+  margin-right: 5px;
+}

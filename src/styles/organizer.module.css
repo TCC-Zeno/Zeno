@@ -3,13 +3,16 @@
   margin-bottom: 50px;
   display: flex;
   justify-content: space-around;
+  min-height: 68vh;
 }
 .titlePage {
   font-family: "Coolvetica Rg";
   font-size: 20pt;
+  margin: 20px 9%;
 }
-.sectionOrganizer > div {
+.sectionOrganizer > section,  .sectionOrganizer > div{
   width: 30%;
+  height: 100%;
   padding: 1% 2%;
   border-radius: 8px;
   font-size: 15pt;
