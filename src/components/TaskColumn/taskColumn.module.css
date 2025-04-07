@@ -22,3 +22,9 @@
   width: 30px;
   margin-right: 5px;
 }
+.addTask {
+  transition: 0.5s all;
+}
+.addTask:hover {
+  transform: scale(1.01);
+}

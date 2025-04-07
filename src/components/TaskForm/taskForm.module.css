@@ -80,18 +80,41 @@ form input {
 .row02 span {
   margin-left: 3px;
 }
+.inputDate {
+  width: 60%;
+  cursor: text;
+  transition: 0.5s all;
+}
+.inputDate:hover,
+.inputDate:focus {
+  transform: scale(1.02);
+}
+.inputText:hover,
+.inputText:focus {
+  transform: scale(1.02);
+}
+.inputText {
+  transition: 0.5s all;
+}
 .addTask {
-    font-size: 20px;
-    font-weight: 500;
-    background-color: #2fca00;
-    color: #fff;
-    border-radius: 5px;
-    height: auto;
-    padding: 3px 50px;
-    margin-left: 10px;
-    border: none;
-    cursor: pointer;
-  }
+  font-size: 20px;
+  font-weight: 500;
+  background-color: #2fca00;
+  color: #fff;
+  border-radius: 5px;
+  height: auto;
+  padding: 3px 0;
+  margin-left: 10px;
+  border: none;
+  cursor: pointer;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  transition: 0.5s all;
+}
+.addTask:hover {
+  transform: scale(1.05);
+}
 .iconEdit {
   color: #0066ff;
 }

@@ -10,7 +10,8 @@
   font-size: 20pt;
   margin: 20px 9%;
 }
-.sectionOrganizer > section,  .sectionOrganizer > div{
+.sectionOrganizer > section,
+.sectionOrganizer > div {
   width: 30%;
   height: 100%;
   padding: 1% 2%;
@@ -32,6 +33,13 @@
 .doneContainer {
   background-color: rgb(var(--color-primary));
 }
-.addTask{
-  font-size: 12pt;
+
+@media only screen and (max-width: 750px) {
+  .sectionOrganizer {
+    display: block;
+  }
+  .sectionOrganizer > section {
+    width: 100%;
+    margin-bottom: 50px;
+  }
 }
