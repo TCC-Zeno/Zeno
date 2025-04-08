@@ -82,15 +82,14 @@ h2 button{
 
 .toggleRow, .blockRow {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
   width: 100%;
 }
 
 .toggleWrapper, .blockWrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: left;
   width: 100%;
   padding: 10px 0;
 }
@@ -98,6 +97,7 @@ h2 button{
 .toggleLabel, .blockLabel {
   font-size: 15px;
   color: #333;
+  padding-left: 10px;
 }
 
 .switch {
@@ -189,9 +189,10 @@ h2 button{
     width: 50vw;
   }
   .toggleRow, .blockRow {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 12px;
-    padding: 0 8px;
+    width: 100%;
   }
   .toggleWrapper, .blockWrapper {
     justify-content: start;

@@ -204,6 +204,8 @@ export default function Settings() {
                       <input type="checkbox" className={S.switch} />
                       <span className={S.toggleLabel}>Organizador</span>
                     </div>
+                  </div>
+                  <div className={S.toggleRow}>
                     <div className={S.toggleWrapper}>
                       <input type="checkbox" className={S.switch} />
                       <span className={S.toggleLabel}>Serviços</span>
@@ -240,6 +242,8 @@ export default function Settings() {
                       />
                       <span className={S.blockLabel}>Estoque</span>
                     </div>
+                  </div>
+                  <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
                       <input
                         type="checkbox"
@@ -251,8 +255,6 @@ export default function Settings() {
                       />
                       <span className={S.blockLabel}>Fluxo de caixa</span>
                     </div>
-                  </div>
-                  <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
                       <input
                         type="checkbox"
@@ -264,6 +266,8 @@ export default function Settings() {
                       />
                       <span className={S.blockLabel}>Agenda</span>
                     </div>
+                  </div>
+                  <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
                       <input
                         type="checkbox"

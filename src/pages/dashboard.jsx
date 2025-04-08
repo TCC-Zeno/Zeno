@@ -6,9 +6,10 @@ import { dashboard } from "../redux/Route/slice";
 import { Footer } from "../components/Footer/Footer";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import S from "../styles/dashboard.module.css";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Modal from "../components/Modal/Modal";
 import ResourceBlocked from "../components/ResourceBlocked/ResourceBlocked";
+import CurrencyInput from "react-currency-input-field";
 
 export default function Dashboard() {
   const [resourceToUnlock, setResourceToUnlock] = useState(null);
@@ -37,10 +38,17 @@ export default function Dashboard() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    if (data.Price) {
+      const numericValue = data.Price.replace(',', '.');
+      data.Price = parseFloat(numericValue);
+    }
+    console.log(data);
+  };
   console.log(errors);
 
   return (
@@ -83,6 +91,97 @@ export default function Dashboard() {
             title="Resumo de caixa"
             onUnlock={() => {
               setResourceToUnlock("cash");
+              setProtectedModalOpen(true);
+            }}
+          />
+        )}
+
+        {!permissions.finance && (
+          <section className={`${S.sectionDashboard} ${S.sectionFinance}`}>
+            <div className={S.financeTitle}>
+              <h1>Fluxo de caixa</h1>
+            </div>
+            <div className={S.financeContainer}>
+              <form className={S.financeForm} onSubmit={handleSubmit(onSubmit)}>
+                <div className={S.row01}>
+                  <input
+                    className={S.inputName}
+                    type="text"
+                    placeholder="Nome completo"
+                    {...register("Full name", { required: true })}
+                  />
+                  {/* oq está logo abaixo é o input de preço, usei uma lib que tem mais info aqui https://github.com/cchanxzy/react-currency-input-field. By Vinicius */}
+                  <Controller
+                    name="Price"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value, name } }) => (
+                      <CurrencyInput
+                      id="price-input"
+                      name={name}
+                      placeholder="R$ 0,00"
+                      defaultValue={0}
+                      decimalsLimit={2}
+                      decimalScale={2}
+                      decimalSeparator=","
+                      groupSeparator="."
+                      prefix="R$ "
+                      onValueChange={(value) => onChange(value)}
+                      value={value}
+                      className={S.inputPrice}
+                      />
+                    )}
+                  />
+
+                  <input className={S.button} type="submit" />
+                </div>
+                <div className={S.row02}>
+                  <select
+                    className={S.financeSelect}
+                    {...register("Payment method", { required: true })}
+                  >
+                    <option value="Método de pagamento" disabled selected>
+                      Método de pagamento
+                    </option>
+                    <option value="Cartão de crédito">Cartão de crédito</option>
+                    <option value="Cartão de débito">Cartão de débito</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Pix">Pix</option>
+                    <option value="Outros">Outros</option>
+                  </select>
+                  <select
+                    className={S.financeSelect}
+                    {...register("category", { required: true })}
+                  >
+                    <option value="Categorias" disabled selected>
+                      Categorias
+                    </option>
+                    <option value="Compras">Compras</option>
+                    <option value="Contas">Contas</option>
+                    <option value="Manutenção">Manutenção</option>
+                    <option value="Outros">Outros</option>
+                  </select>
+                  <select
+                    className={S.financeSelect}
+                    {...register("flow", { required: true })}
+                  >
+                    <option value="Tipo de fluxo" disabled selected>
+                      Tipo de fluxo
+                    </option>
+                    <option value="Entrada">Entrada</option>
+                    <option value="Saída">Saída</option>
+                  </select>
+                  <input className={S.buttonM} type="submit" />
+                </div>
+              </form>
+            </div>
+          </section>
+        )}
+        {permissions.finance && (
+          <ResourceBlocked
+            title="Fluxo de caixa"
+            onUnlock={() => {
+              setResourceToUnlock("finance");
               setProtectedModalOpen(true);
             }}
           />
@@ -139,7 +238,6 @@ export default function Dashboard() {
             </div>
           </section>
         )}
-
         {permissions.organizer && (
           <ResourceBlocked
             title="Organizador"
@@ -150,80 +248,6 @@ export default function Dashboard() {
           />
         )}
 
-        {!permissions.finance && (
-          <section className={`${S.sectionDashboard} ${S.sectionFinance}`}>
-            <div className={S.financeTitle}>
-              <h1>Fluxo de caixa</h1>
-            </div>
-            <div className={S.financeContainer}>
-              <form className={S.financeForm} onSubmit={handleSubmit(onSubmit)}>
-                <div className={S.row01}>
-                  <input
-                    className={S.inputName}
-                    type="text"
-                    placeholder="Nome completo"
-                    {...register("Full name", { required: true })}
-                  />
-                  <input
-                    className={S.inputPrice}
-                    type="number"
-                    placeholder="Valor"
-                    {...register("Price", { required: true })}
-                  />
-
-                  <input className={S.button} type="submit" />
-                </div>
-                <div className={S.row02}>
-                  <select
-                    className={S.financeSelect}
-                    {...register("Payment method", { required: true })}
-                  >
-                    <option value="Método de pagamento" disabled selected>
-                      Método de pagamento
-                    </option>
-                    <option value="Cartão de crédito">Cartão de crédito</option>
-                    <option value="Cartão de débito">Cartão de débito</option>
-                    <option value="Dinheiro">Dinheiro</option>
-                    <option value="Pix">Pix</option>
-                    <option value="Outros">Outros</option>
-                  </select>
-                  <select
-                    className={S.financeSelect}
-                    {...register("category", { required: true })}
-                  >
-                    <option value="Categorias" disabled selected>
-                      Categorias
-                    </option>
-                    <option value="Compras">Compras</option>
-                    <option value="Contas">Contas</option>
-                    <option value="Manutenção">Manutenção</option>
-                    <option value="Outros">Outros</option>
-                  </select>
-                  <select
-                    className={S.financeSelect}
-                    {...register("flow", { required: true })}
-                  >
-                    <option value="Tipo de fluxo" disabled selected>
-                      Tipo de fluxo
-                    </option>
-                    <option value="Entrada">Entrada</option>
-                    <option value="Saída">Saída</option>
-                  </select>
-                  <input className={S.buttonM} type="submit" />
-                </div>
-              </form>
-            </div>
-          </section>
-        )}
-        {permissions.finance && (
-          <ResourceBlocked
-            title="Fluxo de caixa"
-            onUnlock={() => {
-              setResourceToUnlock("finance");
-              setProtectedModalOpen(true);
-            }}
-          />
-        )}
         {!permissions.stock && (
           <section className={`${S.sectionDashboard} ${S.sectionStock}`}>
             <div className={S.stockTitle}>
@@ -284,6 +308,7 @@ export default function Dashboard() {
             }}
           />
         )}
+
         <Modal
           isOpen={protectedModalOpen}
           onClose={() => {
