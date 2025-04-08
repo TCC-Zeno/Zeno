@@ -69,59 +69,48 @@ h2 button{
   flex-direction: column;
 }
 
-.toggleContainer {
+.toggleContainer, .blockContainer {
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
-.toggleRow {
-  display: flex;
-  gap: 40px;
-  align-items: center;
-}
-
-.toggleWrapper {
-  width: 180px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.blockContainer {
+.toggleRow, .blockRow {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 12px;
+  width: 100%;
 }
 
-.blockRow {
+.toggleWrapper, .blockWrapper {
   display: flex;
-  gap: 40px;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
 }
 
-.blockWrapper {
-  width: 180px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.blockLabel {
-  font-size: 16px;
+.toggleLabel, .blockLabel {
+  font-size: 15px;
   color: #333;
 }
-/* From Uiverse.io by Yaya12085 */
+
 .switch {
   position: relative;
-  height: 1.5rem;
-  width: 3rem;
+  height: 24px;
+  width: 44px;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
-  border-radius: 9999px;
+  border-radius: 999px;
   background-color: rgba(100, 116, 139, 0.377);
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .switch:checked {
@@ -131,35 +120,18 @@ h2 button{
 .switch::before {
   position: absolute;
   content: "";
-  left: calc(1.5rem - 1.6rem);
-  top: calc(1.5rem - 1.6rem);
-  display: block;
-  height: 1.6rem;
-  width: 1.6rem;
-  cursor: pointer;
-  border: 1px solid rgba(100, 116, 139, 0.527);
-  border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 1);
-  box-shadow: 0 3px 10px rgba(100, 116, 139, 0.327);
+  left: 2px;
+  top: 2px;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
-.switch:hover::before {
-  box-shadow: 0 0 0px 8px rgba(0, 0, 0, 0.15);
-}
-
-.switch:checked:hover::before {
-  box-shadow: 0 0 0px 8px rgba(66, 132, 255, 0.15);
-}
-
-.switch:checked:before {
-  transform: translateX(100%);
-  border-color: rgb(var(--color-secondary));
-}
-
-.toggleLabel {
-  font-size: 16px;
-  color: #333;
+.switch:checked::before {
+  transform: translateX(20px);
 }
 
 .colorContainer {
@@ -216,19 +188,63 @@ h2 button{
   .selectColorBlindness {
     width: 50vw;
   }
-  .toggleWrapper {
-    width: 150px;
+  .toggleRow, .blockRow {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    padding: 0 8px;
   }
-  .toggleWrapper span {
-    font-size: 10pt;
+  .toggleWrapper, .blockWrapper {
+    justify-content: start;
+    gap: 10px;
+    padding: 10px 14px;
   }
-  .blockWrapper {
-    width: 150px;
-  }
-  .blockWrapper span {
-    font-size: 10pt;
+  .toggleLabel, .blockLabel {
+    font-size: 14px;
   }
   .colorDivs div {
     height: 70px;
+  }
+  .colorContainer {
+    width: 40%;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .toggleContainer, .blockContainer {
+    padding: 0 8px;
+    gap: 10px;
+  }
+
+  .toggleRow, .blockRow {
+    gap: 8px;
+  }
+
+  .toggleWrapper, .blockWrapper {
+    padding: 8px 0;
+  }
+
+  .toggleLabel, .blockLabel {
+    font-size: 14px;
+  }
+
+  .switch {
+    height: 22px;
+    width: 40px;
+  }
+
+  .switch::before {
+    height: 18px;
+    width: 18px;
+  }
+
+  .switch:checked::before {
+    transform: translateX(18px);
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .toggleRow, .blockRow {
+    grid-template-columns: 1fr;
   }
 }

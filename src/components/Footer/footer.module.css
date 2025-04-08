@@ -52,6 +52,7 @@
 
 @media screen and (max-width: 768px) {
   .footer {
+    padding: 15px 0;
     margin-left: 3%;
     font-size: 95%;
     display: flex;

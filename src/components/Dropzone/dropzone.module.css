@@ -5,7 +5,7 @@
   
   .dropzoneBox {
     border-radius: 16px;
-    padding: 32px;
+    padding: 20px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -14,6 +14,7 @@
     width: 100%;
     background: rgb(var(--color-background-secondary));
     margin-bottom: 15px;
+    box-sizing: border-box;
   }
   
   .dropzoneBox h2 {
@@ -30,8 +31,8 @@
   .dropzoneArea {
     padding: 16px;
     position: relative;
-    margin-top: 24px;
-    aspect-ratio: 2 / 1;
+    margin: 16px 0;
+    min-height: 200px;
     display: flex;
     text-align: center;
     justify-content: center;
@@ -41,6 +42,8 @@
     border-radius: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-sizing: border-box;
+    width: 100%;
   }
   
   .dropzoneDescription {
@@ -136,4 +139,90 @@
     display: flex;
     gap: 8px;
     max-width: 192px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .dropzoneBox {
+      padding: 12px;
+      margin: 0;
+      width: 80%;
+    }
+
+    .dropzoneBox p {
+      font-size: 16px;
+    }
+
+    .dropzoneArea {
+      padding: 12px;
+      margin: 12px 0;
+      min-height: 160px;
+    }
+
+    .dropzoneArea .fileUploadIcon svg {
+      height: 64px;
+      max-width: 64px;
+    }
+
+    .dropzoneArea .fileInfo {
+      font-size: 14px;
+    }
+
+    .dropzoneDescription {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .dropzoneActions {
+      margin-top: 16px;
+    }
+
+    .dropzoneActions button {
+      min-height: 40px;
+      font-size: 16px;
+      padding: 6px 12px;
+    }
+
+    .actionButtons {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .dropzoneBox {
+      padding: 8px;
+      margin: 0;
+      width: 80%;
+    }
+
+    .dropzoneBox p {
+      font-size: 14px;
+    }
+
+    .dropzoneArea {
+      padding: 8px;
+      margin: 8px 0;
+      min-height: 140px;
+    }
+
+    .dropzoneArea .fileUploadIcon svg {
+      height: 48px;
+      max-width: 48px;
+    }
+
+    .dropzoneArea .fileInfo {
+      font-size: 12px;
+    }
+
+    .dropzoneDescription {
+      font-size: 12px;
+    }
+
+    .dropzoneActions button {
+      min-height: 36px;
+      font-size: 14px;
+      padding: 4px 10px;
+    }
   }
