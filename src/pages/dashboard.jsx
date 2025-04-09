@@ -1,9 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import Header from "../components/Header/Header";
-import { Navbar } from "../components/Navbar/Navbar";
 import { useEffect, useState } from "react";
 import { dashboard } from "../redux/Route/slice";
-import { Footer } from "../components/Footer/Footer";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import S from "../styles/dashboard.module.css";
 import { Controller, useForm } from "react-hook-form";

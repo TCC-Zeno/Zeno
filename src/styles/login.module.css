@@ -118,7 +118,7 @@
   }
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1400px) {
   .wrapperText h3 {
     font-size: 27pt;
   }
@@ -128,12 +128,10 @@
   .wrapperText button {
     font-size: 15pt;
   }
-}
-
-@media only screen and (max-height: 650px) {
-  .containerToggle{
-    height: auto;
+  .wrapperText button {
+    font-size: 15pt;
   }
+
 }
 
 @media only screen and (max-width: 768px) {
