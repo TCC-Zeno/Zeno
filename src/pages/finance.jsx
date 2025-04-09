@@ -4,6 +4,7 @@ import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
 import { useForm } from "react-hook-form";
+import {useState} from "react"
 
 export default function Finance() {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ export default function Finance() {
   } = useForm();
   const onSubmit = (data) => console.log(data);
   console.log(errors);
-
+  const [value, setValue] = useState(false);
   return (
     <>
       <DefaultLayout>
@@ -63,18 +64,20 @@ export default function Finance() {
         <div className={style.containerView}>
           <div className={style.entrada}>
             <p>Entradas do mês</p>
-            <p>Icon</p>
-            <h2>Valor</h2>
+            <p>Icon</p>  
+            {/* value >= 0 ? {icon verde} : {icon vermelho} */}
+            <h2>${value}</h2> 
+            {/* ${value} >= 0 ? {color verde} : {color vermelho} */}
           </div>
           <div className={style.saida}>
             <p>Saías do mês</p>
             <p>Icon</p>
-            <h2>Valor</h2>
+            <h2>${value}</h2>
           </div>
           <div className={style.saldo}>
             <p>Saldo do mês</p>
             <p>Icon</p>
-            <h2>Valor</h2>
+            <h2>${value}</h2>
           </div>
         </div>
         <div className={style.containerTabela}>
