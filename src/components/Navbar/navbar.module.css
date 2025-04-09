@@ -150,6 +150,8 @@
 
   .navLinks {
     width: 100%;
+   top: 50%;
+   transform: translateY(25%);
   }
 
   .logo {
@@ -158,9 +160,10 @@
   }
 
   .help {
-    margin-top: 20%;
+    margin-top: 30%;
     right: 0;
     justify-content: flex-start;
+   transform: translateY(25%);
   }
 
   .active {
