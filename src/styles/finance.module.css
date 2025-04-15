@@ -30,3 +30,60 @@
   font-size: 18px;
   max-width: 250px;
 }
+
+.containerView{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1%;
+}
+
+.views{
+  align-items: center;
+  justify-content: space-around;
+  border: solid 1.5px black;
+  border-radius: 6px;
+  width: 26%;
+  height: auto;
+  padding: 1%;
+}
+
+.titleIcon{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.top{
+  color: lime;
+  
+}
+
+.number{
+  color: lime;
+  font-size: 20pt;
+}
+
+.down{
+  color: red;
+}
+
+.number2{
+  color: red;
+  font-size: 20pt;
+}
+.icon{
+  color: blue;
+}
+
+.number3{
+  color: blue;
+  font-size: 20pt;
+}
+
+.line{
+  border: solid 1px black;
+  margin: 15px;
+}
