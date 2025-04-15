@@ -31,24 +31,24 @@
   max-width: 250px;
 }
 
-.containerView{
+.containerView {
   display: flex;
   align-items: center;
   justify-content: space-around;
   margin: 1%;
 }
 
-.views{
+.views {
   align-items: center;
   justify-content: space-around;
   border: solid 1.5px black;
   border-radius: 6px;
-  width: 26%;
+  width: 24%;
   height: auto;
   padding: 1%;
 }
 
-.titleIcon{
+.titleIcon {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -56,34 +56,58 @@
   font-weight: bold;
 }
 
-.top{
+.top {
   color: lime;
-  
 }
 
-.number{
+.number {
   color: lime;
   font-size: 20pt;
 }
 
-.down{
+.down {
   color: red;
 }
 
-.number2{
+.number2 {
   color: red;
   font-size: 20pt;
 }
-.icon{
+.icon {
   color: blue;
 }
 
-.number3{
+.number3 {
   color: blue;
   font-size: 20pt;
 }
 
-.line{
+.line {
   border: solid 1px black;
   margin: 15px;
+}
+
+.containerTable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5%;
+  background-color: gray;
+  height: auto;
+  border-radius: 10px;
+}
+
+.tableTitle {
+  background-color: rgb(var(--color-primary));
+  width: 140%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.tableSeiLa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  width: 100%;
 }
