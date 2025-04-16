@@ -50,25 +50,26 @@ export default function Finance() {
         </div>
         <div className={style.line}></div>
         <div className={style.containerTable}>
-          <table>
-            <thead className={style.tableTitle}>
-              <tr className={style.tableSeiLa}>
+          <table className={style.table}>
+            <thead className={style.thead}>
+              <tr className={style.tr}>
                 <th>Nome</th>
-                <th>Valor</th>
-                <th>Data</th>
-                <th>Tipo de Fluxo</th>
+                <th>Valor(R$)</th>
+                <th>Metodo de Pagamento</th>
                 <th>Categoria</th>
-                <th>Método de Pagamento</th>
+                <th>Tipo de Fluxo</th>
+                <th>Ações</th>
               </tr>
             </thead>
-            <tbody className={style.tableBody}>
-              <tr className={style.tableRow}>
-                <td className={style.tableData}>Nome</td>
-                <td className={style.tableData}>R$ 0,00</td>
-                <td className={style.tableData}>00/00/0000</td>
-                <td className={style.tableData}>Entrada/Saída</td>
-                <td className={style.tableData}>Categoria</td>
-                <td className={style.tableData}>Método de Pagamento</td>
+            <tbody>
+              <tr>
+                <td>José Eduardo</td>
+                <td>R$ 2000,00</td>
+                <td>Cartãode Crédito</td>
+                <td>Sei La</td>
+                <td>Entrada</td>
+                <td className={style.action}><FaArrowTrendDown/><FaArrowTrendUp/>
+                </td>
               </tr>
             </tbody>
           </table>
