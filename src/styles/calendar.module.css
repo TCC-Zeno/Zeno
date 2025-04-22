@@ -1,5 +1,6 @@
 .containerCalendar {
   padding: 0 5%;
+  padding-bottom: 5%;
 }
 .containerCalendar :global(.fc-col-header) {
   background-color: rgb(var(--color-primary));
@@ -34,8 +35,40 @@
   color: white;
   border: 0;
 }
+.formModalAddEvent h2 {
+  padding-top: 10px;
+}
+.formModalAddEvent .submitButton {
+  background-color: rgb(var(--color-primary));
+  margin-top: 10px;
+  color: whitesmoke;
+}
 @media screen and (max-width: 768px) {
   .containerCalendar {
-    padding: 0 2.5%;
+    padding: 5% 2.5%;
+    height: 70vh;
+  }
+  .containerCalendar :global(.fc-header-toolbar) {
+    flex-direction: column;
+    width: 100%;
+  }
+  .containerCalendar :global(.fc-col-header-cell-cushion) {
+    font-size: 8pt;
+  }
+  .containerCalendar :global(.fc-header-toolbar .fc-toolbar-chunk:first-child) {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .containerCalendar :global(.fc *) {
+    width: 100%;
+  }
+  .containerCalendar :global(.fc-toolbar-title) {
+    text-align: center;
+  }
+  .containerCalendar
+    :global(.fc-direction-ltr .fc-toolbar > * > :not(:first-child)) {
+    margin: 0;
   }
 }
