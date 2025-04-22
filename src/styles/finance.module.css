@@ -1,3 +1,8 @@
+.sectionDashboard {
+  margin: 0 10%;
+  margin-bottom: 50px;
+}
+
 .forms {
   display: flex;
   align-items: center;
@@ -89,9 +94,9 @@
 
 .containerTable {
   margin: 5%;
-  background-color: gray;
+  background-color: #D3D3D3;
   height: auto;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .table {
@@ -111,7 +116,140 @@
   color: white;
 }
 
+.conteudo{
+  width: 100%;
+  text-align: center;
+}
+
 .action{
   display: flex;
   
+}
+
+.action{
+ display: flex;
+ justify-content: space-around;
+
+}
+
+.iconDelete{
+  color: red;
+  width: 110%;
+  height: auto;
+}
+
+.iconEdit{
+  color: blue;
+  width: 110%;
+  height: auto;
+}
+
+.financeTitle{
+  font-size: 16pt;
+  font-weight: 500;
+  font-family: "Coolvetica Rg";
+}
+
+.financeContainer {
+  background-color: rgb(var(--color-background-secondary));
+  display: flex;
+  padding: 25px;
+  margin: 15px 0;
+  border-radius: 15px;
+  width: 100%;
+  justify-content: center;
+}
+.financeForm {
+  width: 100%;
+}
+.financeSelect {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-background));
+  font-size: 12pt;
+  padding: 6px 20px;
+  border-radius: 5px;
+  width: 25.5%;
+  height: 36px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+.financeSelect:hover,
+.financeSelect:focus {
+  transform: scale(1.02);
+}
+.row01 {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 25px;
+  align-items: center;
+}
+.row02 {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.inputName {
+  background-color: rgb(var(--color-background));
+  color: #000;
+  font-size: 14pt;
+  padding: 0px 20px;
+  border-radius: 5px;
+  width: 32%;
+  height: 36px;
+}
+.inputPrice {
+  background-color: rgb(var(--color-background));
+  color: #000;
+  font-size: 14pt;
+  padding: 0px 20px;
+  border-radius: 5px;
+  width: 19%;
+  height: 36px;
+}
+
+.button {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-background));
+  font-size: 12pt;
+  padding: 6px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+  width: 25%;
+}
+
+.buttonM {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-background));
+  font-size: 12pt;
+  padding: 6px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+  width: 100%;
+  display: none;
+}
+
+.button:hover {
+  transform: scale(1.05);
+  transition: all 0.5s;
+}
+
+.btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnReport{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgb(var(--color-primary));
+  margin: 20px;
+  padding: auto;
+  color: white;
+  font-size: 16pt;
+  padding: 5px;
+  border-radius: 8px;
 }
