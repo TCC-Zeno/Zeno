@@ -1,0 +1,41 @@
+.containerCalendar {
+  padding: 0 5%;
+}
+.containerCalendar :global(.fc-col-header) {
+  background-color: rgb(var(--color-primary));
+  color: white;
+  border-radius: 10px;
+}
+.containerCalendar :global(.fc-theme-standard td) {
+  border: 0.5px solid rgb(var(--color-primary));
+}
+.containerCalendar :global(.fc-highlight) {
+  background-color: rgb(var(--color-primary)) !important;
+  opacity: 0.8;
+}
+
+.containerCalendar :global(.fc-day-today) {
+  background-color: rgb(var(--color-secondary)) !important;
+}
+
+.containerCalendar :global(.fc-daygrid-day.fc-day-selected) {
+  background-color: rgb(var(--color-secondary)) !important;
+  opacity: 0.3;
+}
+.containerCalendar :global(.fc-button) {
+  background-color: rgb(var(--color-primary));
+  color: white;
+  border: 0;
+}
+.containerCalendar :global(.fc-button):hover,
+.containerCalendar :global(.fc-button-active) {
+  background-color: rgb(var(--color-secondary)) !important;
+  /*Eu usei o important pq a lib define um estilo, e nesse css estou substituindo esse estilo, no fc-button-active não estava funcionando pq tinha outras regras no css, aí tive que usar o important  */
+  color: white;
+  border: 0;
+}
+@media screen and (max-width: 768px) {
+  .containerCalendar {
+    padding: 0 2.5%;
+  }
+}

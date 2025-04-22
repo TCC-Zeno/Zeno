@@ -22,7 +22,9 @@ export default function SignUp() {
 
   const onSubmit = (data) => {
     //! Parte onde o back pega as infos e passa para o banco, além de verificar se tudo está correto
+        //* o backend deve pegar o array data, pois nele que tem todas as informações que o usuario digitou, mas atenção, o login pelo google é outro esquema
     if (!cnpj.isValid(data.cnpj)) {
+      //* estou usando uma lib para verificar se a conta do CNPJ está funcionando, ela só determina se é um CNPJ valido, ela não verifica se a empresa corresponde...
       setError("cnpj", {
         type: "manual",
         message: "CNPJ inválido",
