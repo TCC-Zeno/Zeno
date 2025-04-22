@@ -10,6 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.17",
+    "@fullcalendar/daygrid": "^6.1.17",
+    "@fullcalendar/interaction": "^6.1.17",
+    "@fullcalendar/multimonth": "^6.1.17",
+    "@fullcalendar/react": "^6.1.17",
     "@hookform/resolvers": "^5.0.1",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.6.1",

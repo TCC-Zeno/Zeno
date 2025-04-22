@@ -8,6 +8,7 @@ export default function Login() {
   const [loginOption, setLoginOption] = useState("signUp");
 
   return (
+    // * O login, tanto a parte dfe entrar como cadastro utilizam o react hook forms na parte do formulario, nos componentes que tem a parte que importa para o banco de dados
     <main className={S.loginPage}>
       {loginOption === "signIn" ? <SignIn /> : null}
       <section

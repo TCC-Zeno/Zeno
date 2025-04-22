@@ -14,6 +14,7 @@ import ColorBlindnessSwitcher from "./utils/ColorBlindnessSwitcher";
 import ColorBlindnessFilters from "./components/ColorBlindnessFilters";
 import Finance from "./pages/finance";
 import Organizer from "./pages/organizer";
+import Calendar from "./pages/calendar";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route element={<Dashboard />} path="/dashboard" />
             <Route element={<Settings />} path="/settings" />
             <Route element={<Finance />} path="/finance" />
+            <Route element={<Calendar />} path="/calendar" />
             <Route element={<Organizer />} path="/organizer" />
           </Route>
         </Routes>
