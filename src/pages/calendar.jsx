@@ -22,7 +22,10 @@ export default function Calendar() {
     dispatch(calendar());
   }, [dispatch]);
 
-  const events = [{ id: 1, title: "Event 1", date: "2025-04-24" }];
+  const events = [
+    { id: 1, title: "Event 1", date: "2025-04-24" },
+    { id: 2, title: "Event 2", date: "2025-04-24" },
+  ];
   const selectDates = (selectInfo) => {
     console.log(
       "Selected dates:",
@@ -105,8 +108,8 @@ export default function Calendar() {
             type="date"
             name="dateEnd"
             id="dateEnd"
-            defaultValue={select?.end || ""} 
-            {...register("dateEnd")} 
+            defaultValue={select?.end || ""}
+            {...register("dateEnd")}
           />
           <input className={S.submitButton} type="submit" />
         </form>

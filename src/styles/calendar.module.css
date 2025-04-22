@@ -60,12 +60,12 @@
     gap: 10px;
     margin-bottom: 10px;
   }
-  
+
   .containerCalendar :global(.fc-toolbar-title) {
     text-align: center;
   }
   .containerCalendar
-  :global(.fc-direction-ltr .fc-toolbar > * > :not(:first-child)) {
+    :global(.fc-direction-ltr .fc-toolbar > * > :not(:first-child)) {
     margin: 0;
   }
   .containerCalendar :global(.fc-button-group),
@@ -73,5 +73,30 @@
   .containerCalendar :global(.fc-toolbar-chunk) {
     width: 100%;
   }
+  .containerCalendar :global(.fc-daygrid-event) {
+    white-space: normal;
+    overflow: hidden;
+    font-size: 8pt;
+    padding: 2px;
+  }
 
+  .containerCalendar :global(.fc-daygrid-day-frame) {
+    min-height: 60px;
+  }
+
+  .containerCalendar :global(.fc-daygrid-day-events) {
+    margin: 0;
+  }
+
+  .containerCalendar :global(.fc-event-title) {
+    font-weight: bold;
+    overflow: hidden;
+  }
+  .containerCalendar :global(.fc-daygrid-day-number) {
+    font-size: 10pt;
+    color: #333;
+  }
+  .containerCalendar :global(.fc .fc-scrollgrid-liquid) {
+    height: 45vh !important;
+  }
 }

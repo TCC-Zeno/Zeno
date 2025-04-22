@@ -26,12 +26,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Routes>
           <Route element={<LandingPage />} path="/" />
           <Route element={<Login />} path="/login" />
-          <Route element={<ProtectedRoutes />}>
             <Route element={<Dashboard />} path="/dashboard" />
             <Route element={<Settings />} path="/settings" />
             <Route element={<Finance />} path="/finance" />
             <Route element={<Calendar />} path="/calendar" />
             <Route element={<Organizer />} path="/organizer" />
+          <Route element={<ProtectedRoutes />}>
           </Route>
         </Routes>
       </BrowserRouter>
