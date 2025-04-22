@@ -3,23 +3,28 @@ import { useEffect } from "react";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
-// import { useForm } from "react-hook-form";
-// import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaArrowTrendDown } from "react-icons/fa6";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import CurrencyInput from "react-currency-input-field";
+import { PiFileArchiveFill } from "react-icons/pi";
 
 export default function Finance() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(finance());
   }, [dispatch]);
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm();
-  // const onSubmit = (data) => console.log(data);
-  // console.log(errors);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
+  console.log(errors);
   // const [value, setValue] = useState(false);
   return (
     <>
@@ -62,48 +67,108 @@ export default function Finance() {
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr className={style.conteudo}>
                 <td>José Eduardo</td>
                 <td>R$ 2000,00</td>
                 <td>Cartãode Crédito</td>
-                <td>Sei La</td>
+                <td>asdadadedasda</td>
                 <td>Entrada</td>
-                <td className={style.action}><FaArrowTrendDown/><FaArrowTrendUp/>
+                <td className={style.action}>
+                  <button>
+                    <FaEdit className={style.iconEdit} />
+                  </button>
+                  <button>
+                    <MdDelete className={style.iconDelete} />
+                  </button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <h1 className={style.Add}>Adicionar</h1>
-        <div className={style.containerAdd}>
-          <input type="text" placeholder="Nome" className={style.inputNome} />
-          <input
-            type="text"
-            placeholder="R$: Valor"
-            className={style.inputValue}
-          />
-          <button type="submit" className={style.btnSubmit}>
-            Enviar
-          </button>
-          <select name="metodoPagamento" id="MP" className={style.select2}>
-            <option value="Cartão de Credito"> Cartão de Crédito</option>
-            <option value="Cartão de Débito"> Cartão de Débito</option>
-            <option value="Dinheiro"> Dinheiro</option>
-            <option value="Pix"> Pix</option>
-            <option value="Outros"> Outros</option>
-          </select>
-          <select name="Categorias" id="C" className={style.select2}>
-            <option value="Compras">Compras</option>
-            <option value="Contas">Contas</option>
-            <option value="Manutenção">Manutenção</option>
-            <option value="Outros">Outros</option>
-          </select>
-          <select name="TipoFluxo" id="TF" className={style.select2}>
-            <option value="Entrada">Entrada</option>
-            <option value="Saida">Saída</option>
-          </select>
+
+        <section className={style.sectionDashboard}>
+          <div className={style.financeTitle}>
+            <h1>Adicionar</h1>
+          </div>
+          <div className={style.financeContainer}>
+            <form
+              className={style.financeForm}
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className={style.row01}>
+                <input
+                  className={style.inputName}
+                  type="text"
+                  placeholder="Nome completo"
+                  {...register("Full name", { required: true })}
+                />
+                <Controller
+                  name="Price"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value, name } }) => (
+                    <CurrencyInput
+                      id="price-input"
+                      name={name}
+                      placeholder="R$ 0,00"
+                      defaultValue={0}
+                      decimalsLimit={2}
+                      decimalScale={2}
+                      decimalSeparator=","
+                      groupSeparator="."
+                      prefix="R$ "
+                      onValueChange={(value) => onChange(value)}
+                      value={value}
+                      className={style.inputPrice}
+                    />
+                  )}
+                />
+                <input className={style.button} type="submit" />
+              </div>
+              <div className={style.row02}>
+                <select
+                  className={style.financeSelect}
+                  {...register("Payment method", { required: true })}
+                >
+                  <option value="Método de pagamento" disabled selected>
+                    Método de pagamento
+                  </option>
+                  <option value="Cartão de crédito">Cartão de crédito</option>
+                  <option value="Cartão de débito">Cartão de débito</option>
+                  <option value="Dinheiro">Dinheiro</option>
+                  <option value="Pix">Pix</option>
+                  <option value="Outros">Outros</option>
+                </select>
+                <select
+                  className={style.financeSelect}
+                  {...register("category", { required: true })}
+                >
+                  <option value="Categorias" disabled selected>
+                    Categorias
+                  </option>
+                  <option value="Compras">Compras</option>
+                  <option value="Contas">Contas</option>
+                  <option value="Manutenção">Manutenção</option>
+                  <option value="Outros">Outros</option>
+                </select>
+                <select
+                  className={style.financeSelect}
+                  {...register("flow", { required: true })}
+                >
+                  <option value="Tipo de fluxo" disabled selected>
+                    Tipo de fluxo
+                  </option>
+                  <option value="Entrada">Entrada</option>
+                  <option value="Saída">Saída</option>
+                </select>
+                <input className={style.buttonM} type="submit" />
+              </div>
+            </form>
+          </div>
+        </section>
+        <div className={style.btn}>
+          <button className={style.btnReport}> <PiFileArchiveFill/>Gerar Relatório</button>
         </div>
-        <button className={style.btnReport}>Gerar Relatório</button>
       </DefaultLayout>
     </>
   );
