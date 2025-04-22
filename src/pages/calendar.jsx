@@ -22,7 +22,7 @@ export default function Calendar() {
     dispatch(calendar());
   }, [dispatch]);
 
-  const events = [{ id: 1, title: "Event 1", date: "2025-24-04" }];
+  const events = [{ id: 1, title: "Event 1", date: "2025-04-24" }];
   const selectDates = (selectInfo) => {
     console.log(
       "Selected dates:",

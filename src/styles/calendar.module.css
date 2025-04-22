@@ -5,7 +5,6 @@
 .containerCalendar :global(.fc-col-header) {
   background-color: rgb(var(--color-primary));
   color: white;
-  border-radius: 10px;
 }
 .containerCalendar :global(.fc-theme-standard td) {
   border: 0.5px solid rgb(var(--color-primary));
@@ -61,14 +60,18 @@
     gap: 10px;
     margin-bottom: 10px;
   }
-  .containerCalendar :global(.fc *) {
-    width: 100%;
-  }
+  
   .containerCalendar :global(.fc-toolbar-title) {
     text-align: center;
   }
   .containerCalendar
-    :global(.fc-direction-ltr .fc-toolbar > * > :not(:first-child)) {
+  :global(.fc-direction-ltr .fc-toolbar > * > :not(:first-child)) {
     margin: 0;
   }
+  .containerCalendar :global(.fc-button-group),
+  .containerCalendar :global(.fc-today-button),
+  .containerCalendar :global(.fc-toolbar-chunk) {
+    width: 100%;
+  }
+
 }
