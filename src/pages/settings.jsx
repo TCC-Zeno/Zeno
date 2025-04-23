@@ -11,10 +11,12 @@ import {
 import S from "./../styles/settings.module.css";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import Modal from "../components/Modal/Modal";
+import { TbLock } from "react-icons/tb";
 
 export default function Settings() {
   const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
   const [blockGuideOpen, setBlockGuideOpen] = useState(false);
+  const [modalBlockResourcesOpen, setModalBlockResourcesOpen] = useState(false);
 
   const theme = useSelector((state) => state.userReducer.theme);
   const colorBlindness = useSelector(
@@ -92,9 +94,9 @@ export default function Settings() {
                   <button
                     onClick={() => handleColorSelect("purple")}
                     className={`
-          ${S.colorButton} 
-          ${theme === "purple" ? S.selected : ""}
-        `}
+                      ${S.colorButton} 
+                      ${theme === "purple" ? S.selected : ""}
+                    `}
                   >
                     <span>Roxo</span>
                     <div className={S.colorDivs}>
@@ -117,9 +119,9 @@ export default function Settings() {
                   <button
                     onClick={() => handleColorSelect("green")}
                     className={`
-          ${S.colorButton} 
-          ${theme === "green" ? S.selected : ""}
-        `}
+                      ${S.colorButton} 
+                      ${theme === "green" ? S.selected : ""}
+                    `}
                   >
                     <span>Verde</span>
                     <div className={S.colorDivs}>
@@ -142,9 +144,9 @@ export default function Settings() {
                   <button
                     onClick={() => handleColorSelect("red")}
                     className={`
-          ${S.colorButton} 
-          ${theme === "red" ? S.selected : ""}
-        `}
+                      ${S.colorButton} 
+                      ${theme === "red" ? S.selected : ""}
+                    `}
                   >
                     <span>Vermelho</span>
                     <div className={S.colorDivs}>
@@ -218,79 +220,11 @@ export default function Settings() {
                     <IoHelpCircleOutline />
                   </button>
                 </h2>
-                <div className={S.blockContainer}>
-                  <div className={S.blockRow}>
-                    <div className={S.blockWrapper}>
-                      <input
-                        type="checkbox"
-                        className={S.switch}
-                        checked={blockedResources.cash}
-                        onChange={(e) =>
-                          handleBlockResource("cash", e.target.checked)
-                        }
-                      />
-                      <span className={S.blockLabel}>Resumo de caixa</span>
-                    </div>
-                    <div className={S.blockWrapper}>
-                      <input
-                        type="checkbox"
-                        className={S.switch}
-                        checked={blockedResources.stock}
-                        onChange={(e) =>
-                          handleBlockResource("stock", e.target.checked)
-                        }
-                      />
-                      <span className={S.blockLabel}>Estoque</span>
-                    </div>
-                  </div>
-                  <div className={S.blockRow}>
-                    <div className={S.blockWrapper}>
-                      <input
-                        type="checkbox"
-                        className={S.switch}
-                        checked={blockedResources.finance}
-                        onChange={(e) =>
-                          handleBlockResource("finance", e.target.checked)
-                        }
-                      />
-                      <span className={S.blockLabel}>Fluxo de caixa</span>
-                    </div>
-                    <div className={S.blockWrapper}>
-                      <input
-                        type="checkbox"
-                        className={S.switch}
-                        checked={blockedResources.calendar}
-                        onChange={(e) =>
-                          handleBlockResource("calendar", e.target.checked)
-                        }
-                      />
-                      <span className={S.blockLabel}>Agenda</span>
-                    </div>
-                  </div>
-                  <div className={S.blockRow}>
-                    <div className={S.blockWrapper}>
-                      <input
-                        type="checkbox"
-                        className={S.switch}
-                        checked={blockedResources.organizer}
-                        onChange={(e) =>
-                          handleBlockResource("organizer", e.target.checked)
-                        }
-                      />
-                      <span className={S.blockLabel}>Organizador</span>
-                    </div>
-                    <div className={S.blockWrapper}>
-                      <input
-                        type="checkbox"
-                        className={S.switch}
-                        checked={blockedResources.service}
-                        onChange={(e) =>
-                          handleBlockResource("service", e.target.checked)
-                        }
-                      />
-                      <span className={S.blockLabel}>Serviços</span>
-                    </div>
-                  </div>
+                <div className={S.buttonBlockOpen}>
+                  <button onClick={() => setModalBlockResourcesOpen(true)}>
+                    <TbLock />
+                    Bloquear
+                  </button>
                 </div>
               </div>
             </div>
@@ -304,6 +238,92 @@ export default function Settings() {
         </Modal>
         <Modal isOpen={blockGuideOpen} onClose={() => setBlockGuideOpen(false)}>
           Batata do block?
+        </Modal>
+        <Modal
+          isOpen={modalBlockResourcesOpen}
+          onClose={() => setModalBlockResourcesOpen(false)}
+        >
+          <div className={S.blockContainer}>
+            <div className={S.blockRow}>
+              <div className={S.blockWrapper}>
+                <input
+                  type="checkbox"
+                  className={S.switch}
+                  checked={blockedResources.cash}
+                  onChange={(e) =>
+                    handleBlockResource("cash", e.target.checked)
+                  }
+                />
+                <span className={S.blockLabel}>Resumo de caixa</span>
+              </div>
+              <div className={S.blockWrapper}>
+                <input
+                  type="checkbox"
+                  className={S.switch}
+                  checked={blockedResources.stock}
+                  onChange={(e) =>
+                    handleBlockResource("stock", e.target.checked)
+                  }
+                />
+                <span className={S.blockLabel}>Estoque</span>
+              </div>
+            </div>
+            <div className={S.blockRow}>
+              <div className={S.blockWrapper}>
+                <input
+                  type="checkbox"
+                  className={S.switch}
+                  checked={blockedResources.finance}
+                  onChange={(e) =>
+                    handleBlockResource("finance", e.target.checked)
+                  }
+                />
+                <span className={S.blockLabel}>Fluxo de caixa</span>
+              </div>
+              <div className={S.blockWrapper}>
+                <input
+                  type="checkbox"
+                  className={S.switch}
+                  checked={blockedResources.calendar}
+                  onChange={(e) =>
+                    handleBlockResource("calendar", e.target.checked)
+                  }
+                />
+                <span className={S.blockLabel}>Agenda</span>
+              </div>
+            </div>
+            <div className={S.blockRow}>
+              <div className={S.blockWrapper}>
+                <input
+                  type="checkbox"
+                  className={S.switch}
+                  checked={blockedResources.organizer}
+                  onChange={(e) =>
+                    handleBlockResource("organizer", e.target.checked)
+                  }
+                />
+                <span className={S.blockLabel}>Organizador</span>
+              </div>
+              <div className={S.blockWrapper}>
+                <input
+                  type="checkbox"
+                  className={S.switch}
+                  checked={blockedResources.service}
+                  onChange={(e) =>
+                    handleBlockResource("service", e.target.checked)
+                  }
+                />
+                <span className={S.blockLabel}>Serviços</span>
+              </div>
+            </div>
+            <div className={S.blockRow}>
+              <div className={S.buttonBlockClose}>
+                <button onClick={() => setModalBlockResourcesOpen(false)}>
+                  Salvar e sair
+                </button>
+              </div>
+            </div>
+          </div>
         </Modal>
       </section>
     </DefaultLayout>

@@ -12,8 +12,8 @@
   display: flex;
   align-items: center;
 }
-h2 button{
-  margin:  0 10px;
+h2 button {
+  margin: 0 10px;
   color: #0066ff;
   cursor: pointer;
 }
@@ -35,8 +35,7 @@ h2 button{
   transition: all 0.25s;
 }
 .inputName:hover,
-.inputCompany:hover
-{
+.inputCompany:hover {
   transform: scale(1.005);
 }
 .containerForm {
@@ -55,8 +54,8 @@ h2 button{
   margin-bottom: 20px;
   transition: all 0.5s;
 }
-.selectColorBlindness:hover,.selectColorBlindness:focus
-{
+.selectColorBlindness:hover,
+.selectColorBlindness:focus {
   transform: scale(1.005);
 }
 
@@ -69,7 +68,8 @@ h2 button{
   flex-direction: column;
 }
 
-.toggleContainer, .blockContainer {
+.toggleContainer,
+.blockContainer {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -80,13 +80,16 @@ h2 button{
   box-sizing: border-box;
 }
 
-.toggleRow, .blockRow {
+.toggleRow,
+.blockRow {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   width: 100%;
 }
 
-.toggleWrapper, .blockWrapper {
+.toggleWrapper,
+.blockWrapper {
   display: flex;
   align-items: center;
   justify-content: left;
@@ -94,7 +97,8 @@ h2 button{
   padding: 10px 0;
 }
 
-.toggleLabel, .blockLabel {
+.toggleLabel,
+.blockLabel {
   font-size: 15px;
   color: #333;
   padding-left: 10px;
@@ -163,7 +167,7 @@ h2 button{
 .colorDivs {
   display: flex;
   width: 100%;
-  border-radius:  20px 10px 10px 10px;
+  border-radius: 20px 10px 10px 10px;
 }
 
 .colorDivs div {
@@ -180,6 +184,43 @@ h2 button{
   box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
+.buttonBlockOpen button {
+  display: flex;
+  align-items: center;
+  background-color: rgb(var(--color-primary));
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: #f2f7fe;
+  border: none;
+  cursor: pointer;
+  gap: 10px;
+  font-size: 13pt;
+  transition: 0.5s all;
+}
+.buttonBlockOpen button:hover {
+  transform: scale(1.03);
+}
+.buttonBlockClose{
+  display: flex;
+  justify-content: center;
+}
+.buttonBlockClose button {
+  display: flex;
+  align-items: center;
+  background-color: #c20000;
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: #f2f7fe;
+  border: none;
+  cursor: pointer;
+  gap: 10px;
+  font-size: 13pt;
+  transition: 0.5s all;
+}
+.buttonBlockClose button:hover {
+  transform: scale(1.03);
+}
+
 @media screen and (max-width: 768px) {
   .inputName,
   .inputCompany {
@@ -188,18 +229,21 @@ h2 button{
   .selectColorBlindness {
     width: 50vw;
   }
-  .toggleRow, .blockRow {
+  .toggleRow,
+  .blockRow {
     display: flex;
     flex-direction: column;
     gap: 12px;
     width: 100%;
   }
-  .toggleWrapper, .blockWrapper {
+  .toggleWrapper,
+  .blockWrapper {
     justify-content: start;
     gap: 10px;
     padding: 10px 14px;
   }
-  .toggleLabel, .blockLabel {
+  .toggleLabel,
+  .blockLabel {
     font-size: 14px;
   }
   .colorDivs div {
@@ -212,20 +256,24 @@ h2 button{
 }
 
 @media screen and (max-width: 480px) {
-  .toggleContainer, .blockContainer {
+  .toggleContainer,
+  .blockContainer {
     padding: 0 8px;
     gap: 10px;
   }
 
-  .toggleRow, .blockRow {
+  .toggleRow,
+  .blockRow {
     gap: 8px;
   }
 
-  .toggleWrapper, .blockWrapper {
+  .toggleWrapper,
+  .blockWrapper {
     padding: 8px 0;
   }
 
-  .toggleLabel, .blockLabel {
+  .toggleLabel,
+  .blockLabel {
     font-size: 14px;
   }
 
@@ -245,7 +293,8 @@ h2 button{
 }
 
 @media screen and (max-width: 360px) {
-  .toggleRow, .blockRow {
+  .toggleRow,
+  .blockRow {
     grid-template-columns: 1fr;
   }
 }
