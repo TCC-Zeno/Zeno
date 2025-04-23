@@ -16,7 +16,7 @@ O desenvolvimento deste sistema foi iniciado em março de 2025 e continua até h
 
 * [Caio Costa](https://github.com/CaioCosta2JZ) - Tester e responsável pela documentação.
 * [José Souza](https://github.com/JoseSouza2007) - Desenvolvedor Backend.
-* [Naresh Sharma](https://github.com/pneurat2) - Desenvolvedor Backend.
+* [Naresh Sharma](https://github.com/pnelrat2) - Desenvolvedor Backend.
 * [Nicolas Spinelli](https://github.com/TABAQUINH) - Designer.
 * [Nícollas Reis](https://github.com/NicollasMSR) - Desenvolvedor Frontend.
 * [Vinícius Porto](https://github.com/Vini150cius) - Desenvolvedor Frontend.
