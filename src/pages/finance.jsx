@@ -4,7 +4,7 @@ import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
+// import { useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaArrowTrendDown } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
@@ -29,6 +29,9 @@ export default function Finance() {
   return (
     <>
       <DefaultLayout>
+        <div className={style.title}>
+          <h1>Fluxo de Caixa</h1>
+        </div>
         <div className={style.line}></div>
         <div className={style.containerView}>
           <div className={style.views}>
@@ -72,7 +75,7 @@ export default function Finance() {
                 <td>R$ 2000,00</td>
                 <td>Cartãode Crédito</td>
                 <td>asdadadedasda</td>
-                <td>Entrada</td>
+                <td className={style.tipoFluxo}>Entrada</td>
                 <td className={style.action}>
                   <button>
                     <FaEdit className={style.iconEdit} />
@@ -166,8 +169,33 @@ export default function Finance() {
             </form>
           </div>
         </section>
+        <section className={style.sectionDashboard}>
+          <div className={style.financeTitle}>
+            <h1>Adicionar Categoria</h1>
+          </div>
+          <div className={style.financeContainer}>
+            <form
+              className={style.financeForm}
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className={style.row01}>
+                <input
+                  className={style.inputName}
+                  type="text"
+                  placeholder="Nome da categoria"
+                  {...register("Full name", { required: true })}
+                />
+                <input className={style.button} type="submit" />
+              </div>
+            </form>
+          </div>
+        </section>
         <div className={style.btn}>
-          <button className={style.btnReport}> <PiFileArchiveFill/>Gerar Relatório</button>
+          <button className={style.btnReport}>
+            {" "}
+            <PiFileArchiveFill />
+            Gerar Relatório
+          </button>
         </div>
       </DefaultLayout>
     </>

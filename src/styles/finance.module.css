@@ -1,3 +1,13 @@
+.title {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-family: "Coolvetica Rg";
+  font-size: 40px;
+  font-weight: 500;
+  margin-bottom: 5%;
+}
+
 .sectionDashboard {
   margin: 0 10%;
   margin-bottom: 50px;
@@ -62,12 +72,17 @@
 }
 
 .top {
-  color: lime;
+  color: #32cd32;
 }
 
 .number {
-  color: lime;
+  color: #32cd32;
   font-size: 20pt;
+}
+.number:hover {
+  transition: 0.5s;
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
 .down {
@@ -78,6 +93,12 @@
   color: red;
   font-size: 20pt;
 }
+.number2:hover {
+  transition: 0.5s;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
 .icon {
   color: blue;
 }
@@ -85,6 +106,11 @@
 .number3 {
   color: blue;
   font-size: 20pt;
+}
+.number3:hover {
+  transition: 0.5s;
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
 .line {
@@ -94,7 +120,7 @@
 
 .containerTable {
   margin: 5%;
-  background-color: #D3D3D3;
+  background-color: #d3d3d3;
   height: auto;
   border-radius: 5px;
 }
@@ -116,35 +142,39 @@
   color: white;
 }
 
-.conteudo{
+.conteudo {
   width: 100%;
   text-align: center;
 }
 
-.action{
+.action {
   display: flex;
-  
+  justify-content: space-around;
 }
 
-.action{
- display: flex;
- justify-content: space-around;
-
-}
-
-.iconDelete{
+.iconDelete {
   color: red;
-  width: 110%;
+  width: 115%;
   height: auto;
 }
+.iconDelete:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+  cursor: pointer;
+}
 
-.iconEdit{
+.iconEdit {
   color: blue;
-  width: 110%;
+  width: 115%;
   height: auto;
 }
+.iconEdit:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+  cursor: pointer;
+}
 
-.financeTitle{
+.financeTitle {
   font-size: 16pt;
   font-weight: 500;
   font-family: "Coolvetica Rg";
@@ -235,13 +265,13 @@
   transition: all 0.5s;
 }
 
-.btn{
+.btn {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.btnReport{
+.btnReport {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -252,4 +282,15 @@
   font-size: 16pt;
   padding: 5px;
   border-radius: 8px;
+}
+.btnReport:hover {
+  transform: scale(1.05);
+  transition: all 0.5s;
+}
+
+.tipoFluxo {
+  color: green;
+}
+
+@media screen and (max-width: 768px) {
 }
