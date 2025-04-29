@@ -78,9 +78,9 @@
 .number {
   color: #32cd32;
   font-size: 20pt;
+  transition: 0.5s;
 }
 .number:hover {
-  transition: 0.5s;
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -92,9 +92,9 @@
 .number2 {
   color: red;
   font-size: 20pt;
+  transition: 0.5s;
 }
 .number2:hover {
-  transition: 0.5s;
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -106,9 +106,9 @@
 .number3 {
   color: blue;
   font-size: 20pt;
+  transition: 0.5s;
 }
 .number3:hover {
-  transition: 0.5s;
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -156,9 +156,9 @@
   color: red;
   width: 115%;
   height: auto;
+  transition: 0.5s;
 }
 .iconDelete:hover {
-  transition: 0.5s;
   transform: scale(1.1);
   cursor: pointer;
 }
@@ -167,9 +167,9 @@
   color: blue;
   width: 115%;
   height: auto;
+  transition: 0.5s;
 }
 .iconEdit:hover {
-  transition: 0.5s;
   transform: scale(1.1);
   cursor: pointer;
 }
@@ -246,6 +246,7 @@
   cursor: pointer;
   transition: all 0.5s;
   width: 25%;
+  transition: all 0.5s;
 }
 
 .buttonM {
@@ -262,7 +263,7 @@
 
 .button:hover {
   transform: scale(1.05);
-  transition: all 0.5s;
+ 
 }
 
 .btn {
@@ -282,10 +283,10 @@
   font-size: 16pt;
   padding: 5px;
   border-radius: 8px;
+  transition: all 0.5s;
 }
 .btnReport:hover {
-  transform: scale(1.05);
-  transition: all 0.5s;
+  transform: scale(1.05); 
 }
 
 .tipoFluxo {
@@ -293,4 +294,43 @@
 }
 
 @media screen and (max-width: 768px) {
+  .row01 {
+    display: block;
+    margin-bottom: 0;
+  }
+  .row01 > input:not(.button) {
+    display: block;
+    width: 100%;
+    height: 35px;
+    margin: 15px 0;
+  }
+  .row02 {
+    width: 100%;
+    display: block;
+  }
+  .row02 > select {
+    display: block;
+    width: 100%;
+    height: 35px;
+    margin: 15px 0;
+  }
+  .button {
+    display: none;
+  }
+  .buttonM {
+    display: block;
+  }
+  .containerView{
+    flex-direction: column;
+    align-items: center;
+  }
+  .views{
+    width: 80%;
+    height: auto;
+    margin:2%;
+  }
+  .table{
+    overflow-x: scroll;
+
+  }
 }
