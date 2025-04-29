@@ -142,9 +142,15 @@
   color: white;
 }
 
+.th{
+  margin:110%;
+}
+
 .conteudo {
   width: 100%;
   text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .action {
@@ -263,7 +269,6 @@
 
 .button:hover {
   transform: scale(1.05);
- 
 }
 
 .btn {
@@ -286,11 +291,36 @@
   transition: all 0.5s;
 }
 .btnReport:hover {
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
 
 .tipoFluxo {
   color: green;
+}
+
+.button2{
+    background-color: rgb(var(--color-primary));
+    color: rgb(var(--color-background));
+    font-size: 12pt;
+    padding: 6px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.5s;
+    width: 25%;
+    transition: all 0.5s;
+}
+
+.financeSelect1{
+  background-color: lightgray;
+  color: "black";
+  font-size: 12pt;
+  padding: 6px 20px;
+  border-radius: 5px;
+  width: 20%;
+  height: 30px;
+  cursor: pointer;
+  transition: all 0.5s;
+  margin-top: 2%;
 }
 
 @media screen and (max-width: 768px) {
@@ -320,17 +350,19 @@
   .buttonM {
     display: block;
   }
-  .containerView{
+  .containerView {
     flex-direction: column;
     align-items: center;
   }
-  .views{
+  .views {
     width: 80%;
     height: auto;
-    margin:2%;
+    margin: 2%;
   }
-  .table{
+  .table {
     overflow-x: scroll;
-
+  }
+  .containerTable{
+    overflow: scroll;
   }
 }
