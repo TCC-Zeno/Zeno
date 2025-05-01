@@ -57,7 +57,18 @@ export default function Finance() {
           </div>
         </div>
         <div className={style.line}></div>
-        <div className={style.row02}>
+        <div className={style.row0}>
+          <div className={style.date}>
+            <div>
+              <h1 className={style.titleDate}>Data:</h1>
+            </div>
+
+            <input
+              className={style.inputDate}
+              type="date"
+              {...register("date", { required: true })}
+            />
+          </div>
           <select
             className={style.financeSelect1}
             {...register("Payment method", { required: true })}

@@ -5,7 +5,7 @@
   font-family: "Coolvetica Rg";
   font-size: 40px;
   font-weight: 500;
-  margin-bottom: 5%;
+  margin-bottom: 3%;
 }
 
 .sectionDashboard {
@@ -142,8 +142,8 @@
   color: white;
 }
 
-.th{
-  margin:110%;
+.th {
+  margin: 110%;
 }
 
 .conteudo {
@@ -298,20 +298,26 @@
   color: green;
 }
 
-.button2{
-    background-color: rgb(var(--color-primary));
-    color: rgb(var(--color-background));
-    font-size: 12pt;
-    padding: 6px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.5s;
-    width: 25%;
-    transition: all 0.5s;
+.button2 {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-background));
+  font-size: 12pt;
+  padding: 6px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+  width: 25%;
+  transition: all 0.5s;
 }
 
-.financeSelect1{
-  background-color: lightgray;
+.row0 {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.financeSelect1 {
+  background-color: #d9d9d9;
   color: "black";
   font-size: 12pt;
   padding: 6px 20px;
@@ -321,6 +327,29 @@
   cursor: pointer;
   transition: all 0.5s;
   margin-top: 2%;
+}
+
+.date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2.4%;
+  background-color: transparent;
+}
+
+.titleDate {
+  font-size: 12pt;
+  font-weight: 500;
+  width: 100%;
+}
+
+.inputDate {
+  background-color: #d9d9d9;
+  color: #000;
+  border-radius: 5px;
+  width: 100%;
+  height: 30px;
+  margin-left: 2%;
 }
 
 @media screen and (max-width: 768px) {
@@ -362,7 +391,17 @@
   .table {
     overflow-x: scroll;
   }
-  .containerTable{
+  .containerTable {
     overflow: scroll;
+  }
+  .row0 {
+    width: 100%;
+    display: block;
+  }
+  .row0 > select {
+    display: block;
+    width: 100%;
+    height: 35px;
+    margin: 15px 0;
   }
 }
