@@ -1,0 +1,9 @@
+.title {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-family: "Coolvetica Rg";
+  font-size: 40px;
+  font-weight: 500;
+  margin-bottom: 3%;
+}
