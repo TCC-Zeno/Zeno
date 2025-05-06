@@ -7,3 +7,26 @@
   font-weight: 500;
   margin-bottom: 3%;
 }
+
+.containerFilter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputFilter {
+  width: 80%;
+  font-size: 14pt;
+  border-radius: 50px;
+  border: 0.5px solid black;
+  padding: 0.5%;
+}
+
+.buttonFilter {
+  margin-left: 10px;
+}
+
+.buttonFilter:hover .icon {
+  transform: scale(1.2);
+  font-weight: bold;
+}

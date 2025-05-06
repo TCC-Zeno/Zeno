@@ -62,7 +62,6 @@ export default function Finance() {
             <div>
               <h1 className={style.titleDate}>Data:</h1>
             </div>
-
             <input
               className={style.inputDate}
               type="date"
@@ -136,7 +135,6 @@ export default function Finance() {
             </tbody>
           </table>
         </div>
-
         <section className={style.sectionDashboard}>
           <div className={style.financeTitle}>
             <h1>Adicionar</h1>
