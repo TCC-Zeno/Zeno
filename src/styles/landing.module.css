@@ -1,0 +1,144 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  background-color: rgb(var(--color-background));
+  box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  -webkit-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+}
+
+.logoContainer {
+  padding-left: 3vw;
+}
+
+.logoContainer img {
+  width: 60px;
+  height: auto;
+}
+
+.linksContainer ul {
+  display: flex;
+  gap: 20px;
+}
+
+.linksContainer ul li {
+  font-weight: 600;
+  color: rgb(var(--color-primary));
+}
+
+.buttonContainer {
+  padding-right: 3vw;
+}
+
+.signUpButton {
+  padding: 5px 2.5vw;
+  margin-left: 15px;
+  background-color: rgb(var(--color-primary));
+  border-radius: 8px;
+  color: rgb(var(--color-background));
+}
+
+.signInButton {
+  padding: 5px 2.5vw;
+  background-color: transparent;
+  border: 2px solid rgb(var(--color-primary));
+  border-radius: 10px;
+  color: #000;
+  font-weight: bold;
+}
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.hero {
+  width: 100%;
+  max-width: 1200px;
+  height: 350px;
+  display: flex;
+  padding-top: 25px;
+}
+.hero .titleContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero .titleContainer h1 {
+  font-family: "Coolvetica Rg";
+  font-size: 25pt;
+  padding: 0 15px;
+}
+.hero .titleContainer h1 span {
+  color: rgb(var(--color-primary));
+  text-decoration: underline;
+}
+.hero .titleContainer p {
+  padding: 20px 15px;
+  font-size: 15pt;
+}
+.hero .signUpButton {
+  width: 13vw;
+  text-align: center;
+  padding: 10px 18px;
+  font-size: 14pt;
+  font-weight: bold;
+  box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  -webkit-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+}
+
+.hero .imgContainer {
+  width: 50%;
+}
+
+.hero .imgContainer img {
+  width: 100%;
+  height: 100%;
+}
+.function {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  height: 500px;
+  display: flex;
+  padding-top: 25px;
+  margin: 100px 0;
+}
+.function .functionCard {
+  background-color: rgb(109, 6, 210);
+  padding: 20px;
+  width: 18%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-around;
+  border-radius: 15px;
+  box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  -webkit-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+}
+.function .functionCard .icon {
+  font-size: 9vw;
+  height: 40%;
+  align-self: center;
+  color: whitesmoke;
+}
+.function .functionCard div {
+  height: 60%;
+  align-content: center;
+}
+.function .functionCard h2 {
+  font-family: "Coolvetica Rg";
+  text-align: center;
+  font-weight: 500;
+  color: whitesmoke;
+}
+.function .functionCard p {
+  text-align: center;
+  color: whitesmoke;
+  padding-top: 5px;
+}
