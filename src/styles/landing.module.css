@@ -56,19 +56,22 @@
 }
 .hero {
   width: 100%;
+  height: auto;
   max-width: 1200px;
   height: 350px;
   display: flex;
   padding-top: 25px;
+  margin-bottom: 100px;
 }
 .hero .titleContainer {
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 .hero .titleContainer h1 {
   font-family: "Coolvetica Rg";
-  font-size: 25pt;
+  font-size: 30pt;
   padding: 0 15px;
 }
 .hero .titleContainer h1 span {
@@ -77,7 +80,7 @@
 }
 .hero .titleContainer p {
   padding: 20px 15px;
-  font-size: 15pt;
+  font-size: 16pt;
 }
 .hero .signUpButton {
   width: 13vw;
@@ -96,14 +99,14 @@
 
 .hero .imgContainer img {
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 .function {
   display: flex;
   justify-content: space-between;
   width: 100%;
   max-width: 1200px;
-  height: 500px;
+  height: 450px;
   display: flex;
   padding-top: 25px;
   margin: 100px 0;
@@ -117,17 +120,23 @@
   align-content: center;
   justify-content: space-around;
   border-radius: 15px;
+  transition: 0.5s all;
   box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
   -webkit-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
   -moz-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
 }
+.function .functionCard:hover {
+  transform: translateY(-25px);
+  z-index: 1;
+}
+
 .function .functionCard .icon {
-  font-size: 9vw;
+  font-size: 5vw;
   height: 40%;
   align-self: center;
   color: whitesmoke;
 }
-.function .functionCard div {
+.function .functionCard .text {
   height: 60%;
   align-content: center;
 }
@@ -141,4 +150,93 @@
   text-align: center;
   color: whitesmoke;
   padding-top: 5px;
+}
+.guide {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  height: 500px;
+  display: flex;
+}
+.guide h1 {
+  font-family: "Coolvetica Rg";
+  font-size: 30pt;
+}
+.guide h1 span {
+  color: rgb(var(--color-primary));
+  text-decoration: underline;
+}
+.guide p {
+  font-size: 16pt;
+}
+.guide .guideCardAndVideo {
+  display: flex;
+  justify-content: space-between;
+  margin: 35px 0;
+}
+.guide .guideCard {
+  background-color: rgb(96 186 108);
+  padding: 20px;
+  padding-left: 40px;
+  width: 28%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-around;
+  border-radius: 15px;
+  transition: 0.5s all;
+  font-size: 15pt;
+  box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  -webkit-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+}
+.guide .guideCard li {
+  color: #fff;
+  list-style: disc;
+  padding-bottom: 10px;
+}
+.guide video {
+  width: 65%;
+  height: 100%;
+  border-radius: 15px;
+}
+.settings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  height: 500px;
+  display: flex;
+  gap: 50px;
+}
+.settings .videoContainer {
+  width: 50%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.settings .videoContainer video {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.settings .textContainer {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.settings .textContainer h1 {
+  font-family: "Coolvetica Rg";
+  font-size: 30pt;
+}
+.settings .textContainer p {
+  font-size: 16pt;
 }
