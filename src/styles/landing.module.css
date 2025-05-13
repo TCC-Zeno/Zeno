@@ -1,3 +1,15 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  min-height: 100vh;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -24,12 +36,20 @@
 }
 
 .linksContainer ul li {
+  font-size: 14pt;
   font-weight: 600;
   color: rgb(var(--color-primary));
+  transition: 0.5s all;
+}
+.linksContainer ul li:hover {
+  transform: scale(1.05);
 }
 
 .buttonContainer {
   padding-right: 3vw;
+}
+.buttonContainer a:hover {
+  transform: scale(1.1);
 }
 
 .signUpButton {
@@ -38,6 +58,7 @@
   background-color: rgb(var(--color-primary));
   border-radius: 8px;
   color: rgb(var(--color-background));
+  transition: all 0.25s;
 }
 
 .signInButton {
@@ -47,7 +68,14 @@
   border-radius: 10px;
   color: #000;
   font-weight: bold;
+  transition: all 0.5s;
 }
+.signUpButton:hover,
+.signInButton:hover {
+  transform: scale(1.1);
+  padding: 7px 2.7vw;
+}
+
 .page {
   display: flex;
   flex-direction: column;
@@ -61,25 +89,17 @@
   height: 350px;
   display: flex;
   padding-top: 25px;
-  margin-bottom: 100px;
 }
 .hero .titleContainer {
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-content: center;
 }
-.hero .titleContainer h1 {
-  font-family: "Coolvetica Rg";
-  font-size: 30pt;
-  padding: 0 15px;
-}
-.hero .titleContainer h1 span {
-  color: rgb(var(--color-primary));
-  text-decoration: underline;
-}
-.hero .titleContainer p {
-  padding: 20px 15px;
+
+.hero .titleContainer p:not(.title) {
+  padding: 20px 15px 40px 15px;
   font-size: 16pt;
 }
 .hero .signUpButton {
@@ -91,6 +111,11 @@
   box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
   -webkit-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
   -moz-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  transition: 0.5s all;
+}
+
+.hero .signUpButton:hover {
+  transform: scale(1.03);
 }
 
 .hero .imgContainer {
@@ -160,6 +185,7 @@
   max-width: 1200px;
   height: 500px;
   display: flex;
+  margin: 150px 0;
 }
 .guide h1 {
   font-family: "Coolvetica Rg";
@@ -175,6 +201,7 @@
 .guide .guideCardAndVideo {
   display: flex;
   justify-content: space-between;
+  align-self: center;
   margin: 35px 0;
 }
 .guide .guideCard {
@@ -199,6 +226,7 @@
   padding-bottom: 10px;
 }
 .guide video {
+  align-self: center;
   width: 65%;
   height: 100%;
   border-radius: 15px;
@@ -239,4 +267,86 @@
 }
 .settings .textContainer p {
   font-size: 16pt;
+}
+.callAction .separator {
+  height: 15px;
+  background: linear-gradient(
+    90deg,
+    rgb(96 186 108),
+    rgb(70, 135, 243),
+    rgb(109 6 210),
+    rgb(189 24 14)
+  );
+  margin: 50px 0 25px 0;
+}
+
+.title {
+  font-family: "Coolvetica Rg";
+  font-size: 30pt !important;
+  padding: 0 15px;
+}
+.title .spanTitle {
+  color: rgb(70, 135, 243);
+  text-decoration: underline;
+  padding: 0 10px;
+}
+
+.aboutUs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 100px 0;
+
+}
+
+.aboutUs h1 {
+  font-family: "Coolvetica Rg";
+  color: rgb(70, 135, 243);
+  font-size: 28pt;
+  text-align: center;
+}
+
+.aboutUs p {
+  font-size: 16pt;
+  text-align: center;
+}
+
+.aboutUs .containerDevs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+.aboutUs .containerDevs {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.aboutUs .containerDevs img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.aboutUs .containerDevs h6 {
+  font-size: 13pt;
+  font-weight: bold;
+}
+.aboutUs .containerDevs p {
+  font-size: 13pt;
+}
+
+.aboutUs .wrapperDevs {
+  display: flex;
+  gap: 30px;
 }
