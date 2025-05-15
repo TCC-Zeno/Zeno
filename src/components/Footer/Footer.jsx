@@ -8,7 +8,7 @@ import Logo from "../../assets/logo/LogoZeno_LogoPretoSFundo.png";
 
 export function Footer() {
   return (
-    <>
+    <footer>
       <div className={style.container}>
         <div className={style.footer}>
           <div className={style.containerLogo}>
@@ -38,6 +38,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-    </>
+    </footer>
   );
 }

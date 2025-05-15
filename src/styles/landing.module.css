@@ -42,7 +42,7 @@ body,
   transition: 0.5s all;
 }
 .linksContainer ul li:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .buttonContainer {
@@ -205,9 +205,19 @@ body,
   margin: 35px 0;
 }
 .guide .guideCard {
-  background-color: rgb(96 186 108);
-  padding: 20px;
-  padding-left: 40px;
+  background: linear-gradient(white, white) padding-box,
+    conic-gradient(
+        from 0deg,
+        rgb(96 186 108),
+        rgb(70, 135, 243),
+        rgb(109 6 210),
+        rgb(189 24 14),
+        rgb(109 6 210),
+        rgb(96 186 108)
+      )
+      border-box;
+
+  padding: 20px 20px 20px 40px;
   width: 28%;
   display: flex;
   flex-direction: column;
@@ -217,11 +227,13 @@ body,
   transition: 0.5s all;
   font-size: 15pt;
   box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
-  -webkit-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
-  -moz-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  border: 6px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
 }
+
 .guide .guideCard li {
-  color: #fff;
+  color: #000;
   list-style: disc;
   padding-bottom: 10px;
 }
@@ -288,21 +300,21 @@ body,
 .title .spanTitle {
   color: rgb(70, 135, 243);
   text-decoration: underline;
-  padding: 0 10px;
+  padding-right: 7px;
 }
 
 .aboutUs {
+  position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 100%;
   max-width: 1200px;
-  height: 500px;
+  height: 700px;
   display: flex;
   flex-direction: column;
-  margin: 100px 0;
-
+  margin: 150px 0;
+  padding: 50px;
 }
 
 .aboutUs h1 {
@@ -310,11 +322,13 @@ body,
   color: rgb(70, 135, 243);
   font-size: 28pt;
   text-align: center;
+  padding-bottom: 20px;
 }
 
 .aboutUs p {
   font-size: 16pt;
   text-align: center;
+  padding-bottom: 75px;
 }
 
 .aboutUs .containerDevs {
@@ -333,9 +347,13 @@ body,
 }
 
 .aboutUs .containerDevs img {
-  width: 100px;
-  height: 100px;
+  width: 125px;
+  height: 125px;
   border-radius: 50%;
+  transition: 0.5s all;
+}
+.aboutUs .containerDevs img:hover {
+  transform: scale(1.1);
 }
 
 .aboutUs .containerDevs h6 {
@@ -349,4 +367,120 @@ body,
 .aboutUs .wrapperDevs {
   display: flex;
   gap: 30px;
+}
+
+.aboutUs .ball01 {
+  position: absolute;
+  top: 0;
+  right: 40px;
+  width: 64px;
+  height: 64px;
+  background-color: rgb(70 135 243);
+  border-radius: 50%;
+}
+.aboutUs .ball02 {
+  position: absolute;
+  bottom: 0;
+  left: 24px;
+  width: 55px;
+  height: 55px;
+  background-color: rgb(109 6 210);
+  border-radius: 50%;
+}
+.aboutUs .ball03 {
+  position: absolute;
+  bottom: 16px;
+  right: 32px;
+  width: 16px;
+  height: 16px;
+  background-color: rgb(189 24 14);
+  border-radius: 50%;
+}
+.aboutUs .ball04 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  background-color: rgb(96 186 108);
+  border-radius: 50%;
+}
+footer .container {
+  width: 100%;
+  background: linear-gradient(90deg, rgb(70, 135, 243), rgb(109 6 210));
+  background: linear-gradient(
+    90deg,
+    rgb(122, 235, 140),
+    rgb(63, 136, 247),
+    rgb(149, 1, 246),
+    rgb(240, 37, 33)
+  );
+  height: 100%;
+}
+footer .footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-;
+}
+footer .containerLogo {
+  width: 20%;
+  height: auto;
+}
+footer .img {
+  justify-self: center;
+  width: 35%;
+  height: auto;
+  margin: 3%;
+  padding: 3%;
+}
+footer .conteudo {
+  width: 50%;
+  height: auto;
+  color: white;
+  text-align: center;
+}
+
+footer .icons {
+  width: 30%;
+  height: auto;
+  display: inline-flex;
+  flex-direction: row;
+  gap: 20%;
+}
+footer .a:hover {
+  transform: scale(1.25);
+}
+footer .a {
+  color: white;
+  width: 140%;
+  height: auto;
+  transition: 0.3s all;
+}
+
+@media screen and (max-width: 768px) {
+  footer .footer {
+    padding: 15px 0;
+    margin-left: 0;
+    font-size: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  footer .conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  footer .img {
+    width: 95%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+  }
+  footer .icons {
+    flex-direction: row;
+    width: 40%;
+    margin-top: 6%;
+  }
 }
