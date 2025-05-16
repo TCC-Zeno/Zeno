@@ -362,11 +362,51 @@ body,
 }
 .aboutUs .containerDevs p {
   font-size: 13pt;
+  padding: 0;
 }
 
 .aboutUs .wrapperDevs {
   display: flex;
   gap: 30px;
+}
+
+.aboutUs .containerDevs {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.aboutUs .containerDevs .popover {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.popover::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.containerDevs:hover .popover {
+  visibility: visible;
+  opacity: 1;
 }
 
 .aboutUs .ball01 {
@@ -378,6 +418,7 @@ body,
   background-color: rgb(70 135 243);
   border-radius: 50%;
 }
+
 .aboutUs .ball02 {
   position: absolute;
   bottom: 0;
@@ -387,6 +428,7 @@ body,
   background-color: rgb(109 6 210);
   border-radius: 50%;
 }
+
 .aboutUs .ball03 {
   position: absolute;
   bottom: 16px;
@@ -396,6 +438,7 @@ body,
   background-color: rgb(189 24 14);
   border-radius: 50%;
 }
+
 .aboutUs .ball04 {
   position: absolute;
   top: 0;
@@ -405,6 +448,7 @@ body,
   background-color: rgb(96 186 108);
   border-radius: 50%;
 }
+
 footer .container {
   width: 100%;
   background: linear-gradient(90deg, rgb(70, 135, 243), rgb(109 6 210));
@@ -417,15 +461,18 @@ footer .container {
   );
   height: 100%;
 }
+
 footer .footer {
   display: flex;
   align-items: center;
   justify-content: space-;
 }
+
 footer .containerLogo {
   width: 20%;
   height: auto;
 }
+
 footer .img {
   justify-self: center;
   width: 35%;
@@ -433,6 +480,7 @@ footer .img {
   margin: 3%;
   padding: 3%;
 }
+
 footer .conteudo {
   width: 50%;
   height: auto;
@@ -447,9 +495,11 @@ footer .icons {
   flex-direction: row;
   gap: 20%;
 }
+
 footer .a:hover {
   transform: scale(1.25);
 }
+
 footer .a {
   color: white;
   width: 140%;

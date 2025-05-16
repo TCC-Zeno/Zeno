@@ -251,6 +251,9 @@ export default function LandingPage() {
               />
               <h6>Caio Costa</h6>
               <p>Uma pessoa muito boa</p>
+              <div className={S.popover}>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.  </p>
+              </div>
             </div>
             <div className={S.containerDevs}>
               <img
