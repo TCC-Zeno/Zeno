@@ -25,14 +25,9 @@ export default function Finance() {
   } = useForm();
   const onSubmit = (data) => console.log(data);
   console.log(errors);
-  // const [value, setValue] = useState(false);
   return (
     <>
       <DefaultLayout>
-        <div className={style.title}>
-          <h1>Fluxo de Caixa</h1>
-        </div>
-        <div className={style.line}></div>
         <div className={style.containerView}>
           <div className={style.views}>
             <div className={style.titleIcon}>

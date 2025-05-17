@@ -21,6 +21,9 @@ export default function Header() {
       >
         <img src={Logo} alt="Logo Zeno" />
       </div>
+      <div className={S.title}>
+        <h1>Fluxo de caixa</h1>
+      </div>
       <div className={S.containerIcons}>
         <DropdownHeader
           icon={<IoMdNotifications className={S.icon}  />}

@@ -9,14 +9,50 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { FaClipboardList } from "react-icons/fa";
 
 import S from "./../styles/landing.module.css";
-import Exemplo from "./../assets/temp.jpg";
 import BlurText from "../components/BlurText/BlurText";
 import { BsFillBoxSeamFill, BsSuitcaseLgFill } from "react-icons/bs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa6";
 import { VscGithubAlt } from "react-icons/vsc";
 
 export default function LandingPage() {
+  const [burger, setBurguer] = useState(false);
+
+  const toggleBurger = () => {
+    setBurguer((prevState) => {
+      if (!prevState) {
+        const scrollY = window.scrollY;
+        document.body.style.position = "fixed";
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = "100%";
+        document.body.style.overflow = "hidden";
+        document.body.dataset.scrollY = scrollY.toString();
+      } else {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        document.body.style.overflow = "";
+        const scrollY = parseInt(document.body.dataset.scrollY || "0");
+        window.scrollTo(0, scrollY);
+      }
+      return !prevState;
+    });
+  };
+
+  useEffect(() => {
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+
+      const scrollY = parseInt(document.body.dataset.scrollY || "0");
+      if (scrollY) {
+        window.scrollTo(0, scrollY);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const handleClick = (e) => {
       e.preventDefault();
@@ -51,12 +87,12 @@ export default function LandingPage() {
     <>
       <nav className={S.navbar}>
         <div className={S.logoContainer}>
-          <img src={Logo} alt="" />
+          <img src={Logo} alt="Logo do Zeno" />
         </div>
         <div className={S.linksContainer}>
           <ul>
             <li>
-              <a href="#hero">Inicio</a>
+              <a href="#hero">Início</a>
             </li>
             <li>
               <a href="#function">Sobre</a>
@@ -80,7 +116,62 @@ export default function LandingPage() {
             Criar
           </Link>
         </div>
+        <div className={S.burgerContainer} onClick={toggleBurger}>
+          <label className={S.burger} htmlFor="burger">
+            <input
+              type="checkbox"
+              id="burger"
+              checked={burger}
+              onChange={toggleBurger}
+            />
+            <span />
+            <span />
+            <span />
+          </label>
+        </div>
       </nav>
+      <div className={`${S.drawerMenu} ${burger ? S.active : ""}`}>
+        <div className={S.drawerMenuContainer}>
+          <div className={S.logoContainer}>
+            <img src={Logo} alt="Logo do Zeno" />
+          </div>
+          <ul>
+            <li>
+              <a href="#hero" onClick={toggleBurger}>
+                Início
+              </a>
+            </li>
+            <li>
+              <a href="#function" onClick={toggleBurger}>
+                Sobre
+              </a>
+            </li>
+            <li>
+              <a href="#guide" onClick={toggleBurger}>
+                Funções
+              </a>
+            </li>
+            <li>
+              <a href="#settings" onClick={toggleBurger}>
+                Personalização
+              </a>
+            </li>
+            <li>
+              <a href="#aboutUs" onClick={toggleBurger}>
+                Sobre nós
+              </a>
+            </li>
+            <div className={S.buttonContainer}>
+              <Link className={S.signInButton} to="/login">
+                Entrar
+              </Link>
+              <Link className={S.signUpButton} to="/login">
+                Criar
+              </Link>
+            </div>
+          </ul>
+        </div>
+      </div>
       <main className={S.page}>
         <section id="hero" className={S.hero}>
           <div className={S.titleContainer}>
@@ -157,9 +248,11 @@ export default function LandingPage() {
         <section id="guide" className={S.guide}>
           <div className={S.content}>
             <BlurText delay={150} direction="top" className={S.title}>
-              {"O Sistema Simples e ‎"}
+              {"O Sistema ‎"}
+              {"Simples e ‎"}
               <span className={S.spanTitle}>Poderoso</span>
-              {"para Seu Negócio."}
+              {"para  ‎"}
+              {"Seu Negócio."}
             </BlurText>
             <p>
               O Zeno foi criado para ajudar líderes de pequenos negócios a
@@ -221,9 +314,14 @@ export default function LandingPage() {
         <section id="callAction" className={S.callAction}>
           <div className={S.separator}></div>
           <BlurText delay={150} direction="top" className={S.title}>
-            {"Se você quer dar um ‎"}
+            {"Se você  ‎"}
+            {"quer dar ‎"}
+            {"um ‎"}
             <span className={`${S.spanTitle} ${S.spanTitleLeft}`}>UP</span>
-            {"‎ no seu pequeno negócio, crie sua conta agora."}
+            {"‎ no seu ‎"}
+            {"pequeno negócio, ‎"}
+            {"crie sua ‎"}
+            {"conta agora."}
           </BlurText>
         </section>
         <section className={S.aboutUs}>
@@ -252,7 +350,7 @@ export default function LandingPage() {
               <h6>Caio Costa</h6>
               <p>Uma pessoa muito boa</p>
               <div className={S.popover}>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.  </p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
               </div>
             </div>
             <div className={S.containerDevs}>

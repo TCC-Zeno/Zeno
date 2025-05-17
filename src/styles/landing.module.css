@@ -76,6 +76,13 @@ body,
   padding: 7px 2.7vw;
 }
 
+.burgerContainer {
+  display: none;
+}
+.drawerMenu{
+  display: none;
+}
+
 .page {
   display: flex;
   flex-direction: column;
@@ -127,32 +134,60 @@ body,
   height: auto;
 }
 .function {
-  display: flex;
-  justify-content: space-between;
   width: 100%;
   max-width: 1200px;
-  height: 450px;
-  display: flex;
-  padding-top: 25px;
+  height: 500px;
+  padding: 70px 30px 60px 30px;
   margin: 100px 0;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: visible;
+  gap: 25px;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(109, 6, 210) transparent;
 }
+
+.function:hover {
+  overflow-y: visible;
+}
+
+.function::-webkit-scrollbar {
+  height: 8px;
+}
+
+.function::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+.function::-webkit-scrollbar-thumb {
+  background-color: rgb(109, 6, 210);
+  border-radius: 4px;
+}
+
 .function .functionCard {
+  flex: 0 0 auto;
   background-color: rgb(109, 6, 210);
   padding: 20px;
   width: 18%;
+  min-width: 205px;
   display: flex;
   flex-direction: column;
   align-content: center;
   justify-content: space-around;
   border-radius: 15px;
   transition: 0.5s all;
-  box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
-  -webkit-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
-  -moz-box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.52);
+  box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.25);
 }
+
 .function .functionCard:hover {
   transform: translateY(-25px);
   z-index: 1;
+  box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.3);
 }
 
 .function .functionCard .icon {
@@ -186,6 +221,7 @@ body,
   height: 500px;
   display: flex;
   margin: 150px 0;
+  padding: 0 30px;
 }
 .guide h1 {
   font-family: "Coolvetica Rg";
@@ -253,6 +289,7 @@ body,
   height: 500px;
   display: flex;
   gap: 50px;
+  padding: 0 30px;
 }
 .settings .videoContainer {
   width: 50%;
@@ -279,6 +316,9 @@ body,
 }
 .settings .textContainer p {
   font-size: 16pt;
+}
+.callAction {
+  padding: 0 30px;
 }
 .callAction .separator {
   height: 15px;
@@ -532,5 +572,285 @@ footer .a {
     flex-direction: row;
     width: 40%;
     margin-top: 6%;
+  }
+
+  .burger {
+    position: relative;
+    width: 20px;
+    height: 15px;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+  }
+
+  .burger input {
+    display: none;
+  }
+
+  .burger span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: black;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: 0.25s ease-in-out;
+  }
+
+  .burger span:nth-of-type(1) {
+    top: 0px;
+    transform-origin: left center;
+  }
+
+  .burger span:nth-of-type(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: left center;
+  }
+
+  .burger span:nth-of-type(3) {
+    top: 100%;
+    transform-origin: left center;
+    transform: translateY(-100%);
+  }
+
+  .burger input:checked ~ span:nth-of-type(1) {
+    transform: rotate(45deg);
+    top: 0px;
+    left: 2.5px;
+  }
+
+  .burger input:checked ~ span:nth-of-type(2) {
+    width: 0%;
+    opacity: 0;
+  }
+
+  .burger input:checked ~ span:nth-of-type(3) {
+    transform: rotate(-45deg);
+    left: 2.5px;
+  }
+
+  .drawerMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 100dvh;
+    background-color: rgb(var(--color-background));
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 10000;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .drawerMenu.active {
+    transform: translateX(0);
+  }
+
+  .drawerMenu.active::before {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .drawerMenu ul {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    height: 100%;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .drawerMenu ul li {
+    font-size: 17pt;
+    font-weight: 600;
+    color: rgb(var(--color-primary));
+    transition: 0.5s all;
+  }
+
+  .drawerMenu ul li:hover {
+    transform: scale(1.01);
+    padding: 5px;
+    border-radius: 10px;
+    background-color: rgb(var(--color-background-secondary));
+    width: 100%;
+  }
+
+  .drawerMenu .buttonContainer {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .drawerMenu .signInButton,
+  .drawerMenu .signUpButton {
+    width: 200px;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+
+  .drawerMenu .logoContainer {
+    justify-items: center;
+    padding: 0;
+  }
+  .drawerMenu .logoContainer img {
+    width: 25vw;
+    height: auto;
+    padding-bottom: 25px;
+  }
+  .linksContainer {
+    display: none;
+  }
+  .buttonContainer {
+    display: none;
+  }
+  .burgerContainer {
+    padding-right: 5vw;
+    display: block;
+  }
+  .signUpButton {
+    margin: 0;
+  }
+  .buttonContainer {
+    margin: 0;
+    padding: 0;
+  }
+  .drawerMenu ul li:focus {
+    transform: scale(1.01);
+    padding: 5px;
+    border-radius: 10px;
+    background-color: rgb(var(--color-background-secondary));
+    width: 100%;
+  }
+  .navbar {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    width: 100vw;
+  }
+  .hero {
+    flex-direction: column-reverse;
+    padding-top: 100px;
+    height: auto;
+  }
+  .hero .titleContainer {
+    width: 100%;
+    padding: 0 5vw;
+  }
+  .hero .titleContainer :global(.title) {
+    font-size: 23pt;
+    padding: 0;
+  }
+  .hero .titleContainer .title {
+    padding: 0 5vw;
+  }
+
+  .hero .signUpButton {
+    width: 100%;
+  }
+  .hero .imgContainer {
+    width: 100%;
+    padding: 0 5vw;
+  }
+  .function {
+    height: 550px;
+    margin: 0;
+  }
+  .function .functionCard {
+    width: 180px;
+    height: 100%;
+    padding: 10px;
+    margin: 0 auto;
+  }
+  .function .functionCard .icon {
+    height: 30%;
+    font-size: 10vw;
+  }
+  .guide {
+    height: auto;
+    flex-direction: column;
+    margin: 50px;
+  }
+  .guide :global(.title) {
+    font-size: 23pt;
+    padding: 0;
+  }
+  .title {
+    padding: 0;
+  }
+  .guide .guideCardAndVideo {
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+  .guide .guideCard {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+  }
+  .guide video {
+    width: 100%;
+    height: auto;
+    margin: 0 auto 20px auto;
+  }
+  .settings {
+    flex-direction: column-reverse;
+    height: auto;
+  }
+  .settings .textContainer {
+    width: 100%;
+    height: auto;
+  }
+  .settings .videoContainer {
+    width: 100%;
+    height: auto;
+  }
+  .callAction :global(.title) {
+    font-size: 20pt;
+  }
+  .callAction .title {
+    justify-content: center;
+  }
+  .aboutUs {
+    height: auto;
+    padding: 0;
+  }
+  .aboutUs p {
+    padding: 0 30px;
+  }
+  .aboutUs .wrapperDevs {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: visible;
+    gap: 25px;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(109, 6, 210) transparent;
+    padding-top: 150px;
+  }
+  .aboutUs .containerDevs {
+    flex: 0 0 auto;
+  }
+  .aboutUs .ball01 {
+    display: none;
+  }
+  .aboutUs .ball02 {
+    display: none;
+  }
+  .aboutUs .ball03 {
+    display: none;
+  }
+  .aboutUs .ball04 {
+    display: none;
   }
 }
