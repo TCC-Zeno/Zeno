@@ -324,7 +324,7 @@ export default function LandingPage() {
             {"conta agora."}
           </BlurText>
         </section>
-        <section className={S.aboutUs}>
+        <section id="aboutUs" className={S.aboutUs}>
           <div className={S.ball01}></div>
           <div className={S.ball02}></div>
           <div className={S.ball03}></div>
@@ -342,13 +342,17 @@ export default function LandingPage() {
             fazer seu negócio prosperar!
           </p>
           <div className={S.wrapperDevs}>
-            <div className={S.containerDevs}>
+            <div
+              className={S.containerDevs}
+              onClick={() =>
+                window.open("https://github.com/CaioCosta2JZ", "_blank")
+              }
+            >
               <img
                 src="https://avatars.githubusercontent.com/u/127055627?v=4"
                 alt="Foto do Caio"
               />
               <h6>Caio Costa</h6>
-              <p>Uma pessoa muito boa</p>
               <div className={S.popover}>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
               </div>
@@ -358,8 +362,7 @@ export default function LandingPage() {
                 src="https://avatars.githubusercontent.com/u/163062463?v=4"
                 alt="Foto do José"
               />
-              <h6>Jose de Souza</h6>
-              <p>Uma pessoa muito boa</p>
+              <h6>José de Souza</h6>
             </div>
             <div className={S.containerDevs}>
               <img
@@ -367,7 +370,6 @@ export default function LandingPage() {
                 alt="Foto do Naresh"
               />
               <h6>Naresh Sharma</h6>
-              <p>Uma pessoa muito boa</p>
             </div>
             <div className={S.containerDevs}>
               <img
@@ -375,7 +377,6 @@ export default function LandingPage() {
                 alt="Foto do Nicolas"
               />
               <h6>Nicolas Spinelli</h6>
-              <p>Uma pessoa muito boa</p>
             </div>
             <div className={S.containerDevs}>
               <img
@@ -383,7 +384,6 @@ export default function LandingPage() {
                 alt="Foto do Nicollas"
               />
               <h6>Nicollas Reis</h6>
-              <p>Uma pessoa muito boa</p>
             </div>
             <div className={S.containerDevs}>
               <img
@@ -391,7 +391,6 @@ export default function LandingPage() {
                 alt="Foto do Vinícius"
               />
               <h6>Vinícius Porto</h6>
-              <p>Uma pessoa muito boa</p>
             </div>
           </div>
         </section>
