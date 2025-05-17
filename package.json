@@ -1,7 +1,7 @@
 {
   "name": "zeno",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -18,9 +18,12 @@
     "@hookform/resolvers": "^5.0.1",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.6.1",
+    "@sideway/address": "^5.0.0",
+    "@sideway/formula": "^3.0.1",
     "body-scroll-lock": "^4.0.0-beta.0",
     "cpf-cnpj-validator": "^1.0.3",
     "framer-motion": "^12.5.0",
+    "joi": "^17.13.3",
     "react": "^19.0.0",
     "react-currency-input-field": "^3.10.0",
     "react-dom": "^19.0.0",
