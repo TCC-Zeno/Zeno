@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Logo from "./../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import LogoWhite from "./../assets/logo/LogoZeno_LogoPretoSFundo.png";
-import img001 from "./../assets/tempLanding.png";
+import img001 from "./../assets/imgHeroLandingPage.png";
 import video001 from "./../assets/videoDasCores.mp4";
 import video002 from "./../assets/videoDasTelas.mp4";
 import { HiTrendingUp } from "react-icons/hi";
