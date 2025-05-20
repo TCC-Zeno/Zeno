@@ -4,7 +4,6 @@ import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
 import { useForm, Controller } from "react-hook-form";
-// import { useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaArrowTrendDown } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
@@ -28,76 +27,78 @@ export default function Finance() {
   return (
     <>
       <DefaultLayout>
-        <div className={style.containerView}>
-          <div className={style.views}>
-            <div className={style.titleIcon}>
-              <p>Entradas do mês</p>
-              <FaArrowTrendUp className={style.top} />
+        <div className={style.containerViewAndFilter}>
+          <div className={style.containerView}>
+            <div className={style.views}>
+              <div className={style.titleIcon}>
+                <p>Entradas do mês</p>
+                <FaArrowTrendUp className={style.top} />
+              </div>
+              <h2 className={style.number}>$value</h2>
             </div>
-            <h2 className={style.number}>$value</h2>
-          </div>
-          <div className={style.views}>
-            <div className={style.titleIcon}>
-              <p>Saías do mês</p>
-              <FaArrowTrendDown className={style.down} />
+            <div className={style.views}>
+              <div className={style.titleIcon}>
+                <p>Saías do mês</p>
+                <FaArrowTrendDown className={style.down} />
+              </div>
+              <h2 className={style.number2}>$value</h2>
             </div>
-            <h2 className={style.number2}>$value</h2>
-          </div>
-          <div className={style.views}>
-            <div className={style.titleIcon}>
-              <p>Saldo do mês</p>
-              <p className={style.icon}>Icon</p>
+            <div className={style.views}>
+              <div className={style.titleIcon}>
+                <p>Saldo do mês</p>
+                <p className={style.icon}>Icon</p>
+              </div>
+              <h2 className={style.number3}>$value</h2>
             </div>
-            <h2 className={style.number3}>$value</h2>
           </div>
-        </div>
-        <div className={style.line}></div>
-        <div className={style.row0}>
-          <div className={style.date}>
-            <div>
-              <h1 className={style.titleDate}>Data:</h1>
+          <div className={style.line}></div>
+          <div className={style.row0}>
+            <div className={style.date}>
+              <div>
+                <h1 className={style.titleDate}>Data:</h1>
+              </div>
+              <input
+                className={style.inputDate}
+                type="date"
+                {...register("date", { required: true })}
+              />
             </div>
-            <input
-              className={style.inputDate}
-              type="date"
-              {...register("date", { required: true })}
-            />
+            <select
+              className={style.financeSelect1}
+              {...register("Payment method", { required: true })}
+            >
+              <option value="Método de pagamento" disabled selected>
+                Método de pagamento
+              </option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="Pix">Pix</option>
+              <option value="Outros">Outros</option>
+            </select>
+            <select
+              className={style.financeSelect1}
+              {...register("category", { required: true })}
+            >
+              <option value="Categorias" disabled selected>
+                Categorias
+              </option>
+              <option value="Compras">Compras</option>
+              <option value="Contas">Contas</option>
+              <option value="Manutenção">Manutenção</option>
+              <option value="Outros">Outros</option>
+            </select>
+            <select
+              className={style.financeSelect1}
+              {...register("flow", { required: true })}
+            >
+              <option value="Tipo de fluxo" disabled selected>
+                Tipo de fluxo
+              </option>
+              <option value="Entrada">Entrada</option>
+              <option value="Saída">Saída</option>
+            </select>
           </div>
-          <select
-            className={style.financeSelect1}
-            {...register("Payment method", { required: true })}
-          >
-            <option value="Método de pagamento" disabled selected>
-              Método de pagamento
-            </option>
-            <option value="Cartão de crédito">Cartão de crédito</option>
-            <option value="Cartão de débito">Cartão de débito</option>
-            <option value="Dinheiro">Dinheiro</option>
-            <option value="Pix">Pix</option>
-            <option value="Outros">Outros</option>
-          </select>
-          <select
-            className={style.financeSelect1}
-            {...register("category", { required: true })}
-          >
-            <option value="Categorias" disabled selected>
-              Categorias
-            </option>
-            <option value="Compras">Compras</option>
-            <option value="Contas">Contas</option>
-            <option value="Manutenção">Manutenção</option>
-            <option value="Outros">Outros</option>
-          </select>
-          <select
-            className={style.financeSelect1}
-            {...register("flow", { required: true })}
-          >
-            <option value="Tipo de fluxo" disabled selected>
-              Tipo de fluxo
-            </option>
-            <option value="Entrada">Entrada</option>
-            <option value="Saída">Saída</option>
-          </select>
         </div>
         <div className={style.containerTable}>
           <table className={style.table}>
