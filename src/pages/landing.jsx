@@ -332,14 +332,14 @@ export default function LandingPage() {
 
           <h1>Sobre nós</h1>
           <p>
-            Éramos um grupo de estudantes da ETEC Martinho Di Ciero em 2025
-            quando criamos o sistema Zeno, um sistema para MEIs que simplifica a
-            administração de pequenas empresas. Como parte do nosso TCC,
-            desenvolvemos uma plataforma intuitiva com controle de caixa, gestão
-            de estoque, agenda e muito mais. Nosso objetivo? Tornar a tecnologia
-            acessível e eficiente, ajudando empreendedores a focarem no
-            crescimento sem complicação. Transformamos desafios em soluções para
-            fazer seu negócio prosperar!
+            Somos um grupo de estudantes da ETEC Martinho Di Ciero em 2025, e
+            estamos criando o sistema Zeno, uma plataforma feita para MEIs que
+            simplifica a administração de pequenas empresas. Como parte do nosso
+            TCC, desenvolvemos uma solução intuitiva com controle de caixa,
+            gestão de estoque, agenda e muito mais. Nosso objetivo? Tornar a
+            tecnologia acessível e eficiente, ajudando empreendedores a focarem
+            no crescimento sem complicação. Transformamos desafios em soluções
+            para fazer seu negócio prosperar!
           </p>
           <div className={S.wrapperDevs}>
             <div
