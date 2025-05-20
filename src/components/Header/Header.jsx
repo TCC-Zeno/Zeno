@@ -1,6 +1,7 @@
 import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import { IoMdNotifications } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
+import { MdTune } from "react-icons/md";
 import S from "./header.module.css";
 import { useSelector } from "react-redux";
 import DropdownHeader from "./DropdownHeader";
@@ -52,6 +53,14 @@ export default function Header() {
       >
         <h1>{getTitulo(rotaStatus)}</h1>
       </div>
+
+        <div className={S.containerIcons}>
+        {rotaStatus === 'stock' ? ( <DropdownHeader
+          icon={<MdTune className={S.icon} />}
+          modalContent={<ProfileContent />}
+        />) : null }
+        </div>
+
       <div className={S.containerIcons}>
         <DropdownHeader
           icon={<IoMdNotifications className={S.icon} />}
@@ -62,6 +71,7 @@ export default function Header() {
           icon={<CgProfile className={S.icon} />}
           modalContent={<ProfileContent />}
         />
+        
       </div>
     </header>
   );
