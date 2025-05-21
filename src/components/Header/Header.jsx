@@ -53,15 +53,13 @@ export default function Header() {
       >
         <h1>{getTitulo(rotaStatus)}</h1>
       </div>
-
-        <div className={S.containerIcons}>
+      
+      <div className={S.containerIcons}>
         {rotaStatus === 'stock' ? ( <DropdownHeader
           icon={<MdTune className={S.icon} />}
           modalContent={<ProfileContent />}
         />) : null }
-        </div>
 
-      <div className={S.containerIcons}>
         <DropdownHeader
           icon={<IoMdNotifications className={S.icon} />}
           modalContent={<NotificationContent />}

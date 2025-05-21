@@ -365,7 +365,7 @@ body,
 
 .aboutUs p {
   font-size: 16pt;
-  text-align: center;
+  text-align: justify;
   padding-bottom: 75px;
 }
 
@@ -487,15 +487,16 @@ body,
   border-radius: 50%;
 }
 
+.aboutUs .text01 {
+  padding: 0;
+}
+
 footer .container {
   width: 100%;
-  background: linear-gradient(90deg, rgb(70, 135, 243), rgb(109 6 210));
   background: linear-gradient(
     90deg,
-    rgb(122, 235, 140),
-    rgb(63, 136, 247),
-    rgb(149, 1, 246),
-    rgb(240, 37, 33)
+    /* rgb(122, 235, 140), */ rgb(63, 136, 247),
+    rgb(149, 1, 246) /* rgb(240, 37, 33) */
   );
   height: 100%;
 }
@@ -503,7 +504,8 @@ footer .container {
 footer .footer {
   display: flex;
   align-items: center;
-  justify-content: space-;
+  border-top: 2px solid
+    linear-gradient(90deg, rgb(70, 135, 243), rgb(109 6 210));
 }
 
 footer .containerLogo {

@@ -85,7 +85,6 @@
   border: none;
   border-radius: 5px;
   padding: 10px;
-  font-size: 24px;
   cursor: pointer;
   z-index: 999;
   transition: transform 0.2s ease;

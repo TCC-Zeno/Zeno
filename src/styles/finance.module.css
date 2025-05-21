@@ -115,6 +115,7 @@
   width: 90%;
   border: solid 1px black;
   margin: 15px;
+  justify-self: center;
 }
 
 .containerTable {

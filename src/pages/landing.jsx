@@ -14,6 +14,7 @@ import { BsFillBoxSeamFill, BsSuitcaseLgFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa6";
 import { VscGithubAlt } from "react-icons/vsc";
+import ScrollToTopButton from "../components/ScrollToTopButton/ScrollToTopButton ";
 
 export default function LandingPage() {
   const [burger, setBurguer] = useState(false);
@@ -207,8 +208,8 @@ export default function LandingPage() {
             <div className={S.text}>
               <h2>Controle de caixa</h2>
               <p>
-                Controle financeiro na palma da sua mão. Mantenha seu caixa
-                sempre no verde com uma gestão simples e eficaz.
+                Controle financeiro na palma da sua mão. Mantenha seu caixa no
+                equilíbrio com uma gestão simples e eficaz.
               </p>
             </div>
           </div>
@@ -280,9 +281,6 @@ export default function LandingPage() {
                     entregas e tarefas.
                   </li>
                   <li>
-                    Tarefas: Organize o que precisa ser feito, sem complicação.
-                  </li>
-                  <li>
                     Organizador: Organize o que precisa ser feito, sem
                     complicação.
                   </li>
@@ -331,15 +329,17 @@ export default function LandingPage() {
           <div className={S.ball04}></div>
 
           <h1>Sobre nós</h1>
-          <p>
-            Somos um grupo de estudantes da ETEC Martinho Di Ciero em 2025, e
-            estamos criando o sistema Zeno, uma plataforma feita para MEIs que
+          <p className={S.text01}>
+            &nbsp; Somos um grupo de estudantes da ETEC Martinho Di Ciero de
+            2025, e criamos o sistema Zeno, uma plataforma feita para MEIs que
             simplifica a administração de pequenas empresas. Como parte do nosso
             TCC, desenvolvemos uma solução intuitiva com controle de caixa,
-            gestão de estoque, agenda e muito mais. Nosso objetivo? Tornar a
-            tecnologia acessível e eficiente, ajudando empreendedores a focarem
-            no crescimento sem complicação. Transformamos desafios em soluções
-            para fazer seu negócio prosperar!
+            gestão de estoque, agenda e muito mais.
+          </p>
+          <p>
+            &nbsp; Nosso objetivo? Tornar a tecnologia acessível e eficiente,
+            ajudando empreendedores a focarem no crescimento sem complicação.
+            Transformamos desafios em soluções para fazer seu negócio prosperar!
           </p>
           <div className={S.wrapperDevs}>
             <div
@@ -393,6 +393,7 @@ export default function LandingPage() {
               <h6>Vinícius Porto</h6>
             </div>
           </div>
+          <ScrollToTopButton />
         </section>
         <footer>
           <div className={S.container}>
