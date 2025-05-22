@@ -6,6 +6,7 @@ import S from "./header.module.css";
 import { useSelector } from "react-redux";
 import DropdownHeader from "./DropdownHeader";
 import { NotificationContent, ProfileContent } from "./dropdownContents";
+import { BsQuestionLg } from "react-icons/bs";
 
 export default function Header() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
@@ -53,7 +54,7 @@ export default function Header() {
       >
         <h1>{getTitulo(rotaStatus)}</h1>
       </div>
-      
+
       <div className={S.containerIcons}>
         {rotaStatus === 'stock' ? ( <DropdownHeader
           icon={<MdTune className={S.icon} />}
@@ -67,6 +68,11 @@ export default function Header() {
 
         <DropdownHeader
           icon={<CgProfile className={S.icon} />}
+          modalContent={<ProfileContent />}
+        />
+
+        <DropdownHeader
+          icon={<BsQuestionLg className={S.icon} />}
           modalContent={<ProfileContent />}
         />
         

@@ -1,6 +1,7 @@
 import { Footer } from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { Navbar } from "../../components/Navbar/Navbar";
+import GuideUsers from "../GuideUsers/GuideUsers";
 import S from "./../../styles/default.module.css";
 
 export default function DefaultLayout({ children }) {
@@ -15,6 +16,7 @@ export default function DefaultLayout({ children }) {
         <footer className={S.footer}>
           <Footer />
         </footer>
+        <GuideUsers />
       </div>
     </>
   );
