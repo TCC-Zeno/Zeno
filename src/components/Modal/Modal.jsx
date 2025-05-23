@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import S from "./modal.module.css";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Modal({ isOpen, onClose, children }) {
+export default function Modal({ isOpen, onClose, children, style }) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-    
+
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -52,12 +52,21 @@ export default function Modal({ isOpen, onClose, children }) {
           className={S.modalOverlay}
         >
           <div className={S.modalBackdrop} onClick={onClose}></div>
-          
-          <div className={S.modalContainer}>
-            <button className={S.modalCloseButton} onClick={onClose}>
+
+          <div
+            className={S.modalContainer}
+            style={{
+              backgroundColor: style?.backgroundColor || "",
+              boxShadow: style?.boxShadow || "",
+            }}
+          >
+            <button className={S.modalCloseButton} onClick={onClose}
+            style={{
+              color: style?.color || "",
+            }}>
               ✕
             </button>
-            
+
             <div className={S.modalContent}>{children}</div>
           </div>
         </motion.div>

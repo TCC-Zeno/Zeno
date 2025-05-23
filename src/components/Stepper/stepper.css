@@ -14,6 +14,7 @@
   width: 100%;
   max-width: 28rem;
   border-radius: 2rem;
+  background-color: #fff;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
@@ -22,7 +23,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .step-content-default {

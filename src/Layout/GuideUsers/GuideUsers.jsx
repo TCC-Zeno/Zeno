@@ -3,24 +3,30 @@ import Stepper, { Step } from "./../../components/Stepper/Stepper";
 import { BsQuestionLg } from "react-icons/bs";
 import S from "./guideUsers.module.css";
 import Modal from "../../components/Modal/Modal";
+import img from "./../../assets/fluxoCaixa.png";
+import { useEffect } from "react";
 
 export default function GuideUsers() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    const preloadImage = new Image();
+    preloadImage.src = img;
+    preloadImage.onload = () => setImageLoaded(true);
+  }, []);
   return (
     <>
       <button className={S.guideButton} onClick={() => setModalOpen(true)}>
         <BsQuestionLg className={S.icon} />
       </button>
-      <button className={S.guideButton02} onClick={() => setModalOpen(true)}>
-        <BsQuestionLg className={S.icon} />
-      </button>
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} style={{ backgroundColor: "transparent", boxShadow: "none", color: "white" }}>
         <Stepper
           initialStep={1}
           onStepChange={(step) => {
             console.log(step);
           }}
-          onFinalStepCompleted={() => console.log("All steps completed!")}
+          onFinalStepCompleted={() => setModalOpen(false)}
           backButtonText="Voltar"
           nextButtonText="Continuar"
         >
@@ -29,19 +35,17 @@ export default function GuideUsers() {
             <p>Check out the next step!</p>
           </Step>
           <Step>
-            <h2>Step 2</h2>
+            <h2 className={S.titleStep}>Fluxo de caixa </h2>
             <img
+              className={S.imgStep}
               style={{
-                height: "100px",
-                width: "100%",
-                objectFit: "cover",
-                objectPosition: "center -70px",
-                borderRadius: "15px",
-                marginTop: "1em",
+                opacity: imageLoaded ? 1 : 0,
               }}
-              src="https://www.purrfectcatgifts.co.uk/cdn/shop/collections/Funny_Cat_Cards_640x640.png?v=1663150894"
+              src={img}
+              alt="fluxo de caixa"
+              loading="eager"
             />
-            <p>Custom step content!</p>
+            <p>Aqui você poderá ver seus lucros e gastos e blablabla</p>
           </Step>
           <Step>
             <h2>How about an input?</h2>

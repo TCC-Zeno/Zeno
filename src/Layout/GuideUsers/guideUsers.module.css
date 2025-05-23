@@ -1,19 +1,6 @@
 .guideButton {
   background-color: rgb(var(--color-background));
   position: fixed;
-  bottom: 30vh;
-  right: 30px;
-  padding: 10px;
-  transition: 0.5s all;
-  border-radius: 50%;
-  border: rgb(var(--color-primary)) 4px solid;
-  box-shadow: 0px 1px 92px -18px rgba(0, 0, 0, 0.45);
-  -webkit-box-shadow: 0px 1px 92px -18px rgba(0, 0, 0, 0.45);
-  -moz-box-shadow: 0px 1px 92px -18px rgba(0, 0, 0, 0.45);
-}
-.guideButton02 {
-  background-color: rgb(var(--color-background));
-  position: fixed;
   bottom: 20vh;
   right: 0;
   padding: 10px;
@@ -24,10 +11,24 @@
   -webkit-box-shadow: 0px 1px 92px -18px rgba(0, 0, 0, 0.45);
   -moz-box-shadow: 0px 1px 92px -18px rgba(0, 0, 0, 0.45);
 }
+
 .guideButton:hover {
-  transform: scale(1.05);
+  transform: scaleX(1.05);
 }
+
 .icon {
   color: rgb(var(--color-primary));
   font-size: 24pt;
+}
+
+.titleStep {
+  font-size: 18pt;
+  font-family: "Coolvetica Rg";
+}
+
+.imgStep {
+  height: 100%;
+  object-fit: content;
+  border-radius: 15px;
+  transition: opacity 0.3s ease-in-out;
 }

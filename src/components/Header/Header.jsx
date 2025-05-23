@@ -70,11 +70,6 @@ export default function Header() {
           icon={<CgProfile className={S.icon} />}
           modalContent={<ProfileContent />}
         />
-
-        <DropdownHeader
-          icon={<BsQuestionLg className={S.icon} />}
-          modalContent={<ProfileContent />}
-        />
         
       </div>
     </header>
