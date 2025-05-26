@@ -29,7 +29,10 @@
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 1001;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--color-primary)) transparent;
 }
 
 .modalCloseButton {

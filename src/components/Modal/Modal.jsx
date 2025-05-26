@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import S from "./modal.module.css";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Modal({ isOpen, onClose, children, style }) {
+export default function Modal({ isOpen, onClose, children, guide = false }) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -51,24 +51,52 @@ export default function Modal({ isOpen, onClose, children, style }) {
           variants={dropdownVariants}
           className={S.modalOverlay}
         >
-          <div className={S.modalBackdrop} onClick={onClose}></div>
+          <div className={S.modalBackdrop} />
 
-          <div
+          <motion.div
+            variants={dropdownVariants}
             className={S.modalContainer}
-            style={{
-              backgroundColor: style?.backgroundColor || "",
-              boxShadow: style?.boxShadow || "",
-            }}
+            style={
+              guide
+                ? {
+                    width: "50vw",
+                    maxWidth: "100%",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                    padding: 0,
+                    overflowY: "auto",
+                  }
+                : undefined
+            }
           >
-            <button className={S.modalCloseButton} onClick={onClose}
-            style={{
-              color: style?.color || "",
-            }}>
+            <button
+              className={S.modalCloseButton}
+              onClick={onClose}
+              style={
+                guide
+                  ? {
+                      color: "white",
+                    }
+                  : undefined
+              }
+              aria-label="Close modal"
+            >
               ✕
             </button>
 
-            <div className={S.modalContent}>{children}</div>
-          </div>
+            <div
+              className={S.modalContent}
+              style={
+                guide
+                  ? {
+                      width: "50vw",
+                    }
+                  : undefined
+              }
+            >
+              {children}
+            </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
