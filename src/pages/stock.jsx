@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { stock } from "../redux/Route/slice";
@@ -12,6 +12,8 @@ import feijoada from "./../assets/Feijoada.jpg";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { LuPlus } from "react-icons/lu";
+import Modal from "../components/Modal/Modal";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 export default function Stock() {
   const dispatch = useDispatch();
@@ -25,6 +27,8 @@ export default function Stock() {
   } = useForm();
   const onSubmit = (data) => console.log(data);
   console.log(errors);
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <>
@@ -46,39 +50,55 @@ export default function Stock() {
 
         <div className={style.containerCards}>
           <div className={style.Cardadd}>
-            <LuPlus className={style.add}/>
+            <LuPlus className={style.add} />
             <div className={style.contentAdd}>
-              <h1>
-                Adicionar Produto
-              </h1>
+              <h1>Adicionar Produto</h1>
             </div>
           </div>
-          <div className={style.Cards}>
+          <div className={style.Cards} onClick={() => setModalOpen(true)}>
             <div>
               <img className={style.images} src={coxinha} alt="coxinha" />
             </div>
             <div className={style.content}>
               <h1 className={style.titleCard}>Seila</h1>
-              <p className={style.textCard}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi minima, libero obcaecati quae, vero omnis.</p>
+              <p className={style.textCard}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
+                minima, libero obcaecati quae, vero omnis.
+              </p>
             </div>
             <div className={style.actions}>
-              <button className={style.button}><IoIosArrowBack className={style.Arrowicon}/></button>
+              <button className={style.button}>
+                <IoIosArrowBack className={style.Arrowicon} />
+              </button>
               <h1 className={style.counter}>000</h1>
-              <button className={style.button}><IoIosArrowForward className={style.Arrowicon}/></button>
+              <button className={style.button}>
+                <IoIosArrowForward className={style.Arrowicon} />
+              </button>
             </div>
           </div>
           <div className={style.Cards}>
             <div>
-              <img className={style.images} src={prafotfeito} alt="prato feito" />
+              <img
+                className={style.images}
+                src={prafotfeito}
+                alt="prato feito"
+              />
             </div>
             <div className={style.content}>
               <h1 className={style.titleCard}>Lalalla</h1>
-              <p className={style.textCard}>Error dignissimos veritatis voluptatibus veniam, quos, ratione accusantium iusto quas magnam tenetur consequatur.</p>
+              <p className={style.textCard}>
+                Error dignissimos veritatis voluptatibus veniam, quos, ratione
+                accusantium iusto quas magnam tenetur consequatur.
+              </p>
             </div>
             <div className={style.actions}>
-              <button className={style.button}><IoIosArrowBack className={style.Arrowicon}/></button>
+              <button className={style.button}>
+                <IoIosArrowBack className={style.Arrowicon} />
+              </button>
               <h1 className={style.counter}>000</h1>
-              <button className={style.button}><IoIosArrowForward className={style.Arrowicon}/></button>
+              <button className={style.button}>
+                <IoIosArrowForward className={style.Arrowicon} />
+              </button>
             </div>
           </div>
           <div className={style.Cards}>
@@ -87,12 +107,19 @@ export default function Stock() {
             </div>
             <div className={style.content}>
               <h1 className={style.titleCard}>Fafafaf</h1>
-              <p className={style.textCard}>Quam placeat nisi sint facere quod blanditiis illum earum maiores, cumque sed possimus sit ab? Commodi, minima!</p>
+              <p className={style.textCard}>
+                Quam placeat nisi sint facere quod blanditiis illum earum
+                maiores, cumque sed possimus sit ab? Commodi, minima!
+              </p>
             </div>
             <div className={style.actions}>
-              <button className={style.button}><IoIosArrowBack className={style.Arrowicon}/></button>
+              <button className={style.button}>
+                <IoIosArrowBack className={style.Arrowicon} />
+              </button>
               <h1 className={style.counter}>000</h1>
-              <button className={style.button}><IoIosArrowForward className={style.Arrowicon}/></button>
+              <button className={style.button}>
+                <IoIosArrowForward className={style.Arrowicon} />
+              </button>
             </div>
           </div>
           <div className={style.Cards}>
@@ -101,15 +128,98 @@ export default function Stock() {
             </div>
             <div className={style.content}>
               <h1 className={style.titleCard}>Dadadada</h1>
-              <p className={style.textCard}>Nostrum tempore dignissimos assumenda possimus porro quam voluptatem blanditiis culpa atque officia aliquid rem.</p>
+              <p className={style.textCard}>
+                Nostrum tempore dignissimos assumenda possimus porro quam
+                voluptatem blanditiis culpa atque officia aliquid rem.
+              </p>
             </div>
             <div className={style.actions}>
-              <button className={style.button}><IoIosArrowBack className={style.Arrowicon}/></button>
+              <button className={style.button}>
+                <IoIosArrowBack className={style.Arrowicon} />
+              </button>
               <h1 className={style.counter}>000</h1>
-              <button className={style.button}><IoIosArrowForward className={style.Arrowicon}/></button>
+              <button className={style.button}>
+                <IoIosArrowForward className={style.Arrowicon} />
+              </button>
             </div>
           </div>
         </div>
+
+        <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+          <div className={style.modalContent}>
+            <button
+              className={style.closeButton}
+              onClick={() => setModalOpen(false)}
+            >
+              <IoIosArrowRoundBack className={style.closeIcon} />
+            </button>
+            <div>
+              <img className={style.images} src={coxinha} alt="coxinha" />
+              <h3 className={style.ModalTitle}>
+                Alerta:{" "}
+                <span className={style.ModalAlert}>
+                  Você esta sendo alertado
+                </span>
+              </h3>
+              <h3 className={style.ModalTitle}>
+                Categoria:{" "}
+                <span className={style.ModalTxt}>Categoria do Produto</span>
+              </h3>
+            </div>
+            <div className={style.ModalInfos}>
+              <h1>Informações do Produto</h1>
+              <h3 className={style.ModalTitle}>
+                Produto: <span className={style.ModalTxt}>Nome do Produto</span>
+              </h3>
+              <h3 className={style.ModalTitle}>
+                Quantidade: <span className={style.ModalTxt}>000</span>
+              </h3>
+              <h3 className={style.ModalTitle}>
+                Descrição:{" "}
+                <span className={style.ModalTxt}>
+                  {" "}
+                  Descrição do produto aqui.
+                </span>
+              </h3>
+            </div>
+            <div className={style.line} />
+            <div className={style.ModalForne}>
+              <h1>Fornecedor</h1>
+              <h3 className={style.ModalTitle}>
+                Nome: <span className={style.ModalTxt}>Nome do Fornecedor</span>
+              </h3>
+              <h3 className={style.ModalTitle}>
+                <h3 className={style.ModalTitle}>
+                  Endereço:{" "}
+                  <span className={style.ModalTxt}> Rua Exemplo, 123</span>
+                </h3>
+                Telefone: <span className={style.ModalTxt}>0000-0000</span>
+              </h3>
+              <h3 className={style.ModalTitle}>
+                Email:{" "}
+                <span className={style.ModalTxt}>
+                  {" "}
+                  emailfornecedor@email.com{" "}
+                </span>
+              </h3>
+            </div>
+            <div className={style.line} />
+            <div classsName={style.ModalQuanti}>
+              <h3 className={style.ModalTitle}>
+                Quantidade em Estoque:{" "}
+                <span className={style.ModalTxt}> 000 </span>
+              </h3>
+              <h3 className={style.ModalTitle}>
+                Quantidade minima para a compra:{" "}
+                <span className={style.ModalTxt}> 000 </span>
+              </h3>
+            </div>
+            <div className={style.buttons}>
+              <button className={style.buttonEdit}> Editar Produto</button>
+              <button className={style.buttonDelete}> Deletar Produto</button>
+            </div>
+          </div>
+        </Modal>
       </DefaultLayout>
     </>
   );

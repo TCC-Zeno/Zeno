@@ -15,20 +15,23 @@
 .buttonFilter {
   margin-left: 10px;
 }
+.icon {
+  font-size: 16pt;
+}
 
 .buttonFilter:hover .icon {
   transform: scale(1.2);
   font-weight: bold;
 }
 
-.containerCards{
+.containerCards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  background-color: #d9d9d9; 
+  background-color: #d9d9d9;
   margin-top: 1.5%;
 }
 
-.Cards{
+.Cards {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -36,22 +39,22 @@
   border-radius: 10px;
   transition: 1s all;
   padding: 7%;
-  margin: 2.5%
+  margin: 2.5%;
 }
 
-.images{
+.images {
   width: 100%;
   height: 250px;
   border-radius: 10px;
   object-fit: cover;
 }
 
-.content{
+.content {
   align-items: center;
   justify-content: center;
 }
 
-.actions{
+.actions {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,7 +62,7 @@
   margin-top: 5%;
 }
 
-.button{
+.button {
   background-color: rgb(var(--color-primary));
   color: white;
   border-radius: 50%;
@@ -67,30 +70,30 @@
   padding: 1%;
 }
 
-.counter{
+.counter {
   font-size: 18pt;
   font-family: "Coolvetica Rg";
 }
 
-.Arrowicon{
+.Arrowicon {
   align-items: center;
   justify-content: center;
 }
 
-.titleCard{
+.titleCard {
   font-family: "Coolvetica Rg";
   font-size: 20pt;
   font-weight: 300;
 }
 
-.textCard{
+.textCard {
   font-size: 14pt;
   font-weight: 200;
 }
 
-.Cardadd{
+.Cardadd {
   display: flex;
-  flex-direction: column ;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
@@ -100,18 +103,22 @@
   background-color: white;
 }
 
-.add{
+.add {
   width: 30%;
   height: auto;
   transition: 1s all;
 }
-.add:hover{
+.add:hover {
   transform: scale(1.1);
 }
 
-.contentAdd{
+.contentAdd {
   font-size: 16pt;
   margin-top: 15%;
   font-weight: 300;
   flex-direction: end;
+}
+
+.line {
+  border: 2px solid black;
 }
