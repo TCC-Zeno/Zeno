@@ -2,7 +2,7 @@
 
 # Zeno
 
-**Acesse agora:** [Zeno](https:///)
+**Acesse agora:** [Zeno](https://tcc-zeno.vercel.app/)
 
 Zeno é um sistema ERP (Planejamento de Recursos Empresariais) projetado para microempreendedores.
 
@@ -27,14 +27,9 @@ O desenvolvimento deste sistema foi iniciado em março de 2025 e continua até h
 
 ## Começando
 
-Acesse a nossa Landing Page para ter acesso ao sistema.
+Acesse a nossa Landing Page para ter acesso ao sistema, por este [link](https://tcc-zeno.vercel.app/).
 
 ## Recursos Utilizados
 
 [![My Skills](https://skillicons.dev/icons?i=js)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 [![My Skills](https://skillicons.dev/icons?i=react)](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
-
-
-## Contribuindo
-
-Se você está interessado em contribuir para o Zeno, por favor faça um fork do repositório e envie uma solicitação de pull, se quiser replicar algo, dê o devido crédito a nós.
