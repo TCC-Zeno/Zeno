@@ -122,3 +122,95 @@
 .line {
   border: 2px solid black;
 }
+
+.modalContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+}
+
+.modalLeft{
+  width: 50%;
+  margin-right: 100px;
+}
+
+.modalRight{
+  width: 50%;
+}
+
+.ModalInfos{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  line-height: 30px ;
+  margin-bottom: 3%;
+}
+
+.ModalInfos h1{
+  font-size: 18pt;
+  font-family: "Coolvetica Rg";
+}
+
+.ModalTitle{
+  font-weight: 400;
+  font-size: 16pt;
+}
+
+.ModalTxt{
+  font-size: 14pt;
+}
+
+.ModalForne{
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.ModalForne h1{
+  font-size: 18pt;
+  font-family: "Coolvetica Rg";
+}
+
+.ModalQuanti{
+  margin-top: 2%;
+}
+
+.modalImages{
+  width: 100%;
+  height: 250px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin: 5%;
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 6%;
+}
+
+.buttonEdit{
+  border: 0.5px solid black ;
+  border-radius: 5px;
+  padding: 2%;
+  transition: 1s all;
+  color:  rgb(var(--color-primary));
+}
+
+.buttonEdit:hover{
+  transform: scale(1.1);
+  font-weight: 400;
+}
+
+.buttonDelete{
+  border: 0.5px solid black ;
+  border-radius: 5px;
+  padding: 2%;
+  transition: 1s all;
+  color:red;
+}
+
+.buttonDelete:hover{
+   transform: scale(1.1);
+  font-weight: 400;
+}

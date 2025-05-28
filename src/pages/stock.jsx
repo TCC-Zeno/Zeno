@@ -145,27 +145,9 @@ export default function Stock() {
           </div>
         </div>
 
-        <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+        <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} stock = {true}>
           <div className={style.modalContent}>
-            <button
-              className={style.closeButton}
-              onClick={() => setModalOpen(false)}
-            >
-              <IoIosArrowRoundBack className={style.closeIcon} />
-            </button>
-            <div>
-              <img className={style.images} src={coxinha} alt="coxinha" />
-              <h3 className={style.ModalTitle}>
-                Alerta:{" "}
-                <span className={style.ModalAlert}>
-                  Você esta sendo alertado
-                </span>
-              </h3>
-              <h3 className={style.ModalTitle}>
-                Categoria:{" "}
-                <span className={style.ModalTxt}>Categoria do Produto</span>
-              </h3>
-            </div>
+            <div className={style.modalLeft}>
             <div className={style.ModalInfos}>
               <h1>Informações do Produto</h1>
               <h3 className={style.ModalTitle}>
@@ -210,13 +192,29 @@ export default function Stock() {
                 <span className={style.ModalTxt}> 000 </span>
               </h3>
               <h3 className={style.ModalTitle}>
-                Quantidade minima para a compra:{" "}
+                Quantidade minima para comprar:{" "}
                 <span className={style.ModalTxt}> 000 </span>
+              </h3>
+            </div>
+            </div>
+            <div className={style.modalRight}>
+            <div className={style.modalImg}>
+              <img className={style.modalImages} src={coxinha} alt="coxinha" />
+              <h3 className={style.ModalTitle}>
+                Alerta:{" "}
+                <span className={style.ModalTxt}>
+                  Você esta sendo alertado
+                </span>
+              </h3>
+              <h3 className={style.ModalTitle}>
+                Categoria:{" "}
+                <span className={style.ModalTxt}>Categoria do Produto</span>
               </h3>
             </div>
             <div className={style.buttons}>
               <button className={style.buttonEdit}> Editar Produto</button>
               <button className={style.buttonDelete}> Deletar Produto</button>
+            </div>
             </div>
           </div>
         </Modal>

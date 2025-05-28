@@ -1,8 +1,9 @@
 import React, { useEffect, useCallback } from "react";
 import S from "./modal.module.css";
 import { motion, AnimatePresence } from "framer-motion";
+import { stock } from "../../redux/Route/slice";
 
-export default function Modal({ isOpen, onClose, children, guide = false }) {
+export default function Modal({ isOpen, onClose, children, guide = false, stock = false }) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -66,7 +67,13 @@ export default function Modal({ isOpen, onClose, children, guide = false }) {
                     padding: 0,
                     overflowY: "auto",
                   }
+                : stock
+                ? {
+                  width: "80vw",
+                  maxWidth: "100%"
+                }
                 : undefined
+
             }
           >
             <button
@@ -91,7 +98,11 @@ export default function Modal({ isOpen, onClose, children, guide = false }) {
                   ? {
                       width: "50vw",
                     }
-                  : undefined
+                  : stock 
+                  ? {
+                  width: "80vw",
+                }
+                : undefined
               }
             >
               {children}
