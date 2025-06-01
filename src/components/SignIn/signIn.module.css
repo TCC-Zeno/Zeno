@@ -77,6 +77,10 @@
   padding: 0 10px;
 }
 
+.errorInput {
+  border: 2px solid red;
+}
+
 @media only screen and (max-width: 1200px) {
   .wrapperForm h3 {
     font-size: 20pt;
@@ -90,7 +94,7 @@
   }
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 768px) {
   .signInToggle {
     border-radius: 15px 15px 0 0;
     background: linear-gradient(
@@ -102,6 +106,9 @@
   .containerLogin {
     width: 100%;
     height: calc(85vh);
+    display: flex;
+    justify-content: center;
+    position: relative;
   }
   .wrapperForm {
     width: 90%;

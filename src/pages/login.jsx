@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../assets/logo/LogoZeno_LogoPretoSFundo.png";
 import SignUp from "../components/SignUp/SignUp";
 import SignIn from "../components/SignIn/SignIn";
 import S from "../styles/login.module.css";
+import { useLocation } from "react-router-dom";
 
 export default function Login() {
+  const location = useLocation();
+  const mode = location.state?.mode || "signUp";
   const [loginOption, setLoginOption] = useState("signUp");
+
+  useEffect(() => {
+    setLoginOption(mode);
+  }, [mode]);
 
   return (
     // * O login, tanto a parte dfe entrar como cadastro utilizam o react hook forms na parte do formulario, nos componentes que tem a parte que importa para o banco de dados
@@ -40,15 +47,20 @@ export default function Login() {
             <div className={S.wrapperText}>
               <h3>Bem-vindo de volta</h3>
               <p>
-                Para se manter conectado, faça login com as informações da empresa.
+                Para se manter conectado, faça login com as informações da
+                empresa.
               </p>
-              <button onClick={() => setLoginOption("signIn")}>Entrar</button>
+              <button id="btn-signIn" onClick={() => setLoginOption("signIn")}>
+                Entrar
+              </button>
             </div>
           ) : (
             <div className={S.wrapperText}>
               <h3>Bem-vindo ao Zeno</h3>
               <p>É tudo que você precisa para consolidar a sua microempresa.</p>
-              <button onClick={() => setLoginOption("signUp")}>Criar</button>
+              <button id="btn-signUp" onClick={() => setLoginOption("signUp")}>
+                Criar
+              </button>
             </div>
           )}
         </div>

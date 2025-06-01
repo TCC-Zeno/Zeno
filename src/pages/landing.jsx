@@ -86,93 +86,130 @@ export default function LandingPage() {
   }, []);
   return (
     <>
-      <nav className={S.navbar}>
-        <div className={S.logoContainer}>
-          <img src={Logo} alt="Logo do Zeno" />
-        </div>
-        <div className={S.linksContainer}>
-          <ul>
-            <li>
-              <a href="#hero">Início</a>
-            </li>
-            <li>
-              <a href="#function">Sobre</a>
-            </li>
-            <li>
-              <a href="#guide">Funções</a>
-            </li>
-            <li>
-              <a href="#settings">Personalização</a>
-            </li>
-            <li>
-              <a href="#aboutUs">Sobre nós</a>
-            </li>
-          </ul>
-        </div>
-        <div className={S.buttonContainer}>
-          <Link className={S.signInButton} to="/login">
-            Entrar
-          </Link>
-          <Link className={S.signUpButton} to="/login">
-            Criar
-          </Link>
-        </div>
-        <div className={S.burgerContainer} onClick={toggleBurger}>
-          <label className={S.burger} htmlFor="burger">
-            <input
-              type="checkbox"
-              id="burger"
-              checked={burger}
-              onChange={toggleBurger}
-            />
-            <span />
-            <span />
-            <span />
-          </label>
-        </div>
-      </nav>
-      <div className={`${S.drawerMenu} ${burger ? S.active : ""}`}>
-        <div className={S.drawerMenuContainer}>
+      <header>
+        <nav className={S.navbar}>
           <div className={S.logoContainer}>
             <img src={Logo} alt="Logo do Zeno" />
           </div>
-          <ul>
-            <li>
-              <a href="#hero" onClick={toggleBurger}>
-                Início
-              </a>
-            </li>
-            <li>
-              <a href="#function" onClick={toggleBurger}>
-                Sobre
-              </a>
-            </li>
-            <li>
-              <a href="#guide" onClick={toggleBurger}>
-                Funções
-              </a>
-            </li>
-            <li>
-              <a href="#settings" onClick={toggleBurger}>
-                Personalização
-              </a>
-            </li>
-            <li>
-              <a href="#aboutUs" onClick={toggleBurger}>
-                Sobre nós
-              </a>
-            </li>
-            <div className={S.buttonContainer}>
-              <Link className={S.signInButton} to="/login">
-                Entrar
-              </Link>
-              <Link className={S.signUpButton} to="/login">
-                Criar
-              </Link>
+          <div className={S.linksContainer}>
+            <ul>
+              <li>
+                <a aria-label="Ir para o início" href="#hero">
+                  Início
+                </a>
+              </li>
+              <li>
+                <a aria-label="Ir para o sobre" href="#about">
+                  Sobre
+                </a>
+              </li>
+              <li>
+                <a aria-label="Ir para as funções" href="#guide">
+                  Funções
+                </a>
+              </li>
+              <li>
+                <a aria-label="Ir para a personalização" href="#settings">
+                  Personalização
+                </a>
+              </li>
+              <li>
+                <a aria-label="Ir para o sobre nós" href="#aboutUs">
+                  Sobre nós
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className={S.buttonContainer}>
+            <Link
+              id="signInButton"
+              role="link"
+              className={S.signInButton}
+              to="/login"
+              state={{ mode: "signIn" }}
+            >
+              Entrar
+            </Link>
+            <Link
+              id="signUpButton"
+              role="link"
+              className={S.signUpButton}
+              to="/login"
+              state={{ mode: "signUp" }}
+            >
+              Criar
+            </Link>
+          </div>
+          <div className={S.burgerContainer} onClick={toggleBurger}>
+            <label className={S.burger} htmlFor="burger">
+              <input
+                aria-label="Menu de navegação mobile"
+                type="checkbox"
+                id="burger"
+                checked={burger}
+                onChange={toggleBurger}
+              />
+              <span />
+              <span />
+              <span />
+            </label>
+          </div>
+        </nav>
+        <div className={`${S.drawerMenu} ${burger ? S.active : ""}`}>
+          <div className={S.drawerMenuContainer}>
+            <div className={S.logoContainer}>
+              <img src={Logo} alt="Logo do Zeno" />
             </div>
-          </ul>
+            <ul>
+              <li>
+                <a href="#hero" onClick={toggleBurger}>
+                  Início
+                </a>
+              </li>
+              <li>
+                <a href="#about" onClick={toggleBurger}>
+                  Sobre
+                </a>
+              </li>
+              <li>
+                <a href="#guide" onClick={toggleBurger}>
+                  Funções
+                </a>
+              </li>
+              <li>
+                <a href="#settings" onClick={toggleBurger}>
+                  Personalização
+                </a>
+              </li>
+              <li>
+                <a href="#aboutUs" onClick={toggleBurger}>
+                  Sobre nós
+                </a>
+              </li>
+              <div className={S.buttonContainer}>
+                <Link
+                  id="signInButton"
+                  role="link"
+                  className={S.signInButton}
+                  to="/login"
+                  state={{ mode: "signIn" }}
+                >
+                  Entrar
+                </Link>
+                <Link
+                  id="signUpButton"
+                  role="link"
+                  className={S.signUpButton}
+                  to="/login"
+                  state={{ mode: "signUp" }}
+                >
+                  Criar
+                </Link>
+              </div>
+            </ul>
+          </div>
         </div>
-      </div>
+      </header>
       <main className={S.page}>
         <section id="hero" className={S.hero}>
           <div className={S.titleContainer}>
@@ -187,15 +224,24 @@ export default function LandingPage() {
             <p>
               Otimize a gestão da sua empresa com o Zeno, um sistema inovador!
             </p>
-            <Link className={S.signUpButton} to="/login">
+            <Link
+              id="signUpButton"
+              role="link"
+              className={S.signUpButton}
+              to="/login"
+              state={{ mode: "signUp" }}
+            >
               Crie sua conta
             </Link>
           </div>
           <div className={S.imgContainer}>
-            <img src={img001} alt="Mockup do sistema" />
+            <img
+              src={img001}
+              alt="Mockup do sistema, mostrando a tela em diferentes dispositivos"
+            />
           </div>
         </section>
-        <section id="function" className={S.function}>
+        <section id="about" className={S.function}>
           <div className={S.functionCard}>
             <BsFillBoxSeamFill className={S.icon} />
             <div className={S.text}>
@@ -286,16 +332,24 @@ export default function LandingPage() {
                   </li>
                 </ul>
               </div>
-              <video controls autoPlay>
-                <source src={video002} type="video/mp4" />
+              <video autoPlay loop muted>
+                <source
+                  alt="Vídeo demonstrando as principais funções."
+                  src={video002}
+                  type="video/mp4"
+                />
               </video>
             </div>
           </div>
         </section>
         <section id="settings" className={S.settings}>
           <div className={S.videoContainer}>
-            <video controls autoPlay loop muted>
-              <source src={video001} type="video/mp4" />
+            <video autoPlay loop muted>
+              <source
+                alt="Vídeo demonstrando as configurações."
+                src={video001}
+                type="video/mp4"
+              />
             </video>
           </div>
           <div className={S.textContainer}>
@@ -343,10 +397,12 @@ export default function LandingPage() {
           </p>
           <div className={S.wrapperDevs}>
             <div
+              role="link"
               className={S.containerDevs}
               onClick={() =>
                 window.open("https://github.com/CaioCosta2JZ", "_blank")
               }
+              id="caio-linkGithub"
             >
               <img
                 src="https://avatars.githubusercontent.com/u/127055627?v=4"
@@ -357,40 +413,90 @@ export default function LandingPage() {
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
               </div>
             </div>
-            <div className={S.containerDevs}>
+            <div
+              role="link"
+              className={S.containerDevs}
+              onClick={() =>
+                window.open("https://github.com/CaioCosta2JZ", "_blank")
+              }
+              id="jose-linkGithub"
+            >
               <img
                 src="https://avatars.githubusercontent.com/u/163062463?v=4"
                 alt="Foto do José"
               />
               <h6>José de Souza</h6>
+              <div className={S.popover}>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+              </div>
             </div>
-            <div className={S.containerDevs}>
+            <div
+              role="link"
+              className={S.containerDevs}
+              onClick={() =>
+                window.open("https://github.com/CaioCosta2JZ", "_blank")
+              }
+              id="naresh-linkGithub"
+            >
               <img
                 src="https://avatars.githubusercontent.com/u/170425770?v=4"
                 alt="Foto do Naresh"
               />
               <h6>Naresh Sharma</h6>
+              <div className={S.popover}>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+              </div>
             </div>
-            <div className={S.containerDevs}>
+            <div
+              role="link"
+              className={S.containerDevs}
+              onClick={() =>
+                window.open("https://github.com/CaioCosta2JZ", "_blank")
+              }
+              id="nicolas-linkGithub"
+            >
               <img
                 src="https://avatars.githubusercontent.com/u/163760447?v=4"
                 alt="Foto do Nicolas"
               />
               <h6>Nicolas Spinelli</h6>
+              <div className={S.popover}>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+              </div>
             </div>
-            <div className={S.containerDevs}>
+            <div
+              role="link"
+              className={S.containerDevs}
+              onClick={() =>
+                window.open("https://github.com/CaioCosta2JZ", "_blank")
+              }
+              id="nicollas-linkGithub"
+            >
               <img
                 src="https://avatars.githubusercontent.com/u/141236294?v=4"
                 alt="Foto do Nicollas"
               />
               <h6>Nicollas Reis</h6>
+              <div className={S.popover}>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+              </div>
             </div>
-            <div className={S.containerDevs}>
+            <div
+              role="link"
+              className={S.containerDevs}
+              onClick={() =>
+                window.open("https://github.com/Vini150cius", "_blank")
+              }
+              id="vinicius-linkGithub"
+            >
               <img
                 src="https://avatars.githubusercontent.com/u/126972477?v=4"
                 alt="Foto do Vinícius"
               />
               <h6>Vinícius Porto</h6>
+              <div className={S.popover}>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+              </div>
             </div>
           </div>
           <ScrollToTopButton />
@@ -405,16 +511,16 @@ export default function LandingPage() {
                 <p>© 2025 www.zeno.com - Todos os direitos reservados.</p>
               </div>
               <div className={S.icons}>
-                <a href="https://facebook.com">
+                <a id="linkFacebook" aria-disabled="true" href="https://facebook.com">
                   <FaFacebookF className={S.a} />
                 </a>
-                <a href="https://instagram.com">
+                <a id="linkInstagram" aria-disabled="true" href="https://instagram.com">
                   <FaInstagram className={S.a} />
                 </a>
-                <a href="https://youtube.com">
+                <a id="linkYoutube" aria-disabled="true" href="https://youtube.com">
                   <FaYoutube className={S.a} />
                 </a>
-                <a href="https://github.com/tcc-zeno">
+                <a id="linkGit" aria-label="Link para nosso GitHub" href="https://github.com/tcc-zeno">
                   <VscGithubAlt className={S.a} />
                 </a>
               </div>

@@ -2,12 +2,11 @@ import S from "./signIn.module.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { login } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const loginStatus = useSelector((state) => state.userReducer.login);
   const dispatch = useDispatch();
 
   const {
@@ -22,7 +21,6 @@ export default function SignIn() {
     dispatch(login());
     navigate("/dashboard");
   };
-  console.log(errors);
 
   return (
     <section className={S.containerLogin}>
@@ -36,21 +34,24 @@ export default function SignIn() {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
+            id="input-email"
             type="email"
             placeholder="E-mail"
             {...register("email", { required: true, min: 5, maxLength: 100 })}
+            className={errors.email ? S.errorInput : ""}
           />
           <input
+            id="input-password"
             type="password"
             placeholder="Senha"
             {...register("password", { required: true })}
+            className={errors.password ? S.errorInput : ""}
+
           />
           <div className={S.containerButton}>
-            <input type="submit" />
+            <input id="btn-submit" type="submit" />
           </div>
         </form>
-        <p>Status: {loginStatus === null ? "Deslogado" : "Logado"}</p>
-        {/* Acompanhamento de variável só para o frontend (eu), saber onde eu estou e oq ta acontecendo. quando for para produção temos que tirar */}
       </div>
     </section>
   );

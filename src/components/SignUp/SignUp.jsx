@@ -2,14 +2,13 @@ import S from "./signUp.module.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { login } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import { IMaskInput } from "react-imask";
 import { cnpj } from "cpf-cnpj-validator";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const loginStatus = useSelector((state) => state.userReducer.login);
   const dispatch = useDispatch();
 
   const {
@@ -22,7 +21,7 @@ export default function SignUp() {
 
   const onSubmit = (data) => {
     //! Parte onde o back pega as infos e passa para o banco, além de verificar se tudo está correto
-        //* o backend deve pegar o array data, pois nele que tem todas as informações que o usuario digitou, mas atenção, o login pelo google é outro esquema
+    //* o backend deve pegar o array data, pois nele que tem todas as informações que o usuario digitou, mas atenção, o login pelo google é outro esquema
     if (!cnpj.isValid(data.cnpj)) {
       //* estou usando uma lib para verificar se a conta do CNPJ está funcionando, ela só determina se é um CNPJ valido, ela não verifica se a empresa corresponde...
       setError("cnpj", {
@@ -36,7 +35,6 @@ export default function SignUp() {
     dispatch(login());
     navigate("/dashboard");
   };
-  console.log(errors);
 
   return (
     <section className={S.containerLogin}>
@@ -51,6 +49,7 @@ export default function SignUp() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
+            id="input-cnpj"
             name="cnpj"
             control={control}
             rules={{
@@ -75,18 +74,21 @@ export default function SignUp() {
             )}
           />
           <input
+            id="input-email"
             type="email"
             placeholder="E-mail"
             {...register("email", { required: true, min: 5, maxLength: 100 })}
             className={errors.email ? S.errorInput : ""}
           />
           <input
+            id="input-password"
             type="password"
             placeholder="Senha"
             {...register("password", { required: true })}
             className={errors.password ? S.errorInput : ""}
           />
           <input
+            id="input-confirm-password"
             type="password"
             placeholder="Confirmar senha"
             {...register("confirmPassword", { required: true })}
@@ -96,11 +98,9 @@ export default function SignUp() {
             <span className={S.errorMessage}>{errors.cnpj.message}</span>
           )}
           <div className={S.containerButton}>
-            <input type="submit" />
+            <input id="btn-submit" type="submit" />
           </div>
         </form>
-        <p>Status: {loginStatus === null ? "Deslogado" : "Logado"}</p>
-        {/* Acompanhamento de variavel para os devs saberem oq ta acontecendo  */}
       </div>
     </section>
   );

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 import S from "./header.module.css";
 
-export default function DropdownHeader({ icon, modalContent }) {
+export default function DropdownHeader({ icon, modalContent, id="btn-dropdown-header" }) {
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef(null);
   const iconRef = useRef(null);
@@ -54,6 +54,8 @@ export default function DropdownHeader({ icon, modalContent }) {
   return (
     <div className={S.iconContainer}>
       <div
+        role="button"
+        id={id}
         ref={iconRef}
         onClick={() => setIsOpen(!isOpen)}
         style={{ cursor: "pointer" }}

@@ -46,7 +46,7 @@ export default function Header() {
           rotaStatus === "dashboard" ? null : S.none
         }`}
       >
-        <img src={Logo} alt="Logo Zeno" />
+        <img src={Logo} alt="Logo da sua empresa" />
       </div>
 
       <div
@@ -56,21 +56,25 @@ export default function Header() {
       </div>
 
       <div className={S.containerIcons}>
-        {rotaStatus === 'stock' ? ( <DropdownHeader
-          icon={<MdTune className={S.icon} />}
-          modalContent={<ProfileContent />}
-        />) : null }
+        {rotaStatus === "stock" ? (
+          <DropdownHeader
+            id="btn-filters"
+            icon={<MdTune className={S.icon} />}
+            modalContent={<ProfileContent />}
+          />
+        ) : null}
 
         <DropdownHeader
+          id="btn-notifications"
           icon={<IoMdNotifications className={S.icon} />}
           modalContent={<NotificationContent />}
         />
 
         <DropdownHeader
+          id="btn-settings"
           icon={<CgProfile className={S.icon} />}
           modalContent={<ProfileContent />}
         />
-        
       </div>
     </header>
   );

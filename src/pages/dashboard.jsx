@@ -9,6 +9,85 @@ import ResourceBlocked from "../components/ResourceBlocked/ResourceBlocked";
 import CurrencyInput from "react-currency-input-field";
 
 export default function Dashboard() {
+  // Resumo de caixa
+  const [selectedPeriod, setSelectedPeriod] = useState("daily");
+
+  // Organizador diário
+  const tasksToDo = [
+    { id: 1, name: "Reunião com a equipe" },
+    { id: 2, name: "Entregar projeto" },
+    { id: 3, name: "Revisar documentos" },
+    { id: 4, name: "Planejar próxima semana" },
+    { id: 5, name: "Atualizar site" },
+    { id: 6, name: "Responder e-mails" },
+    { id: 7, name: "Organizar arquivos" },
+    { id: 8, name: "Preparar apresentação" },
+    { id: 9, name: "Analisar resultados" },
+    { id: 10, name: "Fazer backup de dados" },
+  ];
+  const tasksProgress = [
+    { id: 1, name: "Reunião com a equipe" },
+    { id: 2, name: "Entregar projeto" },
+    { id: 3, name: "Revisar documentos" },
+    { id: 4, name: "Planejar próxima semana" },
+    { id: 5, name: "Atualizar site" },
+    { id: 6, name: "Responder e-mails" },
+    { id: 7, name: "Organizar arquivos" },
+    { id: 8, name: "Preparar apresentação" },
+    { id: 9, name: "Analisar resultados" },
+    { id: 10, name: "Fazer backup de dados" },
+  ];
+  const tasksDone = [
+    { id: 1, name: "Reunião com a equipe" },
+    { id: 2, name: "Entregar projeto" },
+    { id: 3, name: "Revisar documentos" },
+    { id: 4, name: "Planejar próxima semana" },
+    { id: 5, name: "Atualizar site" },
+    { id: 6, name: "Responder e-mails" },
+    { id: 7, name: "Organizar arquivos" },
+    { id: 8, name: "Preparar apresentação" },
+    { id: 9, name: "Analisar resultados" },
+    { id: 10, name: "Fazer backup de dados" },
+  ];
+
+  // Estoque
+  const itensStock = [
+    { id: 1, name: "Produto A" },
+    { id: 2, name: "Produto B" },
+    { id: 3, name: "Produto C" },
+    { id: 4, name: "Produto D" },
+    { id: 5, name: "Produto E" },
+    { id: 6, name: "Produto F" },
+    { id: 7, name: "Produto G" },
+    { id: 8, name: "Produto H" },
+    { id: 9, name: "Produto I" },
+    { id: 10, name: "Produto J" },
+  ];
+  const itensRefill = [
+    { id: 1, name: "Produto A" },
+    { id: 2, name: "Produto B" },
+    { id: 3, name: "Produto C" },
+    { id: 4, name: "Produto D" },
+    { id: 5, name: "Produto E" },
+    { id: 6, name: "Produto F" },
+    { id: 7, name: "Produto G" },
+    { id: 8, name: "Produto H" },
+    { id: 9, name: "Produto I" },
+    { id: 10, name: "Produto J" },
+  ];
+  const itensBuy = [
+    { id: 1, name: "Produto A" },
+    { id: 2, name: "Produto B" },
+    { id: 3, name: "Produto C" },
+    { id: 4, name: "Produto D" },
+    { id: 5, name: "Produto E" },
+    { id: 6, name: "Produto F" },
+    { id: 7, name: "Produto G" },
+    { id: 8, name: "Produto H" },
+    { id: 9, name: "Produto I" },
+    { id: 10, name: "Produto J" },
+  ];
+
   const [resourceToUnlock, setResourceToUnlock] = useState(null);
   const [protectedModalOpen, setProtectedModalOpen] = useState(false);
   const [password, setPassword] = useState("");
@@ -36,17 +115,16 @@ export default function Dashboard() {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     if (data.Price) {
-      const numericValue = data.Price.replace(',', '.');
+      const numericValue = data.Price.replace(",", ".");
       data.Price = parseFloat(numericValue);
     }
     console.log(data);
   };
-  console.log(errors);
 
   return (
     <>
@@ -57,12 +135,13 @@ export default function Dashboard() {
               <h1>Resumo de caixa</h1>
               <select
                 className={S.cashSelectPeriod}
-                name="cashSummaryPeriod"
-                id="cashSummaryPeriod"
+                name="cash-summary-period"
+                id="cash-summary-period"
+                defaultValue="daily"
+                value={selectedPeriod}
+                onChange={(e) => setSelectedPeriod(e.target.value)}
               >
-                <option selected value="daily">
-                  Diário
-                </option>
+                <option value="daily">Diário</option>
                 <option value="monthly">Mensal</option>
                 <option value="annual">Anual</option>
               </select>
@@ -70,15 +149,15 @@ export default function Dashboard() {
             <div className={S.cashContainer}>
               <div className={S.cashAmount}>
                 <h4>Montante</h4>
-                <p>R$ 1000</p>
+                <p id="amount-value">R$ 1000</p>
               </div>
               <div className={S.cashProfit}>
                 <h4>Lucro</h4>
-                <p>R$ 1000</p>
+                <p id="profit-value">R$ 1000</p>
               </div>
               <div className={S.cashExpenses}>
                 <h4>Despesas</h4>
-                <p>R$ 1000</p>
+                <p id="expenses-value">R$ 1000</p>
               </div>
             </div>
           </section>
@@ -102,6 +181,7 @@ export default function Dashboard() {
               <form className={S.financeForm} onSubmit={handleSubmit(onSubmit)}>
                 <div className={S.row01}>
                   <input
+                    id="input-name"
                     className={S.inputName}
                     type="text"
                     placeholder="Nome completo"
@@ -109,33 +189,38 @@ export default function Dashboard() {
                   />
                   {/* oq está logo abaixo é o input de preço, usei uma lib que tem mais info aqui https://github.com/cchanxzy/react-currency-input-field. By Vinicius */}
                   <Controller
-                    name="Price"
+                    name="price"
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { onChange, value, name } }) => (
                       <CurrencyInput
-                      id="price-input"
-                      name={name}
-                      placeholder="R$ 0,00"
-                      defaultValue={0}
-                      decimalsLimit={2}
-                      decimalScale={2}
-                      decimalSeparator=","
-                      groupSeparator="."
-                      prefix="R$ "
-                      onValueChange={(value) => onChange(value)}
-                      value={value}
-                      className={S.inputPrice}
+                        id="input-price"
+                        name={name}
+                        placeholder="R$ 0,00"
+                        defaultValue={0}
+                        decimalsLimit={2}
+                        decimalScale={2}
+                        decimalSeparator=","
+                        groupSeparator="."
+                        prefix="R$ "
+                        onValueChange={(value) => onChange(value)}
+                        value={value}
+                        className={S.inputPrice}
                       />
                     )}
                   />
 
-                  <input className={S.button} type="submit" />
+                  <input
+                    id="btn-submit-finance"
+                    className={S.button}
+                    type="submit"
+                  />
                 </div>
                 <div className={S.row02}>
                   <select
+                    id="input-payment-method"
                     className={S.financeSelect}
-                    {...register("Payment method", { required: true })}
+                    {...register("payment-method", { required: true })}
                   >
                     <option value="Método de pagamento" disabled selected>
                       Método de pagamento
@@ -147,6 +232,7 @@ export default function Dashboard() {
                     <option value="Outros">Outros</option>
                   </select>
                   <select
+                    id="input-payment-category"
                     className={S.financeSelect}
                     {...register("category", { required: true })}
                   >
@@ -159,6 +245,7 @@ export default function Dashboard() {
                     <option value="Outros">Outros</option>
                   </select>
                   <select
+                    id="input-payment-flow"
                     className={S.financeSelect}
                     {...register("flow", { required: true })}
                   >
@@ -168,7 +255,12 @@ export default function Dashboard() {
                     <option value="Entrada">Entrada</option>
                     <option value="Saída">Saída</option>
                   </select>
-                  <input className={S.buttonM} type="submit" />
+                  {/* Fiz uma gambiarra pra deixar responsivo, então tem o botão pra desktop e pra mobile */}
+                  <input
+                    id="btn-submit-finance-mobile"
+                    className={S.buttonM}
+                    type="submit"
+                  />
                 </div>
               </form>
             </div>
@@ -194,17 +286,9 @@ export default function Dashboard() {
                 <p>A fazer</p>
                 <div>
                   <ul>
-                    <li>aaaaaaaaaaaaaaaaaaaaaaaaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
+                    {tasksToDo.map((task) => (
+                      <li key={task.id}>{task.name}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -212,11 +296,9 @@ export default function Dashboard() {
                 <p>Em andamento</p>
                 <div>
                   <ul>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
+                    {tasksProgress.map((task) => (
+                      <li key={task.id}>{task.name}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -224,11 +306,9 @@ export default function Dashboard() {
                 <p>Concluído</p>
                 <div>
                   <ul>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
+                    {tasksDone.map((task) => (
+                      <li key={task.id}>{task.name}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -255,17 +335,9 @@ export default function Dashboard() {
                 <p>Em estoque</p>
                 <div>
                   <ul>
-                    <li>aaaaaaaaaaaaaaaaaaaaaaaaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
+                    {itensStock.map((task) => (
+                      <li key={task.id}>{task.name}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -273,11 +345,9 @@ export default function Dashboard() {
                 <p>Para repor</p>
                 <div>
                   <ul>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
+                    {itensRefill.map((task) => (
+                      <li key={task.id}>{task.name}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -285,11 +355,9 @@ export default function Dashboard() {
                 <p>Para comprar</p>
                 <div>
                   <ul>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
-                    <li>aaaaa</li>
+                    {itensBuy.map((task) => (
+                      <li key={task.id}>{task.name}</li>
+                    ))}
                   </ul>
                 </div>
               </div>

@@ -140,7 +140,7 @@
   }
   .containerToggle {
     width: 100%;
-    height: 320px;
+    height: auto;
     background-color: rgb(var(--color-primary));
     display: flex;
     justify-content: center;
