@@ -417,7 +417,7 @@ export default function LandingPage() {
               role="link"
               className={S.containerDevs}
               onClick={() =>
-                window.open("https://github.com/CaioCosta2JZ", "_blank")
+                window.open("https://github.com/JoseSouza2007", "_blank")
               }
               id="jose-linkGithub"
             >
@@ -434,7 +434,7 @@ export default function LandingPage() {
               role="link"
               className={S.containerDevs}
               onClick={() =>
-                window.open("https://github.com/CaioCosta2JZ", "_blank")
+                window.open("https://github.com/Naresh-matheus", "_blank")
               }
               id="naresh-linkGithub"
             >
@@ -451,7 +451,7 @@ export default function LandingPage() {
               role="link"
               className={S.containerDevs}
               onClick={() =>
-                window.open("https://github.com/CaioCosta2JZ", "_blank")
+                window.open("https://github.com/NicolasSpinelli008", "_blank")
               }
               id="nicolas-linkGithub"
             >
@@ -468,7 +468,7 @@ export default function LandingPage() {
               role="link"
               className={S.containerDevs}
               onClick={() =>
-                window.open("https://github.com/CaioCosta2JZ", "_blank")
+                window.open("https://github.com/NicollasMSR", "_blank")
               }
               id="nicollas-linkGithub"
             >
