@@ -16,6 +16,7 @@ import Finance from "./pages/finance";
 import Organizer from "./pages/organizer";
 import Calendar from "./pages/calendar";
 import Stock from "./pages/stock";
+import NotFound from "./pages/notFoundPage";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route element={<Calendar />} path="/calendar" />
             <Route element={<Organizer />} path="/organizer" />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </Provider>

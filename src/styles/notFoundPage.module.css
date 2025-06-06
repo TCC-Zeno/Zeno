@@ -1,0 +1,62 @@
+.containerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: whitesmoke;
+  background-image: url("../assets/backgroundNotFoundPage.jpg");
+}
+.containerText h1 {
+  font-family: "Coolvetica Rg";
+  font-size: 150pt;
+  text-align: center;
+  color: #333;
+  line-height: 1;
+}
+.containerText p {
+  font-size: 20pt;
+  font-weight: 700;
+  text-align: center;
+  color: #333;
+  margin-top: 20px;
+}
+.containerButton {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+.goHomeButton {
+  background-color: rgb(var(--color-secondary));
+  color: whitesmoke;
+  padding: 10px 25px;
+  font-size: 15pt;
+  font-weight: bold;
+  border-radius: 75px;
+  cursor: pointer;
+  align-self: center;
+  border: 5px solid rgb(var(--color-secondary));
+  transition: 0.5s all;
+}
+.goHomeButton:hover {
+  background-color: #333;
+  border: 5px solid #333;
+  transform: scaleX(1.05);
+}
+.contactButton {
+  color: rgb(var(--color-secondary));
+  background-color: transparent;
+  padding: 10px 25px;
+  font-size: 15pt;
+  font-weight: bold;
+  border: 5px solid rgb(var(--color-secondary));
+  border-radius: 75px;
+  cursor: pointer;
+  align-self: center;
+  transition: 0.5s all;
+}
+.contactButton:hover {
+  background-color: rgb(var(--color-secondary));
+  color: whitesmoke;
+  transform: scaleX(1.05);
+}
