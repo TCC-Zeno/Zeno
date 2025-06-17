@@ -1,6 +1,8 @@
-<!-- ![Logo](https://i.ibb.co/5Wn3zgB/bombhero-banner.jpg) -->
+
 
 # Zeno
+
+<img src="src/assets/logo/LogoZeno_Logotipo_preto.png" width="960">
 
 **Acesse agora:** [Zeno](https://tcc-zeno.vercel.app/)
 
@@ -14,7 +16,7 @@ O desenvolvimento deste sistema foi iniciado em março de 2025 e continua até h
 
 ## Membros do projeto
 
-* [Caio Costa](https://github.com/CaioCosta2JZ) - Tester e responsável pela documentação.
+* [Caio Costa](https://github.com/CaioCosta2JZ) - Tester (QA) e responsável pela documentação.
 * [José Souza](https://github.com/JoseSouza2007) - Desenvolvedor Backend.
 * [Naresh Sharma](https://github.com/pnelrat2) - Desenvolvedor Backend.
 * [Nicolas Spinelli](https://github.com/nicolasspinelli008) - Designer.
