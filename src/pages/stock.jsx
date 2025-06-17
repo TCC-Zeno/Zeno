@@ -13,6 +13,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { LuPlus } from "react-icons/lu";
 import Modal from "../components/Modal/Modal";
+import ModalBig from "../components/ModalBig/ModalBig";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 export default function Stock() {
@@ -29,6 +30,7 @@ export default function Stock() {
   console.log(errors);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalBigOpen, setModalBigOpen] = useState(false);
 
   return (
     <>
@@ -49,7 +51,7 @@ export default function Stock() {
         </div>
 
         <div className={style.containerCards}>
-          <div className={style.Cardadd}>
+          <div className={style.Cardadd} onClick={() => setModalBigOpen(true)}>
             <LuPlus className={style.add} />
             <div className={style.contentAdd}>
               <h1>Adicionar Produto</h1>
@@ -217,6 +219,29 @@ export default function Stock() {
             </div>
             </div>
           </div>
+        </Modal>
+
+        <Modal isOpen={modalBigOpen} onClose={() => setModalBigOpen(false)} stock = {true}>
+          <h1>Cadastrar Produto</h1>
+          <input
+            className={style.inputAdd}
+            type="text"
+            placeholder="Nome do produto"
+            {...register("Full name", { required: true })}
+          />
+          <input
+            className={style.inputAdd}
+            type="text"
+            placeholder="Quatidade Dixa"
+            {...register("Full name", { required: true })}
+          />
+          <input
+            className={style.inputAdd}
+            type="text"
+            placeholder="Nome do produto"
+            {...register("Full name", { required: true })}
+          />
+
         </Modal>
       </DefaultLayout>
     </>
