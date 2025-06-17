@@ -18,14 +18,14 @@ O desenvolvimento deste sistema foi iniciado em março de 2025 e continua até h
 
 * [Caio Costa](https://github.com/CaioCosta2JZ) - Tester (QA) e responsável pela documentação.
 * [José Souza](https://github.com/JoseSouza2007) - Desenvolvedor Backend.
-* [Naresh Sharma](https://github.com/pnelrat2) - Desenvolvedor Backend.
+* [Naresh Sharma](https://github.com/Naresh-matheus) - Desenvolvedor Backend.
 * [Nicolas Spinelli](https://github.com/nicolasspinelli008) - Designer.
 * [Nícollas Reis](https://github.com/NicollasMSR) - Desenvolvedor Frontend.
 * [Vinícius Porto](https://github.com/Vini150cius) - Desenvolvedor Frontend.
 
 ## Professora Responsável
 
-* [Magali Nery] - Professora das matérias de Análise e Projeto de Sistemas, Desenvolvimento de Sistemas e Programação de Aplicativos Mobile e orientadora do TCC. À ela, nossa profunda gratidão.
+* Magali Nery - Professora das matérias de Análise e Projeto de Sistemas, Desenvolvimento de Sistemas e Programação de Aplicativos Mobile e orientadora do TCC. À ela, nossa profunda gratidão.
 
 ## Começando
 
