@@ -2,7 +2,7 @@
 
 # Zeno
 
-<img src="src/assets/logo/LogoZeno_Logotipo_preto.png" width="960">
+<img src="src/assets/logo/LogoZenoReadme.png">
 
 **Acesse agora:** [Zeno](https://tcc-zeno.vercel.app/)
 
