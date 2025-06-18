@@ -11,7 +11,9 @@ Zeno é um sistema ERP (Planejamento de Recursos Empresariais) projetado para mi
 ## Sobre o projeto
 
 O Sistema Zeno foi feito como o projeto principal do Trabalho de Conclusão de Curso (TCC) do curso de Desenvolvimento de Sistemas oferecido pelo Centro Paula Souza, na ETEC Martinho Di Ciero. É uma demonstração de tudo o que aprendemos e das habilidades obtidas ao longo desta trilha de aprendizado. Feito sob a orientação da professora Magali Nery.
+
 Sendo um sistema sem complicações e intuitivo, Zeno oferece uma gestão completa para sua microempresa: Gestão de tarefas, fluxo de Caixa, estoque e eventos relacionados a empresa.
+
 O desenvolvimento deste sistema foi iniciado em março de 2025 e continua até hoje, com data prevista de lançamento para dezembro de 2025.
 
 ## Membros do projeto
