@@ -220,6 +220,24 @@ h2 button {
 .buttonBlockClose button:hover {
   transform: scale(1.03);
 }
+.togglePassword{
+    display: flex;
+  align-items: center;
+  background-color: rgb(var(--color-primary));
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: #f2f7fe;
+  border: none;
+  cursor: pointer;
+  gap: 10px;
+  font-size: 13pt;
+  transition: 0.5s all;
+}
+
+.togglePassword:hover{
+  transform: scale(1.08);
+}
+
 
 @media screen and (max-width: 768px) {
   .inputName,

@@ -20,7 +20,7 @@
 
 .wrapperForm h3 {
   font-family: "Coolvetica Rg", sans;
-  color: rgb(var(--color-secondary));
+  color: rgb(70, 135, 243);
   text-align: center;
   font-size: 40pt;
 }
@@ -35,7 +35,7 @@
 
 .wrapperForm input[type="submit"] {
   margin-top: 50px;
-  background-color: rgb(var(--color-primary));
+  background-color: rgb(70, 135, 243);
   border-radius: 15px;
   color: #ffffff;
   font-size: 20pt;

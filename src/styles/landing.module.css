@@ -38,7 +38,7 @@ body,
 .linksContainer ul li {
   font-size: 14pt;
   font-weight: 600;
-  color: rgb(var(--color-primary));
+  color: rgb(70, 135, 243);
   transition: 0.5s all;
 }
 .linksContainer ul li:hover {
@@ -55,7 +55,7 @@ body,
 .signUpButton {
   padding: 5px 2.5vw;
   margin-left: 15px;
-  background-color: rgb(var(--color-primary));
+  background-color: rgb(70, 135, 243);
   border-radius: 8px;
   color: rgb(var(--color-background));
   transition: all 0.25s;
@@ -64,7 +64,7 @@ body,
 .signInButton {
   padding: 5px 2.5vw;
   background-color: transparent;
-  border: 2px solid rgb(var(--color-primary));
+  border: 2px solid rgb(70, 135, 243);
   border-radius: 10px;
   color: #000;
   font-weight: bold;
@@ -225,7 +225,7 @@ body,
   font-size: 30pt;
 }
 .guide h1 span {
-  color: rgb(var(--color-primary));
+  color: rgb(70, 135, 243);
   text-decoration: underline;
 }
 .guide p {
@@ -671,7 +671,7 @@ footer .a {
   .drawerMenu ul li {
     font-size: 17pt;
     font-weight: 600;
-    color: rgb(var(--color-primary));
+    color: rgb(70, 135, 243);
     transition: 0.5s all;
   }
 

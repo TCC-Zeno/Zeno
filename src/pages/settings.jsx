@@ -12,6 +12,7 @@ import S from "./../styles/settings.module.css";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import Modal from "../components/Modal/Modal";
 import { TbLock } from "react-icons/tb";
+import { RiKey2Line } from "react-icons/ri";
 
 export default function Settings() {
   const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
@@ -62,6 +63,13 @@ export default function Settings() {
             />
             <div className={S.containerInternalForm}>
               <div className={S.containerForm}>
+                <h2>Altere a sua senha</h2>
+                <div className={S.containerPassword}>
+                  <button className={S.togglePassword}>
+                    <RiKey2Line />
+                    Alterar senha
+                  </button>
+                </div>
                 <h2>Qual a cor para o site?</h2>
                 <div className={S.colorContainer}>
                   <button

@@ -8,10 +8,26 @@
 .containerToggle {
   width: 40%;
   height: 100vh;
-  background-color: rgb(var(--color-primary));
+  background-color: rgb(70, 135, 243);
   display: flex;
   justify-content: center;
   position: relative;
+}
+
+.signInToggle {
+  background: linear-gradient(
+    to left,
+    rgb(var(--color-secondary)),
+    rgba(var(--color-secondary), 0.5)
+  );
+}
+
+.signUpToggle {
+  background: linear-gradient(
+    to right,
+    rgb(var(--color-secondary)),
+    rgba(var(--color-secondary), 0.5)
+  );
 }
 
 .containerLogo {
@@ -141,7 +157,7 @@
   .containerToggle {
     width: 100%;
     height: auto;
-    background-color: rgb(var(--color-primary));
+    background-color: rgb(70, 135, 243);
     display: flex;
     justify-content: center;
     position: relative;

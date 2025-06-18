@@ -46,8 +46,12 @@ export default function SignIn() {
             placeholder="Senha"
             {...register("password", { required: true })}
             className={errors.password ? S.errorInput : ""}
-
           />
+          <div className={S.forgotPasswordContainer}>
+            <a id="forgot-password" className={S.forgotPassword}>
+              Esqueceu sua senha?{" "}
+            </a>
+          </div>
           <div className={S.containerButton}>
             <input id="btn-submit" type="submit" />
           </div>
