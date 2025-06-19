@@ -49,6 +49,7 @@ const TaskForm = ({ setTasks, status = "todo", onClose }) => {
       <div className={S.row01}>
         <input
           type="text"
+          id="text-task"
           name="task"
           className={S.inputText}
           placeholder="Digite a tarefa"
@@ -60,13 +61,14 @@ const TaskForm = ({ setTasks, status = "todo", onClose }) => {
       <div className={S.row02}>
         <input
           type="date"
+          id="date-task"
           name="date"
           className={S.inputDate}
           value={taskData.date}
           onChange={handleChange}
           required
         />
-        <button type="submit" className={S.addTask}>
+        <button id="submit-add-task" type="submit" className={S.addTask}>
           <IoMdAdd />
         </button>
       </div>

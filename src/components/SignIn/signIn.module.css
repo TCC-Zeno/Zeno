@@ -69,7 +69,7 @@
   padding: 0 10px;
 }
 
-.forgotPasswordContainer{
+.forgotPasswordContainer {
   display: flex;
   align-self: center;
   justify-self: center;
@@ -77,11 +77,12 @@
   margin-top: 10px;
 }
 
-.forgotPassword{
+.forgotPassword {
   font-size: 15pt;
-text-align: center;
-color: rgb(70, 135, 243);
-font-weight: bold;
+  text-align: center;
+  color: rgb(70, 135, 243);
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .errorInput {

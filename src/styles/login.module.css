@@ -8,26 +8,38 @@
 .containerToggle {
   width: 40%;
   height: 100vh;
-  background-color: rgb(70, 135, 243);
+  background: #0562fd;
   display: flex;
   justify-content: center;
   position: relative;
 }
 
 .signInToggle {
+  background: #0562fd;
   background: linear-gradient(
-    to left,
-    rgb(var(--color-secondary)),
-    rgba(var(--color-secondary), 0.5)
-  );
+    150deg,
+    rgba(23, 106, 244, 1) 0%,
+    rgba(174, 5, 255, 1) 100%
+  ) !important;
+  width: 40%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
 
 .signUpToggle {
+  background: #0562fd;
   background: linear-gradient(
-    to right,
-    rgb(var(--color-secondary)),
-    rgba(var(--color-secondary), 0.5)
+    243deg,
+    rgba(5, 98, 253, 1) 0%,
+    rgba(174, 5, 255, 1) 100%
   );
+  width: 40%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
 
 .containerLogo {

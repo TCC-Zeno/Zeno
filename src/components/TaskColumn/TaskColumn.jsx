@@ -13,6 +13,7 @@ const TaskColumn = ({
   setActiveCard,
   onDrop,
   setTasks,
+  id,
 }) => {
   const [addForm, setAddForm] = useState(false);
   return (
@@ -34,6 +35,7 @@ const TaskColumn = ({
           onDrop(status, 0);
         }
       }}
+      id={id}
     >
       <h2 className={S.task_column_heading}>{title}</h2>
 

@@ -232,6 +232,7 @@ h2 button {
   gap: 10px;
   font-size: 13pt;
   transition: 0.5s all;
+  margin-bottom: 15px;
 }
 
 .togglePassword:hover{

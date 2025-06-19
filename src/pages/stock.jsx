@@ -41,8 +41,9 @@ export default function Stock() {
             type="text"
             placeholder="Procurar Produto"
             {...register("Full name", { required: true })}
+            id="input-filter"
           />{" "}
-          <button className={style.buttonFilter}>
+          <button className={style.buttonFilter} id="button-filter">
             <HiMiniMagnifyingGlass
               className={style.icon}
               onSubmit={handleSubmit(onSubmit)}
@@ -51,13 +52,21 @@ export default function Stock() {
         </div>
 
         <div className={style.containerCards}>
-          <div className={style.Cardadd} onClick={() => setModalBigOpen(true)}>
+          <div
+            className={style.Cardadd}
+            id="card-add"
+            onClick={() => setModalBigOpen(true)}
+          >
             <LuPlus className={style.add} />
             <div className={style.contentAdd}>
               <h1>Adicionar Produto</h1>
             </div>
           </div>
-          <div className={style.Cards} onClick={() => setModalOpen(true)}>
+          <div
+            className={style.Cards}
+            id="card-view"
+            onClick={() => setModalOpen(true)}
+          >
             <div>
               <img className={style.images} src={coxinha} alt="coxinha" />
             </div>
@@ -69,16 +78,18 @@ export default function Stock() {
               </p>
             </div>
             <div className={style.actions}>
-              <button className={style.button}>
+              <button className={style.button} id="button-back-counter">
                 <IoIosArrowBack className={style.Arrowicon} />
               </button>
-              <h1 className={style.counter}>000</h1>
-              <button className={style.button}>
+              <h1 className={style.counter} id="counter">
+                000
+              </h1>
+              <button className={style.button} id="button-forward-counter">
                 <IoIosArrowForward className={style.Arrowicon} />
               </button>
             </div>
           </div>
-          <div className={style.Cards}>
+          <div className={style.Cards} id="card-view">
             <div>
               <img
                 className={style.images}
@@ -94,16 +105,18 @@ export default function Stock() {
               </p>
             </div>
             <div className={style.actions}>
-              <button className={style.button}>
+              <button className={style.button} id="button-back-counter">
                 <IoIosArrowBack className={style.Arrowicon} />
               </button>
-              <h1 className={style.counter}>000</h1>
-              <button className={style.button}>
+              <h1 className={style.counter} id="counter">
+                000
+              </h1>
+              <button className={style.button} id="button-forward-counter">
                 <IoIosArrowForward className={style.Arrowicon} />
               </button>
             </div>
           </div>
-          <div className={style.Cards}>
+          <div className={style.Cards} id="card-view">
             <div>
               <img className={style.images} src={strogonoff} alt="strogonoff" />
             </div>
@@ -115,16 +128,18 @@ export default function Stock() {
               </p>
             </div>
             <div className={style.actions}>
-              <button className={style.button}>
+              <button className={style.button} id="button-back-counter">
                 <IoIosArrowBack className={style.Arrowicon} />
               </button>
-              <h1 className={style.counter}>000</h1>
-              <button className={style.button}>
+              <h1 className={style.counter} id="counter">
+                000
+              </h1>
+              <button className={style.button} id="button-forward-counter">
                 <IoIosArrowForward className={style.Arrowicon} />
               </button>
             </div>
           </div>
-          <div className={style.Cards}>
+          <div className={style.Cards} id="card-view">
             <div>
               <img className={style.images} src={feijoada} alt="feijoada" />
             </div>
@@ -136,92 +151,108 @@ export default function Stock() {
               </p>
             </div>
             <div className={style.actions}>
-              <button className={style.button}>
+              <button className={style.button} id="button-back-counter">
                 <IoIosArrowBack className={style.Arrowicon} />
               </button>
-              <h1 className={style.counter}>000</h1>
-              <button className={style.button}>
+              <h1 className={style.counter} id="counter">
+                000
+              </h1>
+              <button className={style.button} id="button-forward-counter">
                 <IoIosArrowForward className={style.Arrowicon} />
               </button>
             </div>
           </div>
         </div>
 
-        <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} stock = {true}>
+        <Modal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          stock={true}
+        >
           <div className={style.modalContent}>
             <div className={style.modalLeft}>
-            <div className={style.ModalInfos}>
-              <h1>Informações do Produto</h1>
-              <h3 className={style.ModalTitle}>
-                Produto: <span className={style.ModalTxt}>Nome do Produto</span>
-              </h3>
-              <h3 className={style.ModalTitle}>
-                Quantidade: <span className={style.ModalTxt}>000</span>
-              </h3>
-              <h3 className={style.ModalTitle}>
-                Descrição:{" "}
-                <span className={style.ModalTxt}>
-                  {" "}
-                  Descrição do produto aqui.
-                </span>
-              </h3>
-            </div>
-            <div className={style.line} />
-            <div className={style.ModalForne}>
-              <h1>Fornecedor</h1>
-              <h3 className={style.ModalTitle}>
-                Nome: <span className={style.ModalTxt}>Nome do Fornecedor</span>
-              </h3>
-              <h3 className={style.ModalTitle}>
+              <div className={style.ModalInfos}>
+                <h1>Informações do Produto</h1>
                 <h3 className={style.ModalTitle}>
-                  Endereço:{" "}
-                  <span className={style.ModalTxt}> Rua Exemplo, 123</span>
+                  Produto:{" "}
+                  <span className={style.ModalTxt}>Nome do Produto</span>
                 </h3>
-                Telefone: <span className={style.ModalTxt}>0000-0000</span>
-              </h3>
-              <h3 className={style.ModalTitle}>
-                Email:{" "}
-                <span className={style.ModalTxt}>
-                  {" "}
-                  emailfornecedor@email.com{" "}
-                </span>
-              </h3>
-            </div>
-            <div className={style.line} />
-            <div classsName={style.ModalQuanti}>
-              <h3 className={style.ModalTitle}>
-                Quantidade em Estoque:{" "}
-                <span className={style.ModalTxt}> 000 </span>
-              </h3>
-              <h3 className={style.ModalTitle}>
-                Quantidade minima para comprar:{" "}
-                <span className={style.ModalTxt}> 000 </span>
-              </h3>
-            </div>
+                <h3 className={style.ModalTitle}>
+                  Quantidade: <span className={style.ModalTxt}>000</span>
+                </h3>
+                <h3 className={style.ModalTitle}>
+                  Descrição:{" "}
+                  <span className={style.ModalTxt}>
+                    {" "}
+                    Descrição do produto aqui.
+                  </span>
+                </h3>
+              </div>
+              <div className={style.line} />
+              <div className={style.ModalForne}>
+                <h1>Fornecedor</h1>
+                <h3 className={style.ModalTitle}>
+                  Nome:{" "}
+                  <span className={style.ModalTxt}>Nome do Fornecedor</span>
+                </h3>
+                <h3 className={style.ModalTitle}>
+                  <h3 className={style.ModalTitle}>
+                    Endereço:{" "}
+                    <span className={style.ModalTxt}> Rua Exemplo, 123</span>
+                  </h3>
+                  Telefone: <span className={style.ModalTxt}>0000-0000</span>
+                </h3>
+                <h3 className={style.ModalTitle}>
+                  Email:{" "}
+                  <span className={style.ModalTxt}>
+                    {" "}
+                    emailfornecedor@email.com{" "}
+                  </span>
+                </h3>
+              </div>
+              <div className={style.line} />
+              <div classsName={style.ModalQuanti}>
+                <h3 className={style.ModalTitle}>
+                  Quantidade em Estoque:{" "}
+                  <span className={style.ModalTxt}> 000 </span>
+                </h3>
+                <h3 className={style.ModalTitle}>
+                  Quantidade minima para comprar:{" "}
+                  <span className={style.ModalTxt}> 000 </span>
+                </h3>
+              </div>
             </div>
             <div className={style.modalRight}>
-            <div className={style.modalImg}>
-              <img className={style.modalImages} src={coxinha} alt="coxinha" />
-              <h3 className={style.ModalTitle}>
-                Alerta:{" "}
-                <span className={style.ModalTxt}>
-                  Você esta sendo alertado
-                </span>
-              </h3>
-              <h3 className={style.ModalTitle}>
-                Categoria:{" "}
-                <span className={style.ModalTxt}>Categoria do Produto</span>
-              </h3>
-            </div>
-            <div className={style.buttons}>
-              <button className={style.buttonEdit}> Editar Produto</button>
-              <button className={style.buttonDelete}> Deletar Produto</button>
-            </div>
+              <div className={style.modalImg}>
+                <img
+                  className={style.modalImages}
+                  src={coxinha}
+                  alt="coxinha"
+                />
+                <h3 className={style.ModalTitle}>
+                  Alerta:{" "}
+                  <span className={style.ModalTxt}>
+                    Você esta sendo alertado
+                  </span>
+                </h3>
+                <h3 className={style.ModalTitle}>
+                  Categoria:{" "}
+                  <span className={style.ModalTxt}>Categoria do Produto</span>
+                </h3>
+              </div>
+              <div className={style.buttons}>
+                <button className={style.buttonEdit}> Editar Produto</button>
+                <button className={style.buttonDelete}> Deletar Produto</button>
+              </div>
             </div>
           </div>
         </Modal>
 
-        <Modal isOpen={modalBigOpen} onClose={() => setModalBigOpen(false)} stock = {true}>
+        <Modal
+          isOpen={modalBigOpen}
+          onClose={() => setModalBigOpen(false)}
+          stock={true}
+        >
           <h1>Cadastrar Produto</h1>
           <input
             className={style.inputAdd}
@@ -241,7 +272,6 @@ export default function Stock() {
             placeholder="Nome do produto"
             {...register("Full name", { required: true })}
           />
-
         </Modal>
       </DefaultLayout>
     </>

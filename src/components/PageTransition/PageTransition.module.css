@@ -1,0 +1,34 @@
+.pageTransition {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pageContent {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgb(var(--color-background));
+  pointer-events: auto;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.transitionLayer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgb(var(--color-primary));
+  pointer-events: none;
+  z-index: 2;
+  will-change: transform, clip-path;
+}

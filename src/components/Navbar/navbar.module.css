@@ -149,8 +149,8 @@
 
   .navLinks {
     width: 100%;
-   top: 50%;
-   transform: translateY(25%);
+    top: 50%;
+    transform: translateY(25%);
   }
 
   .logo {
@@ -162,7 +162,7 @@
     margin-top: 30%;
     right: 0;
     justify-content: flex-start;
-   transform: translateY(25%);
+    transform: translateY(25%);
   }
 
   .active {

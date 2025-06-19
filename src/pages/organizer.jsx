@@ -57,6 +57,7 @@ export default function Organizer() {
           setActiveCard={setActiveCard}
           onDrop={onDrop}
           setTasks={setTasks}
+          id={"todo-column"}
         />
         <TaskColumn
           title="Em andamento"
@@ -67,6 +68,7 @@ export default function Organizer() {
           setActiveCard={setActiveCard}
           onDrop={onDrop}
           setTasks={setTasks}
+          id={"doing-column"}
         />
         <TaskColumn
           title="Concluído"
@@ -77,6 +79,7 @@ export default function Organizer() {
           setActiveCard={setActiveCard}
           onDrop={onDrop}
           setTasks={setTasks}
+          id={"done-column"}
         />
       </section>
     </DefaultLayout>

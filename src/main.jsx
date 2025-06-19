@@ -17,6 +17,7 @@ import Organizer from "./pages/organizer";
 import Calendar from "./pages/calendar";
 import Stock from "./pages/stock";
 import NotFound from "./pages/notFoundPage";
+import PageTransition from "./components/PageTransition/PageTransition";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -25,19 +26,21 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <ColorBlindnessSwitcher />
       <ColorBlindnessFilters />
       <BrowserRouter>
-        <Routes>
-          <Route element={<LandingPage />} path="/" />
-          <Route element={<Login />} path="/login" />
-          <Route element={<ProtectedRoutes />}>
-            <Route element={<Dashboard />} path="/dashboard" />
-            <Route element={<Stock />} path="/stock" />
-            <Route element={<Settings />} path="/settings" />
-            <Route element={<Finance />} path="/finance" />
-            <Route element={<Calendar />} path="/calendar" />
-            <Route element={<Organizer />} path="/organizer" />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <PageTransition>
+          <Routes>
+            <Route element={<LandingPage />} path="/" />
+            <Route element={<Login />} path="/login" />
+            <Route element={<ProtectedRoutes />}>
+              <Route element={<Dashboard />} path="/dashboard" />
+              <Route element={<Stock />} path="/stock" />
+              <Route element={<Settings />} path="/settings" />
+              <Route element={<Finance />} path="/finance" />
+              <Route element={<Calendar />} path="/calendar" />
+              <Route element={<Organizer />} path="/organizer" />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </PageTransition>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>
