@@ -2,6 +2,7 @@ import { TbLogout, TbAlertHexagon } from "react-icons/tb";
 import { LuTriangleAlert, LuCircleAlert, LuCircleHelp } from "react-icons/lu";
 import { MdManageAccounts } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
+import { IoPeopleSharp } from "react-icons/io5";
 import { GrHelpBook } from "react-icons/gr";
 
 import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
@@ -9,6 +10,7 @@ import S from "./header.module.css";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
+import DropdownContributors from "./DropdownContributors";
 
 export function NotificationContent() {
   return (
@@ -103,7 +105,9 @@ export function NotificationContent() {
 
 export function ProfileContent() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [dropdownContributors, setDropdownContributors] = useState(false);
   return (
+    <>
     <div className={S.containerProfile}>
       <div className={S.containerUser}>
         <div className={S.userPhoto}>
@@ -120,10 +124,10 @@ export function ProfileContent() {
           <MdManageAccounts />
           <span>Conta</span>
         </Link>
-        <Link className={S.manegerOption} to="/settings">
-          <IoSettingsSharp />
-          <span>Personalizar</span>
-        </Link>
+        <button className={S.manegerOption} onClick={() => setDropdownContributors(!dropdownContributors)}>
+          <IoPeopleSharp />
+          <span>Contribuintes</span>
+        </button>
         <Link className={S.manegerOption} to="/guide">
           <GrHelpBook />
           <span>Guia</span>
@@ -161,7 +165,7 @@ export function ProfileContent() {
           </div>
           <div className={S.modalContainerInfo}>
             <p>Logo da empresa:</p>
-            <div className={(S.modalContainerImg)}>
+            <div className={S.modalContainerImg}>
               <img src={Logo} alt="Sua Logo em miniatura" />
             </div>
           </div>
@@ -179,7 +183,7 @@ export function ProfileContent() {
         </div>
       </Modal>
     </div>
-
-    
+    <DropdownContributors isOpen={dropdownContributors} setIsOpen={setDropdownContributors} />
+    </>
   );
 }
