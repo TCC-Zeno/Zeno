@@ -1,12 +1,24 @@
 // Imports
-import { createClient } from '@supabase/supabase-js';  
-import { env } from './env.js';
+import express from 'express';
+import routes from './routes.js';
+import cors from 'cors';
 
-// Create a Supabase client
-export const supabase = createClient(
-    env.SUPABASE_URL,
-    env.SUPABASE_SERVICE_ROLE_KEY,
-    {
-        
-    }
-    );
+
+const app = express();
+const PORT =  3000;
+
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static('public'));
+
+app.use('/api', routes);
+ 
+app.get('/', (req, res) => {    
+    res.send("Está funcionando!");
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
+
