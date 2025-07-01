@@ -58,7 +58,7 @@ const TaskColumn = ({
       {addForm ? (
         <TaskForm setTasks={setTasks} status={status} onClose={() => setAddForm(false)} />
       ) : (
-        <button onClick={() => setAddForm(true)} className={S.addTask}>+ Adicionar uma tarefa</button>
+        <button onClick={() => setAddForm(true)} className={S.addTask} id="btn-add-task">+ Adicionar uma tarefa</button>
       )}
     </section>
   );

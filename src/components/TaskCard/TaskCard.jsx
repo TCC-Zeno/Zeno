@@ -30,12 +30,13 @@ const TaskCard = ({ title, date, handleDelete, index, setActiveCard }) => {
         <div className={S.row02}>
           <FaCalendarAlt className={S.iconCalendar} />
           <span>{date}</span>
-          <button className={S.buttonEdit}>
+          <button className={S.buttonEdit} id="btn-edit-task">
             <FaEdit className={S.iconEdit} />
           </button>
           <button
             className={S.buttonDelete}
             onClick={() => handleDelete(index)}
+            id="btn-delete-task"
           >
             <MdDelete className={S.iconDelete} />
           </button>

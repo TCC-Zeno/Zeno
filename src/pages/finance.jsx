@@ -12,6 +12,57 @@ import CurrencyInput from "react-currency-input-field";
 import { PiFileArchiveFill } from "react-icons/pi";
 
 export default function Finance() {
+  const dataArray = [
+    {
+      id: 1,
+      name: "Produto A",
+      value: "R$ 100,00",
+      method: "Cartão de crédito",
+      category: "Compras",
+      flow: "Entrada",
+    },
+    {
+      id: 2,
+      name: "Produto B",
+      value: "R$ 200,00",
+      method: "Dinheiro",
+      category: "Contas",
+      flow: "Saída",
+    },
+    {
+      id: 3,
+      name: "Produto C",
+      value: "R$ 150,00",
+      method: "Pix",
+      category: "Manutenção",
+      flow: "Entrada",
+    },
+    {
+      id: 4,
+      name: "Produto D",
+      value: "R$ 300,00",
+      method: "Cartão de débito",
+      category: "Outros",
+      flow: "Saída",
+    },
+    {
+      id: 5,
+      name: "Produto E",
+      value: "R$ 250,00",
+      method: "Cartão de crédito",
+      category: "Compras",
+      flow: "Entrada",
+    },
+    {
+      id: 6,
+      name: "Produto F",
+      value: "R$ 400,00",
+      method: "Dinheiro",
+      category: "Contas",
+      flow: "Saída",
+    },
+  ];
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(finance());
@@ -34,21 +85,27 @@ export default function Finance() {
                 <p>Entradas do mês</p>
                 <FaArrowTrendUp className={style.top} />
               </div>
-              <h2 className={style.number}>$value</h2>
+              <h2 className={style.number} id="amount-value">
+                $value
+              </h2>
             </div>
             <div className={style.views}>
               <div className={style.titleIcon}>
                 <p>Saías do mês</p>
                 <FaArrowTrendDown className={style.down} />
               </div>
-              <h2 className={style.number2}>$value</h2>
+              <h2 className={style.number2} id="expenses-value">
+                $value
+              </h2>
             </div>
             <div className={style.views}>
               <div className={style.titleIcon}>
                 <p>Saldo do mês</p>
                 <p className={style.icon}>Icon</p>
               </div>
-              <h2 className={style.number3}>$value</h2>
+              <h2 className={style.number3} id="profit-value">
+                $value
+              </h2>
             </div>
           </div>
           <div className={style.line}></div>
@@ -59,12 +116,14 @@ export default function Finance() {
               </div>
               <input
                 className={style.inputDate}
+                id="filter-date"
                 type="date"
                 {...register("date", { required: true })}
               />
             </div>
             <select
               className={style.financeSelect1}
+              id="filter-payment-method"
               {...register("Payment method", { required: true })}
             >
               <option value="Método de pagamento" disabled selected>
@@ -78,6 +137,8 @@ export default function Finance() {
             </select>
             <select
               className={style.financeSelect1}
+              id="filter-category"
+              name="category"
               {...register("category", { required: true })}
             >
               <option value="Categorias" disabled selected>
@@ -90,6 +151,7 @@ export default function Finance() {
             </select>
             <select
               className={style.financeSelect1}
+              id="filter-type"
               {...register("flow", { required: true })}
             >
               <option value="Tipo de fluxo" disabled selected>
@@ -113,6 +175,25 @@ export default function Finance() {
               </tr>
             </thead>
             <tbody>
+              {/* Eu fiz uma map de um array só para ter como base, mas provavelmente os nomes irão mudar, mas isso o Backend decide */}
+              {dataArray.map((data) => (
+                <tr className={style.conteudo} key={data.id}>
+                  <td>{data.name}</td>
+                  <td>{data.value}</td>
+                  <td>{data.method}</td>
+                  <td>{data.category}</td>
+                  <td className={style.tipoFluxo}>{data.flow}</td>
+                  <td className={style.action}>
+                    <button id="edit-button">
+                      <FaEdit className={style.iconEdit} />
+                    </button>
+                    <button id="delete-button">
+                      <MdDelete className={style.iconDelete} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {/* Esse é o padrão que o Goias fez */}
               <tr className={style.conteudo}>
                 <td>José Eduardo</td>
                 <td>R$ 2000,00</td>
@@ -143,6 +224,7 @@ export default function Finance() {
               <div className={style.row01}>
                 <input
                   className={style.inputName}
+                  id="name-input"
                   type="text"
                   placeholder="Nome completo"
                   {...register("Full name", { required: true })}
@@ -173,6 +255,7 @@ export default function Finance() {
               <div className={style.row02}>
                 <select
                   className={style.financeSelect}
+                  id="payment-method-select"
                   {...register("Payment method", { required: true })}
                 >
                   <option value="Método de pagamento" disabled selected>
@@ -186,6 +269,7 @@ export default function Finance() {
                 </select>
                 <select
                   className={style.financeSelect}
+                  id="category-select"
                   {...register("category", { required: true })}
                 >
                   <option value="Categorias" disabled selected>
@@ -198,6 +282,7 @@ export default function Finance() {
                 </select>
                 <select
                   className={style.financeSelect}
+                  id="flow-select"
                   {...register("flow", { required: true })}
                 >
                   <option value="Tipo de fluxo" disabled selected>
@@ -206,7 +291,7 @@ export default function Finance() {
                   <option value="Entrada">Entrada</option>
                   <option value="Saída">Saída</option>
                 </select>
-                <input className={style.buttonM} type="submit" />
+                <input className={style.buttonM} type="submit" id="btn-submit" />
               </div>
             </form>
           </div>
@@ -224,16 +309,17 @@ export default function Finance() {
                 <input
                   className={style.inputName}
                   type="text"
+                  id="category-input"
                   placeholder="Nome da categoria"
                   {...register("Full name", { required: true })}
                 />
-                <input className={style.button2} type="submit" />
+                <input className={style.button2} type="submit" id="btn-add-category"/>
               </div>
             </form>
           </div>
         </section>
         <div className={style.btn}>
-          <button className={style.btnReport}>
+          <button className={style.btnReport} id="btn-report">
             {" "}
             <PiFileArchiveFill />
             Gerar Relatório
