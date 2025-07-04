@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import { IMaskInput } from "react-imask";
 import { cnpj } from "cpf-cnpj-validator";
+import axios from "axios";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -19,9 +20,21 @@ export default function SignUp() {
     setError,
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+   try { 
+    const resposta = await axios.post("http://localhost:3000/signup", {
+      cnpj: data.cnpj,
+      email: data.email,
+      password: data.password,
+    });
+    console.log(resposta);
+  }catch(err){
+    console.log(err)
+  }
     //! Parte onde o back pega as infos e passa para o banco, além de verificar se tudo está correto
     //* o backend deve pegar o array data, pois nele que tem todas as informações que o usuario digitou, mas atenção, o login pelo google é outro esquema
+    
+
     if (!cnpj.isValid(data.cnpj)) {
       //* estou usando uma lib para verificar se a conta do CNPJ está funcionando, ela só determina se é um CNPJ valido, ela não verifica se a empresa corresponde...
       setError("cnpj", {
