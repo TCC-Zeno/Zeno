@@ -108,82 +108,88 @@ export function ProfileContent() {
   const [dropdownContributors, setDropdownContributors] = useState(false);
   return (
     <>
-    <div className={S.containerProfile}>
-      <div className={S.containerUser}>
-        <div className={S.userPhoto}>
-          <img src={Logo} alt="Sua Logo em miniatura" />
+      <div className={S.containerProfile}>
+        <div className={S.containerUser}>
+          <div className={S.userPhoto}>
+            <img src={Logo} alt="Sua Logo em miniatura" />
+          </div>
+          <div className={S.userInfo}>
+            <h4>Nome da empresa</h4>
+            <p>empresa@gmail.com</p>
+          </div>
         </div>
-        <div className={S.userInfo}>
-          <h4>Nome da empresa</h4>
-          <p>empresa@gmail.com</p>
+        <div className={S.divider}></div>
+        <div className={S.userManeger}>
+          <Link className={S.manegerOption} onClick={() => setModalOpen(true)}>
+            <MdManageAccounts />
+            <span>Conta</span>
+          </Link>
+          <button
+            className={S.manegerOption}
+            onClick={() => setDropdownContributors(!dropdownContributors)}
+          >
+            <IoPeopleSharp />
+            <span>Contribuintes</span>
+          </button>
+          <Link className={S.manegerOption} to="/guide">
+            <GrHelpBook />
+            <span>Guia</span>
+          </Link>
+          <Link className={S.manegerOption} to="/support">
+            <LuCircleHelp />
+            <span>Ajuda</span>
+          </Link>
         </div>
-      </div>
-      <div className={S.divider}></div>
-      <div className={S.userManeger}>
-        <Link className={S.manegerOption} onClick={() => setModalOpen(true)}>
-          <MdManageAccounts />
-          <span>Conta</span>
-        </Link>
-        <button className={S.manegerOption} onClick={() => setDropdownContributors(!dropdownContributors)}>
-          <IoPeopleSharp />
-          <span>Contribuintes</span>
+        <div className={S.divider}></div>
+        <button className={S.configureSignature}>Configurar assinatura</button>
+        <div className={S.divider}></div>
+        <button className={S.manegerOption}>
+          <TbLogout />
+          <span>Sair</span>
         </button>
-        <Link className={S.manegerOption} to="/guide">
-          <GrHelpBook />
-          <span>Guia</span>
-        </Link>
-        <Link className={S.manegerOption} to="/support">
-          <LuCircleHelp />
-          <span>Ajuda</span>
-        </Link>
-      </div>
-      <div className={S.divider}></div>
-      <button className={S.configureSignature}>Configurar assinatura</button>
-      <div className={S.divider}></div>
-      <button className={S.manegerOption}>
-        <TbLogout />
-        <span>Sair</span>
-      </button>
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        <div className={S.modalContent}>
-          <h1>Conta</h1>
-          <div className={S.modalContainerInfo}>
-            <p>Nome da empresa:</p>
-            <input type="text" disabled value="nome da empresa" />
-          </div>
-          <div className={S.modalContainerInfo}>
-            <p>Email da empresa:</p>
-            <input type="email" disabled value="empresa@gmail.com" />
-          </div>
-          <div className={S.modalContainerInfo}>
-            <p>Cor tema:</p>
-            <input type="text" disabled value="Branco e Azul" />
-          </div>
-          <div className={S.modalContainerInfo}>
-            <p>Opção de acessibilidade:</p>
-            <input type="text" disabled value="Padrão" />
-          </div>
-          <div className={S.modalContainerInfo}>
-            <p>Logo da empresa:</p>
-            <div className={S.modalContainerImg}>
-              <img src={Logo} alt="Sua Logo em miniatura" />
+        <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+          <div className={S.modalContent}>
+            <h1>Conta</h1>
+            <div className={S.modalContainerInfo}>
+              <p>Nome da empresa:</p>
+              <input type="text" disabled value="nome da empresa" />
+            </div>
+            <div className={S.modalContainerInfo}>
+              <p>Email da empresa:</p>
+              <input type="email" disabled value="empresa@gmail.com" />
+            </div>
+            <div className={S.modalContainerInfo}>
+              <p>Cor tema:</p>
+              <input type="text" disabled value="Branco e Azul" />
+            </div>
+            <div className={S.modalContainerInfo}>
+              <p>Opção de acessibilidade:</p>
+              <input type="text" disabled value="Padrão" />
+            </div>
+            <div className={S.modalContainerInfo}>
+              <p>Logo da empresa:</p>
+              <div className={S.modalContainerImg}>
+                <img src={Logo} alt="Sua Logo em miniatura" />
+              </div>
+            </div>
+            <div className={S.modalButtons}>
+              <button
+                className={S.modalButtonClose}
+                onClick={() => setModalOpen(false)}
+              >
+                Fechar
+              </button>
+              <Link className={S.modalButtonEdit} to="/settings">
+                Editar
+              </Link>
             </div>
           </div>
-          <div className={S.modalButtons}>
-            <button
-              className={S.modalButtonClose}
-              onClick={() => setModalOpen(false)}
-            >
-              Fechar
-            </button>
-            <Link className={S.modalButtonEdit} to="/settings">
-              Editar
-            </Link>
-          </div>
-        </div>
-      </Modal>
-    </div>
-    <DropdownContributors isOpen={dropdownContributors} setIsOpen={setDropdownContributors} />
+        </Modal>
+      </div>
+      <DropdownContributors
+        isOpen={dropdownContributors}
+        setIsOpen={setDropdownContributors}
+      />
     </>
   );
 }

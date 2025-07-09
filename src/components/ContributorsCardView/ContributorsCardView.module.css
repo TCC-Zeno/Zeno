@@ -1,0 +1,67 @@
+.containerContributors {
+  display: flex;
+  flex-direction: row;
+  border-radius: 35px;
+  border: 2px solid rgb(var(--color-primary));
+  transition: all 0.5s;
+  width: 700px;
+}
+.containerContributors:hover {
+  border: 2px solid rgb(var(--color-secondary));
+  transform: scale(1.02);
+}
+.infoContributors {
+  align-items: center;
+  width: 100%;
+  margin-left: 20px;
+}
+.nameContributors {
+  font-size: 13pt;
+  font-weight: 600;
+  color: black;
+}
+.buttonsContributors {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100px;
+  font-size: 15pt;
+}
+.buttonDelete {
+  background-color: transparent;
+  border: none;
+  color: rgb(214, 0, 0);
+  cursor: pointer;
+  font-size: 15pt;
+  margin-right: 20px;
+  transition: all 0.5s;
+}
+.buttonDelete:hover {
+  color: rgb(255, 0, 0);
+  transform: scale(1.1);
+}
+.buttonEdit {
+  background-color: transparent;
+  border: none;
+  color: rgb(70, 135, 243);
+  cursor: pointer;
+  font-size: 15pt;
+  margin-right: 5px;
+  transition: all 0.5s;
+}
+.buttonEdit:hover {
+  color: rgb(23, 106, 244);
+  transform: scale(1.1);
+}
+
+@media screen and (max-width: 768px) {
+  .containerContributors {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .containerContributors {
+    width: 100%;
+  }
+}

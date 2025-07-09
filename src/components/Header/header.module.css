@@ -9,7 +9,7 @@
   margin-left: 250px;
   top: 0;
   right: 0;
-  z-index: 100;
+  z-index: 900;
   height: 80px;
   background-color: #f7f9fa;
 }
@@ -279,12 +279,15 @@ button.manegerOption {
   min-width: 300px;
   max-width: 800px;
   min-height: 450px;
+  max-height: 85vh;
   z-index: 2000;
 }
 .contributorsContainer {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
+  min-height: 450px;
 }
 .closeButton {
   justify-self: left;
@@ -308,6 +311,191 @@ button.manegerOption {
   cursor: pointer;
   color: rgb(var(--color-primary));
   z-index: 2500;
+}
+
+.viewContributors {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+  height: 0;
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--color-primary)) transparent;
+  padding: 10px;
+}
+.addButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+}
+.addButton {
+  background-color: rgb(var(--color-secondary));
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+.input {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  align-self: center;
+}
+.input:focus {
+  outline: none;
+  border: 2px solid rgb(var(--color-primary));
+}
+.input::placeholder {
+  color: #666;
+  font-weight: 700;
+}
+.divisorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+.blockContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.blockRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.blockWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.blockLabel {
+  font-size: 15px;
+  color: #333;
+  padding-left: 10px;
+}
+
+.switch {
+  position: relative;
+  height: 24px;
+  width: 44px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 999px;
+  background-color: rgba(100, 116, 139, 0.377);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.switch:checked {
+  background-color: rgb(var(--color-secondary));
+}
+
+.switch::before {
+  position: absolute;
+  content: "";
+  left: 2px;
+  top: 2px;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.switch:checked::before {
+  transform: translateX(20px);
+}
+.addContributorForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+  max-height: 100%;
+  width: 700px;
+  padding: 10px;
+}
+.checkboxsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  width: 100%;
+  max-width: 600px;
+}
+.checkboxTitle {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 10px;
+}
+.divider02 {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 50px;
+  height: 2px;
+  background-color: #666;
+  margin: 10px 0;
+}
+.actionsButtons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+.addBtn {
+  background-color: rgb(var(--color-secondary));
+  color: white;
+  border: none;
+  padding: 5px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  width: auto;
+  transition: all 0.3s;
+}
+.addBtn:hover {
+  transform: scale(1.05);
+}
+.cancelBtn {
+  background-color: rgba(var(--color-primary), 0.7);
+  color: white;
+  border: none;
+  padding: 5px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  width: auto;
+  margin-right: 10px;
+  transition: all 0.3s;
+}
+.cancelBtn:hover {
+  transform: scale(1.05);
 }
 @media screen and (max-width: 768px) {
   .dropdownContributors {
@@ -334,5 +522,17 @@ button.manegerOption {
     height: 24px;
     min-width: 24px;
     min-height: 24px;
+  }
+  .addContributorForm {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .addContributorForm {
+    width: 100%;
+  }
+  .dropdownContributors {
+    width: 70vw;
   }
 }
