@@ -18,6 +18,7 @@ import Calendar from "./pages/calendar";
 import Stock from "./pages/stock";
 import NotFound from "./pages/notFoundPage";
 import PageTransition from "./components/PageTransition/PageTransition";
+import { Support } from "./pages/support";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -34,6 +35,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route element={<Dashboard />} path="/dashboard" />
               <Route element={<Stock />} path="/stock" />
               <Route element={<Settings />} path="/settings" />
+              <Route element={<Support />} path="/support" />
               <Route element={<Finance />} path="/finance" />
               <Route element={<Calendar />} path="/calendar" />
               <Route element={<Organizer />} path="/organizer" />

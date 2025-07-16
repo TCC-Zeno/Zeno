@@ -21,6 +21,8 @@ export default function Header() {
         return "Organizador";
       case "calendar":
         return "Agenda";
+      case "support":
+        return "Ajuda";
       default:
         return "";
     }
@@ -36,6 +38,7 @@ export default function Header() {
           "agenda",
           "organizer",
           "calendar",
+          "support",
         ].includes(rotaStatus)
           ? null
           : S.none

@@ -1,0 +1,45 @@
+.container {
+  background-color: rgb(var(--color-background-secondary));
+  padding: 3vw;
+}
+.docker {
+  background-color: rgb(var(--color-background));
+  padding: 25px;
+  border-radius: 10px;
+}
+.docker h1 {
+  font-family: "Coolvetica Rg";
+  font-size: 18pt;
+  padding-bottom: 25px;
+}
+.accordion {
+  width: 100%;
+}
+.accordionTitle {
+  font-size: 13pt;
+  position: relative;
+  color: #000;
+  text-decoration: none;
+  display: inline-block;
+}
+.accordionTitle::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  height: 2px;
+  background: rgb(var(--color-primary));
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  width: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+.accordionTitle:hover::after {
+  width: 100%;
+  transform: translateX(-50%) scaleX(1);
+}
+.accordionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4;
+}
