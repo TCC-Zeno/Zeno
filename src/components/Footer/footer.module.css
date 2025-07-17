@@ -7,6 +7,7 @@
   margin-left: 18%;
   display: flex;
   align-items: center;
+  height: 90px;
 }
 .containerLogo {
   width: 20%;
@@ -15,7 +16,7 @@
 .img {
   width: 35%;
   height: auto;
-  margin: 3%;
+  margin-left: 3%;
   padding: 3%;
 }
 .conteudo {
@@ -32,7 +33,7 @@
   transition: 0.4s ease;
 }
 .links:hover {
-  font-size: 14pt
+  font-size: 14pt;
 }
 .icons {
   width: 30%;
@@ -51,7 +52,6 @@
   transition: 0.3s all;
 }
 
-
 @media screen and (max-width: 768px) {
   .footer {
     padding: 15px 0;
@@ -60,6 +60,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    height: 250px;
   }
 
   .conteudo {
