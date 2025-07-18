@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import session from "express-session";
-import flash from "connect-flash";
+
 
 // Rotas
 import authRoutes from "./routes/auth.js";
@@ -28,24 +28,9 @@ app.use(
 );
 
 
-//conectando flash
-app.use(flash());
-
-//Mensagens do flash
-app.use((req, res, next) => {
-  res.locals.success_msg = req.flash("success_msg");
-
-  res.locals.error_msg = req.flash("error_msg");
-
-  res.locals.error = req.flash("error");
-
-  res.locals.user = req.user || null;
-
-  next();
-});
 
 //Rotas
-app.use("/", authRoutes);
+app.use("/auth", authRoutes);
 
 
 //Inicializando servidor

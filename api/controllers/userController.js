@@ -1,12 +1,12 @@
 //Testes 
 import { 
-  createUser, 
-  getUsers, 
-  getUserById, 
+  createUser,
   getUserByEmail,
+  /*getUsers, 
+  getUserById, 
   updateUser,
   deleteUser,
-  searchUsers
+  searchUsers*/
 } from "../services/userService.js";
 
 /*
@@ -18,14 +18,49 @@ import bcrypt from "bcryptjs";
 
 export const addUser = async (req, res) => {
   try {
-    const userData = req.body;
+    const { cnpj, email, password } = req.body;
+    // Validação básica
+    if (!cnpj || !email || !password) {
+      return res.status(400).json({ error: "Todos os campos são obrigatórios." });
+    }
+    // Validação de CNPJ
+    // Se quiser validar, descomente abaixo:
+    // const { cnpj: cnpjValidator } = require('cpf-cnpj-validator');
+    // if (!cnpjValidator.isValid(cnpj)) {
+    //   return res.status(400).json({ error: "CNPJ inválido." });
+    // }
+    // Verifica se já existe usuário com o mesmo email
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      return res.status(409).json({ error: "E-mail já cadastrado." });
+    }
+    // Cria usuário
+    const userData = { cnpj, email, password };
     const newUser = await createUser(userData);
     res.status(201).json(newUser);
   } catch (error) {
+    // Log detalhado para debug
+    console.error("Erro ao criar usuário:", error);
     res.status(400).json({ error: error.message });
   }
 };
-
+export const fetchUserByEmail = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await getUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+    // Verifica senha (simples, sem criptografia)
+    if (user.password !== password) {
+      return res.status(401).json({ error: "Senha incorreta" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+/*
 export const fetchUsers = async (req, res) => {
   try {
     const users = await getUsers();
@@ -48,18 +83,7 @@ export const fetchUserById = async (req, res) => {
   }
 };
 
-export const fetchUserByEmail = async (req, res) => {
-  try {
-    const { email } = req.params;
-    const user = await getUserByEmail(email);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+
 
 export const modifyUser = async (req, res) => {
   try {
@@ -97,92 +121,4 @@ export const findUsers = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-//Controle de erro 
-/*
-post("/register", (req, res) => {
-  const { cnpj, email, password } = req.body;
-
-  let errors = [];
-
-  if (!cnpj || !password || !password2) {
-    errors.push({ msg: "Please fill in all fields" });
-  }
-
-  if (password !== password2) {
-    errors.push({ msg: "Passwords do not match" });
-  }
-
-  if (errors.length > 0) {
-    res.render("auth/register", { errors, username, password, password2 });
-  } else {
-    User.findOne({ where: { username: username } }).then((user) => {
-      if (user) {
-        errors.push({ msg: "Username already exists" });
-
-        res.render("auth/register", { errors, username, password, password2 });
-      } else {
-        const newUser = new User({
-          username,
-
-          password,
-        });
-
-        bcrypt.genSalt(10, (err, salt) =>
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-
-            newUser.password = hash;
-
-            newUser
-
-              .save()
-
-              .then((user) => {
-                req.flash(
-                  "success_msg",
-
-                  "You are now registered and can log in"
-                );
-
-                res.redirect("/login");
-              })
-
-              .catch((err) => console.log(err));
-          })
-        );
-      }
-    });
-  }
-});
-
-// Login Handle
-
-post("/login", (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/",
-
-    failureRedirect: "/login",
-
-    failureFlash: true,
-  })(req, res, next);
-});
-
-// Logout Handle
-
-get("/logout", (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      console.log(err);
-
-      return;
-    }
-
-    req.flash("success_msg", "You are logged out");
-
-    res.redirect("/login");
-  });
-});
-
-
-*/ 
+*/

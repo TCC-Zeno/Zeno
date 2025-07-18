@@ -16,19 +16,22 @@ export default function SignIn() {
     formState: { errors },
   } = useForm();
 
-  
-  const  onSubmit = async (data) => {
-    const resposta = await axios.post('http://localhost:3000/auth/signin', {
-                email : data.email, 
-                password : data.password});
-    //! Parte onde o back pega as infos e passa para o banco, além de verificar se tudo está correto
-    //* o backend deve pegar o array data, pois nele que tem todas as informações que o usuario digitou, mas atenção, o login pelo google é outro esquema
-    console.log(resposta)
-    console.log(data);
-    dispatch(login());
-    navigate("/dashboard");
-  };
-
+    const onSubmit = async (data) => {
+      try {
+        const resposta = await axios.post('http://localhost:3000/auth/signin', {
+          email: data.email,
+          password: data.password
+        });
+        // Se login OK, segue para dashboard
+        if (resposta.status === 200) {
+        dispatch(login());
+        navigate("/dashboard");
+        }
+      } catch (err) {
+        // Se erro, mostra mensagem
+        alert(err.response?.data?.error || "Erro ao fazer login");
+      }
+    };
   return (
     <section className={S.containerLogin}>
       <div className={S.wrapperForm}>

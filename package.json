@@ -41,6 +41,7 @@
     "nodemon": "^3.1.10",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+    "postgres": "^3.4.7",
     "react": "^19.0.0",
     "react-currency-input-field": "^3.10.0",
     "react-dom": "^19.0.0",

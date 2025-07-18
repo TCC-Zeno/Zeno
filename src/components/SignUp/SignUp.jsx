@@ -22,7 +22,7 @@ export default function SignUp() {
 
   const onSubmit = async (data) => {
    try { 
-    const resposta = await axios.post("http://localhost:3000/signup", {
+    const resposta = await axios.post("http://localhost:3000/auth/signup", {
       cnpj: data.cnpj,
       email: data.email,
       password: data.password,

@@ -3,14 +3,24 @@ import supabase from "../config/supabaseClient.js";
 //Testes
 export const createUser = async (userData) =>{
     const { data, error } = await supabase 
-    .from ("users")
-    .insert ([userData])
-    .select();
+      .from("users")
+      .insert([userData])
+      .select();
 
-    if (error) throw new error (error.message)
-        return data;
+    if (error) throw new Error(error.message);
+    return data;
 };
+export const getUserByEmail = async (email) => {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .single();
 
+  if (error && error.code !== 'PGRST116') throw new Error(error.message);
+  return data;
+};
+/*
 export const getUsers = async () =>{
     const {data, error} = await supabase.from('users').select("*");
 
@@ -28,18 +38,6 @@ export const getUserById = async(id) =>{
       if (error) throw new error (error.message)
         return data;
 };
-
-export const getUserByEmail = async (email) => {
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("email", email)
-    .single();
-
-  if (error && error.code !== 'PGRST116') throw new Error(error.message);
-  return data;
-};
-
 export const updateUser = async (id, updates) => {
   const { data, error } = await supabase
     .from("users")
@@ -70,3 +68,4 @@ export const searchUsers = async (query) => {
   if (error) throw new Error(error.message);
   return data;
 };
+*/
