@@ -1,10 +1,10 @@
 import express from "express";
-import { addUser, fetchUserByEmail } from "../controllers/userController.js";
+import { signup, signin } from "../controllers/authController.js";
 
 const router = express.Router();
 
 //Rotas de usuario 
-router.post("/signup", addUser);
-router.post("/signin", fetchUserByEmail);
+router.post("/signup", signup);
+router.post("/signin", signin);
 
 export default router;

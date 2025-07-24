@@ -1,6 +1,6 @@
 import S from "./signIn.module.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { login } from "../../redux/User/slice";
+import { login, setTheme, userData, } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -19,11 +19,15 @@ export default function SignIn() {
     const onSubmit = async (data) => {
       try {
         const resposta = await axios.post('http://localhost:3000/auth/signin', {
+
           email: data.email,
           password: data.password
         });
         // Se login OK, segue para dashboard
         if (resposta.status === 200) {
+          console.log(resposta.data);
+        dispatch(userData(resposta.data));
+        dispatch(setTheme(resposta.data.color));
         dispatch(login());
         navigate("/dashboard");
         }

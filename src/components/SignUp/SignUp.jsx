@@ -1,6 +1,7 @@
+
 import S from "./signUp.module.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { login } from "../../redux/User/slice";
+import { login,userData, setTheme } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
@@ -21,32 +22,31 @@ export default function SignUp() {
   } = useForm();
 
   const onSubmit = async (data) => {
-   try { 
-    const resposta = await axios.post("http://localhost:3000/auth/signup", {
-      cnpj: data.cnpj,
-      email: data.email,
-      password: data.password,
-    });
-    console.log(resposta);
-  }catch(err){
-    console.log(err)
-  }
-    //! Parte onde o back pega as infos e passa para o banco, além de verificar se tudo está correto
-    //* o backend deve pegar o array data, pois nele que tem todas as informações que o usuario digitou, mas atenção, o login pelo google é outro esquema
-    
+    try {
+      const resposta = await axios.post("http://localhost:3000/auth/signup", {
+        cnpj: data.cnpj,
+        email: data.email,
+        password: data.password,
+        
+      });
 
-    if (!cnpj.isValid(data.cnpj)) {
-      //* estou usando uma lib para verificar se a conta do CNPJ está funcionando, ela só determina se é um CNPJ valido, ela não verifica se a empresa corresponde...
-      setError("cnpj", {
+      // Se cadastro OK, segue para dashboard
+      dispatch(login());
+      dispatch(userData(resposta.data[0]));
+      dispatch(setTheme(resposta.data[0].color));
+      navigate("/dashboard");
+    } catch (err) {
+      // Se erro, mostra mensagem
+      alert(err.response?.data?.error || "Erro ao criar conta");
+    }
+    
+     if (!cnpj.isValid(data.cnpj)) {
+       setError("cnpj", {
         type: "manual",
         message: "CNPJ inválido",
       });
       return;
-    }
-
-    console.log(data);
-    dispatch(login());
-    navigate("/dashboard");
+     }
   };
 
   return (

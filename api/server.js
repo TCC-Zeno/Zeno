@@ -7,6 +7,7 @@ import session from "express-session";
 
 // Rotas
 import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/user.js";
 
 
 dotenv.config();
@@ -31,7 +32,7 @@ app.use(
 
 //Rotas
 app.use("/auth", authRoutes);
-
+app.use("/user", userRoutes);
 
 //Inicializando servidor
   app.listen(3000, () => {

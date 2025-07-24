@@ -13,11 +13,16 @@ import { IoHelpCircleOutline } from "react-icons/io5";
 import Modal from "../components/Modal/Modal";
 import { TbLock } from "react-icons/tb";
 import { RiKey2Line } from "react-icons/ri";
+import axios from "axios";
+
 
 export default function Settings() {
   const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
   const [blockGuideOpen, setBlockGuideOpen] = useState(false);
   const [modalBlockResourcesOpen, setModalBlockResourcesOpen] = useState(false);
+  const [companyName, setCompanyName] = useState();
+  const [ownerName, setOwnerName] = useState();
+ 
 
   const theme = useSelector((state) => state.userReducer.theme);
   const colorBlindness = useSelector(
@@ -26,10 +31,12 @@ export default function Settings() {
   const blockedResources = useSelector(
     (state) => state.userReducer.blockedResources
   );
+  const profileinfo = useSelector((state) => state.userReducer.userData);
   const dispatch = useDispatch();
 
-  const handleColorSelect = (color) => {
+  const handleColorSelect = async (color) => {
     dispatch(setTheme(color));
+    await updateinfos({ color });
   };
 
   const handleColorBlindnessSelect = (value) => {
@@ -40,10 +47,33 @@ export default function Settings() {
     dispatch(toggleBlockedResource({ resource, blocked }));
   };
 
-  useEffect(() => {
-    dispatch(settings());
-  }, [dispatch]);
+  // updateinfos agora aceita um objeto opcional para sobrescrever campos
+  const updateinfos = async (override = {}) => {
+  try {
+    const resposta = await axios.post("http://localhost:3000/user/update", {
+      id: profileinfo.id,
+      companyName: companyName,
+      ownerName: ownerName,
+      color: override.color ?? theme,
+    });
+    
+    setCompanyName(resposta.data[0].company_name);
+    setOwnerName(resposta.data[0].owner_name);
+    dispatch(setTheme(resposta.data[0].color));
+  } catch (err) {
+    alert(err.response?.data?.error || "Erro ao atualizar informações");
+  }
+};
 
+useEffect(() => {
+  dispatch(settings());
+}, [dispatch]);
+
+useEffect(() => {
+  if (profileinfo.id) {
+    updateinfos(); 
+  }
+}, [profileinfo.id]); 
   // enviar o dado assim que for escolhido, já que o usuario pode querer mudar só uma coisa . By Vinicius
   return (
     <DefaultLayout>
@@ -52,14 +82,22 @@ export default function Settings() {
         <div className={S.containerForm}>
           <div className={S.containerSettings}>
             <input
+              id="companyname"
               className={S.inputCompany}
               type="text"
               placeholder="Nome da empresa"
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              onBlur={updateinfos}
             />
             <input
+              id="ownername"
               className={S.inputName}
               type="text"
               placeholder="Nome do dono da empresa"
+              value={ownerName}
+              onChange={(e) => setOwnerName(e.target.value)}
+              onBlur={updateinfos}
             />
             <div className={S.containerInternalForm}>
               <div className={S.containerForm}>

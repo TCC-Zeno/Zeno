@@ -12,7 +12,8 @@ const initialState = {
     agenda: false,
     calendar: false,
     service: false,
-  }
+  },
+  userData: {},
 };
 
 export const userSlice = createSlice({
@@ -34,10 +35,14 @@ export const userSlice = createSlice({
     toggleBlockedResource: (state, action) => {
       const { resource, blocked } = action.payload;
       state.blockedResources[resource] = blocked;
+    },
+    userData: (state,action) =>{
+      state.userData = action.payload;
+      
     }
   },
 });
 
-export const { login, logout, setTheme, setColorBlindness, toggleBlockedResource } = userSlice.actions;
+export const { login, logout, setTheme, setColorBlindness, toggleBlockedResource, userData } = userSlice.actions;
 
 export default userSlice.reducer;
