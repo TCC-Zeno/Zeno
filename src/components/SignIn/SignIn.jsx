@@ -1,14 +1,28 @@
 import S from "./signIn.module.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { login, setTheme, userData, } from "../../redux/User/slice";
+import { login, setTheme, userData } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import axios from 'axios'
+import axios from "axios";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  //  José, documentação do google, mas é só sobre o botão https://github.com/MomenSherif/react-oauth
+  // https://developers.google.com/identity/gsi/web/guides/verify-google-id-token?hl=pt-br#node.js esse é oq importa para o back end
+  // Está funcionando pegando do env, só que o github é chato...
+  const clientId = import.meta.env.VITE_CLIENT_ID
+  const loginGoogle = async (credentialResponse) => {
+    const idToken = credentialResponse.credential;
+
+    // Aqui tu coloca a rota que quiser, só coloquei essa como exemplo
+    const resposta = await axios.post("http://localhost:3000/auth/google", {
+      token: idToken,
+    });
+    console.log(resposta.data);
+  };
 
   const {
     register,
@@ -40,8 +54,11 @@ export default function SignIn() {
     <section className={S.containerLogin}>
       <div className={S.wrapperForm}>
         <h3>Entrar</h3>
-        <GoogleOAuthProvider clientId="idgoogle">
-          <GoogleLogin />
+        <GoogleOAuthProvider clientId={clientId}>
+          <GoogleLogin
+            onSuccess={loginGoogle}
+            onError={() => console.log("Não foi o login pelo google")}
+          />
         </GoogleOAuthProvider>
         <div className={S.divider}>
           <span>ou</span>
