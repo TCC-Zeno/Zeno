@@ -86,6 +86,8 @@ export default function LandingPage() {
   }, []);
   return (
     <>
+      <ScrollToTopButton />
+
       <header>
         <nav className={S.navbar}>
           <div className={S.logoContainer}>
@@ -499,7 +501,6 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-          <ScrollToTopButton />
         </section>
         <footer>
           <div className={S.container}>
@@ -511,16 +512,32 @@ export default function LandingPage() {
                 <p>© 2025 www.zeno.com - Todos os direitos reservados.</p>
               </div>
               <div className={S.icons}>
-                <a id="linkFacebook" aria-disabled="true" href="https://facebook.com">
+                <a
+                  id="linkFacebook"
+                  aria-disabled="true"
+                  href="https://facebook.com"
+                >
                   <FaFacebookF className={S.a} />
                 </a>
-                <a id="linkInstagram" aria-disabled="true" href="https://instagram.com">
+                <a
+                  id="linkInstagram"
+                  aria-disabled="true"
+                  href="https://instagram.com"
+                >
                   <FaInstagram className={S.a} />
                 </a>
-                <a id="linkYoutube" aria-disabled="true" href="https://youtube.com">
+                <a
+                  id="linkYoutube"
+                  aria-disabled="true"
+                  href="https://www.youtube.com/@ZenoEtec"
+                >
                   <FaYoutube className={S.a} />
                 </a>
-                <a id="linkGit" aria-label="Link para nosso GitHub" href="https://github.com/tcc-zeno">
+                <a
+                  id="linkGit"
+                  aria-label="Link para nosso GitHub"
+                  href="https://github.com/tcc-zeno"
+                >
                   <VscGithubAlt className={S.a} />
                 </a>
               </div>
