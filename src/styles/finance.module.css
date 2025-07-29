@@ -138,7 +138,6 @@
   background-color: rgb(var(--color-primary));
   width: 100%;
   text-align: center;
-  border: 3px solid rgb(70, 135, 243);
   border-radius: 8px 8px 0 0;
   overflow: hidden;
 }

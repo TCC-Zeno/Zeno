@@ -17,8 +17,8 @@ export default function Header() {
         return "Fluxo de Caixa";
       case "stock":
         return "Estoque";
-      case "organizer":
-        return "Organizador";
+      case "task":
+        return "Tarefas";
       case "calendar":
         return "Agenda";
       case "support":
@@ -36,7 +36,7 @@ export default function Header() {
           "finance",
           "stock",
           "agenda",
-          "organizer",
+          "task",
           "calendar",
           "support",
         ].includes(rotaStatus)

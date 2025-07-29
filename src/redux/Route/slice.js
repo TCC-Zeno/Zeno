@@ -9,7 +9,7 @@ export const rotaSlice = createSlice({
   initialState,
   reducers: {
     dashboard: (state) => {
-      state.rota = "dashboard"; 
+      state.rota = "dashboard";
     },
     stock: (state) => {
       state.rota = "stock";
@@ -20,8 +20,8 @@ export const rotaSlice = createSlice({
     calendar: (state) => {
       state.rota = "calendar";
     },
-    organizer: (state) => {
-      state.rota = "organizer";
+    task: (state) => {
+      state.rota = "task";
     },
     report: (state) => {
       state.rota = "report";
@@ -43,7 +43,7 @@ export const {
   stock,
   finance,
   calendar,
-  organizer,
+  task,
   report,
   service,
   settings,

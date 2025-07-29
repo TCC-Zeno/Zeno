@@ -13,7 +13,7 @@ import ThemeSwitcher from "./utils/ThemeSwitcher";
 import ColorBlindnessSwitcher from "./utils/ColorBlindnessSwitcher";
 import ColorBlindnessFilters from "./components/ColorBlindnessFilters";
 import Finance from "./pages/finance";
-import Organizer from "./pages/organizer";
+import Tasks from "./pages/tasks";
 import Calendar from "./pages/calendar";
 import Stock from "./pages/stock";
 import NotFound from "./pages/notFoundPage";
@@ -38,7 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route element={<Support />} path="/support" />
               <Route element={<Finance />} path="/finance" />
               <Route element={<Calendar />} path="/calendar" />
-              <Route element={<Organizer />} path="/organizer" />
+              <Route element={<Tasks />} path="/tasks" />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

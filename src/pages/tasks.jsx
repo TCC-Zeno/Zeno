@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { useDispatch } from "react-redux";
-import { organizer } from "../redux/Route/slice";
+import { task } from "../redux/Route/slice";
 import S from "./../styles/organizer.module.css";
 import TaskColumn from "../components/TaskColumn/TaskColumn";
 import { LuListTodo } from "react-icons/lu";
@@ -10,10 +10,10 @@ import { IoMdDoneAll } from "react-icons/io";
 
 const oldTasks = localStorage.getItem("tasks");
 
-export default function Organizer() {
+export default function Tasks() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(organizer());
+    dispatch(task());
   }, [dispatch]);
 
   const [tasks, setTasks] = useState(JSON.parse(oldTasks) || []);

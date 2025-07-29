@@ -29,7 +29,7 @@ export function Footer() {
             <a href="https://instagram.com">
               <FaInstagram className={style.a} />
             </a>
-            <a href="https://youtube.com">
+            <a href="https://www.youtube.com/@ZenoEtec">
               <FaYoutube className={style.a} />
             </a>
             <a href="https://github.com">

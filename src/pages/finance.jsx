@@ -91,7 +91,7 @@ export default function Finance() {
             </div>
             <div className={style.views}>
               <div className={style.titleIcon}>
-                <p>Saías do mês</p>
+                <p>Saídas do mês</p>
                 <FaArrowTrendDown className={style.down} />
               </div>
               <h2 className={style.number2} id="expenses-value">
@@ -197,7 +197,7 @@ export default function Finance() {
               <tr className={style.conteudo}>
                 <td>José Eduardo</td>
                 <td>R$ 2000,00</td>
-                <td>Cartãode Crédito</td>
+                <td>Cartão de Crédito</td>
                 <td>asdadadedasda</td>
                 <td className={style.tipoFluxo}>Entrada</td>
                 <td className={style.action}>
@@ -238,18 +238,18 @@ export default function Finance() {
                       id="price-input"
                       name={name}
                       placeholder="R$ 0,00"
-                      defaultValue={0}
                       decimalsLimit={2}
                       decimalScale={2}
                       decimalSeparator=","
                       groupSeparator="."
                       prefix="R$ "
                       onValueChange={(value) => onChange(value)}
-                      value={value}
+                      value={value === 0 ? "" : value}
                       className={style.inputPrice}
                     />
                   )}
                 />
+
                 <input className={style.button} type="submit" />
               </div>
               <div className={style.row02}>
@@ -291,7 +291,11 @@ export default function Finance() {
                   <option value="Entrada">Entrada</option>
                   <option value="Saída">Saída</option>
                 </select>
-                <input className={style.buttonM} type="submit" id="btn-submit" />
+                <input
+                  className={style.buttonM}
+                  type="submit"
+                  id="btn-submit"
+                />
               </div>
             </form>
           </div>
@@ -313,7 +317,11 @@ export default function Finance() {
                   placeholder="Nome da categoria"
                   {...register("Full name", { required: true })}
                 />
-                <input className={style.button2} type="submit" id="btn-add-category"/>
+                <input
+                  className={style.button2}
+                  type="submit"
+                  id="btn-add-category"
+                />
               </div>
             </form>
           </div>

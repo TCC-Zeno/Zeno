@@ -107,13 +107,13 @@ export function Navbar() {
 
           <Link
             className={`${styles.nav_link} ${
-              rotaStatus === "organizer" ? styles.active : ""
+              rotaStatus === "task" ? styles.active : ""
             }`}
-            to="/organizer"
+            to="/tasks"
             onClick={closeMenu}
           >
             <PiListChecksFill className={styles.icons} />
-            <span>Organizador</span>
+            <span>Tarefas</span>
           </Link>
 
           <Link

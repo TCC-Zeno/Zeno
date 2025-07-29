@@ -197,14 +197,13 @@ export default function Dashboard() {
                         id="input-price"
                         name={name}
                         placeholder="R$ 0,00"
-                        defaultValue={0}
                         decimalsLimit={2}
                         decimalScale={2}
                         decimalSeparator=","
                         groupSeparator="."
                         prefix="R$ "
                         onValueChange={(value) => onChange(value)}
-                        value={value}
+                        value={value === 0 ? "" : value}
                         className={S.inputPrice}
                       />
                     )}
