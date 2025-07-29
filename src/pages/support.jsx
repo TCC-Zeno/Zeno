@@ -78,7 +78,7 @@ export function Support() {
                     3 - Quais são os principais recursos do zeno?
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
-                    <ul>
+                    <ul className={S.orderedList}>
                       <li>Gestão de tarefas e produtividade</li>
                       <li>Controle de fluxo de caixa e financeiro</li>
                       <li>Controle de estoque e produtos</li>

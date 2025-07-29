@@ -152,7 +152,7 @@ export function Navbar() {
 
         <div className={styles.help}>
           <Link
-            className={`${styles.nav_link} ${
+            className={`${styles.help_link} ${
               rotaStatus === "support" ? styles.active : ""
             }`}
             to="/support"

@@ -59,13 +59,30 @@
 }
 
 .help {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 85%;
+  display: flex;
   margin-top: auto;
   margin-bottom: 5%;
-  position: relative;
-  right: 10%;
-  width: 100%;
-  display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.help_link {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-family: "Louis George Cafe", sans-serif;
+  color: #ffffff;
+  margin-bottom: 5%;
+  font-size: 125%;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  width: 100%;
+  transition: transform 0.2s ease;
 }
 
 .active {

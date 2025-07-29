@@ -97,6 +97,10 @@
 .errorInput {
   border: 2px solid red;
 }
+.orderedList li {
+  list-style: disc;
+  list-style-position: inside;
+}
 label {
   font-size: 12pt;
   font-weight: bold;
