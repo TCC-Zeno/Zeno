@@ -15,6 +15,7 @@ import { LuPlus } from "react-icons/lu";
 import Modal from "../components/Modal/Modal";
 import ModalBig from "../components/ModalBig/ModalBig";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import Dropzone from "../components/Dropzone/Dropzone";
 
 export default function Stock() {
   const dispatch = useDispatch();
@@ -253,6 +254,7 @@ export default function Stock() {
           onClose={() => setModalBigOpen(false)}
           stock={true}
         >
+          <div>
           <h1>Cadastrar Produto</h1>
           <input
             className={style.inputAdd}
@@ -263,15 +265,54 @@ export default function Stock() {
           <input
             className={style.inputAdd}
             type="text"
-            placeholder="Quatidade Dixa"
+            placeholder="Quatidade Fixa"
             {...register("Full name", { required: true })}
           />
           <input
             className={style.inputAdd}
             type="text"
-            placeholder="Nome do produto"
+            placeholder="Descrição"
             {...register("Full name", { required: true })}
           />
+          <input
+            className={style.inputAdd}
+            type="text"
+            placeholder="Categoria"
+            {...register("Full name", { required: true })}
+          />
+          </div>
+          <div>
+            <h1>Fornecedor</h1>
+            <p>Opcional</p>
+            <input
+            className={style.inputAdd}
+            type="text"
+            placeholder="Nome do Fornecedor"
+            {...register("Full name", { required: true })}
+          />
+          <input
+            className={style.inputAdd}
+            type="number"
+            placeholder="Número do Fornecedor"
+            {...register("Full name", { required: true })}
+          />
+          <input
+            className={style.inputAdd}
+            type="text"
+            placeholder="Endereço"
+            {...register("Full name", { required: true })}
+          />
+          <input
+            className={style.inputAdd}
+            type="text"
+            placeholder="Email"
+            {...register("Full name", { required: true })}
+          />
+          </div>
+          <div>
+          <Dropzone/>
+          </div>
+
         </Modal>
       </DefaultLayout>
     </>
