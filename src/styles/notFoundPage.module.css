@@ -8,8 +8,8 @@
   background-image: url("../assets/backgroundNotFoundPage.jpg");
 }
 .containerText h1 {
-  font-family: "Coolvetica Rg";
-  font-size: 150pt;
+  font-family: "Coolvetica Rg", sans-serif;
+  font-size: 135pt;
   text-align: center;
   color: #333;
   line-height: 1;
