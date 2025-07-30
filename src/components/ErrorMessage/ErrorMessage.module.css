@@ -1,0 +1,9 @@
+.messageContainer {
+  display: block;
+}
+.messageError {
+  color: red;
+  font-size: 14pt;
+  font-weight: bold;
+  margin-left: 20px;
+}

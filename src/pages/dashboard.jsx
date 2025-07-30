@@ -7,6 +7,7 @@ import { Controller, useForm } from "react-hook-form";
 import Modal from "../components/Modal/Modal";
 import ResourceBlocked from "../components/ResourceBlocked/ResourceBlocked";
 import CurrencyInput from "react-currency-input-field";
+import Counter from "../components/Counter/Counter";
 
 export default function Dashboard() {
   // Resumo de caixa
@@ -171,7 +172,6 @@ export default function Dashboard() {
             }}
           />
         )}
-
         {!permissions.finance && (
           <section className={`${S.sectionDashboard} ${S.sectionFinance}`}>
             <div className={S.financeTitle}>
@@ -274,7 +274,6 @@ export default function Dashboard() {
             }}
           />
         )}
-
         {!permissions.organizer && (
           <section className={`${S.sectionDashboard} ${S.sectionOrganizer}`}>
             <div className={S.organizerTitle}>
@@ -323,7 +322,6 @@ export default function Dashboard() {
             }}
           />
         )}
-
         {!permissions.stock && (
           <section className={`${S.sectionDashboard} ${S.sectionStock}`}>
             <div className={S.stockTitle}>
@@ -372,7 +370,6 @@ export default function Dashboard() {
             }}
           />
         )}
-
         <Modal
           isOpen={protectedModalOpen}
           onClose={() => {

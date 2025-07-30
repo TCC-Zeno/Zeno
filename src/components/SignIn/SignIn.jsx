@@ -5,15 +5,23 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useState } from "react";
+import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 
 export default function SignIn() {
+  const [error, setError] = useState({
+    user: "",
+    password: "",
+    server: "",
+    status: 200,
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   //  José, documentação do google, mas é só sobre o botão https://github.com/MomenSherif/react-oauth
   // https://developers.google.com/identity/gsi/web/guides/verify-google-id-token?hl=pt-br#node.js esse é oq importa para o back end
   // Está funcionando pegando do env, só que o github é chato...
-  const clientId = import.meta.env.VITE_CLIENT_ID
+  const clientId = import.meta.env.VITE_CLIENT_ID;
   const loginGoogle = async (credentialResponse) => {
     const idToken = credentialResponse.credential;
 
@@ -30,26 +38,63 @@ export default function SignIn() {
     formState: { errors },
   } = useForm();
 
-    const onSubmit = async (data) => {
-      try {
-        const resposta = await axios.post('http://localhost:3000/auth/signin', {
+  const onSubmit = async (data) => {
+    setError({
+      user: "",
+      password: "",
+      server: "",
+      status: 200,
+    });
 
-          email: data.email,
-          password: data.password
-        });
-        // Se login OK, segue para dashboard
-        if (resposta.status === 200) {
-          console.log(resposta.data);
+    // Como que por enquanto o server está no localhost, vamos deixar claro que não funciona...
+    if (window.location.href !== "http://localhost:5173/login") {
+      setError({
+        server:
+          "Você está tentando acesssar o servidor sem ele estar iniciado, abra no localhost",
+      });
+      return;
+    }
+
+
+    try {
+      const resposta = await axios.post("http://localhost:3000/auth/signin", {
+        email: data.email,
+        password: data.password,
+      });
+      // Se login OK, segue para dashboard
+      if (resposta.status === 200) {
+        console.log(resposta.data);
         dispatch(userData(resposta.data));
         dispatch(setTheme(resposta.data.color));
         dispatch(login());
         navigate("/dashboard");
-        }
-      } catch (err) {
-        // Se erro, mostra mensagem
-        alert(err.response?.data?.error || "Erro ao fazer login");
       }
-    };
+      throw "Conexão recusada...";
+
+    } catch (err) {
+      if (err.status == 401) {
+        setError({
+          password: err.response.data.error,
+          status: err.status,
+        });
+      } else if (err.status == 404) {
+        setError({
+          user: err.response.data.error,
+          status: err.status,
+        });
+      } else if (err.status == 500) {
+        setError({
+          server: err.response.data.error,
+          status: err.status,
+        });
+      } else {
+        setError({
+          server: err.response?.data?.error || "Erro ao fazer login",
+          status: err.status,
+        });
+      }
+    }
+  };
   return (
     <section className={S.containerLogin}>
       <div className={S.wrapperForm}>
@@ -76,8 +121,14 @@ export default function SignIn() {
             type="password"
             placeholder="Senha"
             {...register("password", { required: true })}
-            className={errors.password ? S.errorInput : ""}
+            className={error.password || errors.password ? S.errorInput : ""}
+            autocomplete="current-password"
           />
+          <div className={S.errorContainer}>
+            <ErrorMessage condition={error.user} message={error.user} />
+            <ErrorMessage condition={error.server} message={error.server} />
+            <ErrorMessage condition={error.password} message={error.password} />
+          </div>
           <div className={S.forgotPasswordContainer}>
             <a id="forgot-password" className={S.forgotPassword}>
               Esqueceu sua senha?{" "}

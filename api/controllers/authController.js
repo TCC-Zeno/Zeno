@@ -15,7 +15,7 @@ export const signup = async (req, res) => {
     const { cnpj, email, password } = req.body;
     // Validação básica
     if (!cnpj || !email || !password) {
-      return res.status(400).json({ error: "Todos os campos são obrigatórios." });
+      return res.status(401).json({ error: "Todos os campos são obrigatórios." });
     }
     // Verifica se o usuário já existe
     const existingUser = await getUserByEmail(email);
