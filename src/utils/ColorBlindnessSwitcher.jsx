@@ -12,7 +12,7 @@ const ColorBlindnessSwitcher = () => {
       'colorblind-achromatopsia'
     );
 
-    if (colorBlindness !== "Padrão") {
+    if (typeof colorBlindness === "string" && colorBlindness !== "Padrão") {
       document.documentElement.classList.add(`colorblind-${colorBlindness.toLowerCase()}`);
     }
   }, [colorBlindness]);
@@ -20,4 +20,4 @@ const ColorBlindnessSwitcher = () => {
   return null;
 };
 
-export default ColorBlindnessSwitcher; 
+export default ColorBlindnessSwitcher;

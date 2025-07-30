@@ -1,6 +1,6 @@
 import supabase from "../config/supabaseClient.js";
 
-export const updateUser = async (id, updateData = {}) => {
+export const updateUser = async (uuid, updateData = {}) => {
 
   const { data, error } = await supabase
     .from("users")
@@ -8,18 +8,19 @@ export const updateUser = async (id, updateData = {}) => {
       company_name: updateData.companyName, 
       owner_name: updateData.ownerName ,
       color: updateData.color,
+      accessibility:updateData.accessibility || "Padrão",
     })
-    .eq("id", id)
+    .eq("uuid", uuid)
     .select();
 
   if (error) throw new Error(error.message);
   return data;
 };
-export const getUserById = async(id) =>{
+export const getUserById = async(uuid) =>{
     const {data, error} = await supabase
     .from("users")
     .select("*")
-    .eq("id", id)
+    .eq("uuid", uuid)
     .single();
 
       if (error) throw new error (error.message)

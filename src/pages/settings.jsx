@@ -15,16 +15,16 @@ import { TbLock } from "react-icons/tb";
 import { RiKey2Line } from "react-icons/ri";
 import axios from "axios";
 
-
 export default function Settings() {
   const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
   const [blockGuideOpen, setBlockGuideOpen] = useState(false);
   const [modalBlockResourcesOpen, setModalBlockResourcesOpen] = useState(false);
   const [companyName, setCompanyName] = useState();
   const [ownerName, setOwnerName] = useState();
- 
 
-  const theme = useSelector((state) => state.userReducer.theme);
+  const theme = useSelector(
+    (state) => state.userReducer.theme
+  );
   const colorBlindness = useSelector(
     (state) => state.userReducer.colorBlindness
   );
@@ -39,8 +39,9 @@ export default function Settings() {
     await updateinfos({ color });
   };
 
-  const handleColorBlindnessSelect = (value) => {
+  const handleColorBlindnessSelect = async (value) => {
     dispatch(setColorBlindness(value));
+    await updateinfos({ accessibility: value });
   };
 
   const handleBlockResource = (resource, blocked) => {
@@ -49,31 +50,34 @@ export default function Settings() {
 
   // updateinfos agora aceita um objeto opcional para sobrescrever campos
   const updateinfos = async (override = {}) => {
-  try {
-    const resposta = await axios.post("http://localhost:3000/user/update", {
-      id: profileinfo.id,
-      companyName: companyName,
-      ownerName: ownerName,
-      color: override.color ?? theme,
-    });
-    
-    setCompanyName(resposta.data[0].company_name);
-    setOwnerName(resposta.data[0].owner_name);
-    dispatch(setTheme(resposta.data[0].color));
-  } catch (err) {
-    alert(err.response?.data?.error || "Erro ao atualizar informações");
-  }
-};
+    try {
+      const resposta = await axios.post("http://localhost:3000/user/update", {
+        uuid: profileinfo.uuid,
+        companyName: companyName,
+        ownerName: ownerName,
+        color: override.color ?? theme,
+        accessibility: override.accessibility ?? colorBlindness,
+      });
 
-useEffect(() => {
-  dispatch(settings());
-}, [dispatch]);
+      setCompanyName(resposta.data[0].company_name);
+      setOwnerName(resposta.data[0].owner_name);
+      dispatch(setTheme(resposta.data[0].color));
+      dispatch(setColorBlindness(resposta.data[0].accessibility));
+      console.log(resposta.data[0])
+    } catch (err) {
+      alert(err.response?.data?.error || "Erro ao atualizar informações");
+    }
+  };
 
-useEffect(() => {
-  if (profileinfo.id) {
-    updateinfos(); 
-  }
-}, [profileinfo.id]); 
+  useEffect(() => {
+    dispatch(settings());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (profileinfo.uuid) {
+      updateinfos();
+    }
+  }, [profileinfo.uuid]);
   // enviar o dado assim que for escolhido, já que o usuario pode querer mudar só uma coisa . By Vinicius
   return (
     <DefaultLayout>
