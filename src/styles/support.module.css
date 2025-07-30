@@ -94,6 +94,13 @@
   font-size: 20pt;
   margin-left: 10px;
 }
+.input{
+  background-color: rgb(var(--color-background-secondary));
+  color: #000;
+  font-size: 14pt;
+  padding: 0px 20px;
+  border-radius: 5px;
+}
 .errorInput {
   border: 2px solid red;
 }

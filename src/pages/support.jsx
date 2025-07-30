@@ -18,7 +18,7 @@ export function Support() {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -50,7 +50,7 @@ export function Support() {
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
                     <p>
-                      O zeno é um sistema de gestão integrado desenvolvido para
+                      O Zeno é um sistema de gestão integrado, desenvolvido para
                       pequenos empreendedores que atuam no comércio e na
                       prestação de serviços.
                     </p>
@@ -62,11 +62,11 @@ export function Support() {
                 </AccordionItem>
                 <AccordionItem value="item-2">
                   <AccordionTrigger className={S.accordionTitle}>
-                    2 - Para quem o zeno é indicado?
+                    2 - Para quem o Zeno é indicado?
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
                     <p>
-                      O zeno foi pensado para micro e pequenas empresas que
+                      O Zeno foi desenvolvido para micro e pequenas empresas que
                       precisam de uma solução simples e eficiente para gerenciar
                       suas operações diárias, como lojas, prestadores de
                       serviços, e-commerces e muito mais.
@@ -75,7 +75,7 @@ export function Support() {
                 </AccordionItem>
                 <AccordionItem value="item-3">
                   <AccordionTrigger className={S.accordionTitle}>
-                    3 - Quais são os principais recursos do zeno?
+                    3 - Quais são os principais recursos do Zeno?
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
                     <ul className={S.orderedList}>
@@ -88,11 +88,11 @@ export function Support() {
                 </AccordionItem>
                 <AccordionItem value="item-4">
                   <AccordionTrigger className={S.accordionTitle}>
-                    4 - O zeno é fácil de usar?
+                    4 - O Zeno é fácil de usar?
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
                     <p>
-                      Sim! Nosso sistema foi desenvolvido para ser intuitivo e
+                      Sim! O nosso sistema foi desenvolvido para ser intuitivo e
                       fácil de usar, mesmo para quem não tem experiência com
                       ERPs.
                     </p>
@@ -100,18 +100,18 @@ export function Support() {
                 </AccordionItem>
                 <AccordionItem value="item-5">
                   <AccordionTrigger className={S.accordionTitle}>
-                    5 - Posso acessar o zeno pelo celular?
+                    5 - Posso acessar o Zeno pelo celular?
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
                     <p>
-                      Sim, o zeno funciona em qualquer dispositivo com acesso à
+                      Sim, o Zeno funciona em qualquer dispositivo com acesso à
                       internet, incluindo computadores, tablets e smartphones.
                     </p>
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-6">
                   <AccordionTrigger className={S.accordionTitle}>
-                    6 - O zeno oferece suporte técnico?
+                    6 - O Zeno oferece suporte técnico?
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
                     <p>
@@ -123,7 +123,7 @@ export function Support() {
                 </AccordionItem>
                 <AccordionItem value="item-7">
                   <AccordionTrigger className={S.accordionTitle}>
-                    7 - Como posso testar o zeno?
+                    7 - Como posso testar o Zeno?
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
                     <p>
@@ -135,7 +135,7 @@ export function Support() {
                 </AccordionItem>
                 <AccordionItem value="item-8">
                   <AccordionTrigger className={S.accordionTitle}>
-                    8 - Como funciona a assinatura do zeno?{" "}
+                    8 - Como funciona a assinatura do Zeno?{" "}
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
                     <p>
@@ -158,7 +158,7 @@ export function Support() {
                 </AccordionItem>
                 <AccordionItem value="item-10">
                   <AccordionTrigger className={S.accordionTitle}>
-                    10 - Como posso entrar em contato com a equipe do zeno?
+                    10 - Como posso entrar em contato com a equipe do Zeno?
                   </AccordionTrigger>
                   <AccordionContent className={S.accordionContent}>
                     <p>
@@ -186,7 +186,9 @@ export function Support() {
                     <input
                       type="text"
                       placeholder="Seu nome"
-                      className={errors.name ? S.errorInput : ""}
+                      className={`${S.input} ${
+                        errors.name ? S.errorInput : ""
+                      }`}
                       {...register("name", { required: true, maxLength: 80 })}
                     />
                   </div>
@@ -195,7 +197,9 @@ export function Support() {
                     <input
                       type="email"
                       placeholder="seu.email@exemplo.com"
-                      className={errors.email ? S.errorInput : ""}
+                      className={`${S.input} ${
+                        errors.email ? S.errorInput : ""
+                      }`}
                       {...register("email", { required: true, maxLength: 100 })}
                     />
                   </div>
@@ -205,7 +209,7 @@ export function Support() {
                   <input
                     type="text"
                     placeholder="Assunto da mensagem"
-                    className={errors.topic ? S.errorInput : ""}
+                    className={`${S.input} ${errors.topic ? S.errorInput : ""}`}
                     {...register("topic", { required: true, maxLength: 100 })}
                   />
                 </div>
@@ -218,7 +222,7 @@ export function Support() {
                     {...register("message", {
                       required: "Por favor, digite sua mensagem",
                       pattern: {
-                        value: /^[a-zA-Z0-9\s.,!?-]+$/, 
+                        value: /^[a-zA-Z0-9\s.,!?-]+$/,
                         message: "Mensagem contém caracteres inválidos",
                       },
                     })}

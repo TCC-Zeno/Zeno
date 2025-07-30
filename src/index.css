@@ -10,7 +10,7 @@
     font-style: normal;
   }
   @font-face {
-    font-family: "Coolvetica Rg";
+    font-family: "Coolvetica Rg", sans-serif;
     src: url("/fonts/CoolveticaRg.otf") format("opentype");
     font-weight: normal;
     font-style: normal;

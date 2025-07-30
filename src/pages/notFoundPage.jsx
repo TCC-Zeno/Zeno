@@ -6,8 +6,8 @@ export default function NotFound() {
   return (
     <main className={S.containerContent}>
       <div className={S.containerText}>
-        <h1>404</h1>
-        <p>Pedimos desculpas, mas essa página não está disponível </p>
+        <h1>Erro 404</h1>
+        <p>Essa página não está disponível </p>
         <div className={S.containerButton}>
           <Link
             id="signInButton"
