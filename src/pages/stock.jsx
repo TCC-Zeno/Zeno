@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { stock } from "../redux/Route/slice";
 import style from "./../styles/stock.module.css";
@@ -16,6 +16,7 @@ import Modal from "../components/Modal/Modal";
 import ModalBig from "../components/ModalBig/ModalBig";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Dropzone from "../components/Dropzone/Dropzone";
+import CurrencyInput from "react-currency-input-field";
 
 export default function Stock() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ export default function Stock() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => console.log(data);
@@ -255,64 +257,116 @@ export default function Stock() {
           stock={true}
         >
           <div>
-          <h1>Cadastrar Produto</h1>
-          <input
-            className={style.inputAdd}
-            type="text"
-            placeholder="Nome do produto"
-            {...register("Full name", { required: true })}
-          />
-          <input
-            className={style.inputAdd}
-            type="text"
-            placeholder="Quatidade Fixa"
-            {...register("Full name", { required: true })}
-          />
-          <input
-            className={style.inputAdd}
-            type="text"
-            placeholder="Descrição"
-            {...register("Full name", { required: true })}
-          />
-          <input
-            className={style.inputAdd}
-            type="text"
-            placeholder="Categoria"
-            {...register("Full name", { required: true })}
-          />
+            <div>
+              <h1>Cadastrar Produto</h1>
+              <input
+                className={style.inputAdd}
+                type="text"
+                placeholder="Nome do produto"
+                {...register("Full name", { required: true })}
+              />
+              <input
+                className={style.inputAdd}
+                type="text"
+                placeholder="Quatidade Fixa"
+                {...register("Full name", { required: true })}
+              />
+              <input
+                className={style.inputAdd}
+                type="text"
+                placeholder="Descrição"
+                {...register("Full name", { required: true })}
+              />
+              <input
+                className={style.inputAdd}
+                type="text"
+                placeholder="Categoria"
+                {...register("Full name", { required: true })}
+              />
+            </div>
+            <div>
+              <h1>Fornecedor</h1>
+              <p>Opcional</p>
+              <input
+                className={style.inputAdd}
+                type="text"
+                placeholder="Nome do Fornecedor"
+                {...register("Full name", { required: true })}
+              />
+              <input
+                className={style.inputAdd}
+                type="number"
+                placeholder="Número do Fornecedor"
+                {...register("Full name", { required: true })}
+              />
+              <input
+                className={style.inputAdd}
+                type="text"
+                placeholder="Endereço"
+                {...register("Full name", { required: true })}
+              />
+              <input
+                className={style.inputAdd}
+                type="text"
+                placeholder="Email"
+                {...register("Full name", { required: true })}
+              />
+            </div>
+            <div>
+              <Dropzone />
+            </div>
+            <div>
+              <h2>Custo do produto</h2>
+              <Controller
+                name="Price"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, name } }) => (
+                  <CurrencyInput
+                    id="price-input"
+                    name={name}
+                    placeholder="R$ 0,00"
+                    decimalsLimit={2}
+                    decimalScale={2}
+                    decimalSeparator=","
+                    groupSeparator="."
+                    prefix="R$ "
+                    onValueChange={(value) => onChange(value)}
+                    value={value === 0 ? "" : value}
+                    className={style.inputPrice}
+                  />
+                )}
+              />
+              <h2>Preço final</h2>
+              <Controller
+                name="Price"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, name } }) => (
+                  <CurrencyInput
+                    id="price-input"
+                    name={name}
+                    placeholder="R$ 0,00"
+                    decimalsLimit={2}
+                    decimalScale={2}
+                    decimalSeparator=","
+                    groupSeparator="."
+                    prefix="R$ "
+                    onValueChange={(value) => onChange(value)}
+                    value={value === 0 ? "" : value}
+                    className={style.inputPrice}
+                  />
+                )}
+              />
+              <h2>Lucro</h2>
+              <input type="text" disabled placeholder="R$ 0,00"/>
+            </div>
+            <div>linha</div>
+            <div>
+              <h2>Quantidade em estoque</h2>
+              <p>informe o estoque da sua MEI</p>
+            </div>
           </div>
-          <div>
-            <h1>Fornecedor</h1>
-            <p>Opcional</p>
-            <input
-            className={style.inputAdd}
-            type="text"
-            placeholder="Nome do Fornecedor"
-            {...register("Full name", { required: true })}
-          />
-          <input
-            className={style.inputAdd}
-            type="number"
-            placeholder="Número do Fornecedor"
-            {...register("Full name", { required: true })}
-          />
-          <input
-            className={style.inputAdd}
-            type="text"
-            placeholder="Endereço"
-            {...register("Full name", { required: true })}
-          />
-          <input
-            className={style.inputAdd}
-            type="text"
-            placeholder="Email"
-            {...register("Full name", { required: true })}
-          />
-          </div>
-          <div>
-          <Dropzone/>
-          </div>
-
         </Modal>
       </DefaultLayout>
     </>
