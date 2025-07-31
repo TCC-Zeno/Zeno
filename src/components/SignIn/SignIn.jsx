@@ -26,7 +26,7 @@ export default function SignIn() {
     const idToken = credentialResponse.credential;
 
     // Aqui tu coloca a rota que quiser, só coloquei essa como exemplo
-    const resposta = await axios.post("http://localhost:3000/auth/google", {
+    const resposta = await axios.post(`${import.meta.env.VITE_API_URL}/auth/google`, {
       token: idToken,
     });
     console.log(resposta.data);
@@ -46,18 +46,8 @@ export default function SignIn() {
       status: 200,
     });
 
-    // Como que por enquanto o server está no localhost, vamos deixar claro que não funciona...
-    if (window.location.href !== "http://localhost:5173/login") {
-      setError({
-        server:
-          "Você está tentando acesssar o servidor sem ele estar iniciado, abra no localhost",
-      });
-      return;
-    }
-
-
     try {
-      const resposta = await axios.post("http://localhost:3000/auth/signin", {
+      const resposta = await axios.post(`${import.meta.env.VITE_API_URL}/auth/signin`, {
         email: data.email,
         password: data.password,
       });

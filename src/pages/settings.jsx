@@ -51,7 +51,7 @@ export default function Settings() {
   // updateinfos agora aceita um objeto opcional para sobrescrever campos
   const updateinfos = async (override = {}) => {
     try {
-      const resposta = await axios.post("http://localhost:3000/user/update", {
+      const resposta = await axios.post(`${import.meta.env.VITE_API_URL}/user/update`, {
         uuid: profileinfo.uuid,
         companyName: companyName,
         ownerName: ownerName,

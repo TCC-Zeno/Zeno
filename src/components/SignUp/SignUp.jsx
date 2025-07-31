@@ -43,15 +43,6 @@ export default function SignUp() {
       return;
     }
 
-    // Como que por enquanto o server está no localhost, vamos deixar claro que não funciona...
-    if (window.location.href !== "http://localhost:5173/login") {
-      setError({
-        server:
-          "Você está tentando acesssar o servidor sem ele estar iniciado, abra no localhost",
-      });
-      return;
-    }
-
     if (data.password !== data.confirmPassword) {
       setError({
         password: "A senha inserida nos campos precisam ser idênticas",
@@ -60,7 +51,7 @@ export default function SignUp() {
     }
 
     try {
-      const resposta = await axios.post("http://localhost:3000/auth/signup", {
+      const resposta = await axios.post(`${import.meta.env.VITE_API_URL}/auth/signup`, {
         cnpj: data.cnpj,
         email: data.email,
         password: data.password,
