@@ -1,6 +1,6 @@
 import S from "./signIn.module.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { login, setTheme, userData } from "../../redux/User/slice";
+import { login, setTheme, userData, setColorBlindness } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -56,6 +56,7 @@ export default function SignIn() {
         console.log(resposta.data);
         dispatch(userData(resposta.data));
         dispatch(setTheme(resposta.data.color));
+        dispatch(setColorBlindness(resposta.data.accessibility));
         dispatch(login());
         navigate("/dashboard");
       }

@@ -1,9 +1,9 @@
 import S from "./signUp.module.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { login, userData, setTheme } from "../../redux/User/slice";
+import { login, userData, setTheme, setColorBlindness } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, } from "react-hook-form";
 import { IMaskInput } from "react-imask";
 import { cnpj } from "cpf-cnpj-validator";
 import axios from "axios";
@@ -62,6 +62,7 @@ export default function SignUp() {
         dispatch(login());
         dispatch(userData(resposta.data[0]));
         dispatch(setTheme(resposta.data[0].color));
+        dispatch(setColorBlindness(resposta.data[0].accessibility));
         navigate("/dashboard");
       }
       throw "Conexão recusada...";

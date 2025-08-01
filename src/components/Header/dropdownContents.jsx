@@ -11,6 +11,9 @@ import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
 import DropdownContributors from "./DropdownContributors";
+//import {useSelector} from "react-redux";
+
+//const profileinfo =useSelector ((state) => state.userReducer.userData);
 
 export function NotificationContent() {
   return (
@@ -106,6 +109,7 @@ export function NotificationContent() {
 export function ProfileContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownContributors, setDropdownContributors] = useState(false);
+
   return (
     <>
       <div className={S.containerProfile}>
@@ -114,8 +118,8 @@ export function ProfileContent() {
             <img src={Logo} alt="Sua Logo em miniatura" />
           </div>
           <div className={S.userInfo}>
-            <h4>Nome da empresa</h4>
-            <p>empresa@gmail.com</p>
+            <h4> nome da empresa</h4>
+            <p>Email da empresa</p>
           </div>
         </div>
         <div className={S.divider}></div>

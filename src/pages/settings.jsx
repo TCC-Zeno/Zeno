@@ -19,20 +19,23 @@ export default function Settings() {
   const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
   const [blockGuideOpen, setBlockGuideOpen] = useState(false);
   const [modalBlockResourcesOpen, setModalBlockResourcesOpen] = useState(false);
-  const [companyName, setCompanyName] = useState();
-  const [ownerName, setOwnerName] = useState();
 
-  const theme = useSelector(
-    (state) => state.userReducer.theme
-  );
   const colorBlindness = useSelector(
     (state) => state.userReducer.colorBlindness
+  );
+  const theme = useSelector(
+    (state) => state.userReducer.theme
   );
   const blockedResources = useSelector(
     (state) => state.userReducer.blockedResources
   );
   const profileinfo = useSelector((state) => state.userReducer.userData);
   const dispatch = useDispatch();
+
+  const [companyName, setCompanyName] = useState(
+    profileinfo.company_name ?? ""
+  );
+  const [ownerName, setOwnerName] = useState(profileinfo.owner_name ?? "");
 
   const handleColorSelect = async (color) => {
     dispatch(setTheme(color));
@@ -51,19 +54,22 @@ export default function Settings() {
   // updateinfos agora aceita um objeto opcional para sobrescrever campos
   const updateinfos = async (override = {}) => {
     try {
-      const resposta = await axios.post(`${import.meta.env.VITE_API_URL}/user/update`, {
-        uuid: profileinfo.uuid,
-        companyName: companyName,
-        ownerName: ownerName,
-        color: override.color ?? theme,
-        accessibility: override.accessibility ?? colorBlindness,
-      });
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/user/update`,
+        {
+          uuid: profileinfo.uuid,
+          companyName: companyName,
+          ownerName: ownerName,
+          color: override.color ?? theme,
+          accessibility: override.accessibility ?? colorBlindness,
+        }
+      );
 
       setCompanyName(resposta.data[0].company_name);
       setOwnerName(resposta.data[0].owner_name);
       dispatch(setTheme(resposta.data[0].color));
       dispatch(setColorBlindness(resposta.data[0].accessibility));
-      console.log(resposta.data[0])
+      console.log(resposta.data[0]);
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao atualizar informações");
     }
@@ -75,9 +81,21 @@ export default function Settings() {
 
   useEffect(() => {
     if (profileinfo.uuid) {
+      if (profileinfo.color) {
+        dispatch(setTheme(profileinfo.color));
+      }
+      if (profileinfo.accessibility) {
+        dispatch(setColorBlindness(profileinfo.accessibility));
+      }
+
       updateinfos();
     }
-  }, [profileinfo.uuid]);
+  }, [
+    profileinfo.uuid,
+    profileinfo.color,
+    profileinfo.accessibility,
+    dispatch,
+  ]);
   // enviar o dado assim que for escolhido, já que o usuario pode querer mudar só uma coisa . By Vinicius
   return (
     <DefaultLayout>
