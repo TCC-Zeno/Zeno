@@ -25,6 +25,11 @@
   margin: 10px 0;
 }
 
+.wrapperForm input:focus {
+  outline: none;
+  border: 2px solid rgb(70, 135, 243);
+}
+
 .wrapperForm input[type="submit"] {
   margin-top: 25px;
   background-color: rgb(70, 135, 243);
@@ -87,6 +92,53 @@
 
 .errorInput {
   border: 2px solid red;
+}
+
+.loadingContainer {
+  margin-top: 50px;
+}
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+}
+.modalContainer h2 {
+  font-size: 17pt;
+  font-family: "Coolvetica Rg";
+  text-align: center;
+  color: black;
+  margin-bottom: 15px;
+}
+.modalContainer input {
+  background-color: rgb(var(--color-background-secondary));
+  width: 100%;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px 0;
+}
+.modalContainer input:focus {
+  outline: none;
+  border: 2px solid rgb(70, 135, 243);
+}
+.modalContainer .buttonContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+}
+.modalContainer .buttonContainer .submitButton {
+  background-color: rgb(70, 135, 243);
+  color: #ffffff;
+  font-size: 13pt;
+  font-family: "Louis George Café";
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 5px 20px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+.modalContainer .buttonContainer .submitButton:hover {
+  transform: scale(1.02);
 }
 
 @media only screen and (max-width: 1200px) {
