@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 
 
+
 // Rotas
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";

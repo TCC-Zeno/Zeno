@@ -10,8 +10,6 @@ import {
 } from "../services/authService.js";
 
 
-
-
 //Cadastrar usuário
 export const signup = async (req, res) => {
   try {
@@ -67,6 +65,20 @@ export const logout = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+export const sucessGoogleLogin = (req, res) =>{
+  if (!req.user) {
+    res.redirect("/failure"); 
+  }
+  console.log("Usuário autenticado com sucesso:", req.user);
+  res.status(200).json({
+    message: "Usuário autenticado com sucesso",
+    user: req.user,
+  });
+};
+export const failureGoogleLogin = (req, res) => {
+  console.error("Falha na autenticação do Google:", req.query);
+  res.status(401).json({ error: "Falha na autenticação do Google" });
 };
 /*
 export const fetchUsers = async (req, res) => {
