@@ -244,8 +244,8 @@ export default function Stock() {
                 </h3>
               </div>
               <div className={style.buttons}>
-                <button className={style.buttonEdit}> Editar Produto</button>
-                <button className={style.buttonDelete}> Deletar Produto</button>
+                <button className={style.buttonEdit}> Editar </button>
+                <button className={style.buttonDelete}> Deletar </button>
               </div>
             </div>
           </div>
@@ -257,65 +257,78 @@ export default function Stock() {
           stock={true}
         >
           <div>
-            <div>
-              <h1>Cadastrar Produto</h1>
-              <input
-                className={style.inputAdd}
-                type="text"
-                placeholder="Nome do produto"
-                {...register("Full name", { required: true })}
-              />
-              <input
-                className={style.inputAdd}
-                type="text"
-                placeholder="Quatidade Fixa"
-                {...register("Full name", { required: true })}
-              />
-              <input
-                className={style.inputAdd}
-                type="text"
-                placeholder="Descrição"
-                {...register("Full name", { required: true })}
-              />
-              <input
-                className={style.inputAdd}
-                type="text"
-                placeholder="Categoria"
-                {...register("Full name", { required: true })}
-              />
+            <div className={style.cadProd}>
+              <div className={style.titleModal}>
+                <h1>Cadastrar Produto</h1>
+              </div>
+
+              <div className={style.inputsCad}>
+                <input
+                  className={style.inputAdd}
+                  type="text"
+                  placeholder="Nome do produto"
+                  {...register("Full name", { required: true })}
+                />
+                <input
+                  className={style.inputAdd}
+                  type="text"
+                  placeholder="Quatidade Fixa"
+                  {...register("Full name", { required: true })}
+                />
+                <input
+                  className={style.inputAdd}
+                  type="text"
+                  placeholder="Descrição"
+                  {...register("Full name", { required: true })}
+                />
+                <input
+                  className={style.inputAdd}
+                  type="text"
+                  placeholder="Categoria"
+                  {...register("Full name", { required: true })}
+                />
+              </div>
             </div>
-            <div>
-              <h1>Fornecedor</h1>
-              <p>Opcional</p>
-              <input
-                className={style.inputAdd}
-                type="text"
-                placeholder="Nome do Fornecedor"
-                {...register("Full name", { required: true })}
-              />
-              <input
-                className={style.inputAdd}
-                type="number"
-                placeholder="Número do Fornecedor"
-                {...register("Full name", { required: true })}
-              />
-              <input
-                className={style.inputAdd}
-                type="text"
-                placeholder="Endereço"
-                {...register("Full name", { required: true })}
-              />
-              <input
-                className={style.inputAdd}
-                type="text"
-                placeholder="Email"
-                {...register("Full name", { required: true })}
-              />
+            <div className={style.cadForn}>
+              <div className={style.containerFornTitle}>
+                <div className={style.fornTitle}>
+                  <h1>Fornecedor</h1>
+                </div>
+                <div className={style.fornOption}>
+                  <p>opcional</p>
+                </div>
+              </div>
+              <div className={style.inputsCad}>
+                <input
+                  className={style.inputAdd}
+                  type="text"
+                  placeholder="Nome do Fornecedor"
+                  {...register("Full name", { required: true })}
+                />
+                <input
+                  className={style.inputAdd}
+                  type="text"
+                  placeholder="Número do Fornecedor"
+                  {...register("Full name", { required: true })}
+                />
+                <input
+                  className={style.inputAdd}
+                  type="text"
+                  placeholder="Endereço"
+                  {...register("Full name", { required: true })}
+                />
+                <input
+                  className={style.inputAdd}
+                  type="text"
+                  placeholder="Email"
+                  {...register("Full name", { required: true })}
+                />
+              </div>
             </div>
-            <div>
+            <div className={style.drop}>
               <Dropzone />
             </div>
-            <div>
+            <div className={style.custProd}>
               <h2>Custo do produto</h2>
               <Controller
                 name="Price"
@@ -359,12 +372,66 @@ export default function Stock() {
                 )}
               />
               <h2>Lucro</h2>
-              <input type="text" disabled placeholder="R$ 0,00"/>
+              <input
+                type="text"
+                disabled
+                placeholder="R$ 0,00"
+                className={style.inputPrice}
+              />
             </div>
-            <div>linha</div>
-            <div>
-              <h2>Quantidade em estoque</h2>
-              <p>informe o estoque da sua MEI</p>
+            <div className={style.linha} />
+            <div className={style.quantStock}>
+              <div className={style.containerTitleQuant}>
+                <div className={style.titleQuant}>
+                  <h2>Quantidade em estoque</h2>
+                </div>
+                <div className={style.pQuant}>
+                  <p>informe o estoque da sua MEI</p>
+                </div>
+              </div>
+              <div className={style.actions1}>
+                <button className={style.button} id="button-back-counter">
+                  <IoIosArrowBack className={style.Arrowicon} />
+                </button>
+                <h1 className={style.counter} id="counter">
+                  000
+                </h1>
+                <button className={style.button} id="button-forward-counter">
+                  <IoIosArrowForward className={style.Arrowicon} />
+                </button>
+              </div>
+            </div>
+            <div className={style.linha} />
+            <div className={style.quantStock}>
+              <div className={style.containerTitleQuant}>
+                <div className={style.titleQuant}>
+                  <h2>
+                    Quantidade minima para comprar mais
+                  </h2>
+                </div>
+                <div className={style.pQuant}>
+                  <p>Ao chegar nessa quantidade deverá repor no estoque</p>
+                </div>
+              </div>
+              <div className={style.actions1}>
+                <button className={style.button} id="button-back-counter">
+                  <IoIosArrowBack className={style.Arrowicon} />
+                </button>
+                <h1 className={style.counter} id="counter">
+                  000
+                </h1>
+                <button className={style.button} id="button-forward-counter">
+                  <IoIosArrowForward className={style.Arrowicon} />
+                </button>
+              </div>
+            </div>
+            <div className={style.buttonsCad}>
+              <div className={style.buttonCad1}>
+                <button className={style.buttonSalveCad}> Salvar</button>
+              </div>
+              <div className={style.buttonCad1}>
+              <button className={style.buttonDeleteCad}> Excluir</button>
+              </div>
             </div>
           </div>
         </Modal>
