@@ -10,6 +10,7 @@ import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import CurrencyInput from "react-currency-input-field";
 import { PiFileArchiveFill } from "react-icons/pi";
+import axios from "axios";
 
 export default function Finance() {
   const dataArray = [
@@ -67,14 +68,80 @@ export default function Finance() {
   useEffect(() => {
     dispatch(finance());
   }, [dispatch]);
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   control,
+  //   formState: { errors },
+  // } = useForm();
+  // const onSubmit = (data) => {
+  //   console.log(data);
+  //   // const resposta = axios.post(
+  //   //   `${import.meta.env.VITE_API_URL}/addFinanceform`,
+  //   //   {
+  //   //     id: Math.floor(Math.random() * 1000),
+
+  //   //   }
+  //   // );
+  // };
+  // console.log(errors);
+
+  const { register: filterRegister, handleSubmit: handleFilterSubmit } =
+    useForm();
+
   const {
-    register,
-    handleSubmit,
+    register: addRegister,
+    handleSubmit: handleAddSubmit,
     control,
-    formState: { errors },
+    reset: addReset,
+  } = useForm({
+    defaultValues: { price: 0 },
+  });
+
+  const {
+    register: categoryRegister,
+    handleSubmit: handleCategorySubmit,
+    reset: categoryReset,
   } = useForm();
-  const onSubmit = (data) => console.log(data);
-  console.log(errors);
+
+  const onFilterSubmit = async (data) => {
+    console.log(data);
+    // try {
+    // } catch (error) {
+    //   console.error(error);
+    // }
+  };
+
+  const onAddSubmit = async (data) => {
+    console.log("Dados do formulário:", data);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/addFinanceForm`, {
+          id: Math.floor(Math.random() * 1000),
+          name: data.name,
+          value: data.price,
+          category: data.category,
+          payment_method: data.paymentMethod,
+          type_flow: data.flow,
+        }
+      );
+      console.log(response)
+      // addReset();
+      // Comentado temporariamente para evitar limpar o formulário 
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onCategorySubmit = async (data) => {
+    console.log(data);
+
+    // try {
+    // } catch (error) {
+    //   console.error(error);
+    // }
+  };
+
   return (
     <>
       <DefaultLayout>
@@ -109,7 +176,10 @@ export default function Finance() {
             </div>
           </div>
           <div className={style.line}></div>
-          <div className={style.row0}>
+          <div
+            className={style.row0}
+            onSubmit={handleFilterSubmit(onFilterSubmit)}
+          >
             <div className={style.date}>
               <div>
                 <h1 className={style.titleDate}>Data:</h1>
@@ -118,13 +188,13 @@ export default function Finance() {
                 className={style.inputDate}
                 id="filter-date"
                 type="date"
-                {...register("date", { required: true })}
+                {...filterRegister("date")}
               />
             </div>
             <select
               className={style.financeSelect1}
               id="filter-payment-method"
-              {...register("Payment method", { required: true })}
+              {...filterRegister("paymentMethod")}
             >
               <option value="Método de pagamento" disabled selected>
                 Método de pagamento
@@ -139,7 +209,7 @@ export default function Finance() {
               className={style.financeSelect1}
               id="filter-category"
               name="category"
-              {...register("category", { required: true })}
+              {...filterRegister("category")}
             >
               <option value="Categorias" disabled selected>
                 Categorias
@@ -152,7 +222,7 @@ export default function Finance() {
             <select
               className={style.financeSelect1}
               id="filter-type"
-              {...register("flow", { required: true })}
+              {...filterRegister("flow")}
             >
               <option value="Tipo de fluxo" disabled selected>
                 Tipo de fluxo
@@ -219,7 +289,7 @@ export default function Finance() {
           <div className={style.financeContainer}>
             <form
               className={style.financeForm}
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleAddSubmit(onAddSubmit)}
             >
               <div className={style.row01}>
                 <input
@@ -227,26 +297,43 @@ export default function Finance() {
                   id="name-input"
                   type="text"
                   placeholder="Nome completo"
-                  {...register("Full name", { required: true })}
+                  {...addRegister("name", { required: true })}
                 />
                 <Controller
-                  name="Price"
+                  name="price"
                   control={control}
-                  rules={{ required: true }}
-                  render={({ field: { onChange, value, name } }) => (
-                    <CurrencyInput
-                      id="price-input"
-                      name={name}
-                      placeholder="R$ 0,00"
-                      decimalsLimit={2}
-                      decimalScale={2}
-                      decimalSeparator=","
-                      groupSeparator="."
-                      prefix="R$ "
-                      onValueChange={(value) => onChange(value)}
-                      value={value === 0 ? "" : value}
-                      className={style.inputPrice}
-                    />
+                  rules={{
+                    required: "Preço é obrigatório",
+                    validate: (value) => {
+                      const numValue = parseFloat(value);
+                      if (isNaN(numValue) || numValue <= 0) {
+                        return "Digite um valor válido maior que zero";
+                      }
+                      return true;
+                    },
+                  }}
+                  render={({
+                    field: { onChange, value, name },
+                    fieldState: { error },
+                  }) => (
+                      <CurrencyInput
+                        id="input-price"
+                        name={name}
+                        placeholder="R$ 0,00"
+                        decimalsLimit={2}
+                        decimalScale={2}
+                        decimalSeparator=","
+                        groupSeparator="."
+                        prefix="R$ "
+                        onValueChange={(value) => {
+                          onChange(value || "");
+                        }}
+                        value={value}
+                        className={`${style.inputPrice} ${
+                          error ? "error" : ""
+                        }`}
+                      />
+
                   )}
                 />
 
@@ -256,7 +343,7 @@ export default function Finance() {
                 <select
                   className={style.financeSelect}
                   id="payment-method-select"
-                  {...register("Payment method", { required: true })}
+                  {...addRegister("paymentMethod", { required: true })}
                 >
                   <option value="Método de pagamento" disabled selected>
                     Método de pagamento
@@ -270,7 +357,7 @@ export default function Finance() {
                 <select
                   className={style.financeSelect}
                   id="category-select"
-                  {...register("category", { required: true })}
+                  {...addRegister("category", { required: true })}
                 >
                   <option value="Categorias" disabled selected>
                     Categorias
@@ -283,7 +370,7 @@ export default function Finance() {
                 <select
                   className={style.financeSelect}
                   id="flow-select"
-                  {...register("flow", { required: true })}
+                  {...addRegister("flow", { required: true })}
                 >
                   <option value="Tipo de fluxo" disabled selected>
                     Tipo de fluxo
@@ -307,7 +394,7 @@ export default function Finance() {
           <div className={style.financeContainer}>
             <form
               className={style.financeForm}
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleCategorySubmit(onCategorySubmit)}
             >
               <div className={style.row01}>
                 <input
@@ -315,12 +402,13 @@ export default function Finance() {
                   type="text"
                   id="category-input"
                   placeholder="Nome da categoria"
-                  {...register("Full name", { required: true })}
+                  {...categoryRegister("categoryName", { required: true })}
                 />
                 <input
                   className={style.button2}
                   type="submit"
                   id="btn-add-category"
+                  value="Adicionar Categoria"
                 />
               </div>
             </form>
