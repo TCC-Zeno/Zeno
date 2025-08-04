@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
 import DropdownContributors from "./DropdownContributors";
+import axios from "axios";
 //import {useSelector} from "react-redux";
 
 //const profileinfo =useSelector ((state) => state.userReducer.userData);
@@ -110,6 +111,39 @@ export function ProfileContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownContributors, setDropdownContributors] = useState(false);
 
+  try{
+    const resposta = axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+      logout: true,
+    })  
+     if (resposta.status === 201) {
+        navigate("/");
+      }
+      throw "Conexão recusada...";
+  } catch (err) {
+      console.log(err);
+      // Se erro, mostra mensagem
+      if (err.status == 401) {
+        setError({
+          user: err.response.data.error,
+          status: err.status,
+        });
+      } else if (err.status == 409) {
+        setError({
+          user: err.response.data.error,
+          status: err.status,
+        });
+      } else if (err.status == 400) {
+        setError({
+          server: err.response.data.error,
+          status: err.status,
+        });
+      } else {
+        setError({
+          server: err.response?.data?.error || "Erro ao fazer login",
+          status: err.status,
+        });
+      }
+    }
   return (
     <>
       <div className={S.containerProfile}>
@@ -147,7 +181,7 @@ export function ProfileContent() {
         <div className={S.divider}></div>
         <button className={S.configureSignature}>Configurar assinatura</button>
         <div className={S.divider}></div>
-        <button className={S.manegerOption}>
+        <button className={S.manegerOption} onClick={logout}>
           <TbLogout />
           <span>Sair</span>
         </button>
