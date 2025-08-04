@@ -66,7 +66,6 @@ export const logout = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 export const sucessGoogleLogin = (req, res) =>{
   if (!req.user) {
     res.redirect("/failure"); 
@@ -76,7 +75,7 @@ export const sucessGoogleLogin = (req, res) =>{
     message: "Usuário autenticado com sucesso",
     user: req.user,
   });
-}
+};
 export const failureGoogleLogin = (req, res) => {
   console.error("Falha na autenticação do Google:", req.query);
   res.status(401).json({ error: "Falha na autenticação do Google" });
