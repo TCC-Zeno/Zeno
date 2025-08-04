@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa6";
 import { VscGithubAlt } from "react-icons/vsc";
 import ScrollToTopButton from "../components/ScrollToTopButton/ScrollToTopButton ";
+import { Particles } from "../components/Particles/Particles";
 
 export default function LandingPage() {
   const [burger, setBurguer] = useState(false);
@@ -313,23 +314,23 @@ export default function LandingPage() {
               <div className={S.guideCard}>
                 <ul>
                   <li>
-                    Tela Inicial: Veja todas as informações importantes de
-                    imediato.
+                    <b>Tela Inicial: </b>Veja todas as informações importantes
+                    de imediato.
                   </li>
                   <li>
-                    Estoque: Veja o que tem, o que falta e o que precisa repor
-                    dos seus produtos, ferramentas, entre outros.
+                    <b>Estoque: </b>Veja o que tem, o que falta e o que precisa
+                    repor dos seus produtos, ferramentas, entre outros.
                   </li>
                   <li>
-                    Caixa: Controle de dinheiro entrando e saindo, de forma
-                    direta e clara.
+                    <b>Caixa: </b>Controle de dinheiro entrando e saindo, de
+                    forma direta e clara.
                   </li>
                   <li>
-                    Agenda: Não perca mais um compromisso. Agende reuniões,
-                    entregas e tarefas.
+                    <b>Agenda: </b>Não perca mais um compromisso. Agende
+                    reuniões, entregas e tarefas.
                   </li>
                   <li>
-                    Organizador: Organize o que precisa ser feito, sem
+                    <b>Organizador: </b>Organize o que precisa ser feito, sem
                     complicação.
                   </li>
                 </ul>
@@ -342,6 +343,20 @@ export default function LandingPage() {
                 />
               </video>
             </div>
+          </div>
+        </section>
+        <section id="pitch" className={S.pitch}>
+          <Particles />
+          <div className={S.videoContainer}>
+            <iframe
+              className={S.video}
+              src="https://www.youtube.com/embed/eyDT3jrz4VY?si=6dFgz7SMcUk6emge"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
           </div>
         </section>
         <section id="settings" className={S.settings}>
@@ -357,7 +372,7 @@ export default function LandingPage() {
           <div className={S.textContainer}>
             <BlurText delay={150} direction="top" className={S.title}>
               {"O nosso sistema, ‎"}
-              {"do seu jeito!"}
+              {"do seu ‎ jeito!"}
             </BlurText>
             <p>
               Personalize cores, logo e detalhes para que o sistema Zeno tenha a
@@ -368,14 +383,13 @@ export default function LandingPage() {
         <section id="callAction" className={S.callAction}>
           <div className={S.separator}></div>
           <BlurText delay={150} direction="top" className={S.title}>
-            {"Se você  ‎"}
-            {"quer dar ‎"}
+            {"Dê ‎"}
             {"um ‎"}
             <span className={`${S.spanTitle} ${S.spanTitleLeft}`}>UP</span>
             {"‎ no seu ‎"}
             {"pequeno negócio, ‎"}
             {"crie sua ‎"}
-            {"conta agora."}
+            {"conta imediatamente."}
           </BlurText>
         </section>
         <section id="aboutUs" className={S.aboutUs}>

@@ -7,11 +7,12 @@ import { GrHelpBook } from "react-icons/gr";
 
 import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import S from "./header.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
 import DropdownContributors from "./DropdownContributors";
 import axios from "axios";
+
 //import {useSelector} from "react-redux";
 
 //const profileinfo =useSelector ((state) => state.userReducer.userData);
@@ -110,16 +111,27 @@ export function NotificationContent() {
 export function ProfileContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownContributors, setDropdownContributors] = useState(false);
+  const [error, setError] = useState({
+    user: "",
+    password: "",
+    server: "",
+    status: 200,
+  });
+  const navigate = useNavigate();
 
-  try{
-    const resposta = axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {
-      logout: true,
-    })  
-     if (resposta.status === 201) {
+  function logout() {
+    try {
+      const resposta = axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/logout`,
+        {
+          logout: true,
+        }
+      );
+      if (resposta.status === 201) {
         navigate("/");
       }
       throw "Conexão recusada...";
-  } catch (err) {
+    } catch (err) {
       console.log(err);
       // Se erro, mostra mensagem
       if (err.status == 401) {
@@ -144,6 +156,7 @@ export function ProfileContent() {
         });
       }
     }
+  }
   return (
     <>
       <div className={S.containerProfile}>

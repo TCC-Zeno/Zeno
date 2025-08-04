@@ -219,6 +219,7 @@ body,
   height: 500px;
   display: flex;
   padding: 0 30px;
+  z-index: 10;
 }
 .guide h1 {
   font-family: "Coolvetica Rg";
@@ -288,6 +289,7 @@ body,
   display: flex;
   gap: 50px;
   padding: 0 30px;
+  z-index: 10;
 }
 .settings .videoContainer {
   width: 50%;
@@ -353,6 +355,7 @@ body,
   flex-direction: column;
   margin: 25px 0;
   padding: 50px;
+  z-index: 10;
 }
 
 .aboutUs h1 {
@@ -489,6 +492,38 @@ body,
 
 .aboutUs .text01 {
   padding: 0;
+}
+
+.pitch {
+  background: #0562fd;
+  background: linear-gradient(
+    150deg,
+    rgba(23, 106, 244, 1) 0%,
+    rgba(174, 5, 255, 1) 100%
+  ) !important;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 25px 0;
+  padding: 50px;
+}
+.pitch .videoContainer {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+
+.pitch .video {
+  width: 100%;
+  height: 100%;
+  border: none;
+  z-index: 10;
 }
 
 footer .container {
@@ -798,6 +833,9 @@ footer .a {
     height: auto;
     padding: 20px;
   }
+  .guide .guideCard li {
+    list-style: none;
+  }
   .guide video {
     width: 100%;
     height: auto;
@@ -824,6 +862,9 @@ footer .a {
   .aboutUs {
     height: auto;
     padding: 0;
+  }
+  .aboutUs .text01 {
+    padding: 0 30px;
   }
   .aboutUs p {
     padding: 0 30px;
@@ -853,5 +894,9 @@ footer .a {
   }
   .aboutUs .ball04 {
     display: none;
+  }
+
+  .pitch .videoContainer {
+    width: 100%;
   }
 }

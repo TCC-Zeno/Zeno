@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <ColorBlindnessSwitcher />
       <ColorBlindnessFilters />
       <BrowserRouter>
-        <PageTransition>
+        {/* <PageTransition> */}
           <Routes>
             <Route element={<LandingPage />} path="/" />
             <Route element={<Login />} path="/login" />
@@ -42,7 +42,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </PageTransition>
+        {/* </PageTransition> */}
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

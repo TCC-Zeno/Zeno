@@ -4,6 +4,7 @@ import SignUp from "../components/SignUp/SignUp";
 import SignIn from "../components/SignIn/SignIn";
 import S from "../styles/login.module.css";
 import { useLocation } from "react-router-dom";
+import { Particles } from "../components/Particles/Particles";
 
 export default function Login() {
   const location = useLocation();
@@ -23,21 +24,7 @@ export default function Login() {
           loginOption === "signUp" ? S.signUpToggle : S.signInToggle
         }`}
       >
-        <div className={S.particlesContainer}>
-          {Array.from({ length: 100 }).map((_, i) => (
-            <div
-              key={i}
-              className={S.particle}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                "--tx": `${(Math.random() - 0.5) * 200}px`,
-                "--ty": `${(Math.random() - 0.5) * 200}px`,
-                animationDuration: `${Math.random() * 10 + 10}s`,
-              }}
-            ></div>
-          ))}
-        </div>
+        <Particles />
 
         <div className={S.wrapperContent}>
           <div className={S.containerLogo}>
