@@ -13,10 +13,9 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { LuPlus } from "react-icons/lu";
 import Modal from "../components/Modal/Modal";
-import ModalBig from "../components/ModalBig/ModalBig";
-import { IoIosArrowRoundBack } from "react-icons/io";
 import Dropzone from "../components/Dropzone/Dropzone";
 import CurrencyInput from "react-currency-input-field";
+import PhoneInput from "react-phone-number-input/input";
 
 export default function Stock() {
   const dispatch = useDispatch();
@@ -43,9 +42,8 @@ export default function Stock() {
             className={style.inputFilter}
             type="text"
             placeholder="Procurar Produto"
-            {...register("Full name", { required: true })}
             id="input-filter"
-          />{" "}
+          />
           <button className={style.buttonFilter} id="button-filter">
             <HiMiniMagnifyingGlass
               className={style.icon}
@@ -256,6 +254,7 @@ export default function Stock() {
           onClose={() => setModalBigOpen(false)}
           stock={true}
         >
+          <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <div className={style.cadProd}>
               <div className={style.titleModal}>
@@ -267,25 +266,25 @@ export default function Stock() {
                   className={style.inputAdd}
                   type="text"
                   placeholder="Nome do produto"
-                  {...register("Full name", { required: true })}
+                  {...register("ProductName", { required: true })}
                 />
                 <input
                   className={style.inputAdd}
                   type="text"
                   placeholder="Quatidade Fixa"
-                  {...register("Full name", { required: true })}
+                  {...register("FixedQuantity", { required: true })}
                 />
                 <input
                   className={style.inputAdd}
                   type="text"
                   placeholder="Descrição"
-                  {...register("Full name", { required: true })}
+                  {...register("Description", { required: true })}
                 />
                 <input
                   className={style.inputAdd}
                   type="text"
                   placeholder="Categoria"
-                  {...register("Full name", { required: true })}
+                  {...register("Category", { required: true })}
                 />
               </div>
             </div>
@@ -303,25 +302,27 @@ export default function Stock() {
                   className={style.inputAdd}
                   type="text"
                   placeholder="Nome do Fornecedor"
-                  {...register("Full name", { required: true })}
+                  {...register("SupplierName", { required: true })}
                 />
-                <input
+                {/* <input
                   className={style.inputAdd}
                   type="text"
                   placeholder="Número do Fornecedor"
-                  {...register("Full name", { required: true })}
-                />
+                  {...register("SupplierNumber", { required: true })}
+                /> */}
+                <PhoneInput className={style.inputAdd} country="BR" {...register("SupplierNumber", { required: true })} placeholder="Número do Fornecedor" />
+
                 <input
                   className={style.inputAdd}
                   type="text"
                   placeholder="Endereço"
-                  {...register("Full name", { required: true })}
+                  {...register("SupplierAddress", { required: true })}
                 />
                 <input
                   className={style.inputAdd}
                   type="text"
                   placeholder="Email"
-                  {...register("Full name", { required: true })}
+                  {...register("SupplierEmail", { required: true })}
                 />
               </div>
             </div>
@@ -352,12 +353,12 @@ export default function Stock() {
               />
               <h2>Preço final</h2>
               <Controller
-                name="Price"
+                name="Price1"
                 control={control}
                 rules={{ required: true }}
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onChange, value1, name } }) => (
                   <CurrencyInput
-                    id="price-input"
+                    id="price-input1"
                     name={name}
                     placeholder="R$ 0,00"
                     decimalsLimit={2}
@@ -365,8 +366,8 @@ export default function Stock() {
                     decimalSeparator=","
                     groupSeparator="."
                     prefix="R$ "
-                    onValueChange={(value) => onChange(value)}
-                    value={value === 0 ? "" : value}
+                    onValueChange={(value1) => onChange(value1)}
+                    value={value1 === 0 ? "" : value1}
                     className={style.inputPrice}
                   />
                 )}
@@ -405,9 +406,7 @@ export default function Stock() {
             <div className={style.quantStock}>
               <div className={style.containerTitleQuant}>
                 <div className={style.titleQuant}>
-                  <h2>
-                    Quantidade minima para comprar mais
-                  </h2>
+                  <h2>Quantidade minima para comprar mais</h2>
                 </div>
                 <div className={style.pQuant}>
                   <p>Ao chegar nessa quantidade deverá repor no estoque</p>
@@ -427,13 +426,19 @@ export default function Stock() {
             </div>
             <div className={style.buttonsCad}>
               <div className={style.buttonCad1}>
-                <button className={style.buttonSalveCad}> Salvar</button>
+                <button
+                  className={style.buttonSalveCad}
+                  type="submit"
+                >
+                  Salvar
+                </button>
               </div>
               <div className={style.buttonCad1}>
-              <button className={style.buttonDeleteCad}> Excluir</button>
+                <button className={style.buttonDeleteCad}> Excluir</button>
               </div>
             </div>
           </div>
+          </form>
         </Modal>
       </DefaultLayout>
     </>

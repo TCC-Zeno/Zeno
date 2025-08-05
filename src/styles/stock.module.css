@@ -398,8 +398,21 @@
     justify-content: center;
   }
 
-  .buttonsCad {
-    flex-direction: column;
-    gap: 10px;
+  .linha {
+    width: 90%;
   }
+
+  .quantStock{
+    width: 90%;
+  }
+
+  .modalImages{
+    width: 90%;
+    height: auto;
+  }
+
+  .line {
+    width: 90%;
+  }
+
 }

@@ -69,7 +69,7 @@ export default function ModalBig({ isOpen, onClose, children, guide = false, sto
                   }
                 : stock
                 ? {
-                  width: "90vw",
+                  width: "10vw",
                   maxWidth: "100%"
                 }
                 : undefined
@@ -100,7 +100,7 @@ export default function ModalBig({ isOpen, onClose, children, guide = false, sto
                     }
                   : stock 
                   ? {
-                  width: "90vw",
+                  width: "10vw",
                 }
                 : undefined
               }

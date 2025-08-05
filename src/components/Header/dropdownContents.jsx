@@ -244,3 +244,25 @@ export function ProfileContent() {
     </>
   );
 }
+
+export function FilterContent() {
+  return(
+    <>
+    <div className={S.containerFilters}>
+      <div className={S.filterOptions}>
+        <button className={S.filterButton}>Produtos em estoque</button>
+      </div>
+      <div className={S.filterOptions}>
+        <button className={S.filterButton}>Produtos para repor</button>
+      </div>
+      <div className={S.filterOptions}>
+        <button className={S.filterButton}>Produtos para comprar</button>
+      </div>
+      <div className={S.filterOptions}>
+        <button className={S.filterButton}>Categoria</button>
+      </div>
+    </div>
+    </>
+  )
+}
+

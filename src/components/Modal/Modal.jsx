@@ -69,7 +69,7 @@ export default function Modal({ isOpen, onClose, children, guide = false, stock 
                   }
                 : stock
                 ? {
-                  width: "80vw",
+                  width: "auto",
                   maxWidth: "100%"
                 }
                 : undefined
@@ -100,7 +100,7 @@ export default function Modal({ isOpen, onClose, children, guide = false, stock 
                     }
                   : stock 
                   ? {
-                  width: "80vw",
+                  width: "auto",
                 }
                 : undefined
               }

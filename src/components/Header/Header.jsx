@@ -5,7 +5,7 @@ import { MdTune } from "react-icons/md";
 import S from "./header.module.css";
 import { useSelector } from "react-redux";
 import DropdownHeader from "./DropdownHeader";
-import { NotificationContent, ProfileContent } from "./dropdownContents";
+import { FilterContent, NotificationContent, ProfileContent } from "./dropdownContents";
 import { BsQuestionLg } from "react-icons/bs";
 
 export default function Header() {
@@ -63,7 +63,7 @@ export default function Header() {
           <DropdownHeader
             id="btn-filters"
             icon={<MdTune className={S.icon} />}
-            modalContent={<ProfileContent />}
+            modalContent={<FilterContent />}
           />
         ) : null}
 
