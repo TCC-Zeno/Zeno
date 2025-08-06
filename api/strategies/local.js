@@ -1,7 +1,7 @@
-
 import passport from "passport";
 import {  getUserByEmail, getUserById } from "../services/authService.js";
 import { Strategy as LocalStrategy} from "passport-local";
+
 
 
 //Sessao do usuario
@@ -28,19 +28,15 @@ passport.deserializeUser(async (uuid, done) => {
 
 passport.use(new LocalStrategy({
   usernameField: "email",
-    passwordField: "password",},
-  async (email, password, done) => {
-    try {
-      const user = await getUserByEmail(email);
-      if (!user) {
-        return done(null, false, { message: "Usuário não encontrado" });
-      }
-      if (user.password !== password) {
-        return done(null, false, { message: "Senha incorreta" });
-      }
-      return done(null, user);
-    } catch (error) {
-      return done(error);
-    }
+  passwordField: "password",
+},
+async (email, password, done) => {
+  try {
+    const user = await getUserByEmail(email);
+    if (!user) return done(null, false, { message: "Usuário não encontrado" });
+    if (user.password !== password) return done(null, false, { message: "Senha incorreta" });
+    return done(null, user);
+  } catch (error) {
+    return done(error);
   }
-));
+}));
