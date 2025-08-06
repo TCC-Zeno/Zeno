@@ -24,7 +24,20 @@ export const userSlice = createSlice({
       state.login = true;
     },
     logout: (state) => {
-      state.login = null;
+      state.login = false;
+      state.userData = {};
+      state.blockedResources = {
+        cash: false,
+        organizer: false,
+        finance: false,
+        stock: false,
+        agenda: false,
+        calendar: false,
+        service: false,
+      };
+      state.theme = "blue";
+      state.colorBlindness = "Padrão";
+      console.log("User logged out, state reset.");
     },
     setTheme: (state, action) => {
       state.theme = action.payload;

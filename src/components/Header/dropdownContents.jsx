@@ -5,18 +5,16 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { IoPeopleSharp } from "react-icons/io5";
 import { GrHelpBook } from "react-icons/gr";
 
+import { useSelector } from "react-redux";
 import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import S from "./header.module.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
 import DropdownContributors from "./DropdownContributors";
 import axios from "axios";
 import { logout } from "../../redux/User/slice";
-
-//import {useSelector} from "react-redux";
-
-//const profileinfo =useSelector ((state) => state.userReducer.userData);
 
 export function NotificationContent() {
   return (
@@ -112,23 +110,28 @@ export function NotificationContent() {
 export function ProfileContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownContributors, setDropdownContributors] = useState(false);
+  const islogged = useSelector((state) => state.userReducer.login); // use diretamente
+  const profileinfo = useSelector((state) => state.userReducer.userData);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [error, setError] = useState({
     user: "",
     password: "",
     server: "",
     status: 200,
   });
-  const navigate = useNavigate();
 
   const logoutuser = async () => {
     try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/logout`,
         {
-          logout: logout,
+
         }
       );
+
       if (resposta.status === 201) {
+        dispatch(logout());
         navigate("/");
       }
       throw "Conexão recusada...";
@@ -167,7 +170,7 @@ export function ProfileContent() {
         });
       }
     }
-  }
+  };
   return (
     <>
       <div className={S.containerProfile}>
@@ -205,8 +208,11 @@ export function ProfileContent() {
         <div className={S.divider}></div>
         <button className={S.configureSignature}>Configurar assinatura</button>
         <div className={S.divider}></div>
-        <button className={S.manegerOption} onClick={logoutuser}
-        value= {logout}>
+        <button
+          className={S.manegerOption}
+          onClick={logoutuser}
+          value={islogged}
+        >
           <TbLogout />
           <span>Sair</span>
         </button>
@@ -258,23 +264,22 @@ export function ProfileContent() {
 }
 
 export function FilterContent() {
-  return(
+  return (
     <>
-    <div className={S.containerFilters}>
-      <div className={S.filterOptions}>
-        <button className={S.filterButton}>Produtos em estoque</button>
+      <div className={S.containerFilters}>
+        <div className={S.filterOptions}>
+          <button className={S.filterButton}>Produtos em estoque</button>
+        </div>
+        <div className={S.filterOptions}>
+          <button className={S.filterButton}>Produtos para repor</button>
+        </div>
+        <div className={S.filterOptions}>
+          <button className={S.filterButton}>Produtos para comprar</button>
+        </div>
+        <div className={S.filterOptions}>
+          <button className={S.filterButton}>Categoria</button>
+        </div>
       </div>
-      <div className={S.filterOptions}>
-        <button className={S.filterButton}>Produtos para repor</button>
-      </div>
-      <div className={S.filterOptions}>
-        <button className={S.filterButton}>Produtos para comprar</button>
-      </div>
-      <div className={S.filterOptions}>
-        <button className={S.filterButton}>Categoria</button>
-      </div>
-    </div>
     </>
-  )
+  );
 }
-

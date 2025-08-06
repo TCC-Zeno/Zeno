@@ -15,7 +15,6 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => console.log(data);
-  console.log(errors);
 
   const contributors = [
     { id: 1, name: "Nicollas Reias", email: "goias@exemplo.com" },

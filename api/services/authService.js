@@ -29,7 +29,7 @@ export const getUserById = async (id) => {
     .eq("id", id)
     .single();
 
-  if (error) throw new error(error.message);
+  if (error) throw new Error(error.message);
   return data;
 };
 /*

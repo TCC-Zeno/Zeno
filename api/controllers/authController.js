@@ -16,11 +16,11 @@ export const signup = async (req, res) => {
     if (!cnpj || !email || !password) {
       return res.status(401).json({ error: "Todos os campos são obrigatórios." });
     }
-    // Verifica se o usuário já existe
+    /* Verifica se o usuário já existe
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
       return res.status(409).json({ error: "E-mail já cadastrado." });
-    }
+    }*/
     // Cria usuário
     const userData = { cnpj, email, password };
     const newUser = await createUser(userData);
