@@ -54,7 +54,7 @@ export const signin = async (req, res) => {
 export const logout = ((req, res, next) =>{
    req.logout(function(err) {
     if (err) { return next(err); }
-     res.redirect('/');
+     res.status(201).json({message: "Logout realizado com sucesso"}); 
   });
 });
 

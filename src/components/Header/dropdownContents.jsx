@@ -12,6 +12,7 @@ import Modal from "../Modal/Modal";
 import { useState } from "react";
 import DropdownContributors from "./DropdownContributors";
 import axios from "axios";
+import { logout } from "../../redux/User/slice";
 
 //import {useSelector} from "react-redux";
 
@@ -119,12 +120,12 @@ export function ProfileContent() {
   });
   const navigate = useNavigate();
 
-  function logout() {
+  const logoutuser = async () => {
     try {
-      const resposta = axios.post(
+      const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/logout`,
         {
-          logout: true,
+          logout: logout,
         }
       );
       if (resposta.status === 201) {
@@ -135,6 +136,16 @@ export function ProfileContent() {
       console.log(err);
       // Se erro, mostra mensagem
       if (err.status == 401) {
+        setError({
+          user: err.response.data.error,
+          status: err.status,
+        });
+      } else if (err.status == 409) {
+        setError({
+          user: err.response.data.error,
+          status: err.status,
+        });
+      } else if (err.status == 400) {
         setError({
           user: err.response.data.error,
           status: err.status,
@@ -194,7 +205,8 @@ export function ProfileContent() {
         <div className={S.divider}></div>
         <button className={S.configureSignature}>Configurar assinatura</button>
         <div className={S.divider}></div>
-        <button className={S.manegerOption} onClick={logout}>
+        <button className={S.manegerOption} onClick={logoutuser}
+        value= {logout}>
           <TbLogout />
           <span>Sair</span>
         </button>
