@@ -115,13 +115,14 @@ export default function Finance() {
 
   const onAddSubmit = async (data) => {
     console.log("Dados do formulário:", data);
+    const priceDot = data.price.replace(",", ".");
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/addFinanceForm`,
         {
           userId: userId.uuid,
           name: data.name,
-          value: data.price,
+          value: parseFloat(priceDot),
           category: data.category,
           payment_method: data.paymentMethod,
           type_flow: data.flow,
@@ -129,7 +130,7 @@ export default function Finance() {
       );
       console.log(response);
       // addReset();
-      // Comentado temporariamente para evitar limpar o formulário 
+      // Comentado temporariamente para evitar limpar o formulário
     } catch (error) {
       console.error(error);
     }
