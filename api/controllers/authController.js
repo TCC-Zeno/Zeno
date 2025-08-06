@@ -3,12 +3,10 @@ import {
   createUser,
   getUserByEmail,
   /*getUsers, 
-  getUserById, 
   updateUser,
   deleteUser,
   searchUsers*/
 } from "../services/authService.js";
-
 
 //Cadastrar usuário
 export const signup = async (req, res) => {
@@ -22,9 +20,6 @@ export const signup = async (req, res) => {
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
       return res.status(409).json({ error: "E-mail já cadastrado." });
-    }
-     if (email,password){
-      req.session.user = {email: email, password: password}; // Armazena usuário na sessão
     }
     // Cria usuário
     const userData = { cnpj, email, password };
@@ -49,23 +44,22 @@ export const signin = async (req, res) => {
     if (user.password !== password) {
       return res.status(401).json({ error: "Senha incorreta" });
     }
-  
-    if (email,password){
-      req.session.user = {email: email, password: password}; // Armazena usuário na sessão
-    }
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-export const logout = async (req, res) => {
-  try {
-    req.session.destroy();
-    res.status(200).json({ message: "Logout bem-sucedido" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+
+//Logout de usuário
+export const logout = ((req, res, next) =>{
+   req.logout(function(err) {
+    if (err) { return next(err); }
+     res.redirect('/');
+  });
+});
+
+
+//Google Login
 export const sucessGoogleLogin = (req, res) =>{
   if (!req.user) {
     res.redirect("/failure"); 
@@ -80,6 +74,13 @@ export const failureGoogleLogin = (req, res) => {
   console.error("Falha na autenticação do Google:", req.query);
   res.status(401).json({ error: "Falha na autenticação do Google" });
 };
+
+
+
+
+
+
+
 /*
 export const fetchUsers = async (req, res) => {
   try {

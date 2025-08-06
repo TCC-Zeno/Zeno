@@ -78,7 +78,6 @@ export default function SignIn() {
       );
 
       if (resposta.status === 200) {
-        console.log(resposta.data);
         dispatch(userData(resposta.data));
         dispatch(setTheme(resposta.data.color));
         dispatch(setColorBlindness(resposta.data.accessibility));

@@ -3,7 +3,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import session from "express-session";
-
+import passport from "passport";
+import "./strategies/local.js";
 
 
 // Rotas
@@ -33,6 +34,8 @@ app.use(
 );
 
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Rotas
 app.use("/auth", authRoutes);
