@@ -10,6 +10,7 @@ import "./strategies/local.js";
 // Rotas
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
+import financeRoutes from"./routes/finance.js";
 
 
 dotenv.config();
@@ -40,6 +41,7 @@ app.use(passport.session());
 //Rotas
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("/finance", financeRoutes);
 
 //Inicializando servidor
   app.listen(3000, () => {
