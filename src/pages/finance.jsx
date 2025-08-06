@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
@@ -13,6 +13,7 @@ import { PiFileArchiveFill } from "react-icons/pi";
 import axios from "axios";
 
 export default function Finance() {
+  const userId = useSelector((state) => state.userReducer.userData);
   const dataArray = [
     {
       id: 1,
@@ -116,8 +117,9 @@ export default function Finance() {
     console.log("Dados do formulário:", data);
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/finance/addFinanceForm`, {
-          id: Math.floor(Math.random() * 1000),
+        `${import.meta.env.VITE_API_URL}/finance/addFinanceForm`,
+        {
+          userId: userId.uuid,
           name: data.name,
           value: data.price,
           category: data.category,
@@ -125,7 +127,7 @@ export default function Finance() {
           type_flow: data.flow,
         }
       );
-      console.log(response)
+      console.log(response);
       // addReset();
       // Comentado temporariamente para evitar limpar o formulário 
     } catch (error) {
@@ -316,24 +318,21 @@ export default function Finance() {
                     field: { onChange, value, name },
                     fieldState: { error },
                   }) => (
-                      <CurrencyInput
-                        id="input-price"
-                        name={name}
-                        placeholder="R$ 0,00"
-                        decimalsLimit={2}
-                        decimalScale={2}
-                        decimalSeparator=","
-                        groupSeparator="."
-                        prefix="R$ "
-                        onValueChange={(value) => {
-                          onChange(value || "");
-                        }}
-                        value={value}
-                        className={`${style.inputPrice} ${
-                          error ? "error" : ""
-                        }`}
-                      />
-
+                    <CurrencyInput
+                      id="input-price"
+                      name={name}
+                      placeholder="R$ 0,00"
+                      decimalsLimit={2}
+                      decimalScale={2}
+                      decimalSeparator=","
+                      groupSeparator="."
+                      prefix="R$ "
+                      onValueChange={(value) => {
+                        onChange(value || "");
+                      }}
+                      value={value}
+                      className={`${style.inputPrice} ${error ? "error" : ""}`}
+                    />
                   )}
                 />
 

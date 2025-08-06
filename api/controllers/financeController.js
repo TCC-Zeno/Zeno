@@ -4,12 +4,12 @@ addFinance
 
 export const addFinanceform = async (req, res)=>{
    try{
-    const{ uuid, name, value, category, payment_method, type_flow } = req.body;
+    const{ userId, name, value, category, payment_method, type_flow } = req.body;
     //criar a tabela
 
-    const financeData = { uuid, name, value, category, payment_method, type_flow };
+    // const financeData = { userId, name, value, category, payment_method, type_flow };
     // const newFinance=  await addFinance(financeData);
-    const newFinance =  await addFinance(uuid, name, value, category, payment_method, type_flow);
+    const newFinance =  await addFinance(userId, name, value, category, payment_method, type_flow);
     res.status(201).json(newFinance);
   } catch (error) {
     // Log detalhado para debug

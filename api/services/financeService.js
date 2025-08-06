@@ -1,11 +1,11 @@
 import supabase from "../config/supabaseClient.js";
 
-export const addFinance = async (uuid, name, value, category, payment_method, type_flow)=>{
-    console.log(uuid, name, value, category, payment_method, type_flow)
+export const addFinance = async (userId, name, value, category, payment_method, type_flow)=>{
+    console.log(userId, name, value, category, payment_method, type_flow)
     const{data, error} = await supabase
     .from("finance")
     .insert({
-        uuid,
+        uuid: userId,
         name,
         value,
         category,
