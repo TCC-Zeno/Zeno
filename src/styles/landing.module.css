@@ -131,6 +131,8 @@ body,
 .hero .imgContainer img {
   width: 100%;
   height: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 .function {
   width: 100%;
@@ -495,6 +497,9 @@ body,
 }
 
 .pitch {
+  box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.52);
+  -webkit-box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.52);
   background: #0562fd;
   background: linear-gradient(
     150deg,
@@ -524,6 +529,12 @@ body,
   height: 100%;
   border: none;
   z-index: 10;
+}
+
+.pitch .textContainer {
+  padding-bottom: 25px;
+  color: white;
+  z-index: 15;
 }
 
 footer .container {

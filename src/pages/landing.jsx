@@ -347,6 +347,13 @@ export default function LandingPage() {
         </section>
         <section id="pitch" className={S.pitch}>
           <Particles />
+          <div className={S.textContainer}>
+            <BlurText delay={150} direction="top" className={S.title}>
+              {"Veja mais  ‎"}
+              {"sobre a ‎"}
+              {"plataforma."}
+            </BlurText>
+          </div>
           <div className={S.videoContainer}>
             <iframe
               className={S.video}
