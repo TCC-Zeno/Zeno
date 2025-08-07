@@ -19,15 +19,18 @@ import Stock from "./pages/stock";
 import NotFound from "./pages/notFoundPage";
 import PageTransition from "./components/PageTransition/PageTransition";
 import { Support } from "./pages/support";
+import { AuthProvider } from "./contexts/AuthContext";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const root = document.getElementById("root");
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeSwitcher />
       <ColorBlindnessSwitcher />
       <ColorBlindnessFilters />
-      <BrowserRouter>
-        {/* <PageTransition> */}
+      <AuthProvider>
+        <BrowserRouter>
+          {/* <PageTransition> */}
           <Routes>
             <Route element={<LandingPage />} path="/" />
             <Route element={<Login />} path="/login" />
@@ -42,8 +45,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
-        {/* </PageTransition> */}
-      </BrowserRouter>
+          {/* </PageTransition> */}
+        </BrowserRouter>
+      </AuthProvider>
     </Provider>
   </React.StrictMode>
 );

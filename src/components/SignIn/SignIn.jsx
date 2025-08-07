@@ -14,8 +14,11 @@ import { useState } from "react";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import Modal from "../Modal/Modal";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function SignIn() {
+  const { login } = useAuth();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingForgot, setIsLoadingForgot] = useState(false);
   const [modalForgotPasswordOpen, setModalForgotPasswordOpen] = useState(false);
@@ -59,6 +62,61 @@ export default function SignIn() {
     console.log(resposta.data);
   };
 
+  // Função sem usar o useAuth
+  // const onSubmitLogin = async (data) => {
+  //   setIsLoading(true);
+  //   setError({
+  //     user: "",
+  //     password: "",
+  //     server: "",
+  //     status: 200,
+  //   });
+
+  //   try {
+  //     const resposta = await axios.post(
+  //       `${import.meta.env.VITE_API_URL}/auth/signin`,
+  //       {
+  //         email: data.email,
+  //         password: data.password,
+  //       }
+  //     );
+
+  //     if (resposta.status === 200) {
+  //       dispatch(userData(resposta.data));
+  //       dispatch(setTheme(resposta.data.color));
+  //       dispatch(setColorBlindness(resposta.data.accessibility));
+  //       dispatch(login());
+  //       setIsLoading(false);
+  //       navigate("/dashboard");
+  //       return;
+  //     }
+  //     throw new Error("Conexão recusada...");
+  //   } catch (err) {
+  //     if (err.response?.status === 401) {
+  //       setError({
+  //         password: err.response.data.error,
+  //         status: err.response.status,
+  //       });
+  //     } else if (err.response?.status === 404) {
+  //       setError({
+  //         user: err.response.data.error,
+  //         status: err.response.status,
+  //       });
+  //     } else if (err.response?.status === 500) {
+  //       setError({
+  //         server: err.response.data.error,
+  //         status: err.response.status,
+  //       });
+  //     } else {
+  //       setError({
+  //         server: err.response?.data?.error || "Erro desconhecido",
+  //         status: err.response?.status || 0,
+  //       });
+  //     }
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const onSubmitLogin = async (data) => {
     setIsLoading(true);
     setError({
@@ -69,46 +127,26 @@ export default function SignIn() {
     });
 
     try {
-      const resposta = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/signin`,
-        {
-          email: data.email,
-          password: data.password,
-        }
-      );
+      const result = await login(data.email, data.password);
 
-      if (resposta.status === 200) {
-        dispatch(userData(resposta.data));
-        dispatch(setTheme(resposta.data.color));
-        dispatch(setColorBlindness(resposta.data.accessibility));
-        dispatch(login());
-        setIsLoading(false);
-        navigate("/dashboard");
-        return;
-      }
-      throw new Error("Conexão recusada...");
-    } catch (err) {
-      if (err.response?.status === 401) {
-        setError({
-          password: err.response.data.error,
-          status: err.response.status,
-        });
-      } else if (err.response?.status === 404) {
-        setError({
-          user: err.response.data.error,
-          status: err.response.status,
-        });
-      } else if (err.response?.status === 500) {
-        setError({
-          server: err.response.data.error,
-          status: err.response.status,
-        });
+      if (result.success) {
+        dispatch(userData(result.user));
+        dispatch(setTheme(result.user.color));
+        dispatch(setColorBlindness(result.user.accessibility));
+        navigate("/dashboard", { replace: true });
       } else {
         setError({
-          server: err.response?.data?.error || "Erro desconhecido",
-          status: err.response?.status || 0,
+          server: result.error,
+          status: 401,
         });
       }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError({
+        server: "Erro ao fazer login. Tente novamente.",
+        status: 500,
+      });
+    } finally {
       setIsLoading(false);
     }
   };

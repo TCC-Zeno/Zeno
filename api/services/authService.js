@@ -26,7 +26,7 @@ export const getUserById = async (id) => {
   const { data, error } = await supabase
     .from("users")
     .select("*")
-    .eq("id", id)
+    .eq("uuid", id)
     .single();
 
   if (error) throw new Error(error.message);

@@ -3,6 +3,8 @@ import {
   signup,
   signin,
   logout,
+  checkSession,
+  getSession,
   sucessGoogleLogin,
   failureGoogleLogin,
 } from "../controllers/authController.js";
@@ -12,11 +14,14 @@ const router = express.Router();
 router.use(passport.initialize());
 router.use(passport.session());
 
-//Rotas de usuario
-router.post("/signup", passport.authenticate("local"), signup);
-router.post("/signin", passport.authenticate("local"), signin);
-router.get("/logout", logout);
+// Rotas básicas
+router.post("/signup", signup);
+router.post("/signin", signin);
+router.post("/logout", logout);
+router.get("/check-session", checkSession);
+router.get("/session", getSession);
 
+// Rotas do Google
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "./../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import LogoWhite from "./../assets/logo/LogoZeno_LogoPretoSFundo.png";
 import img001 from "./../assets/imgHeroLandingPage.png";
@@ -16,8 +16,11 @@ import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa6";
 import { VscGithubAlt } from "react-icons/vsc";
 import ScrollToTopButton from "../components/ScrollToTopButton/ScrollToTopButton ";
 import { Particles } from "../components/Particles/Particles";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function LandingPage() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
   const [burger, setBurguer] = useState(false);
 
   const toggleBurger = () => {
@@ -85,6 +88,13 @@ export default function LandingPage() {
       );
     };
   }, []);
+
+  useEffect(() => {
+    if (user && !loading) {
+      navigate("/dashboard");
+    }
+  }, [user, loading, navigate]);
+  
   return (
     <>
       <ScrollToTopButton />
