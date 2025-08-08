@@ -1,4 +1,4 @@
-import S from "./particles.module.css";
+import S from "./Particles.module.css";
 
 // Ao usar, lembrar de que o pai deve ter position: relative;
 export function Particles() {
