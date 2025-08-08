@@ -1,4 +1,4 @@
-import S from "./ScrollToTopButton.module.css";
+import S from "./scrollToTopButton.module.css";
 import { useEffect, useState } from "react";
 import Img from "./../../assets/bottomUp.png";
 
