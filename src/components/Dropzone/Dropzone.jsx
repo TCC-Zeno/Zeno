@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import S from "./Dropzone.module.css";
+import S from "./dropzone.module.css";
 
 export default function Dropzone () {
   const [selectedFile, setSelectedFile] = useState(null);
