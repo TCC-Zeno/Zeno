@@ -359,7 +359,7 @@ export default function LandingPage() {
           <Particles />
           <div className={S.textContainer}>
             <BlurText delay={150} direction="top" className={S.title}>
-              {"Veja mais  ‎"}
+              {"Saiba mais  ‎"}
               {"sobre a ‎"}
               {"plataforma."}
             </BlurText>
