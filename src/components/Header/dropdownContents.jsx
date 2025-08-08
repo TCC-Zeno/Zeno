@@ -4,7 +4,8 @@ import { MdManageAccounts } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { IoPeopleSharp } from "react-icons/io5";
 import { GrHelpBook } from "react-icons/gr";
-
+import { IoIosArrowDown } from "react-icons/io";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
 import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import S from "./header.module.css";
@@ -264,6 +265,35 @@ export function ProfileContent() {
 }
 
 export function FilterContent() {
+
+const [modalOpen, setModalOpen] = useState(false);
+
+ const dropdownVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.95,
+      y: -10,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.95,
+      y: -10,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
   return (
     <>
       <div className={S.containerFilters}>
@@ -277,9 +307,29 @@ export function FilterContent() {
           <button className={S.filterButton}>Produtos para comprar</button>
         </div>
         <div className={S.filterOptions}>
-          <button className={S.filterButton}>Categoria</button>
+          <button className={S.filterButton1} onClick={() => setModalOpen(!modalOpen)} >
+            Categoria <IoIosArrowDown />
+          </button>
         </div>
       </div>
+
+     {modalOpen &&(
+      <AnimatePresence>
+      <motion.div
+      initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={dropdownVariants}>
+        <div className={S.filterOption2}>
+          <button className={S.filterButton2}> Categoria 1 </button>
+        </div>
+        <div className={S.filterOption2}>
+          <button className={S.filterButton2}> Categoria 2 </button>
+        </div>
+      </motion.div>
+      </AnimatePresence>
+     )}
     </>
   );
 }
+

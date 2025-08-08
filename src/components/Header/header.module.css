@@ -497,6 +497,34 @@ button.manegerOption {
 .cancelBtn:hover {
   transform: scale(1.05);
 }
+ 
+.filterOptions{
+  padding: 1%;
+}
+
+.filterButton{
+  font-size: 14pt;
+  font-weight: 500;
+}
+
+.filterButton1{
+  font-size: 14pt;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.filterOption2{
+  padding: 1%;
+  margin: 2%;
+}
+
+.filterButton2{
+  font-size: 12pt;
+  font-weight: 400;
+}
+
 @media screen and (max-width: 768px) {
   .dropdownContributors {
     width: 90vw;
