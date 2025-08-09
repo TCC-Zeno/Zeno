@@ -15,11 +15,14 @@ import financeRoutes from "./routes/finance.js";
 
 dotenv.config();
 const app = express();
+const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
 
-app.use(cors({
-  origin: "http://localhost:5173", 
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -51,8 +54,10 @@ app.use("/user", userRoutes);
 app.use("/finance", financeRoutes);
 
 // Inicializando servidor
-  app.listen(3000, () => {
-    console.log("Servidor em execução na porta 3000");
-  });
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
 
 export default app;

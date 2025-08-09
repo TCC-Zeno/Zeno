@@ -94,7 +94,7 @@ export default function LandingPage() {
       navigate("/dashboard");
     }
   }, [user, loading, navigate]);
-  
+
   return (
     <>
       <ScrollToTopButton />
@@ -369,11 +369,12 @@ export default function LandingPage() {
               className={S.video}
               src="https://www.youtube.com/embed/eyDT3jrz4VY?si=6dFgz7SMcUk6emge"
               title="YouTube video player"
-              frameborder="0"
+              frameBorder="0" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              loading="lazy"
+            />
           </div>
         </section>
         <section id="settings" className={S.settings}>
