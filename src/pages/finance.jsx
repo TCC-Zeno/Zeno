@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import debounce from "lodash/debounce";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
@@ -17,8 +18,8 @@ import { ErrorMessage } from "../components/ErrorMessage/ErrorMessage";
 export default function Finance() {
   const userId = useSelector((state) => state.userReducer.userData);
   const [dataFinance, setDataFinance] = useState([]);
-  const [filteredData, setFilteredData] = useState([]); 
-  const [activeFilters, setActiveFilters] = useState({}); 
+  const [filteredData, setFilteredData] = useState([]);
+  const [activeFilters, setActiveFilters] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -49,19 +50,13 @@ export default function Finance() {
     reset: categoryReset,
   } = useForm();
 
-  // Observa mudanças nos campos de filtro
-  const watchedFilters = watch();
-
-  // Função para aplicar filtros
-  const applyFilters = (data, filters) => {
+  const applyFilters = useCallback((data, filters) => {
     let filtered = [...data];
 
     // Filtro por data
     if (filters.date) {
       filtered = filtered.filter((item) => {
-        const itemDate = new Date(item.created_at)
-          .toISOString()
-          .split("T")[0];
+        const itemDate = new Date(item.created_at).toISOString().split("T")[0];
         return itemDate === filters.date;
       });
     }
@@ -84,28 +79,38 @@ export default function Finance() {
     }
 
     return filtered;
-  };
+  }, []);
+
+  const watchedFilters = watch();
+
+  const filterData = useCallback(
+    debounce((filters, data) => {
+      if (data.length > 0) {
+        const cleanFilters = {};
+        Object.keys(filters).forEach((key) => {
+          if (
+            filters[key] &&
+            filters[key] !== "Método de pagamento" &&
+            filters[key] !== "Categorias" &&
+            filters[key] !== "Tipo de fluxo" &&
+            filters[key] !== ""
+          ) {
+            cleanFilters[key] = filters[key];
+          }
+        });
+
+        setActiveFilters(cleanFilters);
+        const filtered = applyFilters(data, cleanFilters);
+        setFilteredData(filtered);
+      }
+    }, 300),
+    [applyFilters]
+  );
 
   useEffect(() => {
-    if (dataFinance.length > 0) {
-      const cleanFilters = {};
-      Object.keys(watchedFilters).forEach((key) => {
-        if (
-          watchedFilters[key] &&
-          watchedFilters[key] !== "Método de pagamento" &&
-          watchedFilters[key] !== "Categorias" &&
-          watchedFilters[key] !== "Tipo de fluxo" &&
-          watchedFilters[key] !== ""
-        ) {
-          cleanFilters[key] = watchedFilters[key];
-        }
-      });
-
-      setActiveFilters(cleanFilters);
-      const filtered = applyFilters(dataFinance, cleanFilters);
-      setFilteredData(filtered);
-    }
-  }, [watchedFilters, dataFinance]);
+    filterData(watchedFilters, dataFinance);
+    return () => filterData.cancel();
+  }, [watchedFilters, dataFinance, filterData]);
 
   const onFilterSubmit = async (data) => {
     console.log("Filtros aplicados:", data);
@@ -131,18 +136,19 @@ export default function Finance() {
           type_flow: data.flow,
         }
       );
-      
+
       if (response.status === 200) {
         addReset();
         fetchData();
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Erro ao adicionar finança";
+      const errorMessage =
+        error.response?.data?.message || "Erro ao adicionar finança";
       console.error("Erro ao adicionar finança:", errorMessage);
     }
   };
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const data = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/financeId`,
@@ -150,9 +156,8 @@ export default function Finance() {
           uuid: userId.uuid,
         }
       );
-      console.log(data.data);
-      setDataFinance(data.data);
 
+      setDataFinance(data.data);
       if (Object.keys(activeFilters).length > 0) {
         const filtered = applyFilters(data.data, activeFilters);
         setFilteredData(filtered);
@@ -160,27 +165,28 @@ export default function Finance() {
         setFilteredData(data.data);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao buscar dados:", error);
     }
-  };
-
-  useEffect(() => {
-    if (Object.keys(activeFilters).length > 0) {
-      const filtered = applyFilters(dataFinance, activeFilters);
-      setFilteredData(filtered);
-    } else {
-      setFilteredData(dataFinance);
-    }
-  }, [dataFinance, activeFilters]);
+  }, [userId?.uuid, activeFilters, applyFilters]);
 
   useEffect(() => {
     fetchData();
-  }, [userId.uuid]);
+  }, [userId.uuid, fetchData]);
 
   const onCategorySubmit = async (data) => {
     console.log(data);
   };
   const displayData = filteredData;
+
+  const amountValue = displayData
+    .filter((item) => item.type_flow === "Entrada")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const expensesValue = displayData
+    .filter((item) => item.type_flow === "Saída")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const profitValue = amountValue - expensesValue;
 
   return (
     <>
@@ -193,7 +199,7 @@ export default function Finance() {
                 <FaArrowTrendUp className={style.top} />
               </div>
               <h2 className={style.number} id="amount-value">
-                $value
+                R$ {amountValue.toFixed(2)}
               </h2>
             </div>
             <div className={style.views}>
@@ -202,16 +208,25 @@ export default function Finance() {
                 <FaArrowTrendDown className={style.down} />
               </div>
               <h2 className={style.number2} id="expenses-value">
-                $value
+                R$ {expensesValue.toFixed(2)}
               </h2>
             </div>
             <div className={style.views}>
               <div className={style.titleIcon}>
                 <p>Saldo do mês</p>
-                <p className={style.icon}>Icon</p>
+                {profitValue < 0 ? (
+                  <FaArrowTrendDown className={style.down} />
+                ) : (
+                  <FaArrowTrendUp className={style.top} />
+                )}
               </div>
-              <h2 className={style.number3} id="profit-value">
-                $value
+              <h2
+                className={
+                  profitValue < 0 ? style.number3Negative : style.number3
+                }
+                id="profit-value"
+              >
+                R$ {profitValue.toFixed(2)}
               </h2>
             </div>
           </div>
@@ -391,7 +406,9 @@ export default function Finance() {
                 <select
                   className={style.financeSelect}
                   id="payment-method-select"
-                  {...addRegister("paymentMethod", { required: "Método de pagamento é obrigatório" })}
+                  {...addRegister("paymentMethod", {
+                    required: "Método de pagamento é obrigatório",
+                  })}
                 >
                   <option value="" selected>
                     Método de pagamento
@@ -405,7 +422,9 @@ export default function Finance() {
                 <select
                   className={style.financeSelect}
                   id="category-select"
-                  {...addRegister("category", { required: "Categoria é obrigatória" })}
+                  {...addRegister("category", {
+                    required: "Categoria é obrigatória",
+                  })}
                 >
                   <option value="" selected>
                     Categorias
@@ -418,7 +437,9 @@ export default function Finance() {
                 <select
                   className={style.financeSelect}
                   id="flow-select"
-                  {...addRegister("flow", { required: "Tipo de fluxo é obrigatório" })}
+                  {...addRegister("flow", {
+                    required: "Tipo de fluxo é obrigatório",
+                  })}
                 >
                   <option value="" selected>
                     Tipo de fluxo
@@ -434,26 +455,26 @@ export default function Finance() {
               </div>
             </form>
           </div>
-            <ErrorMessage
-              condition={addErrors.name}
-              message={addErrors.name?.message}
-            />
-            <ErrorMessage
-              condition={addErrors.price}
-              message={addErrors.price?.message}
-            />
-            <ErrorMessage
-              condition={addErrors.paymentMethod}
-              message={addErrors.paymentMethod?.message}
-            />
-            <ErrorMessage
-              condition={addErrors.flow}
-              message={addErrors.flow?.message}
-            />
-            <ErrorMessage
-              condition={addErrors.category}
-              message={addErrors.category?.message}
-            />
+          <ErrorMessage
+            condition={addErrors.name}
+            message={addErrors.name?.message}
+          />
+          <ErrorMessage
+            condition={addErrors.price}
+            message={addErrors.price?.message}
+          />
+          <ErrorMessage
+            condition={addErrors.paymentMethod}
+            message={addErrors.paymentMethod?.message}
+          />
+          <ErrorMessage
+            condition={addErrors.flow}
+            message={addErrors.flow?.message}
+          />
+          <ErrorMessage
+            condition={addErrors.category}
+            message={addErrors.category?.message}
+          />
         </section>
 
         <section className={style.sectionDashboard}>

@@ -112,8 +112,17 @@
   color: blue;
 }
 
+.number3Negative {
+  color: red;
+  font-size: 20pt;
+  transition: 0.5s;
+}
+.number3Negative:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
 .number3 {
-  color: blue;
+  color: #32cd32;
   font-size: 20pt;
   transition: 0.5s;
 }
