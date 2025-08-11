@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
@@ -14,78 +14,12 @@ import axios from "axios";
 
 export default function Finance() {
   const userId = useSelector((state) => state.userReducer.userData);
-  const dataArray = [
-    {
-      id: 1,
-      name: "Produto A",
-      value: "R$ 100,00",
-      method: "Cartão de crédito",
-      category: "Compras",
-      flow: "Entrada",
-    },
-    {
-      id: 2,
-      name: "Produto B",
-      value: "R$ 200,00",
-      method: "Dinheiro",
-      category: "Contas",
-      flow: "Saída",
-    },
-    {
-      id: 3,
-      name: "Produto C",
-      value: "R$ 150,00",
-      method: "Pix",
-      category: "Manutenção",
-      flow: "Entrada",
-    },
-    {
-      id: 4,
-      name: "Produto D",
-      value: "R$ 300,00",
-      method: "Cartão de débito",
-      category: "Outros",
-      flow: "Saída",
-    },
-    {
-      id: 5,
-      name: "Produto E",
-      value: "R$ 250,00",
-      method: "Cartão de crédito",
-      category: "Compras",
-      flow: "Entrada",
-    },
-    {
-      id: 6,
-      name: "Produto F",
-      value: "R$ 400,00",
-      method: "Dinheiro",
-      category: "Contas",
-      flow: "Saída",
-    },
-  ];
-
+  const [dataFinance, setDataFinance] = useState([]);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(finance());
   }, [dispatch]);
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   control,
-  //   formState: { errors },
-  // } = useForm();
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  //   // const resposta = axios.post(
-  //   //   `${import.meta.env.VITE_API_URL}/addFinanceform`,
-  //   //   {
-  //   //     id: Math.floor(Math.random() * 1000),
-
-  //   //   }
-  //   // );
-  // };
-  // console.log(errors);
 
   const { register: filterRegister, handleSubmit: handleFilterSubmit } =
     useForm();
@@ -114,7 +48,6 @@ export default function Finance() {
   };
 
   const onAddSubmit = async (data) => {
-    console.log("Dados do formulário:", data);
     const priceDot = data.price.replace(",", ".");
     try {
       const response = await axios.post(
@@ -129,32 +62,30 @@ export default function Finance() {
         }
       );
       console.log(response);
-      // addReset();
-      // Comentado temporariamente para evitar limpar o formulário
+      addReset();
+      fetchData();
     } catch (error) {
       console.error(error);
     }
   };
 
-  useEffect(() => {
   const fetchData = async () => {
     try {
-      const labubu = await axios.post(
+      const data = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/financeId`,
         {
           uuid: userId.uuid,
         }
       );
-      console.log(labubu);
-      // addReset(); 
+      console.log(data.data);
+      setDataFinance(data.data);
     } catch (error) {
       console.error(error);
     }
   };
-
-  fetchData(); 
-}, []);
-
+  useEffect(() => {
+    fetchData();
+  }, [userId.uuid]);
 
   const onCategorySubmit = async (data) => {
     console.log(data);
@@ -268,14 +199,13 @@ export default function Finance() {
               </tr>
             </thead>
             <tbody>
-              {/* Eu fiz uma map de um array só para ter como base, mas provavelmente os nomes irão mudar, mas isso o Backend decide */}
-              {dataArray.map((data) => (
+              {dataFinance.map((data) => (
                 <tr className={style.conteudo} key={data.id}>
                   <td>{data.name}</td>
-                  <td>{data.value}</td>
-                  <td>{data.method}</td>
+                  <td>R$ {data.value}</td>
+                  <td>{data.payment_method}</td>
                   <td>{data.category}</td>
-                  <td className={style.tipoFluxo}>{data.flow}</td>
+                  <td className={data.type_flow === "Entrada" ? style.entrada : style.saida}>{data.type_flow}</td>
                   <td className={style.action}>
                     <button id="edit-button">
                       <FaEdit className={style.iconEdit} />
@@ -286,22 +216,6 @@ export default function Finance() {
                   </td>
                 </tr>
               ))}
-              {/* Esse é o padrão que o Goias fez */}
-              <tr className={style.conteudo}>
-                <td>José Eduardo</td>
-                <td>R$ 2000,00</td>
-                <td>Cartão de Crédito</td>
-                <td>asdadadedasda</td>
-                <td className={style.tipoFluxo}>Entrada</td>
-                <td className={style.action}>
-                  <button>
-                    <FaEdit className={style.iconEdit} />
-                  </button>
-                  <button>
-                    <MdDelete className={style.iconDelete} />
-                  </button>
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -348,6 +262,38 @@ export default function Finance() {
                       decimalSeparator=","
                       groupSeparator="."
                       prefix="R$ "
+                      onValueChange={(value) => onChange(value)}
+                      value={value === 0 ? "" : value}
+                      className={`${style.inputPrice} ${error ? "error" : ""}`}
+                    />
+                  )}
+                />
+                {/* <Controller
+                  name="price"
+                  control={control}
+                  rules={{
+                    required: "Preço é obrigatório",
+                    validate: (value) => {
+                      const numValue = parseFloat(value);
+                      if (isNaN(numValue) || numValue <= 0) {
+                        return "Digite um valor válido maior que zero";
+                      }
+                      return true;
+                    },
+                  }}
+                  render={({
+                    field: { onChange, value, name },
+                    fieldState: { error },
+                  }) => (
+                    <CurrencyInput
+                      id="input-price"
+                      name={name}
+                      placeholder="R$ 0,00"
+                      decimalsLimit={2}
+                      decimalScale={2}
+                      decimalSeparator=","
+                      groupSeparator="."
+                      prefix="R$ "
                       onValueChange={(value) => {
                         onChange(value || "");
                       }}
@@ -355,7 +301,7 @@ export default function Finance() {
                       className={`${style.inputPrice} ${error ? "error" : ""}`}
                     />
                   )}
-                />
+                /> */}
 
                 <input className={style.button} type="submit" />
               </div>

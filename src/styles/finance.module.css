@@ -319,10 +319,6 @@
   transform: scale(1.05);
 }
 
-.tipoFluxo {
-  color: green;
-}
-
 .button2 {
   background-color: rgb(var(--color-primary));
   color: rgb(var(--color-background));
@@ -383,6 +379,16 @@
   justify-content: center;
   align-items: center;
   margin: 0 5%;
+}
+
+.entrada{
+  color: rgb(12, 199, 12);
+  font-weight: bold;
+}
+
+.saida {
+  color: rgb(207, 0, 0);
+  font-weight: bold;
 }
 
 @media screen and (max-width: 768px) {
