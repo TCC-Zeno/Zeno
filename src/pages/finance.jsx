@@ -136,6 +136,26 @@ export default function Finance() {
     }
   };
 
+  useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const labubu = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/financeId`,
+        {
+          uuid: userId.uuid,
+        }
+      );
+      console.log(labubu);
+      // addReset(); 
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchData(); 
+}, []);
+
+
   const onCategorySubmit = async (data) => {
     console.log(data);
 
