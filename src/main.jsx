@@ -16,6 +16,7 @@ import Finance from "./pages/finance";
 import Tasks from "./pages/tasks";
 import Calendar from "./pages/calendar";
 import Stock from "./pages/stock";
+import Report from "./pages/report";
 import NotFound from "./pages/notFoundPage";
 import PageTransition from "./components/PageTransition/PageTransition";
 import { Support } from "./pages/support";
@@ -42,6 +43,7 @@ ReactDOM.createRoot(root).render(
               <Route element={<Finance />} path="/finance" />
               <Route element={<Calendar />} path="/calendar" />
               <Route element={<Tasks />} path="/tasks" />
+              <Route element={<Report />} path="/report" />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
