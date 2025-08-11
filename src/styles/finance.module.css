@@ -8,6 +8,17 @@
   margin-bottom: 3%;
 }
 
+.inputError {
+  border-color: #ff4d4f !important;
+}
+
+.errorMessage {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 4px;
+  display: inline;
+}
+
 .sectionDashboard {
   margin: 0 10%;
   margin-bottom: 50px;
@@ -381,7 +392,7 @@
   margin: 0 5%;
 }
 
-.entrada{
+.entrada {
   color: rgb(12, 199, 12);
   font-weight: bold;
 }
@@ -389,6 +400,33 @@
 .saida {
   color: rgb(207, 0, 0);
   font-weight: bold;
+}
+
+.filterActions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5%;
+  background-color: rgb(var(--color-primary));
+  border-radius: 50px;
+  width: 40px;
+  height: 40px;
+  color: whitesmoke;
+  font-size: 20pt;
+  transition: 0.5s all;
+}
+
+.filterActions:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.noResults {
+  align-items: center;
+  text-align: center;
+  font-size: 15pt;
+  font-weight: bold;
+  padding: 25px;
 }
 
 @media screen and (max-width: 768px) {
