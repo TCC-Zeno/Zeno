@@ -21,23 +21,43 @@ export const addFinance = async (
     })
     .select();
 
-  console.log(error);
-  console.log(data);
 
   if (error) throw new Error(error.message);
   return data;
 };
 
 export const getFinanceID = async (uuid) => {
-  console.log("labubu", uuid);
   const { data, error } = await supabase
     .from("finance")
     .select("*")
     .eq("uuid", uuid)
 
-  console.log(data);
-  console.log(error);
 
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const getFinanceCategoria = async (uuid) => {
+  console.log(uuid);
+  const { data, error } = await supabase
+    .from("category")
+    .select("*")
+    .eq("uuid", uuid)
+
+  console.log(data, error);
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const postFinanceCategoria = async (uuid, categoria) => {
+  console.log(uuid, categoria);
+  const { data, error } = await supabase
+    .from("category")
+    .insert({
+      uuid,
+      categoria
+    })
+console.log(data, error);
   if (error) throw new Error(error.message);
   return data;
 };

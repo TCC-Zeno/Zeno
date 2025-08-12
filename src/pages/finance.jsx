@@ -14,7 +14,6 @@ import { PiFileArchiveFill } from "react-icons/pi";
 import axios from "axios";
 import { AiOutlineClear } from "react-icons/ai";
 import { ErrorMessage } from "../components/ErrorMessage/ErrorMessage";
-import { useNavigate } from "react-router-dom";
 
 export default function Finance() {
   const userId = useSelector((state) => state.userReducer.userData);
@@ -22,7 +21,6 @@ export default function Finance() {
   const [filteredData, setFilteredData] = useState([]);
   const [activeFilters, setActiveFilters] = useState({});
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(finance());
@@ -176,8 +174,46 @@ export default function Finance() {
   }, [userId.uuid, fetchData]);
 
   const onCategorySubmit = async (data) => {
+    console.log(userId.uuid)
+     try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/addFinanceCategoria`,
+        {
+          userId: userId.uuid,
+          category: data.categoryName,
+        }
+      );
+      if (response.status === 200) {
+        console.log(response);
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Erro ao adicionar finança";
+      console.error("Erro ao adicionar finança:", errorMessage);
+    }
     console.log(data);
   };
+
+  async function ReadCategory(){
+     try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/financeCategoria`,
+        {
+          uuid: userId.uuid,
+        }
+      );
+      if (response.status === 200) {
+        console.log(response);
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Erro ao ler categoria";
+      console.error("Erro ao ler categoria:", errorMessage);
+    }
+  };
+  useEffect(() => {
+    ReadCategory();
+  }, [userId.uuid]);
   const displayData = filteredData;
 
   const amountValue = displayData
@@ -508,7 +544,7 @@ export default function Finance() {
         </section>
 
         <div className={style.btn}>
-          <button className={style.btnReport} id="btn-report" onClick={() => {navigate("/report")}}>
+          <button className={style.btnReport} id="btn-report">
             <PiFileArchiveFill />
             Gerar Relatório
           </button>
