@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState, useCallback } from "react";
-import debounce from "lodash/debounce";
+import { useEffect, useState, useMemo } from "react"; 
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
@@ -18,8 +17,6 @@ import { ErrorMessage } from "../components/ErrorMessage/ErrorMessage";
 export default function Finance() {
   const userId = useSelector((state) => state.userReducer.userData);
   const [dataFinance, setDataFinance] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [activeFilters, setActiveFilters] = useState({});
   const [CategoryData, setCategoryData] = useState([]);
   const dispatch = useDispatch();
 
@@ -51,10 +48,10 @@ export default function Finance() {
     reset: categoryReset,
   } = useForm();
 
-  const applyFilters = useCallback((data, filters) => {
+  // Função para aplicar filtros
+  const applyFilters = (data, filters) => {
     let filtered = [...data];
 
-    // Filtro por data
     if (filters.date) {
       filtered = filtered.filter((item) => {
         const itemDate = new Date(item.created_at).toISOString().split("T")[0];
@@ -62,67 +59,55 @@ export default function Finance() {
       });
     }
 
-    if (
-      filters.paymentMethod &&
-      filters.paymentMethod !== "Método de pagamento"
-    ) {
+    if (filters.paymentMethod && filters.paymentMethod !== "") {
       filtered = filtered.filter(
         (item) => item.payment_method === filters.paymentMethod
       );
     }
 
-    if (filters.category && filters.category !== "Categorias") {
+    if (filters.category && filters.category !== "") {
       filtered = filtered.filter((item) => item.category === filters.category);
     }
 
-    if (filters.flow && filters.flow !== "Tipo de fluxo") {
+    if (filters.flow && filters.flow !== "") {
       filtered = filtered.filter((item) => item.type_flow === filters.flow);
     }
 
     return filtered;
-  }, []);
+  };
 
   const watchedFilters = watch();
 
-  const filterData = useCallback(
-    debounce((filters, data) => {
-      if (data.length > 0) {
-        const cleanFilters = {};
-        Object.keys(filters).forEach((key) => {
-          if (
-            filters[key] &&
-            filters[key] !== "Método de pagamento" &&
-            filters[key] !== "Categorias" &&
-            filters[key] !== "Tipo de fluxo" &&
-            filters[key] !== ""
-          ) {
-            cleanFilters[key] = filters[key];
-          }
-        });
+  const filteredData = useMemo(() => {
+    if (dataFinance.length === 0) return [];
 
-        setActiveFilters(cleanFilters);
-        const filtered = applyFilters(data, cleanFilters);
-        setFilteredData(filtered);
+    const cleanFilters = {};
+    Object.keys(watchedFilters).forEach((key) => {
+      if (
+        watchedFilters[key] &&
+        watchedFilters[key] !== "" &&
+        watchedFilters[key] !== "Método de pagamento" &&
+        watchedFilters[key] !== "Categorias" &&
+        watchedFilters[key] !== "Tipo de fluxo"
+      ) {
+        cleanFilters[key] = watchedFilters[key];
       }
-    }, 300),
-    [applyFilters]
-  );
+    });
 
-  useEffect(() => {
-    filterData(watchedFilters, dataFinance);
-    return () => filterData.cancel();
-  }, [watchedFilters, dataFinance, filterData]);
+    return applyFilters(dataFinance, cleanFilters);
+  }, [watchedFilters, dataFinance, applyFilters]);
 
+  // Função inutil, só esta aqui pra não dar erro
   const onFilterSubmit = async (data) => {
     console.log("Filtros aplicados:", data);
   };
 
+  // Limpa os filtros
   const clearFilters = () => {
-    setActiveFilters({});
-    setFilteredData(dataFinance);
     filterReset();
   };
 
+  // Função para adicionar finanças
   const onAddSubmit = async (data) => {
     const priceDot = data.price?.toString().replace(",", ".");
     try {
@@ -149,7 +134,8 @@ export default function Finance() {
     }
   };
 
-  const fetchData = useCallback(async () => {
+  // Função para buscar dados do usuário
+  async function fetchData() {
     try {
       const data = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/financeId`,
@@ -157,23 +143,13 @@ export default function Finance() {
           uuid: userId.uuid,
         }
       );
-
       setDataFinance(data.data);
-      if (Object.keys(activeFilters).length > 0) {
-        const filtered = applyFilters(data.data, activeFilters);
-        setFilteredData(filtered);
-      } else {
-        setFilteredData(data.data);
-      }
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
-  }, [userId?.uuid, activeFilters, applyFilters]);
+  }
 
-  useEffect(() => {
-    fetchData();
-  }, [userId.uuid, fetchData]);
-
+  // Função para adicionar categoria
   const onCategorySubmit = async (data) => {
     try {
       const response = await axios.post(
@@ -194,6 +170,7 @@ export default function Finance() {
     }
   };
 
+  // Função para ler categorias
   async function ReadCategory() {
     try {
       const response = await axios.post(
@@ -211,20 +188,65 @@ export default function Finance() {
       console.error("Erro ao ler categoria:", errorMessage);
     }
   }
-  useEffect(() => {
-    ReadCategory();
-  }, [userId.uuid]);
-  const displayData = filteredData;
 
-  const amountValue = displayData
+  // ! Naresh, falta fazer essas duas funções
+  // Função para editar item
+  async function financeEdit(id) {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/financeEdit`,
+        {
+          uuid: userId.uuid,
+          id: id,
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        setCategoryData(response.data);
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Erro ao editar item";
+      console.error("Erro ao editar item:", errorMessage);
+    }
+  }
+
+  // Função para deletar item
+  async function financeDelete(id) {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/financeDelete`,
+        {
+          uuid: userId.uuid,
+          id: id,
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        fetchData();
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Erro ao deletar item";
+      console.error("Erro ao deletar item:", errorMessage);
+    }
+  }
+
+  const amountValue = filteredData
     .filter((item) => item.type_flow === "Entrada")
     .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
 
-  const expensesValue = displayData
+  const expensesValue = filteredData
     .filter((item) => item.type_flow === "Saída")
     .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
 
   const profitValue = amountValue - expensesValue;
+
+  // useEffect para buscar dados
+  useEffect(() => {
+    fetchData();
+    ReadCategory();
+  }, [userId.uuid]);
 
   return (
     <>
@@ -334,15 +356,6 @@ export default function Finance() {
               </button>
             </div>
           </form>
-
-          {/* {Object.keys(activeFilters).length > 0 && (
-            <div className={style.activeFilters}>
-              <p>Filtros ativos: {Object.keys(activeFilters).length}</p>
-              <p>
-                Mostrando {displayData.length} de {dataFinance.length} registros
-              </p>
-            </div>
-          )} */}
         </div>
 
         <div className={style.containerTable}>
@@ -358,7 +371,7 @@ export default function Finance() {
               </tr>
             </thead>
             <tbody>
-              {displayData.map((data) => (
+              {filteredData.map((data) => (
                 <tr className={style.conteudo} key={data.id}>
                   <td>{data.name}</td>
                   <td>R$ {data.value}</td>
@@ -372,10 +385,16 @@ export default function Finance() {
                     {data.type_flow}
                   </td>
                   <td className={style.action}>
-                    <button id="edit-button">
+                    <button
+                      id="edit-button"
+                      onClick={() => financeEdit(data.id)}
+                    >
                       <FaEdit className={style.iconEdit} />
                     </button>
-                    <button id="delete-button">
+                    <button
+                      id="delete-button"
+                      onClick={() => financeDelete(data.id)}
+                    >
                       <MdDelete className={style.iconDelete} />
                     </button>
                   </td>
@@ -384,7 +403,7 @@ export default function Finance() {
             </tbody>
           </table>
 
-          {displayData.length === 0 && dataFinance.length > 0 && (
+          {filteredData.length === 0 && dataFinance.length > 0 && (
             <div className={style.noResults}>
               <p>Nenhum resultado encontrado com os filtros aplicados.</p>
             </div>
