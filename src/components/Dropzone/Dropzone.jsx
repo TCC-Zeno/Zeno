@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+//import axios from "axios";
 import S from "./dropzone.module.css";
 
 export default function Dropzone () {
@@ -50,7 +51,9 @@ export default function Dropzone () {
     }
   };
 
-  const handleSubmit = (e) => {
+  
+
+  const  handleSubmit = async  (e) => {
     e.preventDefault();
     if (selectedFile) {
       if (selectedFile.size > FILE_LIMIT) {
@@ -59,6 +62,10 @@ export default function Dropzone () {
       }
       alert("Este é apenas um demo, nenhum arquivo foi enviado.");
       // aqui envia pro BD a imagem
+      /*const resposta = await axios.post (`${import.meta.env.VITE_API_URL}/user/update`, {
+       logo: selectedFile,});
+        setSelectedFile(resposta.data[0].logo)*/
+
     } else {
       alert("Nenhum arquivo selecionado");
     }
