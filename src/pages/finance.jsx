@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState, useMemo } from "react"; 
+import { useEffect, useState, useMemo } from "react";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
@@ -13,11 +13,15 @@ import { PiFileArchiveFill } from "react-icons/pi";
 import axios from "axios";
 import { AiOutlineClear } from "react-icons/ai";
 import { ErrorMessage } from "../components/ErrorMessage/ErrorMessage";
+import Modal from "../components/Modal/Modal";
 
 export default function Finance() {
   const userId = useSelector((state) => state.userReducer.userData);
   const [dataFinance, setDataFinance] = useState([]);
   const [CategoryData, setCategoryData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,6 +50,12 @@ export default function Finance() {
     register: categoryRegister,
     handleSubmit: handleCategorySubmit,
     reset: categoryReset,
+  } = useForm();
+
+  const {
+    register: editRegister,
+    handleSubmit: handleEditSubmit,
+    reset: editReset,
   } = useForm();
 
   // Função para aplicar filtros
@@ -191,11 +201,17 @@ export default function Finance() {
 
   // ! Naresh, falta fazer essas duas funções
   // Função para editar item
-  async function financeEdit(id) {
+  async function onEditSubmit(id, data) {
+    console.log("Dados do item a ser editado:", id, data);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/financeEdit`,
         {
+          category: data.category,
+          name: data.name,
+          value: data.price,
+          payment_method: data.paymentMethod,
+          type_flow: data.flow,
           uuid: userId.uuid,
           id: id,
         }
@@ -203,6 +219,8 @@ export default function Finance() {
       console.log(response);
       if (response.status === 200) {
         setCategoryData(response.data);
+        editReset();
+        setIsModalOpen(false);
       }
     } catch (error) {
       const errorMessage =
@@ -247,6 +265,19 @@ export default function Finance() {
     fetchData();
     ReadCategory();
   }, [userId.uuid]);
+
+  // useEffect para preencher o modal de edição
+  useEffect(() => {
+    if (selectedItem && isModalOpen) {
+      editReset({
+        name: selectedItem.name,
+        price: selectedItem.value,
+        paymentMethod: selectedItem.payment_method,
+        category: selectedItem.category,
+        flow: selectedItem.type_flow,
+      });
+    }
+  }, [selectedItem, isModalOpen, editReset]);
 
   return (
     <>
@@ -387,7 +418,10 @@ export default function Finance() {
                   <td className={style.action}>
                     <button
                       id="edit-button"
-                      onClick={() => financeEdit(data.id)}
+                      onClick={() => {
+                        setSelectedItem(data);
+                        setIsModalOpen(true);
+                      }}
                     >
                       <FaEdit className={style.iconEdit} />
                     </button>
@@ -578,6 +612,111 @@ export default function Finance() {
             Gerar Relatório
           </button>
         </div>
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <div className={style.modalContent}>
+            <h2>Editar item: {selectedItem?.name}</h2>
+            <form
+              className={style.financeForm}
+              onSubmit={handleEditSubmit((data) =>
+                onEditSubmit(selectedItem?.id, data)
+              )}
+            >
+              <div className={style.inputGroup}>
+                <input
+                  className={style.inputName}
+                  id="name-input"
+                  type="text"
+                  placeholder="Nome completo"
+                  defaultValue={selectedItem?.name}
+                  {...editRegister("name", {
+                    required: "O nome é obrigatório",
+                    minLength: { value: 3, message: "Mínimo de 3 caracteres" },
+                  })}
+                />
+                <Controller
+                  name="price"
+                  control={control}
+                  defaultValue={selectedItem?.value}
+                  rules={{
+                    required: "Preço é obrigatório",
+                    validate: (value) => {
+                      const numValue = parseFloat(value);
+                      if (isNaN(numValue) || numValue <= 0) {
+                        return "Digite um valor válido maior que zero";
+                      }
+                      return true;
+                    },
+                  }}
+                  render={({
+                    field: { onChange, name },
+                    fieldState: { error },
+                  }) => (
+                    <CurrencyInput
+                      id="input-price"
+                      name={name}
+                      placeholder="R$ 0,00"
+                      decimalsLimit={2}
+                      decimalScale={2}
+                      decimalSeparator=","
+                      groupSeparator="."
+                      prefix="R$ "
+                      onValueChange={(value) => onChange(value)}
+                      value={selectedItem?.value || ""}
+                      className={`${style.inputPrice} ${error ? "error" : ""}`}
+                    />
+                  )}
+                />
+                <select
+                  className={style.financeSelect}
+                  id="payment-method-select"
+                  {...editRegister("paymentMethod", {
+                    required: "Método de pagamento é obrigatório",
+                  })}
+                  defaultValue={selectedItem?.payment_method}
+                >
+                  <option value="">Método de pagamento</option>
+                  <option value="Cartão de crédito">Cartão de crédito</option>
+                  <option value="Cartão de débito">Cartão de débito</option>
+                  <option value="Dinheiro">Dinheiro</option>
+                  <option value="Pix">Pix</option>
+                  <option value="Outros">Outros</option>
+                </select>
+                <select
+                  className={style.financeSelect}
+                  id="category-select"
+                  {...editRegister("category", {
+                    required: "Categoria é obrigatória",
+                  })}
+                  defaultValue={selectedItem?.category}
+                >
+                  <option value="">Categorias</option>
+                  {CategoryData.map((category) => (
+                    <option key={category.id} value={category.categoria}>
+                      {category.categoria}
+                    </option>
+                  ))}
+                  <option value="Compras">Compras</option>
+                  <option value="Contas">Contas</option>
+                  <option value="Manutenção">Manutenção</option>
+                  <option value="Outros">Outros</option>
+                </select>
+                <select
+                  className={style.financeSelect}
+                  id="flow-select"
+                  {...editRegister("flow", {
+                    required: "Tipo de fluxo é obrigatório",
+                  })}
+                  defaultValue={selectedItem?.type_flow}
+                >
+                  <option value="">Tipo de fluxo</option>
+                  <option value="Entrada">Entrada</option>
+                  <option value="Saída">Saída</option>
+                </select>
+                <input className={style.button} type="submit" id="btn-submit" />
+              </div>
+            </form>
+          </div>
+        </Modal>
       </DefaultLayout>
     </>
   );

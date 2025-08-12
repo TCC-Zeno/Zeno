@@ -438,6 +438,30 @@
   padding: 25px;
 }
 
+.modalContent h2{
+  font-size: 18pt;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 15px;
+}
+.inputGroup > input:not(.button) {
+  background-color: rgb(var(--color-background-secondary));
+}
+.inputGroup > input,
+.inputGroup > select {
+  width: 100%;
+  padding: 10px;
+}
+
 @media screen and (max-width: 768px) {
   .row01 {
     display: block;
