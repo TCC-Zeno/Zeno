@@ -1,16 +1,23 @@
 import S from "./signUp.module.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { login, userData, setTheme, setColorBlindness } from "../../redux/User/slice";
+import {
+  login,
+  userData,
+  setTheme,
+  setColorBlindness,
+} from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useForm, Controller, } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { IMaskInput } from "react-imask";
 import { cnpj } from "cpf-cnpj-validator";
 import axios from "axios";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function SignUp() {
+  const { login: authLogin } = useAuth(); 
   const [error, setError] = useState({
     cnpjErr: "",
     user: "",
@@ -51,21 +58,31 @@ export default function SignUp() {
     }
 
     try {
-      const resposta = await axios.post(`${import.meta.env.VITE_API_URL}/auth/signup`, {
-        cnpj: data.cnpj,
-        email: data.email,
-        password: data.password,
-      });
-
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/signup`,
+        {
+          cnpj: data.cnpj,
+          email: data.email,
+          password: data.password,
+        }
+      );
+      console.log(resposta);
       // Se cadastro OK, segue para dashboard
       if (resposta.status === 201) {
-        dispatch(login());
-        dispatch(userData(resposta.data[0]));
-        dispatch(setTheme(resposta.data[0].color));
-        dispatch(setColorBlindness(resposta.data[0].accessibility));
-        navigate("/dashboard");
+        // Após cadastro bem sucedido, faz o login
+        const loginResult = await authLogin(data.email, data.password);
+
+        if (loginResult.success) {
+          dispatch(userData(loginResult.user));
+          dispatch(setTheme("blue"));
+          dispatch(setColorBlindness("Padrão"));
+          navigate("/dashboard");
+        } else {
+          throw new Error(
+            loginResult.error || "Erro ao fazer login após cadastro"
+          );
+        }
       }
-      throw "Conexão recusada...";
     } catch (err) {
       console.log(err);
       // Se erro, mostra mensagem

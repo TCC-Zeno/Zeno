@@ -1,21 +1,17 @@
 import { TbLogout, TbAlertHexagon } from "react-icons/tb";
 import { LuTriangleAlert, LuCircleAlert, LuCircleHelp } from "react-icons/lu";
 import { MdManageAccounts } from "react-icons/md";
-import { IoSettingsSharp } from "react-icons/io5";
 import { IoPeopleSharp } from "react-icons/io5";
 import { GrHelpBook } from "react-icons/gr";
 import { IoIosArrowDown } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSelector } from "react-redux";
 import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import S from "./header.module.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
 import DropdownContributors from "./DropdownContributors";
-import axios from "axios";
-import { logout } from "../../redux/User/slice";
+import { useAuth } from "../../contexts/AuthContext";
 
 export function NotificationContent() {
   return (
@@ -111,67 +107,14 @@ export function NotificationContent() {
 export function ProfileContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownContributors, setDropdownContributors] = useState(false);
-  const islogged = useSelector((state) => state.userReducer.login); // use diretamente
-  const profileinfo = useSelector((state) => state.userReducer.userData);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [error, setError] = useState({
-    user: "",
-    password: "",
-    server: "",
-    status: 200,
-  });
-
-  const logoutuser = async () => {
+  const { logout } = useAuth();
+  async function logoutuser() {
     try {
-      const resposta = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/logout`,
-        {
-
-        }
-      );
-
-      if (resposta.status === 201) {
-        dispatch(logout());
-        navigate("/");
-      }
-      throw "Conexão recusada...";
+       await logout();
     } catch (err) {
       console.log(err);
-      // Se erro, mostra mensagem
-      if (err.status == 401) {
-        setError({
-          user: err.response.data.error,
-          status: err.status,
-        });
-      } else if (err.status == 409) {
-        setError({
-          user: err.response.data.error,
-          status: err.status,
-        });
-      } else if (err.status == 400) {
-        setError({
-          user: err.response.data.error,
-          status: err.status,
-        });
-      } else if (err.status == 409) {
-        setError({
-          user: err.response.data.error,
-          status: err.status,
-        });
-      } else if (err.status == 400) {
-        setError({
-          server: err.response.data.error,
-          status: err.status,
-        });
-      } else {
-        setError({
-          server: err.response?.data?.error || "Erro ao fazer login",
-          status: err.status,
-        });
-      }
     }
-  };
+  }
   return (
     <>
       <div className={S.containerProfile}>
@@ -212,7 +155,6 @@ export function ProfileContent() {
         <button
           className={S.manegerOption}
           onClick={logoutuser}
-          value={islogged}
         >
           <TbLogout />
           <span>Sair</span>
@@ -265,10 +207,9 @@ export function ProfileContent() {
 }
 
 export function FilterContent() {
+  const [modalOpen, setModalOpen] = useState(false);
 
-const [modalOpen, setModalOpen] = useState(false);
-
- const dropdownVariants = {
+  const dropdownVariants = {
     hidden: {
       opacity: 0,
       scale: 0.95,
@@ -307,29 +248,32 @@ const [modalOpen, setModalOpen] = useState(false);
           <button className={S.filterButton}>Produtos para comprar</button>
         </div>
         <div className={S.filterOptions}>
-          <button className={S.filterButton1} onClick={() => setModalOpen(!modalOpen)} >
+          <button
+            className={S.filterButton1}
+            onClick={() => setModalOpen(!modalOpen)}
+          >
             Categoria <IoIosArrowDown />
           </button>
         </div>
       </div>
 
-     {modalOpen &&(
-      <AnimatePresence>
-      <motion.div
-      initial="hidden"
-          animate="visible"
-          exit="exit"
-          variants={dropdownVariants}>
-        <div className={S.filterOption2}>
-          <button className={S.filterButton2}> Categoria 1 </button>
-        </div>
-        <div className={S.filterOption2}>
-          <button className={S.filterButton2}> Categoria 2 </button>
-        </div>
-      </motion.div>
-      </AnimatePresence>
-     )}
+      {modalOpen && (
+        <AnimatePresence>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={dropdownVariants}
+          >
+            <div className={S.filterOption2}>
+              <button className={S.filterButton2}> Categoria 1 </button>
+            </div>
+            <div className={S.filterOption2}>
+              <button className={S.filterButton2}> Categoria 2 </button>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      )}
     </>
   );
 }
-
