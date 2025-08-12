@@ -20,6 +20,7 @@ export default function Finance() {
   const [dataFinance, setDataFinance] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [activeFilters, setActiveFilters] = useState({});
+  const [CategoryData, setCategoryData] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -137,7 +138,7 @@ export default function Finance() {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         addReset();
         fetchData();
       }
@@ -174,8 +175,7 @@ export default function Finance() {
   }, [userId.uuid, fetchData]);
 
   const onCategorySubmit = async (data) => {
-    console.log(userId.uuid)
-     try {
+    try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/addFinanceCategoria`,
         {
@@ -183,19 +183,19 @@ export default function Finance() {
           category: data.categoryName,
         }
       );
-      if (response.status === 200) {
-        console.log(response);
+      if (response.status === 201) {
+        categoryReset();
+        await ReadCategory();
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Erro ao adicionar finança";
       console.error("Erro ao adicionar finança:", errorMessage);
     }
-    console.log(data);
   };
 
-  async function ReadCategory(){
-     try {
+  async function ReadCategory() {
+    try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/financeCategoria`,
         {
@@ -203,14 +203,14 @@ export default function Finance() {
         }
       );
       if (response.status === 200) {
-        console.log(response);
+        setCategoryData(response.data);
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Erro ao ler categoria";
       console.error("Erro ao ler categoria:", errorMessage);
     }
-  };
+  }
   useEffect(() => {
     ReadCategory();
   }, [userId.uuid]);
@@ -304,6 +304,11 @@ export default function Finance() {
               {...filterRegister("category")}
             >
               <option value="">Categorias</option>
+              {CategoryData.map((category) => (
+                <option key={category.id} value={category.categoria}>
+                  {category.categoria}
+                </option>
+              ))}
               <option value="Compras">Compras</option>
               <option value="Contas">Contas</option>
               <option value="Manutenção">Manutenção</option>
@@ -467,6 +472,11 @@ export default function Finance() {
                   <option value="" selected>
                     Categorias
                   </option>
+                  {CategoryData.map((category) => (
+                    <option key={category.id} value={category.categoria}>
+                      {category.categoria}
+                    </option>
+                  ))}
                   <option value="Compras">Compras</option>
                   <option value="Contas">Contas</option>
                   <option value="Manutenção">Manutenção</option>
