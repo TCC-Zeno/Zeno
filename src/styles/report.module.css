@@ -1,0 +1,166 @@
+.containerTable {
+  margin: 5%;
+  background-color: #d3d3d3;
+  height: auto;
+  border-radius: 5px;
+}
+
+.table {
+  width: 100%;
+  border: #d3d3d3 solid 6px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.thead {
+  width: 100%;
+  justify-content: space-between;
+  background-color: rgb(var(--color-primary));
+  text-align: center;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+}
+
+.tr {
+  color: white;
+}
+
+.th {
+  margin: 110%;
+}
+
+.thead {
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+}
+
+.thead .tr .th:first-child {
+  border-top-left-radius: 8px;
+}
+
+.thead .tr .th:last-child {
+  border-top-right-radius: 8px;
+}
+
+.conteudo tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
+}
+
+.conteudo tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+.conteudo {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.action {
+  display: flex;
+  justify-content: space-around;
+}
+
+.iconDelete {
+  color: red;
+  width: 115%;
+  height: auto;
+  transition: 0.5s;
+}
+.iconDelete:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.iconEdit {
+  color: blue;
+  width: 115%;
+  height: auto;
+  transition: 0.5s;
+}
+.iconEdit:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.entrada {
+  color: rgb(12, 199, 12);
+  font-weight: bold;
+}
+
+.saida {
+  color: rgb(207, 0, 0);
+  font-weight: bold;
+}
+
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5%;
+}
+
+.button{
+    background-color: rgb(var(--color-primary));
+    color: white;
+    border-radius: 10px;
+    padding: 2%;
+    width: 110%;
+    cursor: pointer;
+    transition: all 0.5s;
+    font-weight: bold;
+    font-size: 20pt;
+}
+
+.button:hover {
+    transform: scale(1.1);
+}
+
+.container{
+    height: calc(100vh - 170px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerReport{
+    width:100%;
+    margin: 1%;
+}
+
+.title{
+    text-align: center;
+    margin: 2%;
+    font-size: 20pt;
+    font-weight: 300;
+    font-family: "Coolvetica Rg";
+}
+
+.textIA{
+    margin-left: 5%;
+    font-size: 14pt;
+}
+
+.buttonContainer2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5%;
+}
+
+.button2{
+    background-color: rgb(var(--color-primary));
+    color: white;
+    border-radius: 10px;
+    padding: 1%;
+    width: 20%;
+    cursor: pointer;
+    transition: all 0.5s;
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+.button2:hover {
+    transform: scale(1.1);
+}
