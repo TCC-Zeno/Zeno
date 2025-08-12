@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
+import debounce from "lodash/debounce";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { finance } from "../redux/Route/slice";
 import style from "./../styles/finance.module.css";
@@ -11,92 +12,36 @@ import { FaEdit } from "react-icons/fa";
 import CurrencyInput from "react-currency-input-field";
 import { PiFileArchiveFill } from "react-icons/pi";
 import axios from "axios";
+import { AiOutlineClear } from "react-icons/ai";
+import { ErrorMessage } from "../components/ErrorMessage/ErrorMessage";
 
 export default function Finance() {
   const userId = useSelector((state) => state.userReducer.userData);
-  const dataArray = [
-    {
-      id: 1,
-      name: "Produto A",
-      value: "R$ 100,00",
-      method: "Cartão de crédito",
-      category: "Compras",
-      flow: "Entrada",
-    },
-    {
-      id: 2,
-      name: "Produto B",
-      value: "R$ 200,00",
-      method: "Dinheiro",
-      category: "Contas",
-      flow: "Saída",
-    },
-    {
-      id: 3,
-      name: "Produto C",
-      value: "R$ 150,00",
-      method: "Pix",
-      category: "Manutenção",
-      flow: "Entrada",
-    },
-    {
-      id: 4,
-      name: "Produto D",
-      value: "R$ 300,00",
-      method: "Cartão de débito",
-      category: "Outros",
-      flow: "Saída",
-    },
-    {
-      id: 5,
-      name: "Produto E",
-      value: "R$ 250,00",
-      method: "Cartão de crédito",
-      category: "Compras",
-      flow: "Entrada",
-    },
-    {
-      id: 6,
-      name: "Produto F",
-      value: "R$ 400,00",
-      method: "Dinheiro",
-      category: "Contas",
-      flow: "Saída",
-    },
-  ];
-
+  const [dataFinance, setDataFinance] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [activeFilters, setActiveFilters] = useState({});
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(finance());
   }, [dispatch]);
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   control,
-  //   formState: { errors },
-  // } = useForm();
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  //   // const resposta = axios.post(
-  //   //   `${import.meta.env.VITE_API_URL}/addFinanceform`,
-  //   //   {
-  //   //     id: Math.floor(Math.random() * 1000),
 
-  //   //   }
-  //   // );
-  // };
-  // console.log(errors);
-
-  const { register: filterRegister, handleSubmit: handleFilterSubmit } =
-    useForm();
+  const {
+    register: filterRegister,
+    handleSubmit: handleFilterSubmit,
+    watch,
+    reset: filterReset,
+  } = useForm();
 
   const {
     register: addRegister,
     handleSubmit: handleAddSubmit,
     control,
     reset: addReset,
+    formState: { errors: addErrors },
   } = useForm({
     defaultValues: { price: 0 },
+    mode: "onChange",
   });
 
   const {
@@ -105,17 +50,80 @@ export default function Finance() {
     reset: categoryReset,
   } = useForm();
 
+  const applyFilters = useCallback((data, filters) => {
+    let filtered = [...data];
+
+    // Filtro por data
+    if (filters.date) {
+      filtered = filtered.filter((item) => {
+        const itemDate = new Date(item.created_at).toISOString().split("T")[0];
+        return itemDate === filters.date;
+      });
+    }
+
+    if (
+      filters.paymentMethod &&
+      filters.paymentMethod !== "Método de pagamento"
+    ) {
+      filtered = filtered.filter(
+        (item) => item.payment_method === filters.paymentMethod
+      );
+    }
+
+    if (filters.category && filters.category !== "Categorias") {
+      filtered = filtered.filter((item) => item.category === filters.category);
+    }
+
+    if (filters.flow && filters.flow !== "Tipo de fluxo") {
+      filtered = filtered.filter((item) => item.type_flow === filters.flow);
+    }
+
+    return filtered;
+  }, []);
+
+  const watchedFilters = watch();
+
+  const filterData = useCallback(
+    debounce((filters, data) => {
+      if (data.length > 0) {
+        const cleanFilters = {};
+        Object.keys(filters).forEach((key) => {
+          if (
+            filters[key] &&
+            filters[key] !== "Método de pagamento" &&
+            filters[key] !== "Categorias" &&
+            filters[key] !== "Tipo de fluxo" &&
+            filters[key] !== ""
+          ) {
+            cleanFilters[key] = filters[key];
+          }
+        });
+
+        setActiveFilters(cleanFilters);
+        const filtered = applyFilters(data, cleanFilters);
+        setFilteredData(filtered);
+      }
+    }, 300),
+    [applyFilters]
+  );
+
+  useEffect(() => {
+    filterData(watchedFilters, dataFinance);
+    return () => filterData.cancel();
+  }, [watchedFilters, dataFinance, filterData]);
+
   const onFilterSubmit = async (data) => {
-    console.log(data);
-    // try {
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    console.log("Filtros aplicados:", data);
+  };
+
+  const clearFilters = () => {
+    setActiveFilters({});
+    setFilteredData(dataFinance);
+    filterReset();
   };
 
   const onAddSubmit = async (data) => {
-    console.log("Dados do formulário:", data);
-    const priceDot = data.price.replace(",", ".");
+    const priceDot = data.price?.toString().replace(",", ".");
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/addFinanceForm`,
@@ -128,22 +136,57 @@ export default function Finance() {
           type_flow: data.flow,
         }
       );
-      console.log(response);
-      // addReset();
-      // Comentado temporariamente para evitar limpar o formulário
+
+      if (response.status === 200) {
+        addReset();
+        fetchData();
+      }
     } catch (error) {
-      console.error(error);
+      const errorMessage =
+        error.response?.data?.message || "Erro ao adicionar finança";
+      console.error("Erro ao adicionar finança:", errorMessage);
     }
   };
 
+  const fetchData = useCallback(async () => {
+    try {
+      const data = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/financeId`,
+        {
+          uuid: userId.uuid,
+        }
+      );
+
+      setDataFinance(data.data);
+      if (Object.keys(activeFilters).length > 0) {
+        const filtered = applyFilters(data.data, activeFilters);
+        setFilteredData(filtered);
+      } else {
+        setFilteredData(data.data);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  }, [userId?.uuid, activeFilters, applyFilters]);
+
+  useEffect(() => {
+    fetchData();
+  }, [userId.uuid, fetchData]);
+
   const onCategorySubmit = async (data) => {
     console.log(data);
-
-    // try {
-    // } catch (error) {
-    //   console.error(error);
-    // }
   };
+  const displayData = filteredData;
+
+  const amountValue = displayData
+    .filter((item) => item.type_flow === "Entrada")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const expensesValue = displayData
+    .filter((item) => item.type_flow === "Saída")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const profitValue = amountValue - expensesValue;
 
   return (
     <>
@@ -156,7 +199,7 @@ export default function Finance() {
                 <FaArrowTrendUp className={style.top} />
               </div>
               <h2 className={style.number} id="amount-value">
-                $value
+                R$ {amountValue.toFixed(2)}
               </h2>
             </div>
             <div className={style.views}>
@@ -165,21 +208,31 @@ export default function Finance() {
                 <FaArrowTrendDown className={style.down} />
               </div>
               <h2 className={style.number2} id="expenses-value">
-                $value
+                R$ {expensesValue.toFixed(2)}
               </h2>
             </div>
             <div className={style.views}>
               <div className={style.titleIcon}>
                 <p>Saldo do mês</p>
-                <p className={style.icon}>Icon</p>
+                {profitValue < 0 ? (
+                  <FaArrowTrendDown className={style.down} />
+                ) : (
+                  <FaArrowTrendUp className={style.top} />
+                )}
               </div>
-              <h2 className={style.number3} id="profit-value">
-                $value
+              <h2
+                className={
+                  profitValue < 0 ? style.number3Negative : style.number3
+                }
+                id="profit-value"
+              >
+                R$ {profitValue.toFixed(2)}
               </h2>
             </div>
           </div>
           <div className={style.line}></div>
-          <div
+
+          <form
             className={style.row0}
             onSubmit={handleFilterSubmit(onFilterSubmit)}
           >
@@ -199,9 +252,7 @@ export default function Finance() {
               id="filter-payment-method"
               {...filterRegister("paymentMethod")}
             >
-              <option value="Método de pagamento" disabled selected>
-                Método de pagamento
-              </option>
+              <option value="">Método de pagamento</option>
               <option value="Cartão de crédito">Cartão de crédito</option>
               <option value="Cartão de débito">Cartão de débito</option>
               <option value="Dinheiro">Dinheiro</option>
@@ -214,9 +265,7 @@ export default function Finance() {
               name="category"
               {...filterRegister("category")}
             >
-              <option value="Categorias" disabled selected>
-                Categorias
-              </option>
+              <option value="">Categorias</option>
               <option value="Compras">Compras</option>
               <option value="Contas">Contas</option>
               <option value="Manutenção">Manutenção</option>
@@ -227,14 +276,32 @@ export default function Finance() {
               id="filter-type"
               {...filterRegister("flow")}
             >
-              <option value="Tipo de fluxo" disabled selected>
-                Tipo de fluxo
-              </option>
+              <option value="">Tipo de fluxo</option>
               <option value="Entrada">Entrada</option>
               <option value="Saída">Saída</option>
             </select>
-          </div>
+
+            <div className={style.filterActions}>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className={style.clearButton}
+              >
+                <AiOutlineClear />
+              </button>
+            </div>
+          </form>
+
+          {/* {Object.keys(activeFilters).length > 0 && (
+            <div className={style.activeFilters}>
+              <p>Filtros ativos: {Object.keys(activeFilters).length}</p>
+              <p>
+                Mostrando {displayData.length} de {dataFinance.length} registros
+              </p>
+            </div>
+          )} */}
         </div>
+
         <div className={style.containerTable}>
           <table className={style.table}>
             <thead className={style.thead}>
@@ -248,14 +315,19 @@ export default function Finance() {
               </tr>
             </thead>
             <tbody>
-              {/* Eu fiz uma map de um array só para ter como base, mas provavelmente os nomes irão mudar, mas isso o Backend decide */}
-              {dataArray.map((data) => (
+              {displayData.map((data) => (
                 <tr className={style.conteudo} key={data.id}>
                   <td>{data.name}</td>
-                  <td>{data.value}</td>
-                  <td>{data.method}</td>
+                  <td>R$ {data.value}</td>
+                  <td>{data.payment_method}</td>
                   <td>{data.category}</td>
-                  <td className={style.tipoFluxo}>{data.flow}</td>
+                  <td
+                    className={
+                      data.type_flow === "Entrada" ? style.entrada : style.saida
+                    }
+                  >
+                    {data.type_flow}
+                  </td>
                   <td className={style.action}>
                     <button id="edit-button">
                       <FaEdit className={style.iconEdit} />
@@ -266,25 +338,16 @@ export default function Finance() {
                   </td>
                 </tr>
               ))}
-              {/* Esse é o padrão que o Goias fez */}
-              <tr className={style.conteudo}>
-                <td>José Eduardo</td>
-                <td>R$ 2000,00</td>
-                <td>Cartão de Crédito</td>
-                <td>asdadadedasda</td>
-                <td className={style.tipoFluxo}>Entrada</td>
-                <td className={style.action}>
-                  <button>
-                    <FaEdit className={style.iconEdit} />
-                  </button>
-                  <button>
-                    <MdDelete className={style.iconDelete} />
-                  </button>
-                </td>
-              </tr>
             </tbody>
           </table>
+
+          {displayData.length === 0 && dataFinance.length > 0 && (
+            <div className={style.noResults}>
+              <p>Nenhum resultado encontrado com os filtros aplicados.</p>
+            </div>
+          )}
         </div>
+
         <section className={style.sectionDashboard}>
           <div className={style.financeTitle}>
             <h1>Adicionar</h1>
@@ -300,7 +363,10 @@ export default function Finance() {
                   id="name-input"
                   type="text"
                   placeholder="Nome completo"
-                  {...addRegister("name", { required: true })}
+                  {...addRegister("name", {
+                    required: "O nome é obrigatório",
+                    minLength: { value: 3, message: "Mínimo de 3 caracteres" },
+                  })}
                 />
                 <Controller
                   name="price"
@@ -328,24 +394,23 @@ export default function Finance() {
                       decimalSeparator=","
                       groupSeparator="."
                       prefix="R$ "
-                      onValueChange={(value) => {
-                        onChange(value || "");
-                      }}
-                      value={value}
+                      onValueChange={(value) => onChange(value)}
+                      value={value === 0 ? "" : value}
                       className={`${style.inputPrice} ${error ? "error" : ""}`}
                     />
                   )}
                 />
-
                 <input className={style.button} type="submit" />
               </div>
               <div className={style.row02}>
                 <select
                   className={style.financeSelect}
                   id="payment-method-select"
-                  {...addRegister("paymentMethod", { required: true })}
+                  {...addRegister("paymentMethod", {
+                    required: "Método de pagamento é obrigatório",
+                  })}
                 >
-                  <option value="Método de pagamento" disabled selected>
+                  <option value="" selected>
                     Método de pagamento
                   </option>
                   <option value="Cartão de crédito">Cartão de crédito</option>
@@ -357,9 +422,11 @@ export default function Finance() {
                 <select
                   className={style.financeSelect}
                   id="category-select"
-                  {...addRegister("category", { required: true })}
+                  {...addRegister("category", {
+                    required: "Categoria é obrigatória",
+                  })}
                 >
-                  <option value="Categorias" disabled selected>
+                  <option value="" selected>
                     Categorias
                   </option>
                   <option value="Compras">Compras</option>
@@ -370,9 +437,11 @@ export default function Finance() {
                 <select
                   className={style.financeSelect}
                   id="flow-select"
-                  {...addRegister("flow", { required: true })}
+                  {...addRegister("flow", {
+                    required: "Tipo de fluxo é obrigatório",
+                  })}
                 >
-                  <option value="Tipo de fluxo" disabled selected>
+                  <option value="" selected>
                     Tipo de fluxo
                   </option>
                   <option value="Entrada">Entrada</option>
@@ -386,7 +455,28 @@ export default function Finance() {
               </div>
             </form>
           </div>
+          <ErrorMessage
+            condition={addErrors.name}
+            message={addErrors.name?.message}
+          />
+          <ErrorMessage
+            condition={addErrors.price}
+            message={addErrors.price?.message}
+          />
+          <ErrorMessage
+            condition={addErrors.paymentMethod}
+            message={addErrors.paymentMethod?.message}
+          />
+          <ErrorMessage
+            condition={addErrors.flow}
+            message={addErrors.flow?.message}
+          />
+          <ErrorMessage
+            condition={addErrors.category}
+            message={addErrors.category?.message}
+          />
         </section>
+
         <section className={style.sectionDashboard}>
           <div className={style.financeTitle}>
             <h1>Adicionar Categoria</h1>
@@ -414,9 +504,9 @@ export default function Finance() {
             </form>
           </div>
         </section>
+
         <div className={style.btn}>
           <button className={style.btnReport} id="btn-report">
-            {" "}
             <PiFileArchiveFill />
             Gerar Relatório
           </button>
