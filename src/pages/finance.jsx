@@ -55,8 +55,12 @@ export default function Finance() {
   const {
     register: editRegister,
     handleSubmit: handleEditSubmit,
+    control: editControl,
     reset: editReset,
-  } = useForm();
+    formState: { errors: editErrors },
+  } = useForm({
+    mode: "onChange",
+  });
 
   // Função para aplicar filtros
   const applyFilters = (data, filters) => {
@@ -203,13 +207,14 @@ export default function Finance() {
   // Função para editar item
   async function onEditSubmit(id, data) {
     console.log("Dados do item a ser editado:", id, data);
+    const priceDot = data.price?.toString().replace(",", ".");
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/editFinanceForm`,
         {
           category: data.category,
           name: data.name,
-          value: data.price,
+          value: parseFloat(priceDot),
           payment_method: data.paymentMethod,
           type_flow: data.flow,
           uuid: userId.uuid,
@@ -240,7 +245,6 @@ export default function Finance() {
           id: id,
         }
       );
-      console.log(response);
       if (response.status === 200) {
         fetchData();
       }
@@ -272,7 +276,7 @@ export default function Finance() {
     if (selectedItem && isModalOpen) {
       editReset({
         name: selectedItem.name,
-        price: selectedItem.value,
+        price: parseFloat(selectedItem.value),
         paymentMethod: selectedItem.payment_method,
         category: selectedItem.category,
         flow: selectedItem.type_flow,
@@ -636,7 +640,7 @@ export default function Finance() {
                 />
                 <Controller
                   name="price"
-                  control={control}
+                  control={editControl}
                   defaultValue={selectedItem?.value}
                   rules={{
                     required: "Preço é obrigatório",
@@ -649,20 +653,20 @@ export default function Finance() {
                     },
                   }}
                   render={({
-                    field: { onChange, name },
+                    field: { onChange, value },
                     fieldState: { error },
                   }) => (
                     <CurrencyInput
-                      id="input-price"
-                      name={name}
+                      id="edit-input-price"
                       placeholder="R$ 0,00"
                       decimalsLimit={2}
                       decimalScale={2}
                       decimalSeparator=","
                       groupSeparator="."
                       prefix="R$ "
-                      onValueChange={(value) => onChange(value)}
-                      value={selectedItem?.value || ""}
+                      defaultValue={selectedItem?.value}
+                      onValueChange={(value) => onChange(value || "")}
+                      value={value || ""}
                       className={`${style.inputPrice} ${error ? "error" : ""}`}
                     />
                   )}
