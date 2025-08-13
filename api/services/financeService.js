@@ -61,3 +61,42 @@ console.log(data, error);
   if (error) throw new Error(error.message);
   return data;
 };
+
+export const editFinance = async (
+  userId,
+  name,
+  value,
+  category,
+  payment_method,
+  type_flow,
+  id
+) => {
+  console.log(userId, name, value, category, id, payment_method, type_flow);
+  const { data, error } = await supabase
+    .from("finance")
+    .update({
+      uuid: userId,
+      name,
+      value,
+      category,
+      payment_method,
+      type_flow,
+    })
+    .eq("id", id)
+    .select();
+
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const deleteFinance = async (id) => {
+  const { data, error } = await supabase
+    .from("finance")
+    .delete()
+    .eq("id", id)
+    .select();
+
+  if (error) throw new Error(error.message);
+  return data;
+};

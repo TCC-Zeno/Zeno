@@ -1,0 +1,126 @@
+.statusContainer {
+    display: flex;
+    align-items: center;
+    margin: 2%;
+    gap: 1.6rem;
+    width: 80%;
+    align-items: center;
+    justify-self: center;
+}
+
+.statusAgend,
+.statusAndam,
+.statusConcl,
+.statusReceb{
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    width: 80%;
+    height: 90%;
+    padding: 1%;
+
+}
+
+.titleAgend,
+.titleAndam,
+.titleConcl,
+.titleReceb {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title{
+    font-family: "Coolvetica Rg";
+    font-size: 16pt;
+    font-weight: 400;
+    color: #737373;
+}
+
+.iconAgend,
+.iconAndam,
+.iconConcl {
+    width: 22px;
+    height: auto;
+}
+
+.iconAgend {
+    color: rgb(70, 135, 243);
+}
+
+.iconAndam {
+    color: #f9943b;
+}
+
+.iconConcl{
+    color: rgb(96 186 108) ;
+}
+
+.iconReceb{
+    width: 25px;
+    height: auto;
+}
+
+.value1,
+.value2,
+.value3,
+.value4 {
+    font-family: "Coolvetica Rg";
+    font-size: 20pt;
+}
+
+.value1{
+    color: rgb(70, 135, 243);
+}
+
+.value2{
+    color: #f9943b;
+}
+
+.value3{
+    color: rgb(96 186 108);
+}
+
+.value4{
+    color: black;
+}
+
+.linhaContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.linha{
+    border: #d9d9d9 solid 2px;
+    margin: 10px;
+    width: 90%;
+    border-radius: 5px;
+}
+
+.filterContainer{
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    background-color: #d9d9d9;
+    border-radius: 8px;
+    width: 80%;
+}
+
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1%;
+}
+
+.button{
+    background-color: whitesmoke;
+    border-radius: 6px;
+    width: 150px;
+    height: auto;
+    padding: 3%;
+    text-wrap: nowrap;
+    border: rgb(70, 135, 243) solid 1.5px;
+    font-size: 14pt;
+    font-weight: 500;
+}

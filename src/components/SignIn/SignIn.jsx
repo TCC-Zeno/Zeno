@@ -45,77 +45,7 @@ export default function SignIn() {
     reset: resetForgot,
   } = useForm();
 
-  //  José, documentação do google, mas é só sobre o botão https://github.com/MomenSherif/react-oauth
-  // https://developers.google.com/identity/gsi/web/guides/verify-google-id-token?hl=pt-br#node.js esse é oq importa para o back end
-  // Está funcionando pegando do env, só que o github é chato...
-  const clientId = import.meta.env.VITE_CLIENT_ID;
-  const loginGoogle = async (credentialResponse) => {
-    const idToken = credentialResponse.credential;
-
-    // Aqui tu coloca a rota que quiser, só coloquei essa como exemplo
-    const resposta = await axios.post(
-      `${import.meta.env.VITE_API_URL}/auth/google`,
-      {
-        token: idToken,
-      }
-    );
-    console.log(resposta.data);
-  };
-
-  // Função sem usar o useAuth
-  // const onSubmitLogin = async (data) => {
-  //   setIsLoading(true);
-  //   setError({
-  //     user: "",
-  //     password: "",
-  //     server: "",
-  //     status: 200,
-  //   });
-
-  //   try {
-  //     const resposta = await axios.post(
-  //       `${import.meta.env.VITE_API_URL}/auth/signin`,
-  //       {
-  //         email: data.email,
-  //         password: data.password,
-  //       }
-  //     );
-
-  //     if (resposta.status === 200) {
-  //       dispatch(userData(resposta.data));
-  //       dispatch(setTheme(resposta.data.color));
-  //       dispatch(setColorBlindness(resposta.data.accessibility));
-  //       dispatch(login());
-  //       setIsLoading(false);
-  //       navigate("/dashboard");
-  //       return;
-  //     }
-  //     throw new Error("Conexão recusada...");
-  //   } catch (err) {
-  //     if (err.response?.status === 401) {
-  //       setError({
-  //         password: err.response.data.error,
-  //         status: err.response.status,
-  //       });
-  //     } else if (err.response?.status === 404) {
-  //       setError({
-  //         user: err.response.data.error,
-  //         status: err.response.status,
-  //       });
-  //     } else if (err.response?.status === 500) {
-  //       setError({
-  //         server: err.response.data.error,
-  //         status: err.response.status,
-  //       });
-  //     } else {
-  //       setError({
-  //         server: err.response?.data?.error || "Erro desconhecido",
-  //         status: err.response?.status || 0,
-  //       });
-  //     }
-  //     setIsLoading(false);
-  //   }
-  // };
+  
 
   const onSubmitLogin = async (data) => {
     setIsLoading(true);
@@ -170,15 +100,6 @@ export default function SignIn() {
     <section className={S.containerLogin}>
       <div className={S.wrapperForm}>
         <h3>Entrar</h3>
-        <GoogleOAuthProvider clientId={clientId}>
-          <GoogleLogin
-            onSuccess={loginGoogle}
-            onError={() => console.log("Não foi o login pelo google")}
-          />
-        </GoogleOAuthProvider>
-        <div className={S.divider}>
-          <span>ou</span>
-        </div>
 
         <form onSubmit={handleSubmitLogin(onSubmitLogin)}>
           <input

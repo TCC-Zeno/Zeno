@@ -114,12 +114,6 @@ export default function SignUp() {
     <section className={S.containerLogin}>
       <div className={S.wrapperForm}>
         <h3>Criar nova conta</h3>
-        <GoogleOAuthProvider clientId="idgoogle">
-          <GoogleLogin />
-        </GoogleOAuthProvider>
-        <div className={S.divider}>
-          <span>ou</span>
-        </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
