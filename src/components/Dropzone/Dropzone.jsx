@@ -1,13 +1,17 @@
 import React, { useRef, useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-//import axios from "axios";
+import axios from "axios";
 import S from "./dropzone.module.css";
+import { useSelector } from "react-redux";
+
 
 export default function Dropzone () {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
   const FILE_LIMIT = 25 * 1024 * 1024; // tamanho de imagem com maxio de 25MB
+  const profileinfo = useSelector((state) => state.userReducer.userData);
+
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -61,11 +65,12 @@ export default function Dropzone () {
         return;
       }
       alert("Este é apenas um demo, nenhum arquivo foi enviado.");
+      console.log (selectedFile);
       // aqui envia pro BD a imagem
-      /*const resposta = await axios.post (`${import.meta.env.VITE_API_URL}/user/update`, {
-       logo: selectedFile,});
-        setSelectedFile(resposta.data[0].logo)*/
-
+      const resposta = await axios.post (`${import.meta.env.VITE_API_URL}/user/logo`, {
+       logo: selectedFile,
+       uuid: profileinfo.uuid});
+        setSelectedFile(resposta.data[0].logo)
     } else {
       alert("Nenhum arquivo selecionado");
     }
