@@ -21,32 +21,62 @@ export default function Tasks() {
   const [tasks, setTasks] = useState(JSON.parse(oldTasks) || []);
   const [activeCard, setActiveCard] = useState(null);
 
+  async function fetchTasks() {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/tasks/taskID`,
+        {
+          uuid: userId.uuid,
+        }
+      );
+      setTasks(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar tarefas:", error);
+    }
+  }
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    console.log("Tarefas salvas no localStorage:", tasks);
-  }, [tasks]);
+    fetchTasks();
+  }, [userId]);
+
+  // useEffect(() => {
+  //   localStorage.setItem("tasks", JSON.stringify(tasks));
+  //   console.log("Tarefas salvas no localStorage:", tasks);
+  // }, [tasks]);
 
   const handleDelete = (taskIndex) => {
     const newTasks = tasks.filter((task, index) => index !== taskIndex);
     setTasks(newTasks);
   };
 
-  const onDrop = (status, position) => {
-    console.log(
-      `${activeCard} ta indo para ${status} e a posição ${position} `
-    );
-    if(activeCard == null || activeCard === undefined) return;
+  const onDrop = async (status, position) => {
+    console.log(`${activeCard} ta indo para ${status} e a posição ${position}`);
+    if (activeCard == null || activeCard === undefined) return;
 
     const taskToMove = tasks[activeCard];
-    const updatedTasks = tasks.filter((task, index) => index !== activeCard)
 
-    updatedTasks.splice(position, 0, {
-      ...taskToMove,
-      status: status
-    })
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/tasks/taskUpdateStatus`,
+        {
+          id: taskToMove.id,
+          status: status,
+        }
+      );
 
-    setTasks(updatedTasks)
+      if (response.status === 200) {
+        const updatedTasks = tasks.filter(
+          (task, index) => index !== activeCard
+        );
+        updatedTasks.splice(position, 0, {
+          ...taskToMove,
+          status: status,
+        });
+        setTasks(updatedTasks);
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar status:", error);
+    }
   };
   return (
     <DefaultLayout>
@@ -62,6 +92,7 @@ export default function Tasks() {
           onDrop={onDrop}
           setTasks={setTasks}
           id={"todo-column"}
+          fetchTasks={fetchTasks}
         />
         <TaskColumn
           title="Em andamento"
@@ -73,6 +104,7 @@ export default function Tasks() {
           onDrop={onDrop}
           setTasks={setTasks}
           id={"doing-column"}
+          fetchTasks={fetchTasks}
         />
         <TaskColumn
           title="Concluído"
@@ -84,6 +116,7 @@ export default function Tasks() {
           onDrop={onDrop}
           setTasks={setTasks}
           id={"done-column"}
+          fetchTasks={fetchTasks}
         />
       </section>
     </DefaultLayout>

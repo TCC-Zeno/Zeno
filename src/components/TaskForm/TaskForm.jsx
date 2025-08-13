@@ -5,14 +5,21 @@ import { IoMdAdd } from "react-icons/io";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const TaskForm = ({ setTasks, status = "todo", onClose }) => {
+const TaskForm = ({
+  status = "todo",
+  onClose,
+  fetchTasks,
+  task,
+  isEditing,
+}) => {
   const userId = useSelector((state) => state.userReducer.userData);
+  const date = task?.date || "";
+  const formatedDate = date ? date.split("/").reverse().join("-") : "";
   const [taskData, setTaskData] = useState({
-    task: "",
-    date: "",
+    task: task?.information || "",
+    date: formatedDate,
     status: status,
   });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -26,52 +33,45 @@ const TaskForm = ({ setTasks, status = "todo", onClose }) => {
     if (!taskData.task || !taskData.date) return;
 
     const date = new Date(taskData.date);
+    date.setDate(date.getDate() + 1);
     const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(
       date.getMonth() + 1
     )
       .toString()
-      .padStart(2, "0")}/${(date.getFullYear() + 1)
-      .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0")}/${date.getFullYear()}`;
 
     try {
-      console.log({
-        date: formattedDate,
-        information: taskData.task,
-        uuid: userId.uuid,
-        status: status,
-      });
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/tasks/createTask`,
-        {
-          date: formattedDate,
-          information: taskData.task,
-          uuid: userId.uuid,
-          status: status,
+      if (isEditing) {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/tasks/taskEdit`,
+          {
+            id: task.id,
+            date: formattedDate,
+            information: taskData.task,
+            status: status,
+            uuid: userId.uuid,
+          }
+        );
+        if (response.status === 200) {
+          await fetchTasks();
         }
-      );
-
-      console.log("Tarefa adicionada com sucesso:", response.data);
+      } else {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/tasks/createTask`,
+          {
+            date: formattedDate,
+            information: taskData.task,
+            uuid: userId.uuid,
+            status: status,
+          }
+        );
+        if (response.status === 201) {
+          await fetchTasks();
+        }
+      }
     } catch (error) {
       console.error("Erro ao adicionar tarefa:", error);
     }
-
-    try {
-      const data = await axios.post(
-        `${import.meta.env.VITE_API_URL}/tasks/taskID`,
-        {
-          uuid: userId.uuid,
-        }
-      );
-      setDataFinance(data.data);
-    } catch (error) {
-      
-      console.error("Erro ao buscar dados:", error);
-    }
-  
-    setTasks((prev) => {
-      return [...prev, { ...taskData, date: formattedDate, status: status }];
-    });
 
     setTaskData({
       task: "",
@@ -106,7 +106,7 @@ const TaskForm = ({ setTasks, status = "todo", onClose }) => {
           required
         />
         <button id="submit-add-task" type="submit" className={S.addTask}>
-          <IoMdAdd />
+          {isEditing ? "Editar" : <IoMdAdd />}
         </button>
       </div>
     </form>

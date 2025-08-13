@@ -5,7 +5,15 @@ import { MdDelete } from "react-icons/md";
 import { FaCalendarAlt, FaEdit } from "react-icons/fa";
 import axios from "axios";
 
-const TaskCard = ({ title, date, handleDelete, index, setActiveCard }) => {
+const TaskCard = ({
+  information,
+  date,
+  index,
+  setActiveCard,
+  id,
+  fetchTasks,
+  onEditClick
+}) => {
   const handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", index.toString());
@@ -18,23 +26,23 @@ const TaskCard = ({ title, date, handleDelete, index, setActiveCard }) => {
   };
 
   async function taskDelete(id) {
-      try {
-        console.log("ID do item a ser deletado:", id);
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/task/taskDelete`,
-          {
-            id: id,
-          }
-        );
-        console.log(response);
-        
-      } catch (error) {
-        console.error("Erro ao deletar item:", error);
-        const errorMessage =
-          error.response?.data?.message || "Erro ao deletar item";
-        console.error("Erro ao deletar item:", errorMessage);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/tasks/taskDelete`,
+        {
+          id: id,
+        }
+      );
+      if (response.status === 200) {
+        await fetchTasks();
       }
-    };
+    } catch (error) {
+      console.error("Erro ao deletar item:", error);
+      const errorMessage =
+        error.response?.data?.message || "Erro ao deletar item";
+      console.error("Erro ao deletar item:", errorMessage);
+    }
+  }
 
   return (
     <article
@@ -45,17 +53,17 @@ const TaskCard = ({ title, date, handleDelete, index, setActiveCard }) => {
     >
       <>
         <div className={S.row01}>
-          <span>{title}</span>
+          <span>{information}</span>
         </div>
         <div className={S.row02}>
           <FaCalendarAlt className={S.iconCalendar} />
           <span>{date}</span>
-          <button className={S.buttonEdit} id="btn-edit-task">
+          <button className={S.buttonEdit} id="btn-edit-task" onClick={onEditClick}>
             <FaEdit className={S.iconEdit} />
           </button>
           <button
             className={S.buttonDelete}
-            onClick={() => taskDelete(index)}
+            onClick={() => taskDelete(id)}
             id="btn-delete-task"
           >
             <MdDelete className={S.iconDelete} />

@@ -1,7 +1,5 @@
 import S from "./signUp.module.css";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import {
-  login,
   userData,
   setTheme,
   setColorBlindness,

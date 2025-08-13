@@ -9,13 +9,19 @@ const TaskColumn = ({
   title,
   tasks,
   status,
-  handleDelete,
   setActiveCard,
   onDrop,
-  setTasks,
+  fetchTasks,
   id,
 }) => {
   const [addForm, setAddForm] = useState(false);
+  const [editForm, setEditForm] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  const handleEditClick = (task) => {
+    setSelectedTask(task);
+    setEditForm(true);
+  };
   return (
     <section
       className={`${S.task_column} ${
@@ -45,20 +51,43 @@ const TaskColumn = ({
           task.status === status && (
             <React.Fragment key={index}>
               <TaskCard
-                title={task.task}
+                information={task.information}
                 date={task.date}
-                handleDelete={handleDelete}
                 index={index}
                 setActiveCard={setActiveCard}
+                id={task.id}
+                fetchTasks={fetchTasks}
+                onEditClick={() => handleEditClick(task)}
               />
               <DropArea onDrop={() => onDrop(status, index + 1)} />
             </React.Fragment>
           )
       )}
+      {editForm && (
+        <TaskForm
+          fetchTasks={fetchTasks}
+          task={selectedTask}
+          onClose={() => {
+            setEditForm(false);
+            setSelectedTask(null);
+          }}
+          isEditing={true}
+        />
+      )}
       {addForm ? (
-        <TaskForm setTasks={setTasks} status={status} onClose={() => setAddForm(false)} />
+        <TaskForm
+          fetchTasks={fetchTasks}
+          status={status}
+          onClose={() => setAddForm(false)}
+        />
       ) : (
-        <button onClick={() => setAddForm(true)} className={S.addTask} id="btn-add-task">+ Adicionar uma tarefa</button>
+        <button
+          onClick={() => setAddForm(true)}
+          className={S.addTask}
+          id="btn-add-task"
+        >
+          + Adicionar uma tarefa
+        </button>
       )}
     </section>
   );
