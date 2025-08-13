@@ -17,6 +17,7 @@ import Tasks from "./pages/tasks";
 import Calendar from "./pages/calendar";
 import Stock from "./pages/stock";
 import Report from "./pages/report";
+import Service from "./pages/service";
 import NotFound from "./pages/notFoundPage";
 import PageTransition from "./components/PageTransition/PageTransition";
 import { Support } from "./pages/support";
@@ -44,6 +45,7 @@ ReactDOM.createRoot(root).render(
               <Route element={<Calendar />} path="/calendar" />
               <Route element={<Tasks />} path="/tasks" />
               <Route element={<Report />} path="/report" />
+              <Route element={<Service />} path="/service" />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
