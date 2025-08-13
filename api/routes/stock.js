@@ -1,5 +1,5 @@
 import express from "express";
-import{createStock, createProduct, createSupplier, readStocks, updateStockById, deleteStockById}from "../controllers/stockController.js";
+import{createStock, createProduct, createSupplier}from "../controllers/stockController.js";
 
 const router = express.Router();
 

@@ -2,9 +2,9 @@ import{
     addStock,
     addProduct,
     addSupplier,
-    getStocks,
-    updateStock,
-    deleteStock
+    // getStocks,
+    // updateStock,
+    // deleteStock
 } from "../services/stockService.js";
 
 export const createStock = async (req, res) => {
