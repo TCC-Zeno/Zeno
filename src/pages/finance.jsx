@@ -205,7 +205,7 @@ export default function Finance() {
     console.log("Dados do item a ser editado:", id, data);
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/finance/financeEdit`,
+        `${import.meta.env.VITE_API_URL}/finance/editFinanceForm`,
         {
           category: data.category,
           name: data.name,
@@ -221,6 +221,7 @@ export default function Finance() {
         setCategoryData(response.data);
         editReset();
         setIsModalOpen(false);
+        fetchData();
       }
     } catch (error) {
       const errorMessage =
@@ -232,10 +233,10 @@ export default function Finance() {
   // Função para deletar item
   async function financeDelete(id) {
     try {
+      console.log("ID do item a ser deletado:", id);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/financeDelete`,
         {
-          uuid: userId.uuid,
           id: id,
         }
       );

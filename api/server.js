@@ -12,6 +12,8 @@ const MemoryStore = createMemoryStore(session);
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import financeRoutes from "./routes/finance.js";
+import taskRoutes from "./routes/task.js";
+import stockRoutes from "./routes/stock.js";
 
 dotenv.config();
 const app = express();
@@ -52,6 +54,8 @@ app.use(passport.session());
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/finance", financeRoutes);
+app.use("/tasks", taskRoutes);
+app.use("/stock", stockRoutes);
 
 // Inicializando servidor
 const PORT = process.env.PORT || 3000;

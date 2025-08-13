@@ -2,9 +2,11 @@ import React, { useState } from "react";
 
 import S from "./taskForm.module.css";
 import { IoMdAdd } from "react-icons/io";
-
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const TaskForm = ({ setTasks, status = "todo", onClose }) => {
+  const userId = useSelector((state) => state.userReducer.userData);
   const [taskData, setTaskData] = useState({
     task: "",
     date: "",
@@ -19,7 +21,7 @@ const TaskForm = ({ setTasks, status = "todo", onClose }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!taskData.task || !taskData.date) return;
 
@@ -32,6 +34,41 @@ const TaskForm = ({ setTasks, status = "todo", onClose }) => {
       .toString()
       .padStart(2, "0")}`;
 
+    try {
+      console.log({
+        date: formattedDate,
+        information: taskData.task,
+        uuid: userId.uuid,
+        status: status,
+      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/tasks/createTask`,
+        {
+          date: formattedDate,
+          information: taskData.task,
+          uuid: userId.uuid,
+          status: status,
+        }
+      );
+
+      console.log("Tarefa adicionada com sucesso:", response.data);
+    } catch (error) {
+      console.error("Erro ao adicionar tarefa:", error);
+    }
+
+    try {
+      const data = await axios.post(
+        `${import.meta.env.VITE_API_URL}/tasks/taskID`,
+        {
+          uuid: userId.uuid,
+        }
+      );
+      setDataFinance(data.data);
+    } catch (error) {
+      
+      console.error("Erro ao buscar dados:", error);
+    }
+  
     setTasks((prev) => {
       return [...prev, { ...taskData, date: formattedDate, status: status }];
     });

@@ -2,7 +2,9 @@ import{
 addFinance,
 getFinanceID,
 getFinanceCategoria,
-postFinanceCategoria
+postFinanceCategoria,
+editFinance,
+deleteFinance
 } from "../services/financeService.js"
 
 export const addFinanceform = async (req, res)=>{
@@ -69,4 +71,26 @@ export const addFinanceCategoria = async (req, res)=>{
     console.error("Erro ao criar categoria:", error);
     res.status(400).json({ error: error.message });
    }
+};
+
+export const editFinanceForm = async (req, res) => {
+  try {
+    const { userId, name, value, category, payment_method, type_flow, id } = req.body;
+    const updatedFinance = await editFinance(userId, name, value, category, payment_method, type_flow, id);
+    res.status(200).json(updatedFinance);
+  } catch (error) {
+    console.error("Erro ao editar finança:", error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const financeDelete = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const deletedFinance = await deleteFinance(id);
+    res.status(200).json(deletedFinance);
+  } catch (error) {
+    console.error("Erro ao deletar finança:", error);
+    res.status(400).json({ error: error.message });
+  }
 };

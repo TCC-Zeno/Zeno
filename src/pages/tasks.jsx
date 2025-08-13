@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { task } from "../redux/Route/slice";
 import S from "./../styles/organizer.module.css";
 import TaskColumn from "../components/TaskColumn/TaskColumn";
 import { LuListTodo } from "react-icons/lu";
 import { GrInProgress } from "react-icons/gr";
 import { IoMdDoneAll } from "react-icons/io";
+import axios from "axios";
 
 const oldTasks = localStorage.getItem("tasks");
 
 export default function Tasks() {
+  const userId = useSelector((state) => state.userReducer.userData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(task());
@@ -19,8 +21,10 @@ export default function Tasks() {
   const [tasks, setTasks] = useState(JSON.parse(oldTasks) || []);
   const [activeCard, setActiveCard] = useState(null);
 
+
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
+    console.log("Tarefas salvas no localStorage:", tasks);
   }, [tasks]);
 
   const handleDelete = (taskIndex) => {
