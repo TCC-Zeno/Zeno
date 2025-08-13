@@ -28,11 +28,32 @@ export default function Stock() {
     control,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
   console.log(errors);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalBigOpen, setModalBigOpen] = useState(false);
+
+    const onSubmit = async (data) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/stock/createStock`,
+      {
+        quantity_of_product: data.quantity_of_product,
+        product_id: data.product_id,
+        userId: data.userId,
+      }
+    );
+
+    if (response.status === 201) {
+      addReset();
+      fetchData();
+    }
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || "Erro ao adicionar produto";
+    console.error("Erro ao adicionar produto:", errorMessage);
+  }
+};
 
   return (
     <>
