@@ -242,6 +242,14 @@ export default function Stock() {
                   Quantidade minima para comprar:{" "}
                   <span className={style.ModalTxt}> 000 </span>
                 </h3>
+                <h3 className={style.ModalTitle}>
+                  Preço:{" "}
+                  <span className={style.ModalTxt}>R$ 000 </span>
+                </h3>
+                <h3 className={style.ModalTitle}>
+                  Lucro:{" "}
+                  <span className={style.ModalTxt}>R$ 000 </span>
+                </h3>
               </div>
             </div>
             <div className={style.modalRight}>
@@ -264,7 +272,7 @@ export default function Stock() {
               </div>
               <div className={style.buttons}>
                 <button className={style.buttonEdit}> Editar </button>
-                <button className={style.buttonDelete}> Deletar </button>
+                <button className={style.buttonDelete}> Excluir </button>
               </div>
             </div>
           </div>
@@ -291,7 +299,7 @@ export default function Stock() {
                 />
                 <input
                   className={style.inputAdd}
-                  type="text"
+                  type="number"
                   placeholder="Quatidade Fixa"
                   {...register("FixedQuantity", { required: true })}
                 />

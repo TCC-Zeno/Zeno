@@ -612,7 +612,7 @@ export default function Finance() {
         </section>
 
         <div className={style.btn}>
-          <button className={style.btnReport} id="btn-report">
+          <button className={style.btnReport} id="btn-report" >
             <PiFileArchiveFill />
             Gerar Relatório
           </button>

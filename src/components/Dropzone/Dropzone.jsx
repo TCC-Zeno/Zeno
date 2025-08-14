@@ -70,6 +70,7 @@ export default function Dropzone () {
       const resposta = await axios.post (`${import.meta.env.VITE_API_URL}/user/logo`, {
        logo: selectedFile,
        uuid: profileinfo.uuid});
+
         setSelectedFile(resposta.data[0].logo)
     } else {
       alert("Nenhum arquivo selecionado");
