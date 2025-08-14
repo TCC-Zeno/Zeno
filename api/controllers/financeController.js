@@ -41,7 +41,6 @@ export const financeId = async(req, res)=>{
 
 export const financeCategoria = async(req, res)=>{
   const {uuid} = req.body;
-  console.log(uuid);
   try{
     if (!uuid) {
       return res.status(400).json({ error: "ID não informado." });
@@ -59,7 +58,6 @@ export const financeCategoria = async(req, res)=>{
 export const addFinanceCategoria = async (req, res)=>{
    try{
     const{ userId, category} = req.body;
-    console.log(userId, category);
     //criar a tabela
 
     // const financeData = { userId, name, value, category, payment_method, type_flow };

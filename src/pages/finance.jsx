@@ -14,6 +14,7 @@ import axios from "axios";
 import { AiOutlineClear } from "react-icons/ai";
 import { ErrorMessage } from "../components/ErrorMessage/ErrorMessage";
 import Modal from "../components/Modal/Modal";
+import { useNavigate } from "react-router-dom";
 
 export default function Finance() {
   const userId = useSelector((state) => state.userReducer.userData);
@@ -23,6 +24,7 @@ export default function Finance() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(finance());
@@ -612,7 +614,7 @@ export default function Finance() {
         </section>
 
         <div className={style.btn}>
-          <button className={style.btnReport} id="btn-report" >
+          <button className={style.btnReport} id="btn-report" onClick={() => navigate("/report")}>
             <PiFileArchiveFill />
             Gerar Relatório
           </button>

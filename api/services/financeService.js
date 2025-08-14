@@ -8,7 +8,6 @@ export const addFinance = async (
   payment_method,
   type_flow
 ) => {
-  console.log(userId, name, value, category, payment_method, type_flow);
   const { data, error } = await supabase
     .from("finance")
     .insert({
@@ -38,7 +37,6 @@ export const getFinanceID = async (uuid) => {
 };
 
 export const getFinanceCategoria = async (uuid) => {
-  console.log(uuid);
   const { data, error } = await supabase
     .from("category")
     .select("*")
@@ -50,14 +48,12 @@ export const getFinanceCategoria = async (uuid) => {
 };
 
 export const postFinanceCategoria = async (uuid, categoria) => {
-  console.log(uuid, categoria);
   const { data, error } = await supabase
     .from("category")
     .insert({
       uuid,
       categoria
     })
-console.log(data, error);
   if (error) throw new Error(error.message);
   return data;
 };
@@ -71,7 +67,6 @@ export const editFinance = async (
   type_flow,
   id
 ) => {
-  console.log(userId, name, value, category, id, payment_method, type_flow);
   const { data, error } = await supabase
     .from("finance")
     .update({
