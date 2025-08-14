@@ -20,7 +20,6 @@ export const addFinance = async (
     })
     .select();
 
-
   if (error) throw new Error(error.message);
   return data;
 };
@@ -42,7 +41,6 @@ export const getFinanceCategoria = async (uuid) => {
     .select("*")
     .eq("uuid", uuid)
 
-  console.log(data, error);
   if (error) throw new Error(error.message);
   return data;
 };

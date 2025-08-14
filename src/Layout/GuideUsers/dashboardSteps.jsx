@@ -87,19 +87,6 @@ export const dashboardSteps = [
     placement: "top",
   },
   {
-    target: "#input-name",
-    content: (
-      <div>
-        <h3 style={{ margin: "0 0 10px 0" }}>👤 Nome da Transação</h3>
-        <p>
-          Digite o nome da pessoa ou descrição da transação para facilitar a
-          identificação posteriormente.
-        </p>
-      </div>
-    ),
-    placement: "bottom",
-  },
-  {
     target: ".sectionOrganizer",
     content: (
       <div>

@@ -67,6 +67,7 @@ export function Navbar() {
             }`}
             to="/dashboard"
             onClick={closeMenu}
+            id="dashboard"
           >
             <BsFillHouseFill className={styles.icons} />
             <span>Inicio</span>
@@ -78,6 +79,7 @@ export function Navbar() {
             }`}
             to="/stock"
             onClick={closeMenu}
+            id="stock"
           >
             <GiCardboardBoxClosed className={styles.icons} />
             <span>Estoque</span>
@@ -89,6 +91,7 @@ export function Navbar() {
             }`}
             to="/finance"
             onClick={closeMenu}
+            id="finance"
           >
             <TbCoinFilled className={styles.icons} />
             <span>Fluxo de caixa</span>
@@ -100,6 +103,7 @@ export function Navbar() {
             }`}
             to="/calendar"
             onClick={closeMenu}
+            id="calendar"
           >
             <FaCalendarAlt className={styles.icons} />
             <span>Agenda</span>
@@ -111,6 +115,7 @@ export function Navbar() {
             }`}
             to="/tasks"
             onClick={closeMenu}
+            id="tasks"
           >
             <PiListChecksFill className={styles.icons} />
             <span>Tarefas</span>
@@ -122,6 +127,7 @@ export function Navbar() {
             }`}
             to="/report"
             onClick={closeMenu}
+            id="report"
           >
             <HiDocumentReport className={styles.icons} />
             <span>Relatório</span>
@@ -133,6 +139,7 @@ export function Navbar() {
             }`}
             to="/service"
             onClick={closeMenu}
+            id="service"
           >
             <MdHomeRepairService className={styles.icons} />
             <span>Serviços</span>
@@ -144,6 +151,7 @@ export function Navbar() {
             }`}
             to="/settings"
             onClick={closeMenu}
+            id="settings"
           >
             <FaGear className={styles.icons} />
             <span>Personalizar</span>
@@ -157,6 +165,7 @@ export function Navbar() {
             }`}
             to="/support"
             onClick={closeMenu}
+            id="support"
           >
             <BiSupport className={styles.icons} />
             <span>Ajuda</span>

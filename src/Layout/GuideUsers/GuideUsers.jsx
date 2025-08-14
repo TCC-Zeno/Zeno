@@ -1,90 +1,120 @@
 import { useState, useEffect, useCallback } from "react";
-import Joyride, { STATUS, ACTIONS, EVENTS } from "react-joyride";
+import Joyride, { STATUS, EVENTS } from "react-joyride";
 import { BsQuestionLg } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import S from "./guideUsers.module.css";
 import Modal from "../../components/Modal/Modal";
 import { dashboardSteps } from "./dashboardSteps.jsx";
+import { initSteps } from "./initSteps.jsx";
 
 export default function GuideUsers() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
+
   const [runTour, setRunTour] = useState(false);
   const [tourIndex, setTourIndex] = useState(0);
   const [tourKey, setTourKey] = useState(0);
 
+  const [tourPhase, setTourPhase] = useState("dashboard");
+
+  const AUTO_TOUR_KEY = "auto-tour-executed";
+  const TOUR_SEEN_KEY = `tour-seen-${rotaStatus}`;
+
   const [hasSeenTour, setHasSeenTour] = useState(() => {
-    return localStorage.getItem(`tour-seen-${rotaStatus}`) === "true";
+    return localStorage.getItem(TOUR_SEEN_KEY) === "true";
+  });
+
+  const [hasExecutedAutoTour, setHasExecutedAutoTour] = useState(() => {
+    return localStorage.getItem(AUTO_TOUR_KEY) === "true";
   });
 
   const getStepsForCurrentRoute = useCallback(() => {
     switch (rotaStatus) {
       case "dashboard":
+        if (tourPhase === "init") return initSteps;
         return dashboardSteps;
-      case "calendar":
-        return [
-          {
-            target: "body",
-            content: (
-              <div>
-                <h2>📅 Calendário</h2>
-                <p>Gerencie seus compromissos e eventos aqui.</p>
-              </div>
-            ),
-            placement: "center",
-          },
-        ];
+      case "reports":
+        return "a";
       default:
         return [];
     }
-  }, [rotaStatus]);
+  }, [tourPhase, rotaStatus]);
 
   const handleJoyrideCallback = useCallback(
     (data) => {
-      const { status, type, index, action } = data;
+      const { status, type, index } = data;
 
       if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+        if (tourPhase === "init" && rotaStatus === "dashboard") {
+          setTourPhase("dashboard");
+          setTourIndex(0);
+          setTourKey((prev) => prev + 1);
+          setRunTour(true);
+          return;
+        }
+
         setRunTour(false);
         setTourIndex(0);
-
-        localStorage.setItem(`tour-seen-${rotaStatus}`, "true");
+        localStorage.setItem(TOUR_SEEN_KEY, "true");
         setHasSeenTour(true);
+
+        if (rotaStatus === "dashboard" && !hasExecutedAutoTour) {
+          localStorage.setItem(AUTO_TOUR_KEY, "true");
+          setHasExecutedAutoTour(true);
+        }
       } else if (type === EVENTS.STEP_AFTER) {
         setTourIndex(index + 1);
       }
     },
-    [rotaStatus]
+    [tourPhase, rotaStatus, hasExecutedAutoTour, TOUR_SEEN_KEY, AUTO_TOUR_KEY]
   );
 
-  // Função para iniciar o tour
-  const startTour = () => {
+  const startTour = (withIntro = false) => {
+    const shouldUseIntro = withIntro && rotaStatus === "dashboard";
+    setTourPhase(shouldUseIntro ? "init" : rotaStatus);
     setTourIndex(0);
     setRunTour(true);
     setTourKey((prev) => prev + 1);
   };
 
-  // Auto start tour para novos usuários
   const [showIntroModal, setShowIntroModal] = useState(false);
 
-  // useEffect(() => {
-  //   const shouldAutoStart = !hasSeenTour && rotaStatus === "dashboard";
-  //   if (shouldAutoStart) {
-  //     const timer = setTimeout(() => {
-  //       setShowIntroModal(true);
-  //     }, 2000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [hasSeenTour, rotaStatus]);
+  useEffect(() => {
+    const shouldAutoStart =
+      !hasExecutedAutoTour && rotaStatus === "dashboard" && !hasSeenTour;
 
-  // Reset tour quando muda de rota
+    if (shouldAutoStart) {
+      const timer = setTimeout(() => {
+        setShowIntroModal(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [hasExecutedAutoTour, rotaStatus, hasSeenTour]);
+
   useEffect(() => {
     setRunTour(false);
     setTourIndex(0);
+    setTourPhase(rotaStatus); 
   }, [rotaStatus]);
+
+  const handleStartTourFromModal = () => {
+    setShowIntroModal(false);
+    localStorage.setItem(AUTO_TOUR_KEY, "true");
+    setHasExecutedAutoTour(true);
+    startTour(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowIntroModal(false);
+    localStorage.setItem(AUTO_TOUR_KEY, "true");
+    setHasExecutedAutoTour(true);
+  };
+
+  const hasStepsForCurrentRoute = getStepsForCurrentRoute().length > 0;
 
   return (
     <>
-      {showIntroModal && (
-        <Modal isOpen={true} onClose={() => setShowIntroModal(false)}>
+      {showIntroModal && rotaStatus === "dashboard" && (
+        <Modal isOpen={true} onClose={handleCloseModal}>
           <div
             style={{
               padding: "20px",
@@ -94,36 +124,51 @@ export default function GuideUsers() {
             }}
           >
             <p>Quer fazer um tour rápido para conhecer o sistema?</p>
-            <button
-              onClick={() => {
-                setShowIntroModal(false);
-                startTour();
-              }}
-              style={{
-                marginTop: "25px",
-                backgroundColor: "#3498db",
-                color: "#ffffff",
-                border: "none",
-                borderRadius: "4px",
-                padding: "10px 20px",
-                cursor: "pointer",
-              }}
-            >
-              Iniciar Tour
-            </button>
+            <div style={{ display: "flex", gap: "10px", marginTop: "25px" }}>
+              <button
+                onClick={handleStartTourFromModal}
+                style={{
+                  backgroundColor: "#3498db",
+                  color: "#ffffff",
+                  border: "none",
+                  borderRadius: "4px",
+                  padding: "10px 20px",
+                  cursor: "pointer",
+                }}
+              >
+                Iniciar Tour
+              </button>
+              <button
+                onClick={handleCloseModal}
+                style={{
+                  backgroundColor: "#95a5a6",
+                  color: "#ffffff",
+                  border: "none",
+                  borderRadius: "4px",
+                  padding: "10px 20px",
+                  cursor: "pointer",
+                }}
+              >
+                Não, obrigado
+              </button>
+            </div>
           </div>
         </Modal>
       )}
 
-      <div className={S.guideContainer}>
-        <button
-          className={S.guideButton}
-          onClick={startTour}
-          title="Guia completo do sistema"
-        >
-          <BsQuestionLg className={S.icon} />
-        </button>
-      </div>
+      {hasStepsForCurrentRoute && (
+        <div className={S.guideContainer}>
+          <button
+            className={S.guideButton}
+            onClick={() => startTour(false)}
+            title={`Guia da página ${rotaStatus}`}
+            aria-label={`Guia da página ${rotaStatus}`}
+            id="guideButton"
+          >
+            <BsQuestionLg className={S.icon} />
+          </button>
+        </div>
+      )}
 
       <Joyride
         key={tourKey}
@@ -148,90 +193,8 @@ export default function GuideUsers() {
         }}
         styles={{
           options: {
-            primaryColor: "#3498db",
-            backgroundColor: "#ffffff",
-            textColor: "#2c3e50",
-            width: 400,
-            zIndex: 10000,
-            arrowColor: "#ffffff",
+            zIndex: 999999,
           },
-          tooltip: {
-            borderRadius: "12px",
-            boxShadow: "0 12px 32px rgba(0, 0, 0, 0.2)",
-            padding: "20px",
-            fontSize: "14px",
-            lineHeight: "1.6",
-          },
-          tooltipContainer: {
-            textAlign: "left",
-          },
-          tooltipTitle: {
-            fontSize: "20px",
-            fontWeight: "bold",
-            marginBottom: "15px",
-            color: "#2c3e50",
-          },
-          tooltipContent: {
-            position: "relative",
-          },
-          buttonNext: {
-            backgroundColor: "#3498db",
-            borderRadius: "6px",
-            color: "#ffffff",
-            fontSize: "14px",
-            padding: "10px 20px",
-            fontWeight: "600",
-            border: "none",
-            cursor: "pointer",
-            transition: "all 0.2s ease",
-          },
-          buttonBack: {
-            color: "#7f8c8d",
-            fontSize: "14px",
-            marginRight: "15px",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-          },
-          buttonSkip: {
-            color: "#95a5a6",
-            fontSize: "12px",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-          },
-          spotlight: {
-            borderRadius: "8px",
-          },
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.6)",
-          },
-          beacon: {
-            inner: "#3498db",
-            outer: "#3498db",
-          },
-        }}
-        floaterProps={{
-          disableAnimation: false,
-          styles: {
-            arrow: {
-              length: 8,
-              spread: 16,
-            },
-          },
-        }}
-        renderTooltipContent={({ step, content }) => {
-          const total = getStepsForCurrentRoute().length;
-          const current = tourIndex + 1;
-
-          return (
-            <div>
-              <div style={{ marginBottom: 10 }}>
-                <strong>{`Passo ${current} de ${total}`}</strong>
-              </div>
-              <div>{content}</div>
-            </div>
-          );
         }}
       />
     </>
