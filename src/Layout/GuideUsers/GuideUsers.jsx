@@ -1,165 +1,239 @@
-import { useState } from "react";
-import Stepper, { Step } from "./../../components/Stepper/Stepper";
+import { useState, useEffect, useCallback } from "react";
+import Joyride, { STATUS, ACTIONS, EVENTS } from "react-joyride";
 import { BsQuestionLg } from "react-icons/bs";
+import { useSelector } from "react-redux";
 import S from "./guideUsers.module.css";
 import Modal from "../../components/Modal/Modal";
-import img01 from "./../../assets/guide/resumoDeCaixa.png";
-import img02 from "./../../assets/guide/fluxoDeCaixa.png";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { dashboardSteps } from "./dashboardSteps.jsx";
 
 export default function GuideUsers() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [runTour, setRunTour] = useState(false);
+  const [tourIndex, setTourIndex] = useState(0);
+  const [tourKey, setTourKey] = useState(0);
 
+  const [hasSeenTour, setHasSeenTour] = useState(() => {
+    return localStorage.getItem(`tour-seen-${rotaStatus}`) === "true";
+  });
+
+  const getStepsForCurrentRoute = useCallback(() => {
+    switch (rotaStatus) {
+      case "dashboard":
+        return dashboardSteps;
+      case "calendar":
+        return [
+          {
+            target: "body",
+            content: (
+              <div>
+                <h2>📅 Calendário</h2>
+                <p>Gerencie seus compromissos e eventos aqui.</p>
+              </div>
+            ),
+            placement: "center",
+          },
+        ];
+      default:
+        return [];
+    }
+  }, [rotaStatus]);
+
+  const handleJoyrideCallback = useCallback(
+    (data) => {
+      const { status, type, index, action } = data;
+
+      if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+        setRunTour(false);
+        setTourIndex(0);
+
+        localStorage.setItem(`tour-seen-${rotaStatus}`, "true");
+        setHasSeenTour(true);
+      } else if (type === EVENTS.STEP_AFTER) {
+        setTourIndex(index + 1);
+      }
+    },
+    [rotaStatus]
+  );
+
+  // Função para iniciar o tour
+  const startTour = () => {
+    setTourIndex(0);
+    setRunTour(true);
+    setTourKey((prev) => prev + 1);
+  };
+
+  // Auto start tour para novos usuários
+  const [showIntroModal, setShowIntroModal] = useState(false);
+
+  // useEffect(() => {
+  //   const shouldAutoStart = !hasSeenTour && rotaStatus === "dashboard";
+  //   if (shouldAutoStart) {
+  //     const timer = setTimeout(() => {
+  //       setShowIntroModal(true);
+  //     }, 2000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [hasSeenTour, rotaStatus]);
+
+  // Reset tour quando muda de rota
   useEffect(() => {
-    const preloadImage = new Image();
-    preloadImage.src = img01;
-    preloadImage.onload = () => setImageLoaded(true);
-  }, []);
+    setRunTour(false);
+    setTourIndex(0);
+  }, [rotaStatus]);
+
   return (
     <>
-      <button className={S.guideButton} onClick={() => setModalOpen(true)}>
-        <BsQuestionLg className={S.icon} />
-      </button>
-      <Modal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        style={{
-          backgroundColor: "transparent",
-          boxShadow: "none",
-          color: "white",
-          width: "50vw",
-        }}
-        guide={true}
-      >
-        {rotaStatus === "dashboard" ? (
-          <Stepper
-            initialStep={1}
-            onStepChange={(step) => {
-              console.log(step);
+      {showIntroModal && (
+        <Modal isOpen={true} onClose={() => setShowIntroModal(false)}>
+          <div
+            style={{
+              padding: "20px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
-            onFinalStepCompleted={() => setModalOpen(false)}
-            backButtonText="Voltar"
-            nextButtonText="Continuar"
           >
-            <Step>
-              <h2 className={S.titleStep}>Fluxo de caixa </h2>
-              <img
-                className={S.imgStep}
-                style={{
-                  opacity: imageLoaded ? 1 : 0,
-                }}
-                src={img01}
-                alt="fluxo de caixa"
-                loading="eager"
-              />
-              <p>
-                A função <b>Resumo de caixa</b> apresenta uma visão rápida e
-                clara da movimentação do caixa da sua empresa um determinado
-                período. O usuário pode escolher o intervalo desejado seja ele
-                sendo Diário, Mensal ou Anual.
-              </p>
-              <p>
-                Abaixo do título, três cartões exibem os principais indicadores
-                financeiros:
-              </p>
-              <ul className="list-disc pl-5">
-                <li>
-                  <b>Montante</b>: Representa o total bruto movimentado, somando
-                  todas as entradas e saídas do caixa.
-                </li>
-                <li>
-                  <b>Lucro</b>: Mostra o valor obtido após subtrair as despesas
-                  do montante total. Este valor é exibido em{" "}
-                  <b className="text-green-500">verde</b>, indicando resultado
-                  positivo.
-                </li>
-                <li>
-                  <b>Despesas</b>: Indica o total de gastos ocorridos no período
-                  selecionado. Este valor aparece em{" "}
-                  <b className="text-red-500">vermelho</b> para destacar os
-                  custos.
-                </li>
-              </ul>
-            </Step>
-            <Step>
-              <h2 className={S.titleStep}>Fluxo de caixa </h2>
-              <img
-                className={S.imgStep}
-                style={{
-                  opacity: imageLoaded ? 1 : 0,
-                }}
-                src={img02}
-                alt="fluxo de caixa"
-                loading="eager"
-              />
-              <p>
-                A função <b>Fluxo de caixa</b> permite o registro manual de
-                entradas e saídas financeiras no sistema, oferecendo um controle
-                detalhado das movimentações monetárias da empresa. É por meio
-                desse painel que os dados alimentam o <b>Resumo de caixa</b> e
-                outras análises financeiras do sistema.
-              </p>
-              <p>O função é composta pelos seguintes campos:</p>
-              <ul className="list-disc pl-5">
-                <li>
-                  <b>Nome completo</b>: Campo para inserir o nome da pessoa ou
-                  responsável pela transação.
-                </li>
-                <li>
-                  <b>Valor</b>: Campo numérico onde se insere o valor da
-                  transação.
-                </li>
-                <li>
-                  <b>Método de pagamento</b>: Campo onde faz a seleção do tipo
-                  de pagamento, ele podendo ser dinheiro, debito, credito, pix
-                  ou algum outro.
-                </li>
-                <li>
-                  <b>Categorias</b>: Classificação da transação (ex: Venda,
-                  Compra, Salário, Impostos), a adição de uma nova categoria
-                  poderá ser apartir da aba “personalizar”.
-                </li>
-                <li>
-                  <b>Tipo de fluxo</b>: Define se a movimentação é uma
-                  <b className="text-green-500"> Entrada</b> ou uma{" "}
-                  <b className="text-red-500">Saída</b>.
-                </li>
-                <li>
-                  <b>Enviar</b>: Botão que salva a transação no sistema,
-                  atualizando automaticamente o resumo de caixa.
-                </li>
-              </ul>
-            </Step>
-            <Step>
-              <h2>How about an input?</h2>
-              <input
-                type="text"
-                placeholder="Type something..."
-                className="w-full rounded-md border-2 border-gray-300 p-2"
-              />
-            </Step>
-            <Step>
-              <h2>Final Step</h2>
-              <p>You made it!</p>
-            </Step>
-            <Step>
-              <h2>Final Step</h2>
-              <p>You made it!</p>
-            </Step>
-            <Step>
-              <h2>Final Step</h2>
-              <p>You made it!</p>
-            </Step>
-          </Stepper>
-        ) : rotaStatus === "calendar" ? (
-          <h1>Oi</h1>
-        ) : (
-          <h1>Oi</h1>
-        )}
-      </Modal>
+            <p>Quer fazer um tour rápido para conhecer o sistema?</p>
+            <button
+              onClick={() => {
+                setShowIntroModal(false);
+                startTour();
+              }}
+              style={{
+                marginTop: "25px",
+                backgroundColor: "#3498db",
+                color: "#ffffff",
+                border: "none",
+                borderRadius: "4px",
+                padding: "10px 20px",
+                cursor: "pointer",
+              }}
+            >
+              Iniciar Tour
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      <div className={S.guideContainer}>
+        <button
+          className={S.guideButton}
+          onClick={startTour}
+          title="Guia completo do sistema"
+        >
+          <BsQuestionLg className={S.icon} />
+        </button>
+      </div>
+
+      <Joyride
+        key={tourKey}
+        steps={getStepsForCurrentRoute()}
+        run={runTour}
+        stepIndex={tourIndex}
+        callback={handleJoyrideCallback}
+        continuous
+        showSkipButton
+        scrollToFirstStep
+        scrollDuration={300}
+        disableOverlayClose
+        disableScrollParentFix
+        locale={{
+          back: "Voltar",
+          close: "Fechar",
+          last: " Finalizar",
+          next: "Próximo",
+          skip: "Pular Tour",
+          step: "Passo",
+          of: "de",
+        }}
+        styles={{
+          options: {
+            primaryColor: "#3498db",
+            backgroundColor: "#ffffff",
+            textColor: "#2c3e50",
+            width: 400,
+            zIndex: 10000,
+            arrowColor: "#ffffff",
+          },
+          tooltip: {
+            borderRadius: "12px",
+            boxShadow: "0 12px 32px rgba(0, 0, 0, 0.2)",
+            padding: "20px",
+            fontSize: "14px",
+            lineHeight: "1.6",
+          },
+          tooltipContainer: {
+            textAlign: "left",
+          },
+          tooltipTitle: {
+            fontSize: "20px",
+            fontWeight: "bold",
+            marginBottom: "15px",
+            color: "#2c3e50",
+          },
+          tooltipContent: {
+            position: "relative",
+          },
+          buttonNext: {
+            backgroundColor: "#3498db",
+            borderRadius: "6px",
+            color: "#ffffff",
+            fontSize: "14px",
+            padding: "10px 20px",
+            fontWeight: "600",
+            border: "none",
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+          },
+          buttonBack: {
+            color: "#7f8c8d",
+            fontSize: "14px",
+            marginRight: "15px",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+          },
+          buttonSkip: {
+            color: "#95a5a6",
+            fontSize: "12px",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+          },
+          spotlight: {
+            borderRadius: "8px",
+          },
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+          },
+          beacon: {
+            inner: "#3498db",
+            outer: "#3498db",
+          },
+        }}
+        floaterProps={{
+          disableAnimation: false,
+          styles: {
+            arrow: {
+              length: 8,
+              spread: 16,
+            },
+          },
+        }}
+        renderTooltipContent={({ step, content }) => {
+          const total = getStepsForCurrentRoute().length;
+          const current = tourIndex + 1;
+
+          return (
+            <div>
+              <div style={{ marginBottom: 10 }}>
+                <strong>{`Passo ${current} de ${total}`}</strong>
+              </div>
+              <div>{content}</div>
+            </div>
+          );
+        }}
+      />
     </>
   );
 }

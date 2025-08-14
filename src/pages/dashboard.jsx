@@ -131,7 +131,10 @@ export default function Dashboard() {
     <>
       <DefaultLayout>
         {!permissions.cash && (
-          <section className={`${S.sectionDashboard} ${S.sectionCash}`}>
+          <section
+            className={`${S.sectionDashboard} ${S.sectionCash} sectionCash`}
+            id="cash-summary-section"
+          >
             <div className={S.cashTitle}>
               <h1>Resumo de caixa</h1>
               <select
@@ -173,7 +176,10 @@ export default function Dashboard() {
           />
         )}
         {!permissions.finance && (
-          <section className={`${S.sectionDashboard} ${S.sectionFinance}`}>
+          <section
+            className={`${S.sectionDashboard} ${S.sectionFinance} sectionFinance`}
+            id="finance-flow-section"
+          >
             <div className={S.financeTitle}>
               <h1>Fluxo de caixa</h1>
             </div>
@@ -275,7 +281,10 @@ export default function Dashboard() {
           />
         )}
         {!permissions.organizer && (
-          <section className={`${S.sectionDashboard} ${S.sectionOrganizer}`}>
+          <section
+            className={`${S.sectionDashboard} ${S.sectionOrganizer} sectionOrganizer`}
+            id="daily-organizer-section"
+          >
             <div className={S.organizerTitle}>
               <h1>Organizador diário</h1>
             </div>
@@ -323,7 +332,10 @@ export default function Dashboard() {
           />
         )}
         {!permissions.stock && (
-          <section className={`${S.sectionDashboard} ${S.sectionStock}`}>
+          <section
+            className={`${S.sectionDashboard} ${S.sectionStock} sectionStock`} 
+            id="stock-control-section"
+          >
             <div className={S.stockTitle}>
               <h1>Estoque</h1>
             </div>
