@@ -32,7 +32,7 @@ export function Footer() {
             <a href="https://www.youtube.com/@ZenoEtec">
               <FaYoutube className={style.a} />
             </a>
-            <a href="https://github.com">
+            <a href="https://github.com/TCC-Zeno">
               <VscGithubAlt className={style.a} />
             </a>
           </div>

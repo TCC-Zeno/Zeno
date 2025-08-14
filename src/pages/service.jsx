@@ -64,7 +64,7 @@ export default function Service() {
         <div className={style.filterContainer}>
           <div className={style.buttonContainer}>
             <div>
-              <button className={style.button}>Tudo</button>
+              <button className={style.button}>Todos</button>
             </div>
             <div>
               <button className={style.button}>Em Andamento</button>
@@ -77,6 +77,29 @@ export default function Service() {
             </div>
           </div>
         </div>
+
+      <div className={style.tableContainer}>
+        <table className={style.tabela}>
+          <thead className={style.thead}>
+            <tr className={style.tr}>
+              <th className={style.th}>Serviços</th>
+              <th className={style.th}>Cliente</th>
+              <th className={style.th}>Data Agendamento</th>
+              <th className={style.th}>Status</th>
+              <th className={style.th}>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className={style.conteudo}>
+              <td className={style.td}>Serviço 1</td>
+              <td className={style.td}>Cliente 1</td>
+              <td className={style.td}>01/01/2023</td>
+              <td className={style.dataAgend}>Agendado</td>
+              <td className={style.td}>R$ 100,00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       </DefaultLayout>
     </>
   );

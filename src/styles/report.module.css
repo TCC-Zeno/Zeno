@@ -164,3 +164,17 @@
 .button2:hover {
     transform: scale(1.1);
 }
+
+@media (max-width: 768px) {
+  .containerTable {
+    margin: 2%;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .button2 {
+    width: 100%;
+  }
+}

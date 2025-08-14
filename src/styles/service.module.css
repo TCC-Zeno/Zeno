@@ -124,3 +124,33 @@
     font-size: 14pt;
     font-weight: 500;
 }
+
+.button:active,
+.button:hover,
+.button:focus{
+    background-color: rgb(70, 135, 243);
+    color: white;
+    cursor: pointer;
+}
+
+.tableContainer{
+    display: flex;
+    background-color: #d9d9d9;
+    height: auto;
+    border-radius: 5px;
+}
+
+.table{
+    width: 80%;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.thead {
+    display: flex;
+    width: 80%;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    overflow: hidden;
+}
