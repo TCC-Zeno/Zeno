@@ -1,5 +1,5 @@
 import supabase from "../config/supabaseClient.js";
-let filenome = "";
+
 
 export const updateUser = async (uuid, updateData = {}) => {
   const { data, error } = await supabase
@@ -26,15 +26,17 @@ export const getUserById = async (uuid) => {
   if (error) throw new error(error.message);
   return data;
 };
+
 // Upload para Supabase Storage
 export const uploadImage = async (file, uuid) => {
 
   const fileToUpload = file instanceof File ? file : file[0] || file.logo;
   const fileName = `${uuid}/user_${Date.now()}.png`;
-  const { data, error } = await supabase.storage
+
+  const { error } = await supabase.storage
     .from("logos")
     .upload(fileName, fileToUpload, {
-      contentType: "image/png",
+      contentType: "image/png , image/jpeg, image/jpg",
       upsert: false,
     });
   if (error) throw new Error(error.message);
@@ -42,14 +44,16 @@ export const uploadImage = async (file, uuid) => {
 const{data:publicData} = await supabase.storage
     .from("logos")
     .getPublicUrl(fileName);
+    
+
+const {data} = await supabase
+    .from("users")
+    .update({ logo: publicData.publicUrl })
+    .eq("uuid", uuid)
+    .select();
 
   if (error) throw new Error(error.message);
-  console.log(publicData.publicUrl)
-  return publicData.publicUrl
-};
+  
+  return data
 
-export const getImageUrl = async () => {
-  ;
-};
-
-
+  }

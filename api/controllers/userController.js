@@ -5,7 +5,7 @@ import {
 } from "../services/userService.js"
 
 export const updateUserCredential = async (req, res) => {
-  const { uuid, companyName, ownerName, color,accessibility } = req.body;
+  const { uuid, companyName, ownerName, color,accessibility} = req.body;
   try {
     if (!uuid) {
       return res.status(400).json({ error: "ID não informado." });
@@ -14,8 +14,8 @@ export const updateUserCredential = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado para o ID informado." });
     }
+   
     const updatedUser = await updateUser(uuid, {companyName: companyName, ownerName: ownerName, color:color, accessibility:accessibility} );
-
     if (!updatedUser || updatedUser.length === 0) {
       return res.status(400).json({ error: "Falha ao atualizar usuário. Verifique os dados enviados." });
     }

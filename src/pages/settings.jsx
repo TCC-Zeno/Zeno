@@ -47,6 +47,7 @@ export default function Settings() {
     await updateinfos({ accessibility: value });
   };
 
+
   const handleBlockResource = (resource, blocked) => {
     dispatch(toggleBlockedResource({ resource, blocked }));
   };
