@@ -59,7 +59,6 @@ export const uploadProfileImage = [
       return res.status(200).json(uploadedImage);
     } catch (error) {
       res.status(500).json({ error: `Erro interno ao enviar imagem: ${error.message}` });
-      console.error("Erro ao enviar imagem:", error);
     }
   },
 ];
