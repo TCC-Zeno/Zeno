@@ -12,6 +12,8 @@ import Modal from "../Modal/Modal";
 import { useState } from "react";
 import DropdownContributors from "./DropdownContributors";
 import { useAuth } from "../../contexts/AuthContext";
+import { useSelector } from "react-redux";
+
 
 export function NotificationContent() {
   return (
@@ -108,6 +110,8 @@ export function ProfileContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownContributors, setDropdownContributors] = useState(false);
   const { logout } = useAuth();
+  const profileinfo = useSelector((state) => state.userReducer.userData);
+
   async function logoutuser() {
     try {
        await logout();
@@ -120,11 +124,11 @@ export function ProfileContent() {
       <div className={S.containerProfile}>
         <div className={S.containerUser}>
           <div className={S.userPhoto}>
-            <img src={Logo} alt="Sua Logo em miniatura" />
+            <img src={profileinfo.logo} alt="Sua Logo em miniatura" />
           </div>
           <div className={S.userInfo}>
-            <h4> nome da empresa</h4>
-            <p>Email da empresa</p>
+            <h4> {profileinfo.company_name}</h4>
+            <p>{profileinfo.email}</p>
           </div>
         </div>
         <div className={S.divider}></div>

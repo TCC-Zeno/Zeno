@@ -4,14 +4,12 @@ import axios from "axios";
 import S from "./dropzone.module.css";
 import { useSelector } from "react-redux";
 
-
-export default function Dropzone () {
+export default function Dropzone() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
   const FILE_LIMIT = 25 * 1024 * 1024; // tamanho de imagem com maxio de 25MB
   const profileinfo = useSelector((state) => state.userReducer.userData);
-
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -55,9 +53,7 @@ export default function Dropzone () {
     }
   };
 
-  
-
-  const  handleSubmit = async  (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (selectedFile) {
       if (selectedFile.size > FILE_LIMIT) {
@@ -65,13 +61,21 @@ export default function Dropzone () {
         return;
       }
       alert("Este é apenas um demo, nenhum arquivo foi enviado.");
-      console.log (selectedFile);
+      console.log(selectedFile);
+      const formData = new FormData();
+      formData.append("logo", selectedFile); // Replace 'file' with your file object
+      formData.append("uuid", profileinfo.uuid); // Add other fields as needed
+      console.log("formData:", formData );
       // aqui envia pro BD a imagem
-      const resposta = await axios.post (`${import.meta.env.VITE_API_URL}/user/logo`, {
-       logo: selectedFile,
-       uuid: profileinfo.uuid});
-
-        setSelectedFile(resposta.data[0].logo)
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/user/logo`, formData,
+        {
+          header:{
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      
     } else {
       alert("Nenhum arquivo selecionado");
     }
@@ -129,4 +133,4 @@ export default function Dropzone () {
       </div>
     </form>
   );
-};
+}

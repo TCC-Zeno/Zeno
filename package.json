@@ -40,6 +40,7 @@
     "joi": "^17.13.3",
     "lucide-react": "^0.525.0",
     "memorystore": "^1.6.7",
+    "multer": "^2.0.2",
     "nodemon": "^3.1.10",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",

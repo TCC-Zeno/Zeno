@@ -30,13 +30,12 @@ export const getUserById = async (uuid) => {
 // Upload para Supabase Storage
 export const uploadImage = async (file, uuid) => {
 
-  const fileToUpload = file instanceof File ? file : file[0] || file.logo;
   const fileName = `${uuid}/user_${Date.now()}.png`;
 
   const { error } = await supabase.storage
     .from("logos")
-    .upload(fileName, fileToUpload, {
-      contentType: "image/png , image/jpeg, image/jpg",
+    .upload(fileName, file.buffer, {
+      cacheControl: "3600",
       upsert: false,
     });
   if (error) throw new Error(error.message);
@@ -53,7 +52,7 @@ const {data} = await supabase
     .select();
 
   if (error) throw new Error(error.message);
-  
+  console.log("Imagem enviada com sucesso:", publicData.publicUrl);
   return data
 
   }

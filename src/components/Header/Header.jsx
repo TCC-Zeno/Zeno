@@ -10,6 +10,8 @@ import { BsQuestionLg } from "react-icons/bs";
 
 export default function Header() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
+    const profileinfo = useSelector((state) => state.userReducer.userData);
+  
 
   function getTitulo(rotaStatus) {
     switch (rotaStatus) {
@@ -55,7 +57,7 @@ export default function Header() {
           rotaStatus === "dashboard" ? null : S.none
         }`}
       >
-        <img src={Logo} alt="Logo da sua empresa" />
+        <img src={profileinfo.logo} alt="Logo da sua empresa" />
       </div>
 
       <div
