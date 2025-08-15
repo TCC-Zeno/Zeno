@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { stock } from "../redux/Route/slice";
@@ -18,23 +18,81 @@ import CurrencyInput from "react-currency-input-field";
 import PhoneInput from "react-phone-number-input/input";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 
 export default function Stock() {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalBigOpen, setModalBigOpen] = useState(false);
+  const [addForn, setAddForn] = useState(false);
+  const [stockQuantity, setStockQuantity] = useState(0);
+  const [minQuantity, setMinQuantity] = useState(0);
+  const fileInputRef = useRef(null);
+  const FILE_LIMIT = 25 * 1024 * 1024;
+  const profileinfo = useSelector((state) => state.userReducer.userData);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(stock());
   }, [dispatch]);
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
-  console.log(errors);
+  const { register, handleSubmit, control, reset, setValue } = useForm({
+    defaultValues: {
+      ProductName: "",
+      FixedQuantity: "",
+      Description: "",
+      Category: "",
+      Supplier: "",
+      SupplierName: "",
+      SupplierNumber: "",
+      SupplierAddress: "",
+      SupplierEmail: "",
+      Price: "",
+      Price1: "",
+    },
+  });
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalBigOpen, setModalBigOpen] = useState(false);
-  const [addForn, setAddForn] = useState(false);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > FILE_LIMIT) {
+        alert("Arquivo excede o tamanho máximo de 25MB");
+        return;
+      }
+      setSelectedFile(file);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      if (file.size > FILE_LIMIT) {
+        alert("Arquivo excede o tamanho máximo de 25MB");
+        return;
+      }
+      fileInputRef.current.files = e.dataTransfer.files;
+      setSelectedFile(file);
+    }
+  };
+
+  const handleCounterChange = (setter, name, value) => {
+    if (value >= 0) {
+      setter(value);
+      setValue(name, value);
+    }
+  };
 
   const dropdownVariants = {
     hidden: {
@@ -63,19 +121,80 @@ export default function Stock() {
   };
 
   const onSubmit = async (data) => {
+    // Eu deixei aqui formatado para ter uma ideia além de facilitar na inserir o fornecedor
+    const addProductData = {
+      ProductName: data.ProductName,
+      FixedQuantity: data.FixedQuantity,
+      Description: data.Description,
+      Category: data.Category,
+      Price: data.Price,
+      Price1: data.Price1,
+      StockQuantity: data.StockQuantity,
+      MinQuantity: data.MinQuantity,
+      Image: selectedFile,
+      SupplierInfo: addForn
+        ? {
+            SupplierName: data.SupplierName,
+            SupplierNumber: data.SupplierNumber,
+            SupplierAddress: data.SupplierAddress,
+            SupplierEmail: data.SupplierEmail,
+          }
+        : data.Supplier,
+    };
+
+    console.log(addProductData);
+
+    /* Olá Narash, bem, o que precisamos fazer, precisamos ter no controller 3 coisas, se o supplier info tiver alguma coisa nele proprio então não precisa adicionar fornecedor, se não tiver nada e o supplier name, number, address e email tiver algo então tem que adicionar um fornecedor e pegar o id dele, depois de ver a parte de forncedor, temos que inserir a imagem no banco de dados igual o jose fez só que num outro bucket e pegar a url e por ultimo adicionar ao banco de dados todo o estoque*/
     try {
+      const formData = new FormData();
+      formData.append("product_name", addProductData.ProductName);
+      formData.append("product_description", addProductData.Description);
+      formData.append("product_category", addProductData.Category);
+      formData.append("product_price", addProductData.Price);
+      formData.append("minimum_quantity", addProductData.MinQuantity);
+      formData.append("stock_quantity", addProductData.StockQuantity);
+
+      // Se tiver fornecedor novo, manda os dados, se não só o id delee
+      if (typeof addProductData.SupplierInfo === "object") {
+        formData.append(
+          "supplier_name",
+          addProductData.SupplierInfo.SupplierName
+        );
+        formData.append(
+          "supplier_number",
+          addProductData.SupplierInfo.SupplierNumber
+        );
+        formData.append(
+          "supplier_address",
+          addProductData.SupplierInfo.SupplierAddress
+        );
+        formData.append(
+          "supplier_email",
+          addProductData.SupplierInfo.SupplierEmail
+        );
+      } else {
+        formData.append("supplier_id", addProductData.SupplierInfo);
+      }
+
+      if (addProductData.Image) {
+        formData.append("image", addProductData.Image);
+      } else {
+        console.log("Cade a imagem:?:??");
+        return;
+      }
+
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/stock/createStock`,
+        formData,
         {
-          quantity_of_product: data.quantity_of_product,
-          product_id: data.product_id,
-          userId: data.userId,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
 
       if (response.status === 201) {
-        addReset();
-        fetchData();
+        console.log(response);
       }
     } catch (error) {
       const errorMessage =
@@ -311,217 +430,343 @@ export default function Stock() {
           stock={true}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <div className={style.cadProd}>
-                <div className={style.titleModal}>
-                  <h1>Cadastrar Produto</h1>
-                </div>
-
-                <div className={style.inputsCad}>
-                  <input
-                    className={style.inputAdd}
-                    type="text"
-                    placeholder="Nome do produto"
-                    {...register("ProductName", { required: true })}
-                  />
-                  <input
-                    className={style.inputAdd}
-                    type="number"
-                    placeholder="Quatidade Fixa"
-                    {...register("FixedQuantity", { required: true })}
-                  />
-                  <input
-                    className={style.inputAdd}
-                    type="text"
-                    placeholder="Descrição"
-                    {...register("Description", { required: true })}
-                  />
-                  <input
-                    className={style.inputAdd}
-                    type="text"
-                    placeholder="Categoria"
-                    {...register("Category", { required: true })}
-                  />
-                </div>
+            <div className={style.cadProd}>
+              <div className={style.titleModal}>
+                <h1>Cadastrar Produto</h1>
               </div>
-              <div className={style.cadForn}>
-                <div className={style.containerFornTitle}>
-                  <div className={style.fornTitle}>
-                    <h1>Fornecedor</h1>
-                  </div>
-                  <div className={style.fornOption}>
-                    <p>opcional</p>
-                  </div>
-                </div>
-                <div className={style.selectForn}>
-                  <select
-                    className={style.select}
-                    {...register("Supplier")}
-                    disabled={addForn}
-                  >
-                    <option value="Fornecedor1">Fornecedor 1</option>
-                    <option value="Fornecedor2">Fornecedor 2</option>
-                    <option value="Fornecedor3">Fornecedor 3</option>
-                    <option value="Fornecedor4">Fornecedor 4</option>
-                  </select>
-                  <button
-                    className={style.buttonAdd}
-                    onClick={() => setAddForn(!addForn)}
-                  >
-                    {addForn ? "Cancelar" : "Adicionar +"}
-                  </button>
-                </div>
-                {addForn && (
-                  <AnimatePresence>
-                    <motion.div
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      variants={dropdownVariants}
-                      className={style.inputsCad}
-                    >
-                      <input
-                        className={style.inputAdd}
-                        type="text"
-                        placeholder="Nome do Fornecedor"
-                        {...register("SupplierName", { required: true })}
-                      />
-                      {/* <input
+
+              <div className={style.inputsCad}>
+                <input
                   className={style.inputAdd}
                   type="text"
-                  placeholder="Número do Fornecedor"
-                  {...register("SupplierNumber", { required: true })}
-                /> */}
-                      <PhoneInput
-                        className={style.inputAdd}
-                        country="BR"
-                        {...register("SupplierNumber", { required: true })}
-                        placeholder="Número do Fornecedor"
-                      />
-
-                      <input
-                        className={style.inputAdd}
-                        type="text"
-                        placeholder="Endereço"
-                        {...register("SupplierAddress", { required: true })}
-                      />
-                      <input
-                        className={style.inputAdd}
-                        type="text"
-                        placeholder="Email"
-                        {...register("SupplierEmail", { required: true })}
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                )}
-              </div>
-              <div className={style.drop}>
-                <Dropzone />
-              </div>
-              <div className={style.custProd}>
-                <h2>Custo do produto</h2>
-                <Controller
-                  name="Price"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { onChange, value, name } }) => (
-                    <CurrencyInput
-                      id="price-input"
-                      name={name}
-                      placeholder="R$ 0,00"
-                      decimalsLimit={2}
-                      decimalScale={2}
-                      decimalSeparator=","
-                      groupSeparator="."
-                      prefix="R$ "
-                      onValueChange={(value) => onChange(value)}
-                      value={value === 0 ? "" : value}
-                      className={style.inputPrice}
-                    />
-                  )}
+                  placeholder="Nome do produto"
+                  {...register("ProductName", { required: true })}
                 />
-                <h2>Preço final</h2>
-                <Controller
-                  name="Price1"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { onChange, value1, name } }) => (
-                    <CurrencyInput
-                      id="price-input1"
-                      name={name}
-                      placeholder="R$ 0,00"
-                      decimalsLimit={2}
-                      decimalScale={2}
-                      decimalSeparator=","
-                      groupSeparator="."
-                      prefix="R$ "
-                      onValueChange={(value1) => onChange(value1)}
-                      value={value1 === 0 ? "" : value1}
-                      className={style.inputPrice}
-                    />
-                  )}
-                />
-                <h2>Lucro</h2>
                 <input
+                  className={style.inputAdd}
+                  type="number"
+                  placeholder="Quantidade Fixa"
+                  {...register("FixedQuantity", { required: true })}
+                />
+                <input
+                  className={style.inputAdd}
                   type="text"
-                  disabled
-                  placeholder="R$ 0,00"
-                  className={style.inputPrice}
+                  placeholder="Descrição"
+                  {...register("Description", { required: true })}
+                />
+                <input
+                  className={style.inputAdd}
+                  type="text"
+                  placeholder="Categoria"
+                  {...register("Category", { required: true })}
                 />
               </div>
-              <div className={style.linha} />
-              <div className={style.quantStock}>
-                <div className={style.containerTitleQuant}>
-                  <div className={style.titleQuant}>
-                    <h2>Quantidade em estoque</h2>
-                  </div>
-                  <div className={style.pQuant}>
-                    <p>informe o estoque da sua MEI</p>
-                  </div>
+            </div>
+
+            <div className={style.cadForn}>
+              <div className={style.containerFornTitle}>
+                <div className={style.fornTitle}>
+                  <h1>Fornecedor</h1>
                 </div>
-                <div className={style.actions1}>
-                  <button className={style.button} id="button-back-counter">
-                    <IoIosArrowBack className={style.Arrowicon} />
-                  </button>
-                  <h1 className={style.counter} id="counter">
-                    000
-                  </h1>
-                  <button className={style.button} id="button-forward-counter">
-                    <IoIosArrowForward className={style.Arrowicon} />
-                  </button>
+                <div className={style.fornOption}>
+                  <p>opcional</p>
                 </div>
               </div>
-              <div className={style.linha} />
-              <div className={style.quantStock}>
-                <div className={style.containerTitleQuant}>
-                  <div className={style.titleQuant}>
-                    <h2>Quantidade minima para comprar mais</h2>
+              <div className={style.selectForn}>
+                <select
+                  className={style.select}
+                  {...register("Supplier")}
+                  disabled={addForn}
+                >
+                  <option value="">Nenhum fornecedor</option>
+                  <option value="Fornecedor1">Fornecedor 1</option>
+                  <option value="Fornecedor2">Fornecedor 2</option>
+                  <option value="Fornecedor3">Fornecedor 3</option>
+                  <option value="Fornecedor4">Fornecedor 4</option>
+                </select>
+                <button
+                  type="button"
+                  className={style.buttonAdd}
+                  onClick={() => setAddForn(!addForn)}
+                >
+                  {addForn ? "Cancelar" : "Adicionar +"}
+                </button>
+              </div>
+
+              {addForn && (
+                <AnimatePresence>
+                  <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={dropdownVariants}
+                    className={style.inputsCad}
+                  >
+                    <input
+                      className={style.inputAdd}
+                      type="text"
+                      placeholder="Nome do Fornecedor"
+                      {...register("SupplierName", { required: true })}
+                    />
+                    <Controller
+                      name="SupplierNumber"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <PhoneInput
+                          {...field}
+                          country="BR"
+                          placeholder="Número do Fornecedor"
+                          onChange={(value) => field.onChange(value)}
+                          inputClass={style.inputAdd}
+                        />
+                      )}
+                    />
+                    <input
+                      className={style.inputAdd}
+                      type="text"
+                      placeholder="Endereço"
+                      {...register("SupplierAddress", { required: true })}
+                    />
+                    <input
+                      className={style.inputAdd}
+                      type="email"
+                      placeholder="Email"
+                      {...register("SupplierEmail", { required: true })}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              )}
+            </div>
+
+            <div className={style.drop}>
+              {" "}
+              <div className={style.dropzoneBox}>
+                <p>Clique para fazer upload ou arraste e solte</p>
+
+                <div
+                  className={`${style.dropzoneArea} ${
+                    isDragOver ? style.dropzoneOver : ""
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <div className={style.fileUploadIcon}>
+                    <AiOutlineCloudUpload />
                   </div>
-                  <div className={style.pQuant}>
-                    <p>Ao chegar nessa quantidade deverá repor no estoque</p>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    required
+                    id="uploadFile"
+                    name="uploadedFile"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                  <div className={style.fileInfo}>
+                    <p>
+                      {selectedFile
+                        ? `${selectedFile.name}, ${(
+                            selectedFile.size / 1024
+                          ).toFixed(2)} KB`
+                        : "Nenhum arquivo selecionado"}
+                    </p>
                   </div>
                 </div>
-                <div className={style.actions1}>
-                  <button className={style.button} id="button-back-counter">
-                    <IoIosArrowBack className={style.Arrowicon} />
-                  </button>
-                  <h1 className={style.counter} id="counter">
-                    000
-                  </h1>
-                  <button className={style.button} id="button-forward-counter">
-                    <IoIosArrowForward className={style.Arrowicon} />
-                  </button>
+
+                <div className={style.dropzoneDescription}>
+                  <span>Tamanho máximo: 25MB</span>
+                  <span>JPEG, JPG e PNG</span>
+                </div>
+
+                <div className={style.dropzoneActions}>
+                  {/* <div className={style.actionButtons}>
+                    <button type="reset">Cancelar</button>
+                    <button id="submitButton" type="submit">
+                      Salvar
+                    </button>
+                  </div> */}
                 </div>
               </div>
-              <div className={style.buttonsCad}>
-                <div className={style.buttonCad1}>
-                  <button className={style.buttonSalveCad} type="submit">
-                    Salvar
-                  </button>
+            </div>
+
+            <div className={style.custProd}>
+              <h2>Custo do produto</h2>
+              <Controller
+                name="Price"
+                control={control}
+                rules={{
+                  required: "Preço é obrigatório",
+                  validate: (value) => {
+                    const numValue = parseFloat(value);
+                    if (isNaN(numValue) || numValue <= 0) {
+                      return "Digite um valor válido maior que zero";
+                    }
+                    return true;
+                  },
+                }}
+                render={({
+                  field: { onChange, value, name },
+                  fieldState: { error },
+                }) => (
+                  <CurrencyInput
+                    name={name}
+                    placeholder="R$ 0,00"
+                    decimalsLimit={2}
+                    decimalScale={2}
+                    decimalSeparator=","
+                    groupSeparator="."
+                    prefix="R$ "
+                    onValueChange={(value) => onChange(value)}
+                    value={value === 0 ? "" : value}
+                    className={`${style.inputPrice} ${error ? "error" : ""}`}
+                  />
+                )}
+              />
+              <h2>Preço final</h2>
+              <Controller
+                name="Price1"
+                control={control}
+                rules={{
+                  required: "Preço é obrigatório",
+                  validate: (value) => {
+                    const numValue = parseFloat(value);
+                    if (isNaN(numValue) || numValue <= 0) {
+                      return "Digite um valor válido maior que zero";
+                    }
+                    return true;
+                  },
+                }}
+                render={({
+                  field: { onChange, value, name },
+                  fieldState: { error },
+                }) => (
+                  <CurrencyInput
+                    name={name}
+                    placeholder="R$ 0,00"
+                    decimalsLimit={2}
+                    decimalScale={2}
+                    decimalSeparator=","
+                    groupSeparator="."
+                    prefix="R$ "
+                    onValueChange={(value) => onChange(value)}
+                    value={value === 0 ? "" : value}
+                    className={`${style.inputPrice} ${error ? "error" : ""}`}
+                  />
+                )}
+              />
+              <h2>Lucro</h2>
+              <input
+                type="text"
+                disabled
+                placeholder="R$ 0,00"
+                className={style.inputPrice}
+              />
+            </div>
+
+            {/* Estoque */}
+            <div className={style.linha} />
+            <div className={style.quantStock}>
+              <div className={style.containerTitleQuant}>
+                <div className={style.titleQuant}>
+                  <h2>Quantidade em estoque</h2>
                 </div>
-                <div className={style.buttonCad1}>
-                  <button className={style.buttonDeleteCad}> Excluir</button>
+                <div className={style.pQuant}>
+                  <p>Informe o estoque da sua MEI</p>
                 </div>
+              </div>
+              <div className={style.actions1}>
+                <button
+                  type="button"
+                  className={style.button}
+                  onClick={() =>
+                    handleCounterChange(
+                      setStockQuantity,
+                      "StockQuantity",
+                      stockQuantity - 1
+                    )
+                  }
+                >
+                  <IoIosArrowBack className={style.Arrowicon} />
+                </button>
+                <h1 className={style.counter}>{stockQuantity}</h1>
+                <button
+                  type="button"
+                  className={style.button}
+                  onClick={() =>
+                    handleCounterChange(
+                      setStockQuantity,
+                      "StockQuantity",
+                      stockQuantity + 1
+                    )
+                  }
+                >
+                  <IoIosArrowForward className={style.Arrowicon} />
+                </button>
+              </div>
+            </div>
+
+            <div className={style.linha} />
+            <div className={style.quantStock}>
+              <div className={style.containerTitleQuant}>
+                <div className={style.titleQuant}>
+                  <h2>Quantidade mínima para comprar mais</h2>
+                </div>
+                <div className={style.pQuant}>
+                  <p>Ao chegar nessa quantidade deverá repor no estoque</p>
+                </div>
+              </div>
+              <div className={style.actions1}>
+                <button
+                  type="button"
+                  className={style.button}
+                  onClick={() =>
+                    handleCounterChange(
+                      setMinQuantity,
+                      "MinQuantity",
+                      minQuantity - 1
+                    )
+                  }
+                >
+                  <IoIosArrowBack className={style.Arrowicon} />
+                </button>
+                <h1 className={style.counter}>{minQuantity}</h1>
+                <button
+                  type="button"
+                  className={style.button}
+                  onClick={() =>
+                    handleCounterChange(
+                      setMinQuantity,
+                      "MinQuantity",
+                      minQuantity + 1
+                    )
+                  }
+                >
+                  <IoIosArrowForward className={style.Arrowicon} />
+                </button>
+              </div>
+            </div>
+
+            {/* Botões */}
+            <div className={style.buttonsCad}>
+              <div className={style.buttonCad1}>
+                <button className={style.buttonSalveCad} type="submit">
+                  Salvar
+                </button>
+              </div>
+              <div className={style.buttonCad1}>
+                <button
+                  type="button"
+                  className={style.buttonDeleteCad}
+                  onClick={() => {
+                    reset();
+                    setStockQuantity(0);
+                    setMinQuantity(0);
+                  }}
+                >
+                  Excluir
+                </button>
               </div>
             </div>
           </form>
