@@ -52,7 +52,6 @@ const {data} = await supabase
     .select();
 
   if (error) throw new Error(error.message);
-  console.log("Imagem enviada com sucesso:", publicData.publicUrl);
-  return data
+  return data;
 
   }

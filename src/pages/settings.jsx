@@ -7,6 +7,7 @@ import {
   setTheme,
   setColorBlindness,
   toggleBlockedResource,
+  userData,
 } from "../redux/User/slice";
 import S from "./../styles/settings.module.css";
 import { IoHelpCircleOutline } from "react-icons/io5";
@@ -54,28 +55,35 @@ export default function Settings() {
 
   // updateinfos agora aceita um objeto opcional para sobrescrever campos
   const updateinfos = async (override = {}) => {
-    try {
-      const resposta = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/update`,
-        {
-          uuid: profileinfo.uuid,
-          companyName: companyName,
-          ownerName: ownerName,
-          color: override.color ?? theme,
-          accessibility: override.accessibility ?? colorBlindness,
-        }
-      );
+  try {
+    const resposta = await axios.post(
+      `${import.meta.env.VITE_API_URL}/user/update`,
+      {
+        uuid: profileinfo.uuid,
+        companyName: companyName,
+        ownerName: ownerName,
+        color: override.color ?? theme,
+        accessibility: override.accessibility ?? colorBlindness,
+      }
+    );
 
-      setCompanyName(resposta.data[0].company_name);
-      setOwnerName(resposta.data[0].owner_name);
-      dispatch(setTheme(resposta.data[0].color));
-      dispatch(setColorBlindness(resposta.data[0].accessibility));
-      console.log(resposta.data[0]);
-    } catch (err) {
-      alert(err.response?.data?.error || "Erro ao atualizar informações");
-    }
-  };
+    const updatedUser = resposta.data[0];
 
+    setCompanyName(updatedUser.company_name);
+    setOwnerName(updatedUser.owner_name);
+
+    // Atualiza todo o userData no Redux
+    dispatch(userData(updatedUser));
+
+    // Mantém a atualização individual também, caso seja necessário
+    dispatch(setTheme(updatedUser.color));
+    dispatch(setColorBlindness(updatedUser.accessibility));
+
+    console.log(updatedUser);
+  } catch (err) {
+    alert(err.response?.data?.error || "Erro ao atualizar informações");
+}
+  }
   useEffect(() => {
     dispatch(settings());
   }, [dispatch]);
