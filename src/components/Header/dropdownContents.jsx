@@ -111,7 +111,9 @@ export function ProfileContent() {
   const [dropdownContributors, setDropdownContributors] = useState(false);
   const { logout } = useAuth();
   const profileinfo = useSelector((state) => state.userReducer.userData);
-
+const colorBlindness = useSelector(
+    (state) => state.userReducer.colorBlindness
+  );
   async function logoutuser() {
     try {
        await logout();
@@ -168,24 +170,20 @@ export function ProfileContent() {
             <h1>Conta</h1>
             <div className={S.modalContainerInfo}>
               <p>Nome da empresa:</p>
-              <input type="text" disabled value="nome da empresa" />
+              <input type="text" disabled value= {profileinfo.company_name} />
             </div>
             <div className={S.modalContainerInfo}>
               <p>Email da empresa:</p>
-              <input type="email" disabled value="empresa@gmail.com" />
-            </div>
-            <div className={S.modalContainerInfo}>
-              <p>Cor tema:</p>
-              <input type="text" disabled value="Branco e Azul" />
+              <input type="email" disabled value={profileinfo.email} />
             </div>
             <div className={S.modalContainerInfo}>
               <p>Opção de acessibilidade:</p>
-              <input type="text" disabled value="Padrão" />
+              <input type="text" disabled value={colorBlindness}/>
             </div>
             <div className={S.modalContainerInfo}>
               <p>Logo da empresa:</p>
               <div className={S.modalContainerImg}>
-                <img src={Logo} alt="Sua Logo em miniatura" />
+                <img src={profileinfo.logo} alt="Sua Logo em miniatura" />
               </div>
             </div>
             <div className={S.modalButtons}>

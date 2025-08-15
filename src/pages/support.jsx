@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { useEffect, useState } from "react";
 import {
@@ -14,6 +14,7 @@ import { IoIosSend } from "react-icons/io";
 
 export function Support() {
   const [isMessageDivActive, setIsMessageDivActive] = useState(false);
+  const profileinfo = useSelector((state) => state.userReducer.userData);
   const {
     register,
     handleSubmit,
@@ -185,22 +186,22 @@ export function Support() {
                     <label className={S.label}>Nome</label>
                     <input
                       type="text"
-                      placeholder="Seu nome"
+                      disabled
                       className={`${S.input} ${
                         errors.name ? S.errorInput : ""
                       }`}
-                      {...register("name", { required: true, maxLength: 80 })}
+                     value={profileinfo.company_name}
                     />
                   </div>
                   <div className={S.emailInput}>
                     <label className={S.label}>E-mail</label>
                     <input
                       type="email"
-                      placeholder="seu.email@exemplo.com"
+                      disabled
                       className={`${S.input} ${
                         errors.email ? S.errorInput : ""
                       }`}
-                      {...register("email", { required: true, maxLength: 100 })}
+                      value= {profileinfo.email}
                     />
                   </div>
                 </div>
