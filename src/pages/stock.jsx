@@ -16,6 +16,8 @@ import Modal from "../components/Modal/Modal";
 import Dropzone from "../components/Dropzone/Dropzone";
 import CurrencyInput from "react-currency-input-field";
 import PhoneInput from "react-phone-number-input/input";
+import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Stock() {
   const dispatch = useDispatch();
@@ -32,28 +34,55 @@ export default function Stock() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalBigOpen, setModalBigOpen] = useState(false);
+  const [addForn, setAddForn] = useState(false);
 
-    const onSubmit = async (data) => {
-  try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/stock/createStock`,
-      {
-        quantity_of_product: data.quantity_of_product,
-        product_id: data.product_id,
-        userId: data.userId,
+  const dropdownVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.95,
+      y: -10,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.95,
+      y: -10,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/stock/createStock`,
+        {
+          quantity_of_product: data.quantity_of_product,
+          product_id: data.product_id,
+          userId: data.userId,
+        }
+      );
+
+      if (response.status === 201) {
+        addReset();
+        fetchData();
       }
-    );
-
-    if (response.status === 201) {
-      addReset();
-      fetchData();
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Erro ao adicionar produto";
+      console.error("Erro ao adicionar produto:", errorMessage);
     }
-  } catch (error) {
-    const errorMessage =
-      error.response?.data?.message || "Erro ao adicionar produto";
-    console.error("Erro ao adicionar produto:", errorMessage);
-  }
-};
+  };
 
   return (
     <>
@@ -243,12 +272,10 @@ export default function Stock() {
                   <span className={style.ModalTxt}> 000 </span>
                 </h3>
                 <h3 className={style.ModalTitle}>
-                  Preço:{" "}
-                  <span className={style.ModalTxt}>R$ 000 </span>
+                  Preço: <span className={style.ModalTxt}>R$ 000 </span>
                 </h3>
                 <h3 className={style.ModalTitle}>
-                  Lucro:{" "}
-                  <span className={style.ModalTxt}>R$ 000 </span>
+                  Lucro: <span className={style.ModalTxt}>R$ 000 </span>
                 </h3>
               </div>
             </div>
@@ -284,189 +311,219 @@ export default function Stock() {
           stock={true}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <div className={style.cadProd}>
-              <div className={style.titleModal}>
-                <h1>Cadastrar Produto</h1>
-              </div>
+            <div>
+              <div className={style.cadProd}>
+                <div className={style.titleModal}>
+                  <h1>Cadastrar Produto</h1>
+                </div>
 
-              <div className={style.inputsCad}>
-                <input
-                  className={style.inputAdd}
-                  type="text"
-                  placeholder="Nome do produto"
-                  {...register("ProductName", { required: true })}
-                />
-                <input
-                  className={style.inputAdd}
-                  type="number"
-                  placeholder="Quatidade Fixa"
-                  {...register("FixedQuantity", { required: true })}
-                />
-                <input
-                  className={style.inputAdd}
-                  type="text"
-                  placeholder="Descrição"
-                  {...register("Description", { required: true })}
-                />
-                <input
-                  className={style.inputAdd}
-                  type="text"
-                  placeholder="Categoria"
-                  {...register("Category", { required: true })}
-                />
-              </div>
-            </div>
-            <div className={style.cadForn}>
-              <div className={style.containerFornTitle}>
-                <div className={style.fornTitle}>
-                  <h1>Fornecedor</h1>
-                </div>
-                <div className={style.fornOption}>
-                  <p>opcional</p>
+                <div className={style.inputsCad}>
+                  <input
+                    className={style.inputAdd}
+                    type="text"
+                    placeholder="Nome do produto"
+                    {...register("ProductName", { required: true })}
+                  />
+                  <input
+                    className={style.inputAdd}
+                    type="number"
+                    placeholder="Quatidade Fixa"
+                    {...register("FixedQuantity", { required: true })}
+                  />
+                  <input
+                    className={style.inputAdd}
+                    type="text"
+                    placeholder="Descrição"
+                    {...register("Description", { required: true })}
+                  />
+                  <input
+                    className={style.inputAdd}
+                    type="text"
+                    placeholder="Categoria"
+                    {...register("Category", { required: true })}
+                  />
                 </div>
               </div>
-              <div className={style.inputsCad}>
-                <input
-                  className={style.inputAdd}
-                  type="text"
-                  placeholder="Nome do Fornecedor"
-                  {...register("SupplierName", { required: true })}
-                />
-                {/* <input
+              <div className={style.cadForn}>
+                <div className={style.containerFornTitle}>
+                  <div className={style.fornTitle}>
+                    <h1>Fornecedor</h1>
+                  </div>
+                  <div className={style.fornOption}>
+                    <p>opcional</p>
+                  </div>
+                </div>
+                <div className={style.selectForn}>
+                  <select
+                    className={style.select}
+                    {...register("Supplier")}
+                    disabled={addForn}
+                  >
+                    <option value="Fornecedor1">Fornecedor 1</option>
+                    <option value="Fornecedor2">Fornecedor 2</option>
+                    <option value="Fornecedor3">Fornecedor 3</option>
+                    <option value="Fornecedor4">Fornecedor 4</option>
+                  </select>
+                  <button
+                    className={style.buttonAdd}
+                    onClick={() => setAddForn(!addForn)}
+                  >
+                    {addForn ? "Cancelar" : "Adicionar +"}
+                  </button>
+                </div>
+                {addForn && (
+                  <AnimatePresence>
+                    <motion.div
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={dropdownVariants}
+                      className={style.inputsCad}
+                    >
+                      <input
+                        className={style.inputAdd}
+                        type="text"
+                        placeholder="Nome do Fornecedor"
+                        {...register("SupplierName", { required: true })}
+                      />
+                      {/* <input
                   className={style.inputAdd}
                   type="text"
                   placeholder="Número do Fornecedor"
                   {...register("SupplierNumber", { required: true })}
                 /> */}
-                <PhoneInput className={style.inputAdd} country="BR" {...register("SupplierNumber", { required: true })} placeholder="Número do Fornecedor" />
+                      <PhoneInput
+                        className={style.inputAdd}
+                        country="BR"
+                        {...register("SupplierNumber", { required: true })}
+                        placeholder="Número do Fornecedor"
+                      />
 
-                <input
-                  className={style.inputAdd}
-                  type="text"
-                  placeholder="Endereço"
-                  {...register("SupplierAddress", { required: true })}
-                />
-                <input
-                  className={style.inputAdd}
-                  type="text"
-                  placeholder="Email"
-                  {...register("SupplierEmail", { required: true })}
-                />
-              </div>
-            </div>
-            <div className={style.drop}>
-              <Dropzone />
-            </div>
-            <div className={style.custProd}>
-              <h2>Custo do produto</h2>
-              <Controller
-                name="Price"
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value, name } }) => (
-                  <CurrencyInput
-                    id="price-input"
-                    name={name}
-                    placeholder="R$ 0,00"
-                    decimalsLimit={2}
-                    decimalScale={2}
-                    decimalSeparator=","
-                    groupSeparator="."
-                    prefix="R$ "
-                    onValueChange={(value) => onChange(value)}
-                    value={value === 0 ? "" : value}
-                    className={style.inputPrice}
-                  />
+                      <input
+                        className={style.inputAdd}
+                        type="text"
+                        placeholder="Endereço"
+                        {...register("SupplierAddress", { required: true })}
+                      />
+                      <input
+                        className={style.inputAdd}
+                        type="text"
+                        placeholder="Email"
+                        {...register("SupplierEmail", { required: true })}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
                 )}
-              />
-              <h2>Preço final</h2>
-              <Controller
-                name="Price1"
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value1, name } }) => (
-                  <CurrencyInput
-                    id="price-input1"
-                    name={name}
-                    placeholder="R$ 0,00"
-                    decimalsLimit={2}
-                    decimalScale={2}
-                    decimalSeparator=","
-                    groupSeparator="."
-                    prefix="R$ "
-                    onValueChange={(value1) => onChange(value1)}
-                    value={value1 === 0 ? "" : value1}
-                    className={style.inputPrice}
-                  />
-                )}
-              />
-              <h2>Lucro</h2>
-              <input
-                type="text"
-                disabled
-                placeholder="R$ 0,00"
-                className={style.inputPrice}
-              />
-            </div>
-            <div className={style.linha} />
-            <div className={style.quantStock}>
-              <div className={style.containerTitleQuant}>
-                <div className={style.titleQuant}>
-                  <h2>Quantidade em estoque</h2>
+              </div>
+              <div className={style.drop}>
+                <Dropzone />
+              </div>
+              <div className={style.custProd}>
+                <h2>Custo do produto</h2>
+                <Controller
+                  name="Price"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value, name } }) => (
+                    <CurrencyInput
+                      id="price-input"
+                      name={name}
+                      placeholder="R$ 0,00"
+                      decimalsLimit={2}
+                      decimalScale={2}
+                      decimalSeparator=","
+                      groupSeparator="."
+                      prefix="R$ "
+                      onValueChange={(value) => onChange(value)}
+                      value={value === 0 ? "" : value}
+                      className={style.inputPrice}
+                    />
+                  )}
+                />
+                <h2>Preço final</h2>
+                <Controller
+                  name="Price1"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value1, name } }) => (
+                    <CurrencyInput
+                      id="price-input1"
+                      name={name}
+                      placeholder="R$ 0,00"
+                      decimalsLimit={2}
+                      decimalScale={2}
+                      decimalSeparator=","
+                      groupSeparator="."
+                      prefix="R$ "
+                      onValueChange={(value1) => onChange(value1)}
+                      value={value1 === 0 ? "" : value1}
+                      className={style.inputPrice}
+                    />
+                  )}
+                />
+                <h2>Lucro</h2>
+                <input
+                  type="text"
+                  disabled
+                  placeholder="R$ 0,00"
+                  className={style.inputPrice}
+                />
+              </div>
+              <div className={style.linha} />
+              <div className={style.quantStock}>
+                <div className={style.containerTitleQuant}>
+                  <div className={style.titleQuant}>
+                    <h2>Quantidade em estoque</h2>
+                  </div>
+                  <div className={style.pQuant}>
+                    <p>informe o estoque da sua MEI</p>
+                  </div>
                 </div>
-                <div className={style.pQuant}>
-                  <p>informe o estoque da sua MEI</p>
+                <div className={style.actions1}>
+                  <button className={style.button} id="button-back-counter">
+                    <IoIosArrowBack className={style.Arrowicon} />
+                  </button>
+                  <h1 className={style.counter} id="counter">
+                    000
+                  </h1>
+                  <button className={style.button} id="button-forward-counter">
+                    <IoIosArrowForward className={style.Arrowicon} />
+                  </button>
                 </div>
               </div>
-              <div className={style.actions1}>
-                <button className={style.button} id="button-back-counter">
-                  <IoIosArrowBack className={style.Arrowicon} />
-                </button>
-                <h1 className={style.counter} id="counter">
-                  000
-                </h1>
-                <button className={style.button} id="button-forward-counter">
-                  <IoIosArrowForward className={style.Arrowicon} />
-                </button>
-              </div>
-            </div>
-            <div className={style.linha} />
-            <div className={style.quantStock}>
-              <div className={style.containerTitleQuant}>
-                <div className={style.titleQuant}>
-                  <h2>Quantidade minima para comprar mais</h2>
+              <div className={style.linha} />
+              <div className={style.quantStock}>
+                <div className={style.containerTitleQuant}>
+                  <div className={style.titleQuant}>
+                    <h2>Quantidade minima para comprar mais</h2>
+                  </div>
+                  <div className={style.pQuant}>
+                    <p>Ao chegar nessa quantidade deverá repor no estoque</p>
+                  </div>
                 </div>
-                <div className={style.pQuant}>
-                  <p>Ao chegar nessa quantidade deverá repor no estoque</p>
+                <div className={style.actions1}>
+                  <button className={style.button} id="button-back-counter">
+                    <IoIosArrowBack className={style.Arrowicon} />
+                  </button>
+                  <h1 className={style.counter} id="counter">
+                    000
+                  </h1>
+                  <button className={style.button} id="button-forward-counter">
+                    <IoIosArrowForward className={style.Arrowicon} />
+                  </button>
                 </div>
               </div>
-              <div className={style.actions1}>
-                <button className={style.button} id="button-back-counter">
-                  <IoIosArrowBack className={style.Arrowicon} />
-                </button>
-                <h1 className={style.counter} id="counter">
-                  000
-                </h1>
-                <button className={style.button} id="button-forward-counter">
-                  <IoIosArrowForward className={style.Arrowicon} />
-                </button>
+              <div className={style.buttonsCad}>
+                <div className={style.buttonCad1}>
+                  <button className={style.buttonSalveCad} type="submit">
+                    Salvar
+                  </button>
+                </div>
+                <div className={style.buttonCad1}>
+                  <button className={style.buttonDeleteCad}> Excluir</button>
+                </div>
               </div>
             </div>
-            <div className={style.buttonsCad}>
-              <div className={style.buttonCad1}>
-                <button
-                  className={style.buttonSalveCad}
-                  type="submit"
-                >
-                  Salvar
-                </button>
-              </div>
-              <div className={style.buttonCad1}>
-                <button className={style.buttonDeleteCad}> Excluir</button>
-              </div>
-            </div>
-          </div>
           </form>
         </Modal>
       </DefaultLayout>

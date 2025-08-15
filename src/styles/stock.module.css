@@ -123,59 +123,59 @@
   border: 2px solid black;
 }
 
-.modalContent{
+.modalContent {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 30px;
 }
 
-.modalLeft{
+.modalLeft {
   width: 50%;
   margin-right: 100px;
 }
 
-.modalRight{
+.modalRight {
   width: 50%;
 }
 
-.ModalInfos{
+.ModalInfos {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  line-height: 30px ;
+  line-height: 30px;
   margin-bottom: 3%;
 }
 
-.ModalInfos h1{
+.ModalInfos h1 {
   font-size: 18pt;
   font-family: "Coolvetica Rg";
 }
 
-.ModalTitle{
+.ModalTitle {
   font-weight: 400;
   font-size: 16pt;
 }
 
-.ModalTxt{
+.ModalTxt {
   font-size: 14pt;
 }
 
-.ModalForne{
+.ModalForne {
   margin-top: 3%;
   margin-bottom: 3%;
 }
 
-.ModalForne h1{
+.ModalForne h1 {
   font-size: 18pt;
   font-family: "Coolvetica Rg";
 }
 
-.ModalQuanti{
+.ModalQuanti {
   margin-top: 2%;
 }
 
-.modalImages{
+.modalImages {
   width: 100%;
   height: 250px;
   border-radius: 10px;
@@ -183,41 +183,41 @@
   margin: 5%;
 }
 
-.buttons{
+.buttons {
   display: flex;
   justify-content: space-around;
   margin-top: 6%;
 }
 
-.buttonEdit{
+.buttonEdit {
   border-radius: 5px;
   padding: 2%;
   transition: 1s all;
   color: white;
-  background-color:  rgb(70, 135, 243);
+  background-color: rgb(70, 135, 243);
   width: 100px;
 }
 
-.buttonEdit:hover{
+.buttonEdit:hover {
   transform: scale(1.1);
   font-weight: 400;
 }
 
-.buttonDelete{
+.buttonDelete {
   border-radius: 5px;
   padding: 2%;
   transition: 1s all;
   background-color: red;
-  color:white;
+  color: white;
   width: 100px;
 }
 
-.buttonDelete:hover{
-   transform: scale(1.1);
+.buttonDelete:hover {
+  transform: scale(1.1);
   font-weight: 400;
 }
 
-.titleModal{
+.titleModal {
   margin: 1%;
   font-family: "Coolvetica Rg";
   font-size: 20pt;
@@ -225,16 +225,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
-.inputsCad{
+.inputsCad {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.inputAdd{
+.inputAdd {
   background-color: #d9d9d9;
   margin: 1%;
   line-height: 200%;
@@ -242,17 +241,17 @@
   border-radius: 10px;
 }
 
-.inputAdd::placeholder{
+.inputAdd::placeholder {
   color: black;
 }
 
-.containerFornTitle{
+.containerFornTitle {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.fornTitle{
+.fornTitle {
   margin: 1%;
   font-family: "Coolvetica Rg";
   font-size: 20pt;
@@ -261,7 +260,7 @@
   margin: 1.5%;
 }
 
-.drop{
+.drop {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -270,18 +269,18 @@
   width: 100%;
 }
 
-.custProd{
+.custProd {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.custProd h2{
+.custProd h2 {
   font-size: 12pt;
   font-weight: bold;
 }
 
-.inputPrice{
+.inputPrice {
   margin: 1%;
   background-color: #d9d9d9;
   padding: 0.6%;
@@ -289,7 +288,7 @@
   border-radius: 6px;
 }
 
-.linha{
+.linha {
   height: 2px;
   margin: 2%;
   width: 100%;
@@ -300,13 +299,13 @@
   );
 }
 
-.quantStock{
+.quantStock {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
 
-.conatinerTitleQuant{
+.conatinerTitleQuant {
   display: flex;
   align-items: center;
 }
@@ -318,13 +317,13 @@
   gap: 20px;
 }
 
-.titleQuant{
+.titleQuant {
   font-size: 14pt;
   font-weight: bold;
 }
 
-.pQuant{
-  font-size:10pt;
+.pQuant {
+  font-size: 10pt;
 }
 
 .buttonsCad {
@@ -367,7 +366,29 @@
   transform: scale(1.1);
   font-weight: 400;
 }
-
+.selectForn {
+  display: flex;
+}
+.selectForn select {
+  width: 80%;
+  margin: 1%;
+  padding: 0.8%;
+  line-height: 200%;
+  border-radius: 10px;
+  background-color: rgb(var(--color-background-secondary));
+  border: none;
+}
+.selectForn button {
+  text-align: center;
+  width: 20%;
+  margin: 1%;
+  padding: 0.8%;
+  border-radius: 10px;
+  background-color: rgb(var(--color-primary));
+  color: white;
+  border: none;
+  cursor: pointer;
+}
 @media (max-width: 768px) {
   .containerCards {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -378,19 +399,20 @@
     align-items: center;
   }
 
-  .modalLeft, .modalRight {
+  .modalLeft,
+  .modalRight {
     width: 100%;
     margin-right: 0;
   }
 
-  .inputsCad{
+  .inputsCad {
     width: 90%;
   }
 
   .drop {
     width: 90%;
     margin-top: 5%;
-    margin-bottom: 5% ;
+    margin-bottom: 5%;
   }
 
   .custProd {
@@ -402,11 +424,11 @@
     width: 90%;
   }
 
-  .quantStock{
+  .quantStock {
     width: 90%;
   }
 
-  .modalImages{
+  .modalImages {
     width: 90%;
     height: auto;
   }
@@ -414,5 +436,4 @@
   .line {
     width: 90%;
   }
-
 }
