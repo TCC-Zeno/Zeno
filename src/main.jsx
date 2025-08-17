@@ -22,6 +22,7 @@ import NotFound from "./pages/notFoundPage";
 import PageTransition from "./components/PageTransition/PageTransition";
 import { Support } from "./pages/support";
 import { AuthProvider } from "./contexts/AuthContext";
+import { TermsPage } from "./pages/terms";
 
 const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(
@@ -46,6 +47,7 @@ ReactDOM.createRoot(root).render(
               <Route element={<Tasks />} path="/tasks" />
               <Route element={<Report />} path="/report" />
               <Route element={<Service />} path="/service" />
+              <Route element={<TermsPage />} path="/terms" />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

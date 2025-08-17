@@ -1,20 +1,14 @@
 import S from "./signIn.module.css";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import {
-  login,
-  setTheme,
-  userData,
-  setColorBlindness,
-} from "../../redux/User/slice";
+import { setTheme, userData, setColorBlindness } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useState } from "react";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import Modal from "../Modal/Modal";
 import { useAuth } from "../../contexts/AuthContext";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignIn() {
   const { login } = useAuth();
@@ -22,6 +16,7 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingForgot, setIsLoadingForgot] = useState(false);
   const [modalForgotPasswordOpen, setModalForgotPasswordOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState({
     user: "",
     password: "",
@@ -44,8 +39,6 @@ export default function SignIn() {
     formState: { errors: errorsForgot },
     reset: resetForgot,
   } = useForm();
-
-  
 
   const onSubmitLogin = async (data) => {
     setIsLoading(true);
@@ -115,22 +108,34 @@ export default function SignIn() {
             autoComplete="email"
             disabled={isLoading}
           />
-          <input
-            id="input-password"
-            type="password"
-            placeholder="Senha"
-            {...registerLogin("password", { required: true })}
-            className={
-              error.password || errorsLogin.password ? S.errorInput : ""
-            }
-            autoComplete="current-password"
-            disabled={isLoading}
-          />
+          <div className={S.passwordWrapper}>
+            <input
+              id="input-password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Senha"
+              {...registerLogin("password", { required: true })}
+              className={
+                error.password || errorsLogin.password ? S.errorInput : ""
+              }
+              autoComplete="current-password"
+              disabled={isLoading}
+            />
+            <button
+              type="button"
+              className={S.togglePassword}
+              onClick={() => setShowPassword((prev) => !prev)}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+
           <div className={S.errorContainer}>
             <ErrorMessage condition={error.user} message={error.user} />
             <ErrorMessage condition={error.server} message={error.server} />
             <ErrorMessage condition={error.password} message={error.password} />
           </div>
+
           <div className={S.forgotPasswordContainer}>
             <button
               type="button"

@@ -37,3 +37,7 @@ Acesse a nossa Landing Page para ter acesso ao sistema, por este [link](https://
 
 [![My Skills](https://skillicons.dev/icons?i=js)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 [![My Skills](https://skillicons.dev/icons?i=react)](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
+
+## Licença
+
+Este projeto está licenciado sob a [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).

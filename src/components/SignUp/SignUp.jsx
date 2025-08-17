@@ -1,9 +1,5 @@
 import S from "./signUp.module.css";
-import {
-  userData,
-  setTheme,
-  setColorBlindness,
-} from "../../redux/User/slice";
+import { userData, setTheme, setColorBlindness } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
@@ -13,9 +9,13 @@ import axios from "axios";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { Eye, EyeOff } from "lucide-react";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 export default function SignUp() {
-  const { login: authLogin } = useAuth(); 
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const { login: authLogin } = useAuth();
   const [error, setError] = useState({
     cnpjErr: "",
     user: "",
@@ -34,6 +34,7 @@ export default function SignUp() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     setError({
       cnpjErr: "",
       user: "",
@@ -74,8 +75,10 @@ export default function SignUp() {
           dispatch(userData(loginResult.user));
           dispatch(setTheme("blue"));
           dispatch(setColorBlindness("Padrão"));
+          setIsLoading(false);
           navigate("/dashboard");
         } else {
+          setIsLoading(false);
           throw new Error(
             loginResult.error || "Erro ao fazer login após cadastro"
           );
@@ -83,6 +86,7 @@ export default function SignUp() {
       }
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
       // Se erro, mostra mensagem
       if (err.status == 401) {
         setError({
@@ -149,15 +153,55 @@ export default function SignUp() {
             {...register("email", { required: true, min: 5, maxLength: 100 })}
             className={errors.email ? S.errorInput : ""}
           />
-          <input
+          {/* <input
             id="input-password"
             type="password"
             placeholder="Senha"
             autoComplete="new-password"
             {...register("password", { required: true })}
             className={error.password || errors.password ? S.errorInput : ""}
-          />
-          <input
+          /> */}
+          <div className={S.passwordWrapper}>
+            <input
+              id="input-password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Senha"
+              {...register("password", { required: true })}
+              className={error.password || errors.password ? S.errorInput : ""}
+              autoComplete="new-password"
+              disabled={isLoading}
+            />
+            <button
+              type="button"
+              className={S.togglePassword}
+              onClick={() => setShowPassword((prev) => !prev)}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+          <div className={S.passwordWrapper}>
+            <input
+              id="input-confirm-password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Confirmar senha"
+              {...register("confirmPassword", { required: true })}
+              className={
+                error.password || errors.confirmPassword ? S.errorInput : ""
+              }
+              autoComplete="new-password"
+              disabled={isLoading}
+            />
+            <button
+              type="button"
+              className={S.togglePassword}
+              onClick={() => setShowPassword((prev) => !prev)}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+          {/* <input
             id="input-confirm-password"
             type="password"
             placeholder="Confirmar senha"
@@ -166,14 +210,18 @@ export default function SignUp() {
             className={
               error.password || errors.confirmPassword ? S.errorInput : ""
             }
-          />
+          /> */}
           <ErrorMessage condition={error.cnpjErr} message={error.cnpjErr} />
           <ErrorMessage condition={error.password} message={error.password} />
           <ErrorMessage condition={error.server} message={error.server} />
           <ErrorMessage condition={error.user} message={error.user} />
 
           <div className={S.containerButton}>
-            <input id="btn-submit" type="submit" />
+            {isLoading ? (
+              <PropagateLoader />
+            ) : (
+              <input id="btn-submit" type="submit" value="Entrar" />
+            )}
           </div>
         </form>
       </div>
