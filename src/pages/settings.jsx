@@ -12,42 +12,52 @@ import {
 import S from "./../styles/settings.module.css";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import Modal from "../components/Modal/Modal";
-import { TbLock } from "react-icons/tb";
 import { RiKey2Line } from "react-icons/ri";
 import axios from "axios";
 
 export default function Settings() {
-
-  const [features, setFeatures] = useState({
-    service: false,
-    stock: false,
-    finance: false,
-    calendar: false,
-    task: false,
-  });
-
-  const handleFeatureChange = (e) => {
-    const { name, checked } = e.target;
-    setFeatures((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
-  };
-  const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
-  const [blockGuideOpen, setBlockGuideOpen] = useState(false);
-  const [modalBlockResourcesOpen, setModalBlockResourcesOpen] = useState(false);
-
   const colorBlindness = useSelector(
     (state) => state.userReducer.colorBlindness
   );
-  const theme = useSelector(
-    (state) => state.userReducer.theme
-  );
+  const theme = useSelector((state) => state.userReducer.theme);
   const blockedResources = useSelector(
     (state) => state.userReducer.blockedResources
   );
   const profileinfo = useSelector((state) => state.userReducer.userData);
   const dispatch = useDispatch();
+
+  // Inicializar features com base nos dados do Redux
+  const [features, setFeatures] = useState({
+    service: profileinfo?.features?.service ?? true,
+    stock: profileinfo?.features?.stock ?? true,
+    finance: profileinfo?.features?.finance ?? true,
+    calendar: profileinfo?.features?.calendar ?? true,
+    task: profileinfo?.features?.task ?? true,
+  });
+
+  const handleFeatureChange = async (e) => {
+    const { name, checked } = e.target;
+    setFeatures((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+
+    // Atualizar no banco de dados imediatamente
+    const updatedFeatures = {
+      ...features,
+      [name]: checked,
+    };
+
+    try {
+      await updateinfos({ features: updatedFeatures });
+    } catch (error) {
+      console.error("Erro ao atualizar features:", error);
+    }
+  };
+
+  const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
+  const [blockGuideOpen, setBlockGuideOpen] = useState(false);
+  const [modalBlockResourcesOpen, setModalBlockResourcesOpen] = useState(false);
 
   const [companyName, setCompanyName] = useState(
     profileinfo.company_name ?? ""
@@ -64,46 +74,57 @@ export default function Settings() {
     await updateinfos({ accessibility: value });
   };
 
-
   const handleBlockResource = (resource, blocked) => {
     dispatch(toggleBlockedResource({ resource, blocked }));
   };
 
   // updateinfos agora aceita um objeto opcional para sobrescrever campos
   const updateinfos = async (override = {}) => {
-  try {
-    const resposta = await axios.post(
-      `${import.meta.env.VITE_API_URL}/user/update`,
-      {
-        uuid: profileinfo.uuid,
-        companyName: companyName,
-        ownerName: ownerName,
-        color: override.color ?? theme,
-        accessibility: override.accessibility ?? colorBlindness,
-        features: features,
-      }
-    );
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/user/update`,
+        {
+          uuid: profileinfo.uuid,
+          companyName: companyName,
+          ownerName: ownerName,
+          color: override.color ?? theme,
+          accessibility: override.accessibility ?? colorBlindness,
+          features: override.features ?? features,
+        }
+      );
 
-    const updatedUser = resposta.data[0];
+      const updatedUser = resposta.data[0];
 
-    setCompanyName(updatedUser.company_name);
-    setOwnerName(updatedUser.owner_name);
+      setCompanyName(updatedUser.company_name);
+      setOwnerName(updatedUser.owner_name);
 
-    // Atualiza todo o userData no Redux
-    dispatch(userData(updatedUser));
+      // Atualiza todo o userData no Redux
+      dispatch(userData(updatedUser));
 
-    // Mantém a atualização individual também, caso seja necessário
-    dispatch(setTheme(updatedUser.color));
-    dispatch(setColorBlindness(updatedUser.accessibility));
+      // Mantém a atualização individual também, caso seja necessário
+      dispatch(setTheme(updatedUser.color));
+      dispatch(setColorBlindness(updatedUser.accessibility));
+    } catch (err) {
+      alert(err.response?.data?.error || "Erro ao atualizar informações");
+    }
+  };
 
-    console.log(updatedUser);
-  } catch (err) {
-    alert(err.response?.data?.error || "Erro ao atualizar informações");
-}
-  }
   useEffect(() => {
     dispatch(settings());
   }, [dispatch]);
+
+  // useEffect para atualizar features quando os dados do profileinfo mudarem
+  useEffect(() => {
+    if (profileinfo.uuid && profileinfo.features) {
+      setFeatures({
+        service: profileinfo.features.service ?? true,
+        stock: profileinfo.features.stock ?? true,
+        finance: profileinfo.features.finance ?? true,
+        calendar: profileinfo.features.calendar ?? true,
+        task: profileinfo.features.task ?? true,
+      });
+    }
+  }, [profileinfo.features]);
 
   useEffect(() => {
     if (profileinfo.uuid) {
@@ -114,19 +135,20 @@ export default function Settings() {
         dispatch(setColorBlindness(profileinfo.accessibility));
       }
 
-      updateinfos();
+      // Remover o updateinfos daqui para evitar chamadas desnecessárias
+      // updateinfos();
     }
   }, [
     profileinfo.uuid,
     profileinfo.color,
     profileinfo.accessibility,
-    features,
     dispatch,
   ]);
 
   useEffect(() => {
     console.log(features);
   }, [features]);
+
   // enviar o dado assim que for escolhido, já que o usuario pode querer mudar só uma coisa . By Vinicius
   return (
     <DefaultLayout>
@@ -343,7 +365,8 @@ export default function Settings() {
                     </div>
                   </div>
                 </div>
-                <h2>
+                {/* Triste não usar isso */}
+                {/* <h2>
                   Bloquear funções com senha
                   <button onClick={() => setBlockGuideOpen(true)}>
                     <IoHelpCircleOutline />
@@ -354,7 +377,7 @@ export default function Settings() {
                     <TbLock />
                     Bloquear
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -368,7 +391,7 @@ export default function Settings() {
         <Modal isOpen={blockGuideOpen} onClose={() => setBlockGuideOpen(false)}>
           Batata do block?
         </Modal>
-        <Modal
+        {/* <Modal
           isOpen={modalBlockResourcesOpen}
           onClose={() => setModalBlockResourcesOpen(false)}
         >
@@ -453,7 +476,7 @@ export default function Settings() {
               </div>
             </div>
           </div>
-        </Modal>
+        </Modal> */}
       </section>
     </DefaultLayout>
   );

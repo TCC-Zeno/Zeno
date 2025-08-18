@@ -5,10 +5,12 @@ import { report } from "../redux/Route/slice";
 import style from "./../styles/report.module.css";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import PuffLoader from "react-spinners/PuffLoader";
 import axios from "axios";
 
 export default function Report() {
   const profileinfo = useSelector((state) => state.userReducer.userData);
+  const [loading, setLoading] = useState(false);
   const [permissao, setPermissao] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -19,6 +21,7 @@ export default function Report() {
   const [dataArray, setDataArray] = useState([]);
 
   async function generateReport() {
+    setLoading(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/report/generateReport`,
@@ -38,11 +41,13 @@ export default function Report() {
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   }
   return (
     <>
-      <DefaultLayout>
+      <DefaultLayout loading={loading}>
         <div className={style.container}>
           {!permissao && (
             <>
@@ -147,7 +152,9 @@ export default function Report() {
                 )}
               </div>
               <div className={style.buttonContainer2}>
-                <button className={style.button2}>Atualizar Relatorio</button>
+                <button className={style.button2} onClick={generateReport}>
+                  Atualizar Relatorio
+                </button>
               </div>
             </div>
           )}

@@ -5,8 +5,18 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaYoutube } from "react-icons/fa6";
 import { VscGithubAlt } from "react-icons/vsc";
 import Logo from "../../assets/logo/LogoZeno_LogoPretoSFundo.png";
+import { useAuth } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 export function Footer() {
+  const { logout } = useAuth();
+  async function logoutuser() {
+    try {
+      await logout();
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <footer>
       <div className={style.container}>
@@ -18,9 +28,9 @@ export function Footer() {
             <a className={style.links} href="terms">
               Termos de Serviço
             </a>
-            <a className={style.links} href="about">
+            <Link className={style.links} to="/#aboutUs" onClick={logoutuser}>
               Sobre Nós
-            </a>
+            </Link>
           </div>
           <div className={style.icons}>
             <a href="https://facebook.com">

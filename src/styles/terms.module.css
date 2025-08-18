@@ -39,4 +39,203 @@
   .containerLogo img {
     width: 60px;
   }
+  .termsContent {
+  margin-top: 70px;
+}
+}
+
+.termsContent {
+  margin-top: 80px;
+}
+.titleContainer {
+  padding: 2rem;
+}
+.container {
+  min-height: 100vh;
+  background: rgb(var(--color-background-secondary));
+  padding: 2rem 1rem;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.lastUpdate {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+  font-weight: 300;
+}
+
+.intro {
+  background: #f8fafc;
+  padding: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.introText {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #4a5568;
+  margin: 0;
+  text-align: justify;
+}
+
+.section {
+  padding: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: black;
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgb(var(--color-primary));
+  display: inline-block;
+}
+
+.text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: black;
+  margin: 0 0 1rem 0;
+  text-align: justify;
+}
+
+.text:last-child {
+  margin-bottom: 0;
+}
+
+.list,
+.definitionList,
+.featureList,
+.ethicsList,
+.penaltyList {
+  margin: 1rem 0;
+  padding: 0;
+}
+
+.listItem,
+.definition,
+.feature,
+.ethicsItem,
+.penalty {
+  list-style: none;
+  padding: 0.75rem 0;
+  padding-left: 1rem;
+  margin: 0.5rem 0;
+  background: #f7fafc;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #353535;
+  position: relative;
+  text-align: justify;
+}
+
+.term {
+  color: black;
+  font-weight: 600;
+}
+
+.highlight {
+  color: rgb(var(--color-primary));
+  font-weight: 600;
+}
+
+.featureList .feature {
+  background: linear-gradient(90deg, #f0fff4 0%, #f7fafc 100%);
+}
+
+.ethicsList .ethicsItem {
+  background: linear-gradient(90deg, #fffaf0 0%, #f7fafc 100%);
+}
+
+.penaltyList .penalty {
+  background: linear-gradient(90deg, #fff5f5 0%, #f7fafc 100%);
+}
+
+
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem 0.5rem;
+  }
+
+  .content {
+    border-radius: 12px;
+    margin: 0;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .lastUpdate {
+    font-size: 1rem;
+  }
+
+  .section {
+    padding: 1.5rem;
+  }
+
+  .intro {
+    padding: 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.3rem;
+  }
+
+  .listItem,
+  .definition,
+  .feature,
+  .ethicsItem,
+  .penalty {
+    padding: 0.5rem 0 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .intro {
+    padding: 1rem;
+  }
+
+  .introText {
+    font-size: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.2rem;
+  }
 }

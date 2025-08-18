@@ -35,14 +35,11 @@ export async function createReport(context) {
   ${formattedContext}
   `;
 
-  console.log(prompt);
-
   try {
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
 
-    console.log(result);
     return text;
   } catch (err) {
     console.error(err);

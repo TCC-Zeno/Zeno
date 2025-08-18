@@ -4,8 +4,9 @@ import Header from "../../components/Header/Header";
 import { Navbar } from "../../components/Navbar/Navbar";
 import GuideUsers from "../GuideUsers/GuideUsers";
 import S from "./../../styles/default.module.css";
+import PuffLoader from "react-spinners/PuffLoader";
 
-export default function DefaultLayout({ children }) {
+export default function DefaultLayout({ children, loading }) {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
   return (
     <>
@@ -14,7 +15,13 @@ export default function DefaultLayout({ children }) {
         <main className={S.main}>
           <Header />
           <div className={rotaStatus == "support" ? S.contentMax : S.content}>
-            {children}
+            {loading ? (
+              <div className={S.loading}>
+                <PuffLoader loading={loading} />
+              </div>
+            ) : (
+              children
+            )}
           </div>
         </main>
         <footer className={S.footer}>

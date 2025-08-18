@@ -17,10 +17,12 @@ import { useSelector } from "react-redux";
 
 export function Navbar() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
+  const profileInfo = useSelector((state) => state.userReducer.userData);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    console.log("lala", profileInfo.features.stock);
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -32,7 +34,7 @@ export function Navbar() {
     return () => {
       window.removeEventListener("resize", checkIfMobile);
     };
-  }, []);
+  }, [profileInfo.features]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -73,77 +75,89 @@ export function Navbar() {
             <span>Inicio</span>
           </Link>
 
-          <Link
-            className={`${styles.nav_link} ${
-              rotaStatus === "stock" ? styles.active : ""
-            }`}
-            to="/stock"
-            onClick={closeMenu}
-            id="stock"
-          >
-            <GiCardboardBoxClosed className={styles.icons} />
-            <span>Estoque</span>
-          </Link>
+          {profileInfo.features.stock && (
+            <Link
+              className={`${styles.nav_link} ${
+                rotaStatus === "stock" ? styles.active : ""
+              }`}
+              to="/stock"
+              onClick={closeMenu}
+              id="stock"
+            >
+              <GiCardboardBoxClosed className={styles.icons} />
+              <span>Estoque</span>
+            </Link>
+          )}
 
-          <Link
-            className={`${styles.nav_link} ${
-              rotaStatus === "finance" ? styles.active : ""
-            }`}
-            to="/finance"
-            onClick={closeMenu}
-            id="finance"
-          >
-            <TbCoinFilled className={styles.icons} />
-            <span>Fluxo de caixa</span>
-          </Link>
+          {profileInfo.features.finance && (
+            <Link
+              className={`${styles.nav_link} ${
+                rotaStatus === "finance" ? styles.active : ""
+              }`}
+              to="/finance"
+              onClick={closeMenu}
+              id="finance"
+            >
+              <TbCoinFilled className={styles.icons} />
+              <span>Fluxo de caixa</span>
+            </Link>
+          )}
 
-          <Link
-            className={`${styles.nav_link} ${
-              rotaStatus === "calendar" ? styles.active : ""
-            }`}
-            to="/calendar"
-            onClick={closeMenu}
-            id="calendar"
-          >
-            <FaCalendarAlt className={styles.icons} />
-            <span>Agenda</span>
-          </Link>
+          {profileInfo.features.calendar && (
+            <Link
+              className={`${styles.nav_link} ${
+                rotaStatus === "calendar" ? styles.active : ""
+              }`}
+              to="/calendar"
+              onClick={closeMenu}
+              id="calendar"
+            >
+              <FaCalendarAlt className={styles.icons} />
+              <span>Agenda</span>
+            </Link>
+          )}
 
-          <Link
-            className={`${styles.nav_link} ${
-              rotaStatus === "task" ? styles.active : ""
-            }`}
-            to="/tasks"
-            onClick={closeMenu}
-            id="tasks"
-          >
-            <PiListChecksFill className={styles.icons} />
-            <span>Tarefas</span>
-          </Link>
+          {profileInfo.features.task && (
+            <Link
+              className={`${styles.nav_link} ${
+                rotaStatus === "task" ? styles.active : ""
+              }`}
+              to="/tasks"
+              onClick={closeMenu}
+              id="tasks"
+            >
+              <PiListChecksFill className={styles.icons} />
+              <span>Tarefas</span>
+            </Link>
+          )}
 
-          <Link
-            className={`${styles.nav_link} ${
-              rotaStatus === "report" ? styles.active : ""
-            }`}
-            to="/report"
-            onClick={closeMenu}
-            id="report"
-          >
-            <HiDocumentReport className={styles.icons} />
-            <span>Relatório</span>
-          </Link>
+          {profileInfo.features.stock && (
+            <Link
+              className={`${styles.nav_link} ${
+                rotaStatus === "report" ? styles.active : ""
+              }`}
+              to="/report"
+              onClick={closeMenu}
+              id="report"
+            >
+              <HiDocumentReport className={styles.icons} />
+              <span>Relatório</span>
+            </Link>
+          )}
 
-          <Link
-            className={`${styles.nav_link} ${
-              rotaStatus === "service" ? styles.active : ""
-            }`}
-            to="/service"
-            onClick={closeMenu}
-            id="service"
-          >
-            <MdHomeRepairService className={styles.icons} />
-            <span>Serviços</span>
-          </Link>
+          {profileInfo.features.service && (
+            <Link
+              className={`${styles.nav_link} ${
+                rotaStatus === "service" ? styles.active : ""
+              }`}
+              to="/service"
+              onClick={closeMenu}
+              id="service"
+            >
+              <MdHomeRepairService className={styles.icons} />
+              <span>Serviços</span>
+            </Link>
+          )}
 
           <Link
             className={`${styles.nav_link} ${

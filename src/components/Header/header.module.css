@@ -23,8 +23,9 @@
   align-items: center;
 }
 .containerLogo img {
-  width: 80px;
-  height: auto;
+  width: auto;
+  height: 70px;
+  object-fit: contain;
 }
 .containerIcons {
   display: flex;
@@ -117,10 +118,10 @@
 }
 
 .userPhoto img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: contain;
+  width: 70px;
+  height: 70px;
+  /* border-radius: 50%; */
+  object-fit: scale-down;
 }
 
 .userInfo {
