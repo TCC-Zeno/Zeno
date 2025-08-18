@@ -28,9 +28,19 @@ export const getFinanceID = async (uuid) => {
   const { data, error } = await supabase
     .from("finance")
     .select("*")
+    .eq("uuid", uuid);
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const getFinanceWithPeriod = async (uuid, periodStart, periodEnd) => {
+  const { data, error } = await supabase
+    .from("finance")
+    .select("*")
     .eq("uuid", uuid)
-
-
+    .gte("created_at", periodStart)
+    .lt("created_at", periodEnd);
   if (error) throw new Error(error.message);
   return data;
 };
@@ -39,19 +49,17 @@ export const getFinanceCategoria = async (uuid) => {
   const { data, error } = await supabase
     .from("category")
     .select("*")
-    .eq("uuid", uuid)
+    .eq("uuid", uuid);
 
   if (error) throw new Error(error.message);
   return data;
 };
 
 export const postFinanceCategoria = async (uuid, categoria) => {
-  const { data, error } = await supabase
-    .from("category")
-    .insert({
-      uuid,
-      categoria
-    })
+  const { data, error } = await supabase.from("category").insert({
+    uuid,
+    categoria,
+  });
   if (error) throw new Error(error.message);
   return data;
 };
@@ -77,7 +85,6 @@ export const editFinance = async (
     })
     .eq("id", id)
     .select();
-
 
   if (error) throw new Error(error.message);
   return data;

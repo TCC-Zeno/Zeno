@@ -94,75 +94,75 @@
   font-weight: bold;
 }
 
-.buttonContainer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 5%;
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5%;
 }
 
-.button{
-    background-color: rgb(var(--color-primary));
-    color: white;
-    border-radius: 10px;
-    padding: 2%;
-    width: 110%;
-    cursor: pointer;
-    transition: all 0.5s;
-    font-weight: bold;
-    font-size: 20pt;
+.button {
+  background-color: rgb(var(--color-primary));
+  color: white;
+  border-radius: 10px;
+  padding: 2%;
+  width: 110%;
+  cursor: pointer;
+  transition: all 0.5s;
+  font-weight: bold;
+  font-size: 20pt;
 }
 
 .button:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
-.container{
-    height: calc(100vh - 170px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.container {
+  height: calc(100vh - 170px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.containerReport{
-    width:100%;
-    margin: 1%;
+.containerReport {
+  width: 100%;
+  margin: 1%;
 }
 
-.title{
-    text-align: center;
-    margin: 2%;
-    font-size: 20pt;
-    font-weight: 300;
-    font-family: "Coolvetica Rg";
+.title {
+  text-align: center;
+  margin: 2%;
+  font-size: 20pt;
+  font-weight: 300;
+  font-family: "Coolvetica Rg";
 }
 
-.textIA{
-    margin-left: 5%;
-    font-size: 14pt;
+.textIA {
+  margin-left: 5%;
+  font-size: 14pt;
 }
 
-.buttonContainer2{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 5%;
+.buttonContainer2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5%;
 }
 
-.button2{
-    background-color: rgb(var(--color-primary));
-    color: white;
-    border-radius: 10px;
-    padding: 1%;
-    width: 20%;
-    cursor: pointer;
-    transition: all 0.5s;
-    font-weight: bold;
-    font-size: 14pt;
+.button2 {
+  background-color: rgb(var(--color-primary));
+  color: white;
+  border-radius: 10px;
+  padding: 1%;
+  width: 20%;
+  cursor: pointer;
+  transition: all 0.5s;
+  font-weight: bold;
+  font-size: 14pt;
 }
 
 .button2:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
@@ -176,5 +176,75 @@
 
   .button2 {
     width: 100%;
+  }
+}
+
+.markdownH1 {
+  font-size: 14pt;
+  margin-bottom: 16px;
+  margin-top: 24px;
+  padding-bottom: 8px;
+}
+
+.markdownH2 {
+  font-size: 12pt;
+  margin-bottom: 12px;
+  margin-top: 20px;
+  border-bottom: 1px solid #bdc3c7;
+  padding-bottom: 4px;
+}
+
+.markdownH3 {
+  font-size: 13pt;
+  margin-bottom: 10px;
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+.markdownP {
+  color: #2c3e50;
+  margin-bottom: 12px;
+  font-size: 14pt;
+}
+
+.markdownUl,
+.markdownOl {
+  color: #2c3e50;
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.markdownLi {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.markdownStrong {
+  color: #000000;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .textIA {
+    padding: 15px;
+    margin: 15px 0;
+  }
+
+  .markdownH1 {
+    font-size: 14pt;
+  }
+
+  .markdownH2 {
+    font-size: 13pt;
+  }
+
+  .markdownTableContainer {
+    font-size: 12pt;
+  }
+
+  .markdownTh,
+  .markdownTd {
+    padding: 8px 10px;
+    font-size: 12pt;
   }
 }

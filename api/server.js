@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import session from "express-session";
-import createMemoryStore from 'memorystore';
+import createMemoryStore from "memorystore";
 import passport from "passport";
 // import "./strategies/local.js"; Tirei isso pq acho que não precisa mais
 
@@ -14,6 +14,7 @@ import userRoutes from "./routes/user.js";
 import financeRoutes from "./routes/finance.js";
 import taskRoutes from "./routes/task.js";
 import stockRoutes from "./routes/stock.js";
+import reportRoutes from "./routes/report.js";
 
 dotenv.config();
 const app = express();
@@ -28,22 +29,21 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use(
   session({
     secret: "zeno-secret-key",
-    name: 'sessionId', 
+    name: "sessionId",
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, 
+      secure: false,
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 dias
-      sameSite: 'lax'
+      sameSite: "lax",
     },
     store: new MemoryStore({
-      checkPeriod: 86400000 // 24h
-    })
+      checkPeriod: 86400000, // 24h
+    }),
   })
 );
 
@@ -56,6 +56,7 @@ app.use("/user", userRoutes);
 app.use("/finance", financeRoutes);
 app.use("/tasks", taskRoutes);
 app.use("/stock", stockRoutes);
+app.use("/report", reportRoutes);
 
 // Inicializando servidor
 const PORT = process.env.PORT || 3000;
