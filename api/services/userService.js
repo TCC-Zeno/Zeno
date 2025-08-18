@@ -2,6 +2,9 @@ import supabase from "../config/supabaseClient.js";
 
 
 export const updateUser = async (uuid, updateData = {}) => {
+  console.log(updateData);
+  //const featuresJSON = JSON.stringify(updateData.features, null, 2);
+
   const { data, error } = await supabase
     .from("users")
     .update({
@@ -9,11 +12,13 @@ export const updateUser = async (uuid, updateData = {}) => {
       owner_name: updateData.ownerName,
       color: updateData.color,
       accessibility: updateData.accessibility || "Padrão",
+      features: updateData.features 
     })
     .eq("uuid", uuid)
     .select();
 
   if (error) throw new Error(error.message);
+  console.log(error)
   return data;
 };
 export const getUserById = async (uuid) => {

@@ -17,6 +17,22 @@ import { RiKey2Line } from "react-icons/ri";
 import axios from "axios";
 
 export default function Settings() {
+
+  const [features, setFeatures] = useState({
+    service: false,
+    stock: false,
+    finance: false,
+    calendar: false,
+    task: false,
+  });
+
+  const handleFeatureChange = (e) => {
+    const { name, checked } = e.target;
+    setFeatures((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+  };
   const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
   const [blockGuideOpen, setBlockGuideOpen] = useState(false);
   const [modalBlockResourcesOpen, setModalBlockResourcesOpen] = useState(false);
@@ -64,6 +80,7 @@ export default function Settings() {
         ownerName: ownerName,
         color: override.color ?? theme,
         accessibility: override.accessibility ?? colorBlindness,
+        features: features,
       }
     );
 
@@ -103,8 +120,13 @@ export default function Settings() {
     profileinfo.uuid,
     profileinfo.color,
     profileinfo.accessibility,
+    features,
     dispatch,
   ]);
+
+  useEffect(() => {
+    console.log(features);
+  }, [features]);
   // enviar o dado assim que for escolhido, já que o usuario pode querer mudar só uma coisa . By Vinicius
   return (
     <DefaultLayout>
@@ -266,27 +288,57 @@ export default function Settings() {
                 <div className={S.toggleContainer}>
                   <div className={S.toggleRow}>
                     <div className={S.toggleWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="stock"
+                        checked={features.stock}
+                        onChange={handleFeatureChange}
+                      />
                       <span className={S.toggleLabel}>Estoque</span>
                     </div>
                     <div className={S.toggleWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="finance"
+                        checked={features.finance}
+                        onChange={handleFeatureChange}
+                      />
                       <span className={S.toggleLabel}>Fluxo de caixa</span>
                     </div>
                   </div>
                   <div className={S.toggleRow}>
                     <div className={S.toggleWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="calendar"
+                        checked={features.calendar}
+                        onChange={handleFeatureChange}
+                      />
                       <span className={S.toggleLabel}>Agenda</span>
                     </div>
                     <div className={S.toggleWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="task"
+                        checked={features.task}
+                        onChange={handleFeatureChange}
+                      />
                       <span className={S.toggleLabel}>Organizador</span>
                     </div>
                   </div>
                   <div className={S.toggleRow}>
                     <div className={S.toggleWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="service"
+                        checked={features.service}
+                        onChange={handleFeatureChange}
+                      />
                       <span className={S.toggleLabel}>Serviços</span>
                     </div>
                   </div>
