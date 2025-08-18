@@ -1,15 +1,16 @@
 import express from "express";
-import{createStock, createProduct, createSupplier}from "../controllers/stockController.js";
+import{createProduct, createSupplier, readProduct, updateProductById, deleteProductById, readSupplier, updateSupplierById, deleteSupplierById,}from "../controllers/stockController.js";
 
 const router = express.Router();
 
-router.post("/createStock", createStock);
 router.post("/createProduct", createProduct);
 router.post("/createSupplier", createSupplier);
-/*
-router.get("/readStocks", readStocks);
-router.put("/updateStock", updateStockById);
-router.delete("/deleteStock", deleteStockById);
-*/
+router.post("/readProduct",  readProduct);
+router.post("/updateProductById", updateProductById);
+router.post("/deleteProductById", deleteProductById);
+router.post("/readSupplier", readSupplier);
+router.post("/updateSupplierById", updateSupplierById);
+router.post("/deleteSupplierById", deleteSupplierById);
+
 
 export default router;
