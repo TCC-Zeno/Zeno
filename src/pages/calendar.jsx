@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { calendar } from "../redux/Route/slice";
 import { useEffect, useState } from "react";
@@ -9,15 +9,36 @@ import interaction from "@fullcalendar/interaction";
 import multiMonth from "@fullcalendar/multimonth";
 import Modal from "../components/Modal/Modal";
 import { useForm } from "react-hook-form";
+import axios from "axios"
 
 export default function Calendar() {
   //? documentação da lib: https://fullcalendar.io/docs
   //* https://www.youtube.com/watch?v=uxbIQALflYs nesse video ele fala como fazer em PHP, eu tive que olhar a maior parte na documentação e em tutoriais, mas acabou saindo
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [select, setSelect] = useState(null);
+
+  const profileinfo = useSelector((state) => state.userReducer.userData);
+
   const dispatch = useDispatch();
+const onSubmit = async (data) => {
+  try {
+   
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/calendar/insert`,
+        {
+          uuid: profileinfo.uuid,
+          title: data.title,
+          initial_date: data.dateStart,
+          end_date: data.dateEnd
+        });    
+    }
+  catch(err){
+    alert(err.response?.data?.error || "Erro ao atualizar informações");
+    }
+};
+  
   useEffect(() => {
     dispatch(calendar());
   }, [dispatch]);
