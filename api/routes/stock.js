@@ -1,9 +1,14 @@
 import express from "express";
 import{createProduct, createSupplier, readProduct, updateProductById, deleteProductById, readSupplier, updateSupplierById, deleteSupplierById,}from "../controllers/stockController.js";
+import multer from "multer";
 
 const router = express.Router();
 
-router.post("/createProduct", createProduct);
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+
+router.post("/createProduct", upload.single("image"), createProduct);
 router.post("/createSupplier", createSupplier);
 router.post("/readProduct",  readProduct);
 router.post("/updateProductById", updateProductById);
