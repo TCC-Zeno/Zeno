@@ -57,7 +57,6 @@ export default function Settings() {
 
   const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
   const [blockGuideOpen, setBlockGuideOpen] = useState(false);
-  const [modalBlockResourcesOpen, setModalBlockResourcesOpen] = useState(false);
 
   const [companyName, setCompanyName] = useState(
     profileinfo.company_name ?? ""

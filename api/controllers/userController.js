@@ -1,9 +1,10 @@
+
+import multer from "multer";
 import { 
   getUserById,
   updateUser,
   uploadImage
 } from "../services/userService.js"
-import multer from "multer";
 
 export const updateUserCredential = async (req, res) => {
   const { uuid, companyName, ownerName, color, accessibility, features} = req.body;
