@@ -20,15 +20,16 @@ export const addProduct = async (
       {
         uuid: userId,
         name: ProductName,
-        supplier: supplierInfo,
+        supplierInfo: supplierInfo, 
         description: Description,
-        product_category: Category,
+        product_category: Category, 
         minimum_quantity: MinimumQuantity,
-        image: Image, // agora recebe URL direto
+        image: Image,
         fixed_quantity: FixedQuantity,
         quantity_of_product: StockQuantity,
         price: Price,
         price1: Price1,
+        alert: "default", 
       },
     ])
     .select();
@@ -45,8 +46,8 @@ export const addSupplier = async (name, email, phone, Address, userId) => {
       {
         name,
         email,
-        Number:phone,   // troquei "Number" para "phone"
-        Address, // troquei "Address" para minúsculo por consistência
+        Number:phone,  
+        Address, 
         uuid: userId,
       },
     ])
@@ -61,7 +62,7 @@ export const uploadImage = async (file, uuid) => {
   const fileName = `${uuid}/product_${Date.now()}.png`;
 
   const { error } = await supabase.storage
-    .from("image")
+    .from("image_stock")
     .upload(fileName, file.buffer, {
       cacheControl: "3600",
       upsert: false,
@@ -71,7 +72,7 @@ export const uploadImage = async (file, uuid) => {
 
   // retorna apenas a URL pública
   const { data: publicData } = await supabase.storage
-    .from("image")
+    .from("image_stock")
     .getPublicUrl(fileName);
 
   return publicData.publicUrl;

@@ -1,4 +1,3 @@
-
 import multer from "multer";
 import {
   addProduct,
@@ -14,67 +13,100 @@ import {
 
 export const createProduct = async (req, res) => {
   try {
-    console.log('req.body:', req.body);
-    console.log('req.file:', req.file);
-    // Conversão de tipos e parsing de SupplierInfo
+    console.log("req.body:", req.body);
+    console.log("req.file:", req.file);
+
     const ProductName = req.body.ProductName;
     const Description = req.body.Description;
     const Category = req.body.Category;
-    const Price = Number(req.body.Price);
-    const Price1 = Number(req.body.Price1);
+    const Price = Number(req.body.Price.replace(",", "."));
+    const Price1 = Number(req.body.Price1.replace(",", "."));
     const StockQuantity = Number(req.body.StockQuantity);
     const MinQuantity = Number(req.body.MinQuantity);
     const FixedQuantity = Number(req.body.FixedQuantity);
     const userId = req.body.userId;
 
+    if (
+      isNaN(Price) ||
+      isNaN(Price1) ||
+      isNaN(StockQuantity) ||
+      isNaN(MinQuantity) ||
+      isNaN(FixedQuantity)
+    ) {
+      return res.status(400).json({
+        error: "Valores numéricos inválidos. Verifique preços e quantidades.",
+      });
+    }
+
     let SupplierInfo = req.body.SupplierInfo;
     let supplierId = null;
 
-    // Se vier como string de objeto, tenta fazer parse
-    try {
-      if (SupplierInfo && typeof SupplierInfo === 'string' && SupplierInfo.startsWith('{')) {
-        SupplierInfo = JSON.parse(SupplierInfo);
-      }
-    } catch (e) {
-      // ignora, deixa como string
-    }
-
-    if (SupplierInfo && typeof SupplierInfo === "number") {
-      supplierId = SupplierInfo;
-    } else if (
-      SupplierInfo && typeof SupplierInfo === 'object' &&
-      SupplierInfo.SupplierName &&
-      SupplierInfo.SupplierNumber &&
-      SupplierInfo.SupplierAddress &&
-      SupplierInfo.SupplierEmail
+    if (
+      req.body.SupplierName &&
+      req.body.SupplierEmail &&
+      req.body.SupplierNumber &&
+      req.body.SupplierAddress
     ) {
+      // Criar novo fornecedor
       const newSupplier = await addSupplier(
-        SupplierInfo.SupplierName,
-        SupplierInfo.SupplierEmail,
-        SupplierInfo.SupplierNumber,
-        SupplierInfo.SupplierAddress,
+        req.body.SupplierName,
+        req.body.SupplierEmail,
+        req.body.SupplierNumber,
+        req.body.SupplierAddress,
         userId
       );
       supplierId = newSupplier[0].id;
     } else if (SupplierInfo) {
-      // tenta converter para número
-      const parsedId = Number(SupplierInfo);
-      if (!isNaN(parsedId)) {
-        supplierId = parsedId;
-      } else {
-        return res.status(400).json({ error: "Fornecedor não informado corretamente." });
+      // Usar fornecedor existente
+      try {
+        if (typeof SupplierInfo === "string" && SupplierInfo.startsWith("{")) {
+          SupplierInfo = JSON.parse(SupplierInfo);
+          if (SupplierInfo.SupplierName) {
+            const newSupplier = await addSupplier(
+              SupplierInfo.SupplierName,
+              SupplierInfo.SupplierEmail,
+              SupplierInfo.SupplierNumber,
+              SupplierInfo.SupplierAddress,
+              userId
+            );
+            supplierId = newSupplier[0].id;
+          }
+        } else {
+          // É um ID de fornecedor existente
+          const parsedId = Number(SupplierInfo);
+          if (!isNaN(parsedId) && parsedId > 0) {
+            supplierId = parsedId;
+          } else {
+            return res
+              .status(400)
+              .json({ error: "ID do fornecedor inválido." });
+          }
+        }
+      } catch (e) {
+        console.error("Erro ao processar fornecedor:", e);
+        return res
+          .status(400)
+          .json({ error: "Dados do fornecedor inválidos." });
       }
     } else {
-      return res.status(400).json({ error: "Fornecedor não informado corretamente." });
+      return res.status(400).json({ error: "Fornecedor não informado." });
     }
 
-    // 2) Imagem
+    // Validar se conseguimos um supplierId
+    if (!supplierId) {
+      return res
+        .status(400)
+        .json({ error: "Não foi possível identificar o fornecedor." });
+    }
+
+    // Upload da imagem
     let imageUrl = null;
     const ImageFile = req.file;
     if (ImageFile) {
       try {
         imageUrl = await uploadImage(ImageFile, userId);
       } catch (err) {
+        console.error("Erro no upload:", err);
         return res.status(500).json({
           error: `Erro ao enviar imagem: ${err.message}`,
         });
@@ -85,7 +117,7 @@ export const createProduct = async (req, res) => {
       });
     }
 
-    // 3) Criar produto
+    // Criar produto
     const productData = await addProduct(
       ProductName,
       Description,
@@ -100,14 +132,16 @@ export const createProduct = async (req, res) => {
       supplierId
     );
 
+    console.log("Produto criado com sucesso:", productData);
     return res.status(201).json(productData);
   } catch (error) {
     console.error("Erro no createProduct:", error);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message,
+      details: error.stack,
+    });
   }
 };
-
-
 
 export const createSupplier = async (req, res) => {
   try {
@@ -136,12 +170,10 @@ export const uploadProductImage = [
           .json({ error: "Usuário não encontrado para o ID informado." });
       }
       if (!file) {
-        return res
-          .status(400)
-          .json({
-            error:
-              'Arquivo não encontrado no request. Use o campo "logo" no formData.',
-          });
+        return res.status(400).json({
+          error:
+            'Arquivo não encontrado no request. Use o campo "logo" no formData.',
+        });
       }
       const uploadedImage = await uploadImage(file, uuid);
       if (!uploadedImage) {
@@ -151,11 +183,12 @@ export const uploadProductImage = [
       }
       return res.status(200).json(uploadedImage);
     } catch (error) {
-      res.status(500).json({ error: `Erro interno ao enviar imagem: ${error.message}` });
+      res
+        .status(500)
+        .json({ error: `Erro interno ao enviar imagem: ${error.message}` });
     }
   },
 ];
-
 
 export const readProduct = async (req, res) => {
   try {
