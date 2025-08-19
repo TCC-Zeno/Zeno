@@ -45,6 +45,16 @@ export default function Report() {
       setLoading(false);
     }
   }
+
+  const amountValue = dataArray
+    .filter((item) => item.type_flow === "Entrada")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const expensesValue = dataArray
+    .filter((item) => item.type_flow === "Saída")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const profitValue = amountValue - expensesValue;
   return (
     <>
       <DefaultLayout loading={loading}>
@@ -74,6 +84,7 @@ export default function Report() {
                 <table className={style.table}>
                   <thead className={style.thead}>
                     <tr className={style.tr}>
+                      <th className={style.th}>Data</th>
                       <th className={style.th}>Nome</th>
                       <th className={style.th}>Valor(R$)</th>
                       <th className={style.th}>Metodo de Pagamento</th>
@@ -84,6 +95,14 @@ export default function Report() {
                   <tbody>
                     {dataArray.map((data) => (
                       <tr className={style.conteudo} key={data.id}>
+                        <td>
+                          {data.created_at
+                            ? new Date(data.created_at).toLocaleDateString(
+                                "pt-BR",
+                                { day: "2-digit", month: "2-digit" }
+                              )
+                            : "N/A"}
+                        </td>
                         <td>{data.name}</td>
                         <td>{data.value}</td>
                         <td>{data.payment_method}</td>
@@ -96,59 +115,77 @@ export default function Report() {
               </div>
               <div className={style.textIA}>
                 {reportData ? (
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      h1: ({ node, ...props }) => (
-                        <h1 className={style.markdownH1} {...props} />
-                      ),
-                      h2: ({ node, ...props }) => (
-                        <h2 className={style.markdownH2} {...props} />
-                      ),
-                      h3: ({ node, ...props }) => (
-                        <h3 className={style.markdownH3} {...props} />
-                      ),
-                      p: ({ node, ...props }) => (
-                        <p className={style.markdownP} {...props} />
-                      ),
-                      ul: ({ node, ...props }) => (
-                        <ul className={style.markdownUl} {...props} />
-                      ),
-                      ol: ({ node, ...props }) => (
-                        <ol className={style.markdownOl} {...props} />
-                      ),
-                      li: ({ node, ...props }) => (
-                        <li className={style.markdownLi} {...props} />
-                      ),
-                      strong: ({ node, ...props }) => (
-                        <strong className={style.markdownStrong} {...props} />
-                      ),
-                      table: ({ node, ...props }) => (
-                        <div className={style.markdownTableContainer}>
-                          <table className={style.markdownTable} {...props} />
-                        </div>
-                      ),
-                      thead: ({ node, ...props }) => (
-                        <thead className={style.markdownThead} {...props} />
-                      ),
-                      tbody: ({ node, ...props }) => (
-                        <tbody className={style.markdownTbody} {...props} />
-                      ),
-                      tr: ({ node, ...props }) => (
-                        <tr className={style.markdownTr} {...props} />
-                      ),
-                      th: ({ node, ...props }) => (
-                        <th className={style.markdownTh} {...props} />
-                      ),
-                      td: ({ node, ...props }) => (
-                        <td className={style.markdownTd} {...props} />
-                      ),
-                    }}
-                  >
-                    {reportData}
-                  </ReactMarkdown>
+                  <>
+                    <h2 className={style.markdownP}>
+                      <strong className={style.markdownStrong}>
+                        Cálculos:
+                      </strong>
+                    </h2>
+                    <ul class="_markdownUl_mycij_419">
+                      <li class="_markdownLi_mycij_433">
+                        <b>Total de Entradas:</b> R$ {amountValue.toFixed(2)}
+                      </li>
+                      <li class="_markdownLi_mycij_433">
+                        <b>Total de Saídas:</b> R$ {expensesValue.toFixed(2)}
+                      </li>
+                      <li class="_markdownLi_mycij_433">
+                        <b>Saldo Final:</b> R$ {profitValue.toFixed(2)}
+                      </li>
+                    </ul>
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        h1: ({ node, ...props }) => (
+                          <h1 className={style.markdownH1} {...props} />
+                        ),
+                        h2: ({ node, ...props }) => (
+                          <h2 className={style.markdownH2} {...props} />
+                        ),
+                        h3: ({ node, ...props }) => (
+                          <h3 className={style.markdownH3} {...props} />
+                        ),
+                        p: ({ node, ...props }) => (
+                          <p className={style.markdownP} {...props} />
+                        ),
+                        ul: ({ node, ...props }) => (
+                          <ul className={style.markdownUl} {...props} />
+                        ),
+                        ol: ({ node, ...props }) => (
+                          <ol className={style.markdownOl} {...props} />
+                        ),
+                        li: ({ node, ...props }) => (
+                          <li className={style.markdownLi} {...props} />
+                        ),
+                        strong: ({ node, ...props }) => (
+                          <strong className={style.markdownStrong} {...props} />
+                        ),
+                        table: ({ node, ...props }) => (
+                          <div className={style.markdownTableContainer}>
+                            <table className={style.markdownTable} {...props} />
+                          </div>
+                        ),
+                        thead: ({ node, ...props }) => (
+                          <thead className={style.markdownThead} {...props} />
+                        ),
+                        tbody: ({ node, ...props }) => (
+                          <tbody className={style.markdownTbody} {...props} />
+                        ),
+                        tr: ({ node, ...props }) => (
+                          <tr className={style.markdownTr} {...props} />
+                        ),
+                        th: ({ node, ...props }) => (
+                          <th className={style.markdownTh} {...props} />
+                        ),
+                        td: ({ node, ...props }) => (
+                          <td className={style.markdownTd} {...props} />
+                        ),
+                      }}
+                    >
+                      {reportData}
+                    </ReactMarkdown>
+                  </>
                 ) : (
-                  <p>Carregando análise da IA (colocar o Nicolas aqui)...</p>
+                  <p>Carregando análise da IA...</p>
                 )}
               </div>
               <div className={style.buttonContainer2}>

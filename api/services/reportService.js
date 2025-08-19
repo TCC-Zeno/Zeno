@@ -18,18 +18,14 @@ export async function createReport(context) {
   Nome = name, Valor (R$) = value, Método de pagamento = payment_method, Categoria = category e Tipo de fluxo (Entrada ou Saída) = type_flow.
 
   Sua tarefa é:
-  1. Calcular e apresentar:
-      - Total de Entradas = somar todos os valores (value) da coluna value onde o type_flow for entrada
-      - Total de Saídas  = somar todos os valores (value) da coluna value onde o type_flow for saida
-      - Saldo Final = pegar o valor do seu calculo em Total de Entradas e subtrair pelo valor do seu calculo em Total de Saídas
-
-  2. Produzir Conclusão e Recomendações em tópicos objetivos nas áreas:
+  1. Produzir Conclusão e Recomendações em tópicos objetivos nas áreas:
       - Financeiro: analisar o saldo final e orientar sobre controle de despesas
       - Gestão: sugerir práticas para otimizar fluxo de caixa e reduzir custos
       - Planejamento: estratégias para aumentar entradas e melhorar sustentabilidade
 
   As recomendações devem ser pontuais, acionáveis e eficientes.
-  Apresente apenas os cálculos e conclusões/recomendações, sem repetir a tabela e ao começar não precisa concordar, só comece com os calculos.
+  Apresente apenas os cálculos e conclusões/recomendações, sem repetir a tabela e ao começar não precisa concordar, só comece com as conclusões e recomendações.
+  Não fala os calculos dos lucros, gastos e ganhos já que o sistema já dará isso para o usuario, sua função é somente apresentar as conclusões e recomendações.
 
   Dados financeiros:
   ${formattedContext}

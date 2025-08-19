@@ -28,7 +28,8 @@ export const getFinanceID = async (uuid) => {
   const { data, error } = await supabase
     .from("finance")
     .select("*")
-    .eq("uuid", uuid);
+    .eq("uuid", uuid)
+    .order('created_at', { ascending: true });
 
   if (error) throw new Error(error.message);
   return data;
