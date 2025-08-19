@@ -17,8 +17,16 @@
     width: 80%;
     height: 90%;
     padding: 1%;
+    transition: all 0.5s;
 
 }
+.statusAgend:hover,
+.statusAndam:hover,
+.statusConcl:hover,
+.statusReceb:hover {
+ transform: scale(1.15);
+}
+
 
 .titleAgend,
 .titleAndam,
@@ -233,5 +241,4 @@
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-
 }
