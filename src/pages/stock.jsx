@@ -30,7 +30,7 @@ export default function Stock() {
   const [minQuantity, setMinQuantity] = useState(0);
   const fileInputRef = useRef(null);
   const FILE_LIMIT = 25 * 1024 * 1024;
-  const profileinfo = useSelector((state) => state.userReducer.userData);
+  const userId = useSelector((state) => state.userReducer.userData);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -139,41 +139,31 @@ export default function Stock() {
             SupplierAddress: data.SupplierAddress,
             SupplierEmail: data.SupplierEmail,
           }
-        : data.Supplier,
+        : Number(data.Supplier), // <-- converte para número
     };
 
     console.log(addProductData);
 
-    /* Olá Narash, bem, o que precisamos fazer, precisamos ter no controller 3 coisas, se o supplier info tiver alguma coisa nele proprio então não precisa adicionar fornecedor, se não tiver nada e o supplier name, number, address e email tiver algo então tem que adicionar um fornecedor e pegar o id dele, depois de ver a parte de forncedor, temos que inserir a imagem no banco de dados igual o jose fez só que num outro bucket e pegar a url e por ultimo adicionar ao banco de dados todo o estoque*/
     try {
       const formData = new FormData();
-      formData.append("product_name", addProductData.ProductName);
-      formData.append("product_description", addProductData.Description);
-      formData.append("product_category", addProductData.Category);
-      formData.append("product_price", addProductData.Price);
-      formData.append("minimum_quantity", addProductData.MinQuantity);
-      formData.append("stock_quantity", addProductData.StockQuantity);
+      formData.append("userId", userId.uuid);
+      formData.append("ProductName", addProductData.ProductName);
+      formData.append("Description", addProductData.Description);
+      formData.append("Category", addProductData.Category);
+      formData.append("Price", addProductData.Price);
+      formData.append("Price1", addProductData.Price1);
+      formData.append("StockQuantity", addProductData.StockQuantity);
+      formData.append("MinQuantity", addProductData.MinQuantity);
+      formData.append("FixedQuantity", addProductData.FixedQuantity);
 
-      // Se tiver fornecedor novo, manda os dados, se não só o id delee
+      // Se tiver fornecedor novo, manda os dados, se não só o id dele
       if (typeof addProductData.SupplierInfo === "object") {
-        formData.append(
-          "supplier_name",
-          addProductData.SupplierInfo.SupplierName
-        );
-        formData.append(
-          "supplier_number",
-          addProductData.SupplierInfo.SupplierNumber
-        );
-        formData.append(
-          "supplier_address",
-          addProductData.SupplierInfo.SupplierAddress
-        );
-        formData.append(
-          "supplier_email",
-          addProductData.SupplierInfo.SupplierEmail
-        );
+        formData.append("SupplierName", addProductData.SupplierInfo.SupplierName);
+        formData.append("SupplierNumber", addProductData.SupplierInfo.SupplierNumber);
+        formData.append("SupplierAddress", addProductData.SupplierInfo.SupplierAddress);
+        formData.append("SupplierEmail", addProductData.SupplierInfo.SupplierEmail);
       } else {
-        formData.append("supplier_id", addProductData.SupplierInfo);
+        formData.append("SupplierInfo", addProductData.SupplierInfo);
       }
 
       if (addProductData.Image) {
@@ -184,7 +174,7 @@ export default function Stock() {
       }
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/stock/createStock`,
+        `${import.meta.env.VITE_API_URL}/stock/createProduct`,
         formData,
         {
           headers: {
@@ -202,6 +192,47 @@ export default function Stock() {
       console.error("Erro ao adicionar produto:", errorMessage);
     }
   };
+
+
+  //Le produto
+  // async function fetchData() {
+  //   try {
+  //     const data = await axios.post(
+  //       `${import.meta.env.VITE_API_URL}/stock/readProduct`,
+  //       {
+  //         userId: userId.uuid,
+  //       }
+  //     );
+  //     setDataStock(data.data);
+  //   } catch (error) {
+  //     console.error("Erro ao buscar dados:", error);
+  //   }
+  // }
+
+  //le supplier
+  async function ReadSupplier() {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/supplier/readSupplier`,
+        {
+          uuid: userId.uuid,
+        }
+      );
+      if (response.status === 200) {
+        setSupplierData(response.data);
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Erro ao ler fornecedor";
+      console.error("Erro ao ler fornecedor:", errorMessage);
+    }
+  }
+
+  useEffect(() => {
+    // fetchData();
+    // ReadCategory();
+  }, [userId.uuid]);
+
 
   return (
     <>
@@ -479,10 +510,10 @@ export default function Stock() {
                   disabled={addForn}
                 >
                   <option value="">Nenhum fornecedor</option>
-                  <option value="Fornecedor1">Fornecedor 1</option>
-                  <option value="Fornecedor2">Fornecedor 2</option>
-                  <option value="Fornecedor3">Fornecedor 3</option>
-                  <option value="Fornecedor4">Fornecedor 4</option>
+                  <option value="1">Fornecedor 1</option>
+                  <option value="2">Fornecedor 2</option>
+                  <option value="3">Fornecedor 3</option>
+                  <option value="4">Fornecedor 4</option>
                 </select>
                 <button
                   type="button"
