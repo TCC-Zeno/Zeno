@@ -17,8 +17,16 @@
     width: 80%;
     height: 90%;
     padding: 1%;
+    transition: all 0.5s;
 
 }
+.statusAgend:hover,
+.statusAndam:hover,
+.statusConcl:hover,
+.statusReceb:hover {
+ transform: scale(1.15);
+}
+
 
 .titleAgend,
 .titleAndam,
@@ -101,9 +109,7 @@
     display: flex;
     align-items: center;
     justify-self: center;
-    background-color: #d9d9d9;
-    border-radius: 8px;
-    width: 80%;
+    width: 85%;
 }
 
 .buttonContainer {
@@ -120,7 +126,7 @@
     height: auto;
     padding: 3%;
     text-wrap: nowrap;
-    border: rgb(70, 135, 243) solid 1.5px;
+    border: rgb(var(--color-primary)) solid 1.5px;
     font-size: 14pt;
     font-weight: 500;
 }
@@ -128,29 +134,111 @@
 .button:active,
 .button:hover,
 .button:focus{
-    background-color: rgb(70, 135, 243);
+    background-color: rgb(var(--color-primary));
     color: white;
     cursor: pointer;
 }
 
-.tableContainer{
-    display: flex;
-    background-color: #d9d9d9;
-    height: auto;
-    border-radius: 5px;
+.tableContainer {
+    width: 85%;
+    margin:0 auto;
+    padding: 1%;
+    overflow-x: auto;
 }
 
-.table{
-    width: 80%;
-    border-radius: 8px;
-    overflow: hidden;
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .thead {
+  background-color: #d9d9d9;
+}
+
+.th {
+  text-align: left;
+  padding: 12px;
+  font-weight: bold;
+  color: #333;
+}
+
+.conteudo {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.td {
+  padding: 12px;
+  color: #444;
+  font-size: 12pt;
+}
+
+.statusAgendTable {
+  font-weight: bold;
+  background-color: #b3cfff;
+  font-size: 13pt;
+  color: #3862f6;
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.statusConclTable {
+  background-color: #d1fae5;
+  color: #10b981;
+  font-size: 13pt;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.statusAndamTable {
+  background-color: #fef3c7;
+  color: #f59e0b;
+  font-size: 13pt;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  flex-wrap: nowrap;
+}
+
+.statusCancelTable{
+  background-color: #ffa9a9;
+  color: #f50b0b;
+  font-size: 13pt;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.searchContainer{
+    background-color: #d9d9d9;
+    border-radius: 8px;
+    width: 95%;
+    margin: auto;
+}
+
+.tudo{
+    min-height: calc(100vh - 170px);
+}
+
+.addContainer {
     display: flex;
-    width: 80%;
+    margin: 2%;
+    justify-content: right;
+}
+
+.buttonAdd {
+    display: flex;
     align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    overflow: hidden;
+    gap: 10px;
+    background-color: rgb(var(--color-primary));
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
