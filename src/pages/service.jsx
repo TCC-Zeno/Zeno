@@ -7,6 +7,7 @@ import { LuClock7 } from "react-icons/lu";
 import { RiPlayLargeLine } from "react-icons/ri";
 import { FaCheck } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
+import { FaPlus } from "react-icons/fa6";
 
 export default function Service() {
   const dispatch = useDispatch();
@@ -17,89 +18,119 @@ export default function Service() {
   return (
     <>
       <DefaultLayout>
-        <div className={style.statusContainer}>
-          <div className={style.statusAgend}>
-            <div className={style.titleAgend}>
-              <h2 className={style.title}>Agendados</h2>
-              <LuClock7 className={style.iconAgend} />
+        <div className={style.tudo}>
+          <div className={style.addContainer}>
+              <button className={style.buttonAdd}>
+                <FaPlus /> Adicionar Serviço
+              </button>
             </div>
-            <div className={style.valueAgend}>
-              <h1 className={style.value1}>$value</h1>
+          <div className={style.statusContainer}>
+            <div className={style.statusAgend}>
+              <div className={style.titleAgend}>
+                <h2 className={style.title}>Agendados</h2>
+                <LuClock7 className={style.iconAgend} />
+              </div>
+              <div className={style.valueAgend}>
+                <h1 className={style.value1}>$value</h1>
+              </div>
+            </div>
+
+            <div className={style.statusAndam}>
+              <div className={style.titleAndam}>
+                <h2 className={style.title}>Em Andamento</h2>
+                <RiPlayLargeLine className={style.iconAndam} />
+              </div>
+              <div className={style.valueAndam}>
+                <h1 className={style.value2}>$value</h1>
+              </div>
+            </div>
+
+            <div className={style.statusConcl}>
+              <div className={style.titleConcl}>
+                <h2 className={style.title}>Concluídos</h2>
+                <FaCheck className={style.iconConcl} />
+              </div>
+              <div className={style.valueConcl}>
+                <h1 className={style.value3}>$value</h1>
+              </div>
+            </div>
+
+            <div className={style.statusReceb}>
+              <div className={style.titleReceb}>
+                <h2 className={style.title}>Valor Recebido</h2>
+                <MdAttachMoney className={style.iconReceb} />
+              </div>
+              <div className={style.valueReceb}>
+                <h1 className={style.value4}>$value</h1>
+              </div>
             </div>
           </div>
-
-          <div className={style.statusAndam}>
-            <div className={style.titleAndam}>
-              <h2 className={style.title}>Em Andamento</h2>
-              <RiPlayLargeLine className={style.iconAndam} />
-            </div>
-            <div className={style.valueAndam}>
-              <h1 className={style.value2}>$value</h1>
-            </div>
+          <div className={style.linhaContainer}>
+            <div className={style.linha}></div>
           </div>
+          <div className={style.searchContainer}>
+            <div className={style.filterContainer}>
+              <div className={style.buttonContainer}>
+                <div>
+                  <button className={style.button}>Todos</button>
+                </div>
+                <div>
+                  <button className={style.button}>Em Andamento</button>
+                </div>
+                <div>
+                  <button className={style.button}>Concluídos</button>
+                </div>
+                <div>
+                  <button className={style.button}>Cancelados</button>
+                </div>
+              </div>
+            </div>
 
-          <div className={style.statusConcl}>
-            <div className={style.titleConcl}>
-              <h2 className={style.title}>Concluídos</h2>
-              <FaCheck className={style.iconConcl} />
-            </div>
-            <div className={style.valueConcl}>
-              <h1 className={style.value3}>$value</h1>
-            </div>
-          </div>
-
-          <div className={style.statusReceb}>
-            <div className={style.titleReceb}>
-              <h2 className={style.title}>Valor Recebido</h2>
-              <MdAttachMoney className={style.iconReceb} />
-            </div>
-            <div className={style.valueReceb}>
-              <h1 className={style.value4}>$value</h1>
+            <div className={style.tableContainer}>
+              <table className={style.tabela}>
+                <thead className={style.thead}>
+                  <tr className={style.tr}>
+                    <th className={style.th}>Serviços</th>
+                    <th className={style.th}>Cliente</th>
+                    <th className={style.th}>Data Agendamento</th>
+                    <th className={style.th}>Status</th>
+                    <th className={style.th}>Valor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className={style.conteudo}>
+                    <td className={style.td}>Serviço 1</td>
+                    <td className={style.td}>Cliente 1</td>
+                    <td className={style.td}>01/01/2023</td>
+                    <td className={style.statusAgendTable}>Agendado</td>
+                    <td className={style.td}>R$ 100,00</td>
+                  </tr>
+                  <tr className={style.conteudo}>
+                    <td className={style.td}>Serviço 1</td>
+                    <td className={style.td}>Clienteokokokokokkokook</td>
+                    <td className={style.td}>01/01/2023</td>
+                    <td className={style.statusAndamTable}>Em Andamento</td>
+                    <td className={style.td}>R$ 100,00</td>
+                  </tr>
+                  <tr className={style.conteudo}>
+                    <td className={style.td}>Serviçookokkokokokokookoko</td>
+                    <td className={style.td}>Cliente 1</td>
+                    <td className={style.td}>01/01/2023</td>
+                    <td className={style.statusConclTable}>Concluído</td>
+                    <td className={style.td}>R$ 100,00</td>
+                  </tr>
+                  <tr className={style.conteudo}>
+                    <td className={style.td}>Serviço 1</td>
+                    <td className={style.td}>Cliente 1</td>
+                    <td className={style.td}>01/01/2023</td>
+                    <td className={style.statusCancelTable}>Cancelado</td>
+                    <td className={style.td}>R$ 100000000000000,00</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-        <div className={style.linhaContainer}>
-          <div className={style.linha}></div>
-        </div>
-        <div className={style.filterContainer}>
-          <div className={style.buttonContainer}>
-            <div>
-              <button className={style.button}>Todos</button>
-            </div>
-            <div>
-              <button className={style.button}>Em Andamento</button>
-            </div>
-            <div>
-              <button className={style.button}>Concluídos</button>
-            </div>
-            <div>
-              <button className={style.button}>Cancelados</button>
-            </div>
-          </div>
-        </div>
-
-      <div className={style.tableContainer}>
-        <table className={style.tabela}>
-          <thead className={style.thead}>
-            <tr className={style.tr}>
-              <th className={style.th}>Serviços</th>
-              <th className={style.th}>Cliente</th>
-              <th className={style.th}>Data Agendamento</th>
-              <th className={style.th}>Status</th>
-              <th className={style.th}>Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className={style.conteudo}>
-              <td className={style.td}>Serviço 1</td>
-              <td className={style.td}>Cliente 1</td>
-              <td className={style.td}>01/01/2023</td>
-              <td className={style.dataAgend}>Agendado</td>
-              <td className={style.td}>R$ 100,00</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
       </DefaultLayout>
     </>
   );

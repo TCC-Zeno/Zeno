@@ -349,7 +349,7 @@ export default function Settings() {
                         checked={features.task}
                         onChange={handleFeatureChange}
                       />
-                      <span className={S.toggleLabel}>Organizador</span>
+                      <span className={S.toggleLabel}>Tarefas</span>
                     </div>
                   </div>
                   <div className={S.toggleRow}>
