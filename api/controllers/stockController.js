@@ -222,7 +222,10 @@ export const deleteProductById = async (req, res) => {
 
 export const readSupplier = async (req, res) => {
   try {
-    const data = await getSupplier();
+    console.log("Lendo fornecedor com ID:", req.body);
+    const userId = req.body.uuid;
+    console.log("Lendo fornecedor com ID:", userId);
+    const data = await getSupplier(userId);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });

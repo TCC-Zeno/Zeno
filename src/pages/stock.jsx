@@ -19,6 +19,7 @@ import PhoneInput from "react-phone-number-input/input";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import { data } from "react-router-dom";
 
 export default function Stock() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -31,6 +32,8 @@ export default function Stock() {
   const fileInputRef = useRef(null);
   const FILE_LIMIT = 25 * 1024 * 1024;
   const userId = useSelector((state) => state.userReducer.userData);
+  const [dataStock, setDataStock] = useState([]);
+  const [supplierData, setSupplierData] = useState([]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -211,30 +214,33 @@ export default function Stock() {
   };
 
   //Le produto
-  // async function fetchData() {
-  //   try {
-  //     const data = await axios.post(
-  //       `${import.meta.env.VITE_API_URL}/stock/readProduct`,
-  //       {
-  //         userId: userId.uuid,
-  //       }
-  //     );
-  //     setDataStock(data.data);
-  //   } catch (error) {
-  //     console.error("Erro ao buscar dados:", error);
-  //   }
-  // }
+  async function fetchData() {
+   try {
+     const data = await axios.post(
+      `${import.meta.env.VITE_API_URL}/stock/readProduct`,
+      {
+         userId: userId.uuid,
+       }
+     );
+     console.log(data);
+     setDataStock(data.data);
+    } catch (error) {
+   console.error("Erro ao buscar dados:", error);
+   }
+  }
 
   //le supplier
-  async function ReadSupplier() {
+  async function readSupplier() {
     try {
+      console.log("Lendo fornecedor com ID:", userId.uuid);
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/supplier/readSupplier`,
+        `${import.meta.env.VITE_API_URL}/stock/readSupplier`,
         {
           uuid: userId.uuid,
         }
       );
       if (response.status === 200) {
+        console.log("Dados do fornecedor:", response.data);
         setSupplierData(response.data);
       }
     } catch (error) {
@@ -244,10 +250,11 @@ export default function Stock() {
     }
   }
 
+
   useEffect(() => {
-    // fetchData();
-    // ReadCategory();
-  }, [userId.uuid]);
+     fetchData();
+    readSupplier();
+  },[]);
 
   return (
     <>

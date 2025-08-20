@@ -105,10 +105,11 @@ export const deleteProduct = async (id) => {
   return data;
 };
 
-export const getSupplier = async () => {
+export const getSupplier = async (userId) => {
   const { data, error } = await supabase
     .from("supplier")
-    .select("*");
+    .select("*")
+    .eq("uuid", userId);
   if (error) throw error;
   return data;
 };
