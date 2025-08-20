@@ -145,6 +145,7 @@
     margin:0 auto;
     padding: 1%;
     overflow-x: auto;
+    margin-bottom: 40px;
 }
 
 .tabela {
@@ -247,4 +248,91 @@
 
 .buttonAdd:hover{
     transform: scale(1.15);
+}
+
+.modalContainer {
+  padding: 24px;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 95%;
+  position: relative;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modalTitle {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.modalFormContainer {
+  width: 100%;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modalRow {
+  display: flex;
+  gap: 16px;
+}
+
+.modalInput,
+.modalInput1 {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 1s ease;
+}
+
+.modalInput:focus {
+  border-color: rgb(var(--color-primary));
+  outline: none;
+  color: black;
+}
+
+.modalInput1:focus{
+    border-color: rgb(var(--color-primary));
+    outline: none;
+    color: white;
+}
+
+.modalInput1 {
+  background-color: rgb(var(--color-primary));
+  color: white;
+  font-weight: 500;
+  border: none;
+}
+
+.modalInput1 option {
+  color: white;
+}
+
+.modalButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.modalButton button {
+  padding: 10px 20px;
+  background-color: rgb(70, 135, 243);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.modalButton button:hover {
+  background-color: rgb(13, 13, 227);
+  transform: scale(1.1);
 }
