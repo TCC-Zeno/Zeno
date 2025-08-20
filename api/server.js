@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 import createMemoryStore from "memorystore";
 import passport from "passport";
-// import "./strategies/local.js"; Tirei isso pq acho que não precisa mais
+import "./strategies/local.js"; 
 
 const MemoryStore = createMemoryStore(session);
 

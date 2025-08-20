@@ -20,16 +20,16 @@ export const addProduct = async (
       {
         uuid: userId,
         name: ProductName,
-        supplierInfo: supplierInfo, 
+        supplierInfo: supplierInfo,
         description: Description,
-        product_category: Category, 
+        product_category: Category,
         minimum_quantity: MinimumQuantity,
         image: Image,
         fixed_quantity: FixedQuantity,
         quantity_of_product: StockQuantity,
         price: Price,
         price1: Price1,
-        alert: "default", 
+        alert: "default",
       },
     ])
     .select();
@@ -46,8 +46,8 @@ export const addSupplier = async (name, email, phone, Address, userId) => {
       {
         name,
         email,
-        Number:phone,  
-        Address, 
+        Number: phone,
+        Address,
         uuid: userId,
       },
     ])
@@ -110,6 +110,15 @@ export const getSupplier = async (userId) => {
     .from("supplier")
     .select("*")
     .eq("uuid", userId);
+  if (error) throw error;
+  return data;
+};
+
+export const getSupplierWithID = async (id) => {
+  const { data, error } = await supabase
+    .from("supplier")
+    .select("*")
+    .eq("id", id);
   if (error) throw error;
   return data;
 };

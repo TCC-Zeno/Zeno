@@ -9,6 +9,7 @@ import {
   getSupplier,
   deleteSupplier,
   updateSupplier,
+  getSupplierWithID,
 } from "../services/stockService.js";
 
 export const createProduct = async (req, res) => {
@@ -226,6 +227,16 @@ export const readSupplier = async (req, res) => {
     const userId = req.body.uuid;
     console.log("Lendo fornecedor com ID:", userId);
     const data = await getSupplier(userId);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const readSupplierWithID = async (req, res) => {
+  try {
+    const id = req.body.id;
+    const data = await getSupplierWithID(id);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });

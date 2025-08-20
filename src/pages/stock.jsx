@@ -6,20 +6,17 @@ import { stock } from "../redux/Route/slice";
 import style from "./../styles/stock.module.css";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import coxinha from "./../assets/Coxinha.jpg";
-import strogonoff from "./../assets/Strogonoff.jpg";
-import prafotfeito from "./../assets/PratoFeito.jpg";
 import feijoada from "./../assets/Feijoada.jpg";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { LuPlus } from "react-icons/lu";
 import Modal from "../components/Modal/Modal";
-import Dropzone from "../components/Dropzone/Dropzone";
 import CurrencyInput from "react-currency-input-field";
 import PhoneInput from "react-phone-number-input/input";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { data } from "react-router-dom";
+import { CardOfStock } from "../components/CardsOfStock/CardOfStock";
 
 export default function Stock() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -215,18 +212,18 @@ export default function Stock() {
 
   //Le produto
   async function fetchData() {
-   try {
-     const data = await axios.post(
-      `${import.meta.env.VITE_API_URL}/stock/readProduct`,
-      {
-         userId: userId.uuid,
-       }
-     );
-     console.log(data);
-     setDataStock(data.data);
+    try {
+      const data = await axios.post(
+        `${import.meta.env.VITE_API_URL}/stock/readProduct`,
+        {
+          userId: userId.uuid,
+        }
+      );
+      console.log(data);
+      setDataStock(data.data);
     } catch (error) {
-   console.error("Erro ao buscar dados:", error);
-   }
+      console.error("Erro ao buscar dados:", error);
+    }
   }
 
   //le supplier
@@ -250,11 +247,10 @@ export default function Stock() {
     }
   }
 
-
   useEffect(() => {
-     fetchData();
+    fetchData();
     readSupplier();
-  },[]);
+  }, []);
 
   return (
     <>
@@ -285,83 +281,11 @@ export default function Stock() {
               <h1>Adicionar Produto</h1>
             </div>
           </div>
-          <div
-            className={style.Cards}
-            id="card-view"
-            onClick={() => setModalOpen(true)}
-          >
-            <div>
-              <img className={style.images} src={coxinha} alt="coxinha" />
-            </div>
-            <div className={style.content}>
-              <h1 className={style.titleCard}>Seila</h1>
-              <p className={style.textCard}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-                minima, libero obcaecati quae, vero omnis.
-              </p>
-            </div>
-            <div className={style.actions}>
-              <button className={style.button} id="button-back-counter">
-                <IoIosArrowBack className={style.Arrowicon} />
-              </button>
-              <h1 className={style.counter} id="counter">
-                000
-              </h1>
-              <button className={style.button} id="button-forward-counter">
-                <IoIosArrowForward className={style.Arrowicon} />
-              </button>
-            </div>
-          </div>
-          <div className={style.Cards} id="card-view">
-            <div>
-              <img
-                className={style.images}
-                src={prafotfeito}
-                alt="prato feito"
-              />
-            </div>
-            <div className={style.content}>
-              <h1 className={style.titleCard}>Lalalla</h1>
-              <p className={style.textCard}>
-                Error dignissimos veritatis voluptatibus veniam, quos, ratione
-                accusantium iusto quas magnam tenetur consequatur.
-              </p>
-            </div>
-            <div className={style.actions}>
-              <button className={style.button} id="button-back-counter">
-                <IoIosArrowBack className={style.Arrowicon} />
-              </button>
-              <h1 className={style.counter} id="counter">
-                000
-              </h1>
-              <button className={style.button} id="button-forward-counter">
-                <IoIosArrowForward className={style.Arrowicon} />
-              </button>
-            </div>
-          </div>
-          <div className={style.Cards} id="card-view">
-            <div>
-              <img className={style.images} src={strogonoff} alt="strogonoff" />
-            </div>
-            <div className={style.content}>
-              <h1 className={style.titleCard}>Fafafaf</h1>
-              <p className={style.textCard}>
-                Quam placeat nisi sint facere quod blanditiis illum earum
-                maiores, cumque sed possimus sit ab? Commodi, minima!
-              </p>
-            </div>
-            <div className={style.actions}>
-              <button className={style.button} id="button-back-counter">
-                <IoIosArrowBack className={style.Arrowicon} />
-              </button>
-              <h1 className={style.counter} id="counter">
-                000
-              </h1>
-              <button className={style.button} id="button-forward-counter">
-                <IoIosArrowForward className={style.Arrowicon} />
-              </button>
-            </div>
-          </div>
+          
+          {dataStock.map((product) => (
+            <CardOfStock key={product.id} product={product} />
+          ))}
+          
           <div className={style.Cards} id="card-view">
             <div>
               <img className={style.images} src={feijoada} alt="feijoada" />
@@ -415,8 +339,7 @@ export default function Stock() {
               <div className={style.ModalForne}>
                 <h1>Fornecedor</h1>
                 <h3 className={style.ModalTitle}>
-                  Nome:{" "}
-                  <span className={style.ModalTxt}>Nome do Fornecedor</span>
+                  Nome: <span className={style.ModalTxt}>Nome do Fornecedor</span>
                 </h3>
                 <h3 className={style.ModalTitle}>
                   <h3 className={style.ModalTitle}>
@@ -532,10 +455,11 @@ export default function Stock() {
                   disabled={addForn}
                 >
                   <option value="">Nenhum fornecedor</option>
-                  <option value="1">Fornecedor 1</option>
-                  <option value="2">Fornecedor 2</option>
-                  <option value="3">Fornecedor 3</option>
-                  <option value="4">Fornecedor 4</option>
+                  {supplierData.map((supplier) => (
+                    <option key={supplier.id} value={supplier.id}>
+                      {supplier.name}
+                    </option>
+                  ))}
                 </select>
                 <button
                   type="button"

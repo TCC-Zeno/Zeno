@@ -1,0 +1,693 @@
+.containerFilter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputFilter {
+  width: 80%;
+  font-size: 14pt;
+  border-radius: 50px;
+  border: 0.5px solid black;
+  padding: 0.5%;
+}
+
+.buttonFilter {
+  margin-left: 10px;
+}
+.icon {
+  font-size: 16pt;
+}
+
+.buttonFilter:hover .icon {
+  transform: scale(1.2);
+  font-weight: bold;
+}
+
+.containerCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  background-color: #d9d9d9;
+  margin-top: 1.5%;
+}
+
+.Cards {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 10px;
+  transition: 1s all;
+  padding: 7%;
+  margin: 2.5%;
+}
+
+.images {
+  width: 100%;
+  height: 250px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.content {
+  align-items: center;
+  justify-content: center;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 5%;
+}
+
+.button {
+  background-color: rgb(var(--color-primary));
+  color: white;
+  border-radius: 50%;
+  font-size: 18pt;
+  padding: 1%;
+}
+
+.counter {
+  font-size: 18pt;
+  font-family: "Coolvetica Rg";
+}
+
+.Arrowicon {
+  align-items: center;
+  justify-content: center;
+}
+
+.titleCard {
+  font-family: "Coolvetica Rg";
+  font-size: 20pt;
+  font-weight: 300;
+}
+
+.textCard {
+  font-size: 14pt;
+  font-weight: 200;
+}
+
+.Cardadd {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: 1s all;
+  padding: 7%;
+  margin: 2.5%;
+  background-color: white;
+}
+
+.add {
+  width: 30%;
+  height: auto;
+  transition: 1s all;
+}
+.add:hover {
+  transform: scale(1.1);
+}
+
+.contentAdd {
+  font-size: 16pt;
+  margin-top: 15%;
+  font-weight: 300;
+  flex-direction: end;
+}
+
+.line {
+  border: 2px solid black;
+}
+
+.modalContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+}
+
+.modalLeft {
+  width: 50%;
+  margin-right: 100px;
+}
+
+.modalRight {
+  width: 50%;
+}
+
+.ModalInfos {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  line-height: 30px;
+  margin-bottom: 3%;
+}
+
+.ModalInfos h1 {
+  font-size: 18pt;
+  font-family: "Coolvetica Rg";
+}
+
+.ModalTitle {
+  font-weight: 400;
+  font-size: 16pt;
+}
+
+.ModalTxt {
+  font-size: 14pt;
+}
+
+.ModalForne {
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.ModalForne h1 {
+  font-size: 18pt;
+  font-family: "Coolvetica Rg";
+}
+
+.ModalQuanti {
+  margin-top: 2%;
+}
+
+.modalImages {
+  width: 100%;
+  height: 250px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin: 5%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 6%;
+}
+
+.buttonEdit {
+  border-radius: 5px;
+  padding: 2%;
+  transition: 1s all;
+  color: white;
+  background-color: rgb(70, 135, 243);
+  width: 100px;
+}
+
+.buttonEdit:hover {
+  transform: scale(1.1);
+  font-weight: 400;
+}
+
+.buttonDelete {
+  border-radius: 5px;
+  padding: 2%;
+  transition: 1s all;
+  background-color: red;
+  color: white;
+  width: 100px;
+}
+
+.buttonDelete:hover {
+  transform: scale(1.1);
+  font-weight: 400;
+}
+
+.titleModal {
+  margin: 1%;
+  font-family: "Coolvetica Rg";
+  font-size: 20pt;
+  font-weight: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputsCad {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.inputAdd {
+  background-color: #d9d9d9;
+  margin: 1%;
+  line-height: 200%;
+  padding: 0.8%;
+  border-radius: 10px;
+}
+
+.inputAdd::placeholder {
+  color: black;
+}
+
+.containerFornTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fornTitle {
+  margin: 1%;
+  font-family: "Coolvetica Rg";
+  font-size: 20pt;
+  font-weight: 300;
+  display: flex;
+  margin: 1.5%;
+}
+
+.drop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  width: 100%;
+}
+
+.custProd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custProd h2 {
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.inputPrice {
+  margin: 1%;
+  background-color: #d9d9d9;
+  padding: 0.6%;
+  width: 20%;
+  border-radius: 6px;
+}
+
+.linha {
+  height: 2px;
+  margin: 2%;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    /* rgb(122, 235, 140), */ rgb(63, 136, 247),
+    rgb(149, 1, 246) /* rgb(240, 37, 33) */
+  );
+}
+
+.quantStock {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.conatinerTitleQuant {
+  display: flex;
+  align-items: center;
+}
+
+.actions1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.titleQuant {
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+.pQuant {
+  font-size: 10pt;
+}
+
+.buttonsCad {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+}
+
+.buttonCad1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 40px;
+}
+
+.buttonSalveCad {
+  background-color: rgb(70, 135, 243);
+  color: white;
+  border-radius: 5px;
+  padding: 8% 25%;
+  font-size: 14pt;
+  transition: 1s all;
+}
+
+.buttonDeleteCad {
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  padding: 8% 25%;
+  font-size: 14pt;
+  transition: 1s all;
+}
+.buttonSalveCad:hover {
+  transform: scale(1.1);
+  font-weight: 400;
+}
+
+.buttonDeleteCad:hover {
+  transform: scale(1.1);
+  font-weight: 400;
+}
+.selectForn {
+  display: flex;
+}
+.selectForn select {
+  width: 80%;
+  margin: 1%;
+  padding: 0.8%;
+  line-height: 200%;
+  border-radius: 10px;
+  background-color: rgb(var(--color-background-secondary));
+  border: none;
+}
+.selectForn button {
+  text-align: center;
+  width: 20%;
+  margin: 1%;
+  padding: 0.8%;
+  border-radius: 10px;
+  background-color: rgb(var(--color-primary));
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.inputsCad input[type="tel"] {
+  background-color: #d9d9d9;
+  margin: 1%;
+  line-height: 200%;
+  padding: 0.8%;
+  border-radius: 10px;
+  color: black;
+}
+.inputsCad input[type="tel"]::placeholder {
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .selectForn {
+    flex-direction: column;
+  }
+
+  .selectForn select {
+    width: 90%;
+  }
+
+  .selectForn button {
+    width: 90%;
+  }
+
+  .containerCards {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .modalContent {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modalLeft,
+  .modalRight {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .inputsCad {
+    width: 90%;
+  }
+
+  .drop {
+    width: 90%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+
+  .custProd {
+    width: 90%;
+    justify-content: center;
+  }
+
+  .linha {
+    width: 90%;
+  }
+
+  .quantStock {
+    width: 90%;
+  }
+
+  .modalImages {
+    width: 90%;
+    height: auto;
+  }
+
+  .line {
+    width: 90%;
+  }
+}
+
+::selection {
+  background: #2d59fa;
+  color: #f2f7fe;
+}
+
+.dropzoneBox {
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 576px;
+  border: 1px solid #edf1f3;
+  width: 100%;
+  background: rgb(var(--color-background-secondary));
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.dropzoneBox h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #211e30;
+}
+
+.dropzoneBox p {
+  font-size: 18px;
+  color: #767676;
+}
+
+.dropzoneArea {
+  padding: 16px;
+  position: relative;
+  margin: 16px 0;
+  min-height: 200px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 2px dashed #747474;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.dropzoneDescription {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropzoneArea .fileInfo {
+  font-size: 18px;
+}
+
+.dropzoneArea [type="file"] {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.dropzoneArea .fileUploadIcon svg {
+  height: 96px;
+  max-width: 96px;
+  width: 100%;
+  margin-bottom: 8px;
+  stroke: #211e30;
+}
+
+.dropzoneArea:hover {
+  background: #f2f7fe;
+}
+
+.dropzone--over {
+  border: 2px solid #2d59fa;
+  background: #f2f7fe;
+}
+
+.dropzoneActions {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-top: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dropzoneActions button {
+  flex-grow: 1;
+  min-height: 48px;
+  font-size: 19px;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.dropzoneHelp {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropzoneActions button[type="reset"] {
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: #0a090c;
+  background: #feffff;
+  cursor: pointer;
+  border: 1px solid #d4dce6;
+  transition: all 0.3s ease;
+}
+
+.dropzoneActions button[type="reset"]:hover {
+  border: 1px solid #2d59fa;
+  color: #2d59fa;
+}
+
+.dropzoneActions button[type="submit"] {
+  background: rgb(var(--color-primary));
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: #f2f7fe;
+  border: none;
+  cursor: pointer;
+}
+
+.dropzoneActions button[type="submit"]:hover {
+  background: rgb(var(--color-secondary));
+}
+
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  max-width: 192px;
+}
+
+@media screen and (max-width: 768px) {
+  .dropzoneBox {
+    padding: 12px;
+    margin: 0;
+    width: 80%;
+  }
+
+  .dropzoneBox p {
+    font-size: 16px;
+  }
+
+  .dropzoneArea {
+    padding: 12px;
+    margin: 12px 0;
+    min-height: 160px;
+  }
+
+  .dropzoneArea .fileUploadIcon svg {
+    height: 64px;
+    max-width: 64px;
+  }
+
+  .dropzoneArea .fileInfo {
+    font-size: 14px;
+  }
+
+  .dropzoneDescription {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .dropzoneActions {
+    margin-top: 16px;
+  }
+
+  .dropzoneActions button {
+    min-height: 40px;
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+
+  .actionButtons {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .dropzoneBox {
+    padding: 8px;
+    margin: 0;
+    width: 80%;
+  }
+
+  .dropzoneBox p {
+    font-size: 14px;
+  }
+
+  .dropzoneArea {
+    padding: 8px;
+    margin: 8px 0;
+    min-height: 140px;
+  }
+
+  .dropzoneArea .fileUploadIcon svg {
+    height: 48px;
+    max-width: 48px;
+  }
+
+  .dropzoneArea .fileInfo {
+    font-size: 12px;
+  }
+
+  .dropzoneDescription {
+    font-size: 12px;
+  }
+
+  .dropzoneActions button {
+    min-height: 36px;
+    font-size: 14px;
+    padding: 4px 10px;
+  }
+}
