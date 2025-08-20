@@ -19,6 +19,7 @@ import PhoneInput from "react-phone-number-input/input";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import { data } from "react-router-dom";
 
 export default function Stock() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -31,6 +32,8 @@ export default function Stock() {
   const fileInputRef = useRef(null);
   const FILE_LIMIT = 25 * 1024 * 1024;
   const userId = useSelector((state) => state.userReducer.userData);
+  const [dataStock, setDataStock] = useState([]);
+  const [supplierData, setSupplierData] = useState([]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -121,7 +124,6 @@ export default function Stock() {
   };
 
   const onSubmit = async (data) => {
-    // Eu deixei aqui formatado para ter uma ideia além de facilitar na inserir o fornecedor
     const addProductData = {
       ProductName: data.ProductName,
       FixedQuantity: data.FixedQuantity,
@@ -139,7 +141,7 @@ export default function Stock() {
             SupplierAddress: data.SupplierAddress,
             SupplierEmail: data.SupplierEmail,
           }
-        : Number(data.Supplier), // <-- converte para número
+        : Number(data.Supplier),
     };
 
     console.log(addProductData);
@@ -156,12 +158,23 @@ export default function Stock() {
       formData.append("MinQuantity", addProductData.MinQuantity);
       formData.append("FixedQuantity", addProductData.FixedQuantity);
 
-      // Se tiver fornecedor novo, manda os dados, se não só o id dele
-      if (typeof addProductData.SupplierInfo === "object") {
-        formData.append("SupplierName", addProductData.SupplierInfo.SupplierName);
-        formData.append("SupplierNumber", addProductData.SupplierInfo.SupplierNumber);
-        formData.append("SupplierAddress", addProductData.SupplierInfo.SupplierAddress);
-        formData.append("SupplierEmail", addProductData.SupplierInfo.SupplierEmail);
+      if (addForn) {
+        formData.append(
+          "SupplierName",
+          addProductData.SupplierInfo.SupplierName
+        );
+        formData.append(
+          "SupplierNumber",
+          addProductData.SupplierInfo.SupplierNumber
+        );
+        formData.append(
+          "SupplierAddress",
+          addProductData.SupplierInfo.SupplierAddress
+        );
+        formData.append(
+          "SupplierEmail",
+          addProductData.SupplierInfo.SupplierEmail
+        );
       } else {
         formData.append("SupplierInfo", addProductData.SupplierInfo);
       }
@@ -169,7 +182,8 @@ export default function Stock() {
       if (addProductData.Image) {
         formData.append("image", addProductData.Image);
       } else {
-        console.log("Cade a imagem:?:??");
+        console.error("Imagem não selecionada");
+        alert("Por favor, selecione uma imagem para o produto.");
         return;
       }
 
@@ -184,41 +198,49 @@ export default function Stock() {
       );
 
       if (response.status === 201) {
-        console.log(response);
+        console.log("Produto criado com sucesso:", response.data);
+        alert("Produto adicionado com sucesso!");
       }
     } catch (error) {
+      console.error("Erro completo:", error);
       const errorMessage =
-        error.response?.data?.message || "Erro ao adicionar produto";
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "Erro ao adicionar produto";
       console.error("Erro ao adicionar produto:", errorMessage);
+
+      alert(`Erro: ${errorMessage}`);
     }
   };
 
-
   //Le produto
-  // async function fetchData() {
-  //   try {
-  //     const data = await axios.post(
-  //       `${import.meta.env.VITE_API_URL}/stock/readProduct`,
-  //       {
-  //         userId: userId.uuid,
-  //       }
-  //     );
-  //     setDataStock(data.data);
-  //   } catch (error) {
-  //     console.error("Erro ao buscar dados:", error);
-  //   }
-  // }
+  async function fetchData() {
+   try {
+     const data = await axios.post(
+      `${import.meta.env.VITE_API_URL}/stock/readProduct`,
+      {
+         userId: userId.uuid,
+       }
+     );
+     console.log(data);
+     setDataStock(data.data);
+    } catch (error) {
+   console.error("Erro ao buscar dados:", error);
+   }
+  }
 
   //le supplier
-  async function ReadSupplier() {
+  async function readSupplier() {
     try {
+      console.log("Lendo fornecedor com ID:", userId.uuid);
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/supplier/readSupplier`,
+        `${import.meta.env.VITE_API_URL}/stock/readSupplier`,
         {
           uuid: userId.uuid,
         }
       );
       if (response.status === 200) {
+        console.log("Dados do fornecedor:", response.data);
         setSupplierData(response.data);
       }
     } catch (error) {
@@ -228,11 +250,11 @@ export default function Stock() {
     }
   }
 
-  useEffect(() => {
-    // fetchData();
-    // ReadCategory();
-  }, [userId.uuid]);
 
+  useEffect(() => {
+     fetchData();
+    readSupplier();
+  },[]);
 
   return (
     <>

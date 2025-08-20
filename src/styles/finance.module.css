@@ -65,7 +65,7 @@
 .views {
   align-items: center;
   justify-content: space-around;
-  border: solid 1.5px black;
+  border: solid 1.75px black;
   border-radius: 6px;
   width: 24%;
   height: auto;
@@ -88,6 +88,7 @@
   color: #32cd32;
   font-size: 20pt;
   transition: 0.5s;
+  font-weight: bold;
 }
 .number:hover {
   transform: scale(1.05);
@@ -102,6 +103,7 @@
   color: red;
   font-size: 20pt;
   transition: 0.5s;
+  font-weight: bold;
 }
 .number2:hover {
   transform: scale(1.05);
@@ -116,6 +118,7 @@
   color: red;
   font-size: 20pt;
   transition: 0.5s;
+  font-weight: bold;
 }
 .number3Negative:hover {
   transform: scale(1.05);
@@ -125,6 +128,7 @@
   color: #32cd32;
   font-size: 20pt;
   transition: 0.5s;
+  font-weight: bold;
 }
 .number3:hover {
   transform: scale(1.05);
