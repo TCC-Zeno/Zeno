@@ -22,7 +22,6 @@ export function Navbar() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    console.log("lala", profileInfo.features.stock);
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };

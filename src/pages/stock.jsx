@@ -29,8 +29,12 @@ export default function Stock() {
   const fileInputRef = useRef(null);
   const FILE_LIMIT = 25 * 1024 * 1024;
   const userId = useSelector((state) => state.userReducer.userData);
+  const filterStatus = useSelector((state) => state.stockFilterReducer.filter);
   const [dataStock, setDataStock] = useState([]);
   const [supplierData, setSupplierData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -195,8 +199,9 @@ export default function Stock() {
       );
 
       if (response.status === 201) {
-        console.log("Produto criado com sucesso:", response.data);
-        alert("Produto adicionado com sucesso!");
+        fetchData();
+        reset();
+        setModalBigOpen(false);
       }
     } catch (error) {
       console.error("Erro completo:", error);
@@ -219,8 +224,8 @@ export default function Stock() {
           userId: userId.uuid,
         }
       );
-      console.log(data);
       setDataStock(data.data);
+      setFilteredData(filterProducts(data.data, searchTerm));
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
@@ -247,26 +252,61 @@ export default function Stock() {
     }
   }
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filterProducts = (products, term, status) => {
+    const isStatusFilterActive = status && status !== null;
+
+    return products.filter((product) => {
+      const matchesSearchTerm =
+        product.name.toLowerCase().includes(term.toLowerCase()) ||
+        product.description.toLowerCase().includes(term.toLowerCase()) ||
+        product.product_category.toLowerCase().includes(term.toLowerCase());
+
+      const matchesFilterStatus = isStatusFilterActive
+        ? product.alert.toLowerCase() === status.toLowerCase()
+        : true;
+
+      return matchesSearchTerm && matchesFilterStatus;
+    });
+  };
+
   useEffect(() => {
-    fetchData();
-    readSupplier();
+    const initializeData = async () => {
+      try {
+        await fetchData();
+        await readSupplier();
+      } catch (error) {
+        console.error("Erro ao inicializar dados:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (loading) {
+      initializeData();
+    }
   }, []);
+
+  useEffect(() => {
+    setFilteredData(filterProducts(dataStock, searchTerm, filterStatus));
+  }, [searchTerm, dataStock, filterStatus]);
 
   return (
     <>
-      <DefaultLayout>
+      <DefaultLayout loading={loading}>
         <div className={style.containerFilter}>
           <input
             className={style.inputFilter}
             type="text"
             placeholder="Procurar Produto"
             id="input-filter"
+            value={searchTerm}
+            onChange={handleSearch}
           />
           <button className={style.buttonFilter} id="button-filter">
-            <HiMiniMagnifyingGlass
-              className={style.icon}
-              onSubmit={handleSubmit(onSubmit)}
-            />
+            <HiMiniMagnifyingGlass className={style.icon} />
           </button>
         </div>
 
@@ -281,34 +321,19 @@ export default function Stock() {
               <h1>Adicionar Produto</h1>
             </div>
           </div>
-          
-          {dataStock.map((product) => (
-            <CardOfStock key={product.id} product={product} />
+
+          {filteredData.map((product) => (
+            <CardOfStock
+              key={product.id}
+              product={product}
+              fetchData={fetchData}
+            />
           ))}
-          
-          <div className={style.Cards} id="card-view">
-            <div>
-              <img className={style.images} src={feijoada} alt="feijoada" />
+          {filteredData.length === 0 && searchTerm && (
+            <div className={style.noResults}>
+              <p>Nenhum produto encontrado para "{searchTerm}"</p>
             </div>
-            <div className={style.content}>
-              <h1 className={style.titleCard}>Dadadada</h1>
-              <p className={style.textCard}>
-                Nostrum tempore dignissimos assumenda possimus porro quam
-                voluptatem blanditiis culpa atque officia aliquid rem.
-              </p>
-            </div>
-            <div className={style.actions}>
-              <button className={style.button} id="button-back-counter">
-                <IoIosArrowBack className={style.Arrowicon} />
-              </button>
-              <h1 className={style.counter} id="counter">
-                000
-              </h1>
-              <button className={style.button} id="button-forward-counter">
-                <IoIosArrowForward className={style.Arrowicon} />
-              </button>
-            </div>
-          </div>
+          )}
         </div>
 
         <Modal
@@ -339,7 +364,8 @@ export default function Stock() {
               <div className={style.ModalForne}>
                 <h1>Fornecedor</h1>
                 <h3 className={style.ModalTitle}>
-                  Nome: <span className={style.ModalTxt}>Nome do Fornecedor</span>
+                  Nome:{" "}
+                  <span className={style.ModalTxt}>Nome do Fornecedor</span>
                 </h3>
                 <h3 className={style.ModalTitle}>
                   <h3 className={style.ModalTitle}>

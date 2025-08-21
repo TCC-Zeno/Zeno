@@ -20,6 +20,10 @@
 .contentMax {
   padding-top: 80px;
 }
+.load {
+  width: 110px;
+  height: 110px;
+}
 @media screen and (max-width: 1024px) {
   .main {
     margin-left: 25%;

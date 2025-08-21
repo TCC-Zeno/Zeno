@@ -202,10 +202,10 @@ export const readProduct = async (req, res) => {
 
 export const updateProductById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const stockData = req.body;
-    const data = await updateProduct(id, stockData);
-    res.status(200).json(data);
+    const { id } = req.body;
+    const { data } = req.body;
+    const response = await updateProduct(id, data);
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

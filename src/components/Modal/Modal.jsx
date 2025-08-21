@@ -70,7 +70,7 @@ export default function Modal({ isOpen, onClose, children, guide = false, stock 
                 : stock
                 ? {
                   width: "auto",
-                  maxWidth: "100%"
+                  maxWidth: "80vw"
                 }
                 : undefined
 

@@ -10,10 +10,11 @@ import S from "./header.module.css";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setFilter, clearFilter } from "../../redux/StockFilter/slice";
 import DropdownContributors from "./DropdownContributors";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSelector } from "react-redux";
-
 
 export function NotificationContent() {
   return (
@@ -111,12 +112,12 @@ export function ProfileContent() {
   const [dropdownContributors, setDropdownContributors] = useState(false);
   const { logout } = useAuth();
   const profileinfo = useSelector((state) => state.userReducer.userData);
-const colorBlindness = useSelector(
+  const colorBlindness = useSelector(
     (state) => state.userReducer.colorBlindness
   );
   async function logoutuser() {
     try {
-       await logout();
+      await logout();
     } catch (err) {
       console.log(err);
     }
@@ -158,10 +159,7 @@ const colorBlindness = useSelector(
         <div className={S.divider}></div>
         <button className={S.configureSignature}>Configurar assinatura</button>
         <div className={S.divider}></div>
-        <button
-          className={S.manegerOption}
-          onClick={logoutuser}
-        >
+        <button className={S.manegerOption} onClick={logoutuser}>
           <TbLogout />
           <span>Sair</span>
         </button>
@@ -170,7 +168,7 @@ const colorBlindness = useSelector(
             <h1>Conta</h1>
             <div className={S.modalContainerInfo}>
               <p>Nome da empresa:</p>
-              <input type="text" disabled value= {profileinfo.company_name} />
+              <input type="text" disabled value={profileinfo.company_name} />
             </div>
             <div className={S.modalContainerInfo}>
               <p>Email da empresa:</p>
@@ -178,7 +176,7 @@ const colorBlindness = useSelector(
             </div>
             <div className={S.modalContainerInfo}>
               <p>Opção de acessibilidade:</p>
-              <input type="text" disabled value={colorBlindness}/>
+              <input type="text" disabled value={colorBlindness} />
             </div>
             <div className={S.modalContainerInfo}>
               <p>Logo da empresa:</p>
@@ -210,6 +208,7 @@ const colorBlindness = useSelector(
 
 export function FilterContent() {
   const [modalOpen, setModalOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const dropdownVariants = {
     hidden: {
@@ -237,17 +236,34 @@ export function FilterContent() {
     },
   };
 
+  
+
   return (
     <>
       <div className={S.containerFilters}>
         <div className={S.filterOptions}>
-          <button className={S.filterButton}>Produtos em estoque</button>
+          <button
+            className={S.filterButton}
+            onClick={() => dispatch(setFilter("default"))}
+          >
+            Produtos em estoque
+          </button>
         </div>
         <div className={S.filterOptions}>
-          <button className={S.filterButton}>Produtos para repor</button>
+          <button
+            className={S.filterButton}
+            onClick={() => dispatch(setFilter("restock"))}
+          >
+            Produtos para repor
+          </button>
         </div>
         <div className={S.filterOptions}>
-          <button className={S.filterButton}>Produtos para comprar</button>
+          <button
+            className={S.filterButton}
+            onClick={() => dispatch(setFilter("low_stock"))}
+          >
+            Produtos para comprar
+          </button>
         </div>
         <div className={S.filterOptions}>
           <button
@@ -276,6 +292,14 @@ export function FilterContent() {
           </motion.div>
         </AnimatePresence>
       )}
+      <div className={S.filterOptions}>
+        <button
+          className={S.filterButtonClear}
+          onClick={() => dispatch(clearFilter())}
+        >
+          Limpar filtro
+        </button>
+      </div>
     </>
   );
 }
