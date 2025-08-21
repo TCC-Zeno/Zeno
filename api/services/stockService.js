@@ -143,4 +143,27 @@ export const deleteSupplier = async (id) => {
   return data;
 };
 
+export const getCategorys = async (uuid) => {
+  const { data, error } = await supabase
+    .from("product")
+    .select("product_category")
+    .eq("uuid", uuid)
+    .order('created_at', { ascending: true });
+
+  if (error) throw error;
+  return data;
+};
+
+export const getProductsAlerts = async (uuid) => {
+  const { data, error } = await supabase
+    .from("product")
+    .select("alert, name")
+    .eq("uuid", uuid)
+    .in("alert", ["restock", "low_stock", "out_stock"])
+    .order("name", { ascending: true }); 
+
+  if (error) throw error;
+  return data;
+};
+
 export default supabase;

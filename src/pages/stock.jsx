@@ -256,8 +256,8 @@ export default function Stock() {
     setSearchTerm(e.target.value);
   };
 
-  const filterProducts = (products, term, status) => {
-    const isStatusFilterActive = status && status !== null;
+  const filterProducts = (products, term, statusOrCategory) => {
+    const isStatusFilterActive = statusOrCategory && statusOrCategory !== null;
 
     return products.filter((product) => {
       const matchesSearchTerm =
@@ -266,7 +266,9 @@ export default function Stock() {
         product.product_category.toLowerCase().includes(term.toLowerCase());
 
       const matchesFilterStatus = isStatusFilterActive
-        ? product.alert.toLowerCase() === status.toLowerCase()
+        ? product.alert.toLowerCase() === statusOrCategory.toLowerCase() ||
+          product.product_category.toLowerCase() ===
+            statusOrCategory.toLowerCase()
         : true;
 
       return matchesSearchTerm && matchesFilterStatus;

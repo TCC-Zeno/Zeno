@@ -9,100 +9,77 @@ import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import S from "./header.module.css";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setFilter, clearFilter } from "../../redux/StockFilter/slice";
 import DropdownContributors from "./DropdownContributors";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 export function NotificationContent() {
+  const [dataArray, setDataArray] = useState([]);
+  const profileinfo = useSelector((state) => state.userReducer.userData);
+
+  async function fetchProdutsAlert() {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/stock/getAlerts`,
+        {
+          uuid: profileinfo.uuid,
+        }
+      );
+
+      if (response.status === 200) {
+        console.log(response);
+
+        setDataArray(response.data);
+      }
+    } catch (err) {
+      console.error("Erro ao selecionar categorias:", err);
+    }
+  }
+  useEffect(() => {
+    fetchProdutsAlert();
+  }, []);
+
   return (
     <div className={S.containerNotifications}>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <TbAlertHexagon color="red" size="12%" />
-          <h4>Produto acabou:</h4>
-        </div>
-        <p>Compre Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <LuTriangleAlert color="orange" size="12%" />
-          <h4>Produto acabando:</h4>
-        </div>
-        <p>Compre mais Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <LuCircleAlert color="green" size="12%" />
-          <h4>Produto para repor:</h4>
-        </div>
-        <p>Repor Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <TbAlertHexagon color="red" size="12%" />
-          <h4>Produto acabou:</h4>
-        </div>
-        <p>Compre Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <LuTriangleAlert color="orange" size="12%" />
-          <h4>Produto acabando:</h4>
-        </div>
-        <p>Compre mais Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <LuCircleAlert color="green" size="12%" />
-          <h4>Produto para repor:</h4>
-        </div>
-        <p>Repor Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <TbAlertHexagon color="red" size="12%" />
-          <h4>Produto acabou:</h4>
-        </div>
-        <p>Compre Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <LuTriangleAlert color="orange" size="12%" />
-          <h4>Produto acabando:</h4>
-        </div>
-        <p>Compre mais Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <LuCircleAlert color="green" size="12%" />
-          <h4>Produto para repor:</h4>
-        </div>
-        <p>Repor Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <TbAlertHexagon color="red" size="12%" />
-          <h4>Produto acabou:</h4>
-        </div>
-        <p>Compre Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <LuTriangleAlert color="orange" size="12%" />
-          <h4>Produto acabando:</h4>
-        </div>
-        <p>Compre mais Feijão Carioca</p>
-      </div>
-      <div className={S.notification}>
-        <div className={S.notificationTitle}>
-          <LuCircleAlert color="green" size="12%" />
-          <h4>Produto para repor:</h4>
-        </div>
-        <p>Repor Feijão Carioca</p>
-      </div>
+      {dataArray.map((product, index) => {
+        if (product.alert === "out_stock") {
+          return (
+            <div key={index} className={S.notification}>
+              <div className={S.notificationTitle}>
+                <TbAlertHexagon color="red" size="12%" />
+                <h4>Produto acabou:</h4>
+              </div>
+              <p>Compre {product.name}</p>
+            </div>
+          );
+        } else if (product.alert === "restock") {
+          return (
+            <div key={index} className={S.notification}>
+              <div className={S.notificationTitle}>
+                <LuTriangleAlert color="orange" size="12%" />
+                <h4>Produto acabando:</h4>
+              </div>
+              <p>Compre mais {product.name}</p>
+            </div>
+          );
+        } else if (product.alert === "low_stock") {
+          return (
+            <div key={index} className={S.notification}>
+              <div className={S.notificationTitle}>
+                <LuCircleAlert color="green" size="12%" />
+                <h4>Produto para repor:</h4>
+              </div>
+              <p>Repor {product.name}</p>
+            </div>
+          );
+        } else {
+          return null;
+        }
+      })}
     </div>
   );
 }
@@ -208,6 +185,8 @@ export function ProfileContent() {
 
 export function FilterContent() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [dataCategory, setDataCategory] = useState({});
+  const profileinfo = useSelector((state) => state.userReducer.userData);
   const dispatch = useDispatch();
 
   const dropdownVariants = {
@@ -236,7 +215,31 @@ export function FilterContent() {
     },
   };
 
-  
+  function getUniqueCategories(products) {
+    return [...new Set(products.map((item) => item.product_category))];
+  }
+
+  async function fetchCategorysFilter() {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/stock/readCategorysOfProducts`,
+        {
+          uuid: profileinfo.uuid,
+        }
+      );
+
+      if (response.status === 200) {
+        console.log(getUniqueCategories(response.data));
+
+        setDataCategory(getUniqueCategories(response.data));
+      }
+    } catch (err) {
+      console.error("Erro ao selecionar categorias:", err);
+    }
+  }
+  useEffect(() => {
+    fetchCategorysFilter();
+  }, []);
 
   return (
     <>
@@ -283,12 +286,16 @@ export function FilterContent() {
             exit="exit"
             variants={dropdownVariants}
           >
-            <div className={S.filterOption2}>
-              <button className={S.filterButton2}> Categoria 1 </button>
-            </div>
-            <div className={S.filterOption2}>
-              <button className={S.filterButton2}> Categoria 2 </button>
-            </div>
+            {dataCategory.map((categoty) => (
+              <div className={S.filterOption2} key={categoty}>
+                <button
+                  className={S.filterButton2}
+                  onClick={() => dispatch(setFilter(categoty))}
+                >
+                  {categoty}
+                </button>
+              </div>
+            ))}
           </motion.div>
         </AnimatePresence>
       )}

@@ -498,17 +498,17 @@ button.manegerOption {
 .cancelBtn:hover {
   transform: scale(1.05);
 }
- 
-.filterOptions{
+
+.filterOptions {
   padding: 1%;
 }
 
-.filterButton{
+.filterButton {
   font-size: 14pt;
   font-weight: 500;
 }
 
-.filterButton1{
+.filterButton1 {
   font-size: 14pt;
   font-weight: 500;
   display: flex;
@@ -516,14 +516,25 @@ button.manegerOption {
   align-items: center;
 }
 
-.filterOption2{
+.filterOption2 {
   padding: 1%;
   margin: 2%;
 }
 
-.filterButton2{
+.filterButton2 {
   font-size: 12pt;
   font-weight: 400;
+}
+
+.filterButtonClear {
+  text-align: center;
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  transition: all 0.5s;
+}
+.filterButtonClear:hover {
+  transform: scale(1.01);
 }
 
 @media screen and (max-width: 768px) {
