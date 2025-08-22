@@ -13,6 +13,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkSession = async () => {
       try {
+        console.log("Verificando sessão...");
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/auth/check-session`,
           {
@@ -21,14 +22,16 @@ export function AuthProvider({ children }) {
           }
         );
 
-        // Buscar dados completos do usuário usando a sessão
+        console.log("Resposta do check-session:", response.data);
+
         if (response.data.success && response.data.user) {
+          console.log("Sessão válida, buscando dados completos...");
           const userSession = await axios.get(
             `${import.meta.env.VITE_API_URL}/auth/session`,
             { withCredentials: true }
           );
 
-          console.log("Usuário encontrado na sessão:", userSession.data.user);
+          console.log("Dados completos do usuário:", userSession.data.user);
           dispatch(userData(userSession.data.user));
           dispatch(setTheme(userSession.data.user.color));
           dispatch(setColorBlindness(userSession.data.user.accessibility));
@@ -41,14 +44,17 @@ export function AuthProvider({ children }) {
         console.error("Erro ao verificar sessão:", error);
         console.error("Status:", error.response?.status);
         console.error("Data:", error.response?.data);
-        setUser(null);
+
+        // Tente novamente após um curto período em caso de erro de rede
+        setTimeout(() => {
+          if (!user) setUser(null);
+        }, 2000);
       } finally {
         setLoading(false);
       }
     };
 
-    const timer = setTimeout(checkSession, 100);
-    return () => clearTimeout(timer);
+    checkSession();
   }, [dispatch]);
 
   const login = async (email, password) => {
@@ -67,9 +73,6 @@ export function AuthProvider({ children }) {
       if (response.data.success) {
         setUser(response.data.user);
         return { success: true, user: response.data.user };
-      } else {
-        console.log("Login falhou:", response.data.error);
-        return { success: false, error: response.data.error };
       }
     } catch (error) {
       console.error("Erro no login:", error);
