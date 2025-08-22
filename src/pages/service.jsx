@@ -13,6 +13,7 @@ import Modal from "../components/Modal/Modal";
 import CurrencyInput from "react-currency-input-field";
 
 export default function Service() {
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(service());
@@ -25,6 +26,21 @@ export default function Service() {
     setModalOpen(false);
   };
 
+  useEffect(() => {
+    const initializeData = async () => {
+      try {
+        // await fetchData();
+        // await readSupplier();
+      } catch (error) {
+        console.error("Erro ao inicializar dados:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (loading) {
+      initializeData();
+    }
+  }, []);
   return (
     <>
       <DefaultLayout>
@@ -192,37 +208,39 @@ export default function Service() {
                     })}
                   />
                   <Controller
-                  name="price"
-                  control={control}
-                  rules={{
-                    required: "Preço é obrigatório",
-                    validate: (value) => {
-                      const numValue = parseFloat(value);
-                      if (isNaN(numValue) || numValue <= 0) {
-                        return "Digite um valor válido maior que zero";
-                      }
-                      return true;
-                    },
-                  }}
-                  render={({
-                    field: { onChange, value, name },
-                    fieldState: { error },
-                  }) => (
-                    <CurrencyInput
-                      id="input-price"
-                      name={name}
-                      placeholder="R$ 0,00"
-                      decimalsLimit={2}
-                      decimalScale={2}
-                      decimalSeparator=","
-                      groupSeparator="."
-                      prefix="R$ "
-                      onValueChange={(value) => onChange(value)}
-                      value={value === 0 ? "" : value}
-                      className={`${style.modalInput} ${error ? "error" : ""}`}
-                    />
-                  )}
-                />
+                    name="price"
+                    control={control}
+                    rules={{
+                      required: "Preço é obrigatório",
+                      validate: (value) => {
+                        const numValue = parseFloat(value);
+                        if (isNaN(numValue) || numValue <= 0) {
+                          return "Digite um valor válido maior que zero";
+                        }
+                        return true;
+                      },
+                    }}
+                    render={({
+                      field: { onChange, value, name },
+                      fieldState: { error },
+                    }) => (
+                      <CurrencyInput
+                        id="input-price"
+                        name={name}
+                        placeholder="R$ 0,00"
+                        decimalsLimit={2}
+                        decimalScale={2}
+                        decimalSeparator=","
+                        groupSeparator="."
+                        prefix="R$ "
+                        onValueChange={(value) => onChange(value)}
+                        value={value === 0 ? "" : value}
+                        className={`${style.modalInput} ${
+                          error ? "error" : ""
+                        }`}
+                      />
+                    )}
+                  />
                 </div>
                 <input
                   type="text"
@@ -257,7 +275,7 @@ export default function Service() {
                       required: "Status é obrigatório",
                     })}
                   >
-                    <option value="" >Selecione o Status</option>
+                    <option value="">Selecione o Status</option>
                     <option value="agendado">Agendado</option>
                     <option value="em_andamento">Em Andamento</option>
                     <option value="concluido">Concluído</option>

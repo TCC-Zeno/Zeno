@@ -15,9 +15,11 @@ import { setFilter, clearFilter } from "../../redux/StockFilter/slice";
 import DropdownContributors from "./DropdownContributors";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSelector } from "react-redux";
+import ZenoGIF from "./../../assets/loadingZENO.gif";
 import axios from "axios";
 
 export function NotificationContent() {
+  const [loading, setLoading] = useState(true);
   const [dataArray, setDataArray] = useState([]);
   const profileinfo = useSelector((state) => state.userReducer.userData);
 
@@ -39,12 +41,29 @@ export function NotificationContent() {
       console.error("Erro ao selecionar categorias:", err);
     }
   }
+
   useEffect(() => {
-    fetchProdutsAlert();
+    const initializeData = async () => {
+      try {
+        await fetchProdutsAlert();
+      } catch (error) {
+        console.error("Erro ao inicializar dados:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (loading) {
+      initializeData();
+    }
   }, []);
 
   return (
     <div className={S.containerNotifications}>
+      {loading && (
+        <div className={S.containerLoading}>
+          <img src={ZenoGIF} alt="Description of GIF" className={S.load} />
+        </div>
+      )}
       {dataArray.map((product, index) => {
         if (product.alert === "out_stock") {
           return (

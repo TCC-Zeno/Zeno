@@ -16,6 +16,7 @@ import { RiKey2Line } from "react-icons/ri";
 import axios from "axios";
 
 export default function Settings() {
+  const [loading, setLoading] = useState(true);
   const colorBlindness = useSelector(
     (state) => state.userReducer.colorBlindness
   );
@@ -148,9 +149,14 @@ export default function Settings() {
     console.log(features);
   }, [features]);
 
+  useEffect(() => {
+    if (profileinfo.uuid) {
+      setLoading(false);
+    }
+  }, [profileinfo.uuid]);
   // enviar o dado assim que for escolhido, já que o usuario pode querer mudar só uma coisa . By Vinicius
   return (
-    <DefaultLayout>
+    <DefaultLayout loading={loading}>
       <section className={S.sectionSettings}>
         <h1>Personalize seu sistema</h1>
         <div className={S.containerForm}>

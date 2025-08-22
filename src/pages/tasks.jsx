@@ -12,6 +12,7 @@ import axios from "axios";
 const oldTasks = localStorage.getItem("tasks");
 
 export default function Tasks() {
+  const [loading, setLoading] = useState(true);
   const userId = useSelector((state) => state.userReducer.userData);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -35,9 +36,9 @@ export default function Tasks() {
     }
   }
 
-  useEffect(() => {
-    fetchTasks();
-  }, [userId]);
+  // useEffect(() => {
+  //   fetchTasks();
+  // }, [userId]);
 
   // useEffect(() => {
   //   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -78,6 +79,22 @@ export default function Tasks() {
       console.error("Erro ao atualizar status:", error);
     }
   };
+
+  useEffect(() => {
+    const initializeData = async () => {
+      try {
+        await fetchTasks();
+      } catch (error) {
+        console.error("Erro ao inicializar dados:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (loading) {
+      initializeData();
+    }
+  }, [userId.uuid]);
+
   return (
     <DefaultLayout>
       <h1 className={S.titlePage}>Tarefas do mês</h1>

@@ -537,6 +537,18 @@ button.manegerOption {
   transform: scale(1.01);
 }
 
+.containerLoading {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.load {
+  width: 75px;
+  height: 75px;
+}
+
 @media screen and (max-width: 768px) {
   .dropdownContributors {
     width: 90vw;

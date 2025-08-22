@@ -22,6 +22,7 @@ export default function Finance() {
   const [CategoryData, setCategoryData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -268,9 +269,25 @@ export default function Finance() {
   const profitValue = amountValue - expensesValue;
 
   // useEffect para buscar dados
+  // useEffect(() => {
+  //   fetchData();
+  //   ReadCategory();
+  // }, [userId.uuid]);
+
   useEffect(() => {
-    fetchData();
-    ReadCategory();
+    const initializeData = async () => {
+      try {
+        await fetchData();
+        await ReadCategory();
+      } catch (error) {
+        console.error("Erro ao inicializar dados:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (loading) {
+      initializeData();
+    }
   }, [userId.uuid]);
 
   // useEffect para preencher o modal de edição
@@ -288,7 +305,7 @@ export default function Finance() {
 
   return (
     <>
-      <DefaultLayout>
+      <DefaultLayout loading={loading}>
         <div className={style.containerViewAndFilter}>
           <div className={style.containerView}>
             <div className={style.views}>
@@ -614,7 +631,11 @@ export default function Finance() {
         </section>
 
         <div className={style.btn}>
-          <button className={style.btnReport} id="btn-report" onClick={() => navigate("/report")}>
+          <button
+            className={style.btnReport}
+            id="btn-report"
+            onClick={() => navigate("/report")}
+          >
             <PiFileArchiveFill />
             Gerar Relatório
           </button>
