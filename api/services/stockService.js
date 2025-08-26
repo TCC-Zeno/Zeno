@@ -79,10 +79,11 @@ export const uploadImage = async (file, uuid) => {
 };
 
 
-export const getProduct = async () => {
+export const getProduct = async (userId) => {
   const { data, error } = await supabase
     .from("product")
     .select("*")
+    .eq("uuid", userId)
     .order('created_at', { ascending: true });
 
   if (error) throw error;

@@ -195,7 +195,8 @@ export const uploadProductImage = [
 
 export const readProduct = async (req, res) => {
   try {
-    const data = await getProduct();
+    const { userId } = req.body;
+    const data = await getProduct(userId);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -276,12 +277,12 @@ export const readCategorysOfProducts = async (req, res) => {
   }
 };
 
-export const getAlerts = async(req, res) => {
-    try {
-      const { uuid } = req.body;
-      const response = await getProductsAlerts(uuid);
-      res.status(200).json(response);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-}
+export const getAlerts = async (req, res) => {
+  try {
+    const { uuid } = req.body;
+    const response = await getProductsAlerts(uuid);
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
