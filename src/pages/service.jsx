@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
@@ -11,8 +11,11 @@ import { MdAttachMoney } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import Modal from "../components/Modal/Modal";
 import CurrencyInput from "react-currency-input-field";
+import axios from "axios";
 
 export default function Service() {
+  const userId = useSelector((state) => state.userReducer.userData);
+  const [dataServices, setDataServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -21,15 +24,55 @@ export default function Service() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const { register, handleSubmit, control } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    const priceDot = data.price?.toString().replace(",", ".");
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/services/addServicesform`,
+        {
+          userId: userId.uuid,
+          name_customer: data.clientName,
+          pending_amount: parseFloat(priceDot),
+          date: data.date,
+          description: data.description,
+          status: data.status,
+          name_services: data.serviceName,
+          number_customer: data.clientContact,
+        }
+      );
+
+      if (response.status === 201) {
+        addReset();
+        fetchData();
+      }
+    } catch (error) {
+      console.error("Erro ao adicionar serviço:", error);
+    }
+
     console.log(data);
+    console.log();
     setModalOpen(false);
   };
+
+  async function fetchData() {
+    try {
+      const data = await axios.post(
+        `${import.meta.env.VITE_API_URL}/services/servicesId`,
+        {
+          uuid: userId.uuid,
+        }
+      );
+      setDataServices(data.data);
+      console.log(data.data);
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  }
 
   useEffect(() => {
     const initializeData = async () => {
       try {
-        // await fetchData();
+        await fetchData();
         // await readSupplier();
       } catch (error) {
         console.error("Erro ao inicializar dados:", error);

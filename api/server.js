@@ -16,6 +16,7 @@ import taskRoutes from "./routes/task.js";
 import stockRoutes from "./routes/stock.js";
 import reportRoutes from "./routes/report.js";
 import calendarRoutes from "./routes/calendar.js"
+import servicesRoutes from "./routes/services.js"
 
 dotenv.config();
 const app = express();
@@ -58,7 +59,8 @@ app.use("/finance", financeRoutes);
 app.use("/tasks", taskRoutes);
 app.use("/stock", stockRoutes);
 app.use("/report", reportRoutes);
-app.use("/calendar", calendarRoutes)
+app.use("/calendar", calendarRoutes);
+app.use("/services", servicesRoutes);
 
 // Inicializando servidor
 const PORT = process.env.PORT || 3000;
