@@ -1,151 +1,149 @@
 .statusContainer {
-    display: flex;
-    align-items: center;
-    margin: 2%;
-    gap: 1.6rem;
-    width: 80%;
-    align-items: center;
-    justify-self: center;
+  display: flex;
+  align-items: center;
+  margin: 2%;
+  gap: 1.6rem;
+  width: 80%;
+  align-items: center;
+  justify-self: center;
 }
 
 .statusAgend,
 .statusAndam,
 .statusConcl,
-.statusReceb{
-    background-color: #d9d9d9;
-    border-radius: 10px;
-    width: 80%;
-    height: 90%;
-    padding: 1%;
-    transition: all 0.5s;
-
+.statusReceb {
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  width: 80%;
+  height: 90%;
+  padding: 1%;
+  transition: all 0.5s;
 }
 .statusAgend:hover,
 .statusAndam:hover,
 .statusConcl:hover,
 .statusReceb:hover {
- transform: scale(1.15);
+  transform: scale(1.15);
 }
-
 
 .titleAgend,
 .titleAndam,
 .titleConcl,
 .titleReceb {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.title{
-    font-family: "Coolvetica Rg";
-    font-size: 16pt;
-    font-weight: 400;
-    color: #737373;
+.title {
+  font-family: "Coolvetica Rg";
+  font-size: 16pt;
+  font-weight: 400;
+  color: #737373;
 }
 
 .iconAgend,
 .iconAndam,
 .iconConcl {
-    width: 22px;
-    height: auto;
+  width: 22px;
+  height: auto;
 }
 
 .iconAgend {
-    color: rgb(70, 135, 243);
+  color: rgb(70, 135, 243);
 }
 
 .iconAndam {
-    color: #f9943b;
+  color: #f9943b;
 }
 
-.iconConcl{
-    color: rgb(96 186 108) ;
+.iconConcl {
+  color: rgb(96 186 108);
 }
 
-.iconReceb{
-    width: 25px;
-    height: auto;
+.iconReceb {
+  width: 25px;
+  height: auto;
 }
 
 .value1,
 .value2,
 .value3,
 .value4 {
-    font-family: "Coolvetica Rg";
-    font-size: 20pt;
+  font-family: "Coolvetica Rg";
+  font-size: 20pt;
 }
 
-.value1{
-    color: rgb(70, 135, 243);
+.value1 {
+  color: rgb(70, 135, 243);
 }
 
-.value2{
-    color: #f9943b;
+.value2 {
+  color: #f9943b;
 }
 
-.value3{
-    color: rgb(96 186 108);
+.value3 {
+  color: rgb(96 186 108);
 }
 
-.value4{
-    color: black;
+.value4 {
+  color: black;
 }
 
-.linhaContainer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.linhaContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.linha{
-    border: #d9d9d9 solid 2px;
-    margin: 10px;
-    width: 90%;
-    border-radius: 5px;
+.linha {
+  border: #d9d9d9 solid 2px;
+  margin: 10px;
+  width: 90%;
+  border-radius: 5px;
 }
 
-.filterContainer{
-    display: flex;
-    align-items: center;
-    justify-self: center;
-    width: 85%;
+.filterContainer {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  width: 85%;
 }
 
 .buttonContainer {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1%;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1%;
 }
 
-.button{
-    background-color: whitesmoke;
-    border-radius: 6px;
-    width: 150px;
-    height: auto;
-    padding: 3%;
-    text-wrap: nowrap;
-    border: rgb(var(--color-primary)) solid 1.5px;
-    font-size: 14pt;
-    font-weight: 500;
-    transition: all 0.3s;
+.button {
+  background-color: whitesmoke;
+  border-radius: 6px;
+  width: 150px;
+  height: auto;
+  padding: 3%;
+  text-wrap: nowrap;
+  border: rgb(var(--color-primary)) solid 1.5px;
+  font-size: 14pt;
+  font-weight: 500;
+  transition: all 0.3s;
 }
 
 .button:active,
 .button:hover,
-.button:focus{
-    background-color: rgb(var(--color-primary));
-    color: white;
-    cursor: pointer;
+.button:focus {
+  background-color: rgb(var(--color-primary));
+  color: white;
+  cursor: pointer;
 }
 
 .tableContainer {
-    width: 85%;
-    margin:0 auto;
-    padding: 1%;
-    overflow-x: auto;
-    margin-bottom: 40px;
+  width: 85%;
+  margin: 0 auto;
+  padding: 1%;
+  overflow-x: auto;
+  margin-bottom: 40px;
 }
 
 .tabela {
@@ -205,7 +203,7 @@
   flex-wrap: nowrap;
 }
 
-.statusCancelTable{
+.statusCancelTable {
   background-color: #ffa9a9;
   color: #f50b0b;
   font-size: 13pt;
@@ -215,39 +213,39 @@
   display: inline-block;
 }
 
-.searchContainer{
-    background-color: #d9d9d9;
-    border-radius: 8px;
-    width: 95%;
-    margin: auto;
+.searchContainer {
+  background-color: #d9d9d9;
+  border-radius: 8px;
+  width: 95%;
+  margin: auto;
 }
 
-.tudo{
-    min-height: calc(100vh - 170px);
+.tudo {
+  min-height: calc(100vh - 170px);
 }
 
 .addContainer {
-    display: flex;
-    margin: 2%;
-    justify-content: right;
+  display: flex;
+  margin: 2%;
+  justify-content: right;
 }
 
 .buttonAdd {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: rgb(var(--color-primary));
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.5s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgb(var(--color-primary));
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.5s;
 }
 
-.buttonAdd:hover{
-    transform: scale(1.15);
+.buttonAdd:hover {
+  transform: scale(1.15);
 }
 
 .modalContainer {
@@ -256,7 +254,7 @@
   width: 500px;
   max-width: 95%;
   position: relative;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .modalTitle {
@@ -297,10 +295,10 @@
   color: black;
 }
 
-.modalInput1:focus{
-    border-color: rgb(var(--color-primary));
-    outline: none;
-    color: white;
+.modalInput1:focus {
+  border-color: rgb(var(--color-primary));
+  outline: none;
+  color: white;
 }
 
 .modalInput1 {
@@ -335,4 +333,129 @@
 .modalButton button:hover {
   background-color: rgb(13, 13, 227);
   transform: scale(1.1);
+}
+
+/* @media (max-width: 1024px) {
+  .statusContainer {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    width: 95%;
+    margin: auto;
+  }
+
+  .statusAgend,
+  .statusAndam,
+  .statusConcl,
+  .statusReceb {
+    width: 100%;
+    padding: 2%;
+  }
+
+  .filterContainer,
+  .buttonContainer,
+  .tableContainer {
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+  }
+
+  .buttonContainer {
+    gap: 1rem;
+    padding: 2%;
+  }
+
+  .button {
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+  }
+
+  .addContainer {
+    justify-content: center;
+  }
+
+  .tableContainer {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .searchContainer {
+    width: 98%;
+  }
+
+  .tabela {
+    font-size: 11pt;
+  }
+
+  .value1,
+  .value2,
+  .value3,
+  .value4 {
+    font-size: 18pt;
+  }
+
+  .title {
+    font-size: 14pt;
+  }
+} */
+
+@media (max-width: 768px) {
+  .modalContainer {
+    width: 95%;
+    padding: 12px;
+  }
+
+  .statusContainer {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    width: 95%;
+    margin: auto;
+  }
+
+  .statusAgend,
+  .statusAndam,
+  .statusConcl,
+  .statusReceb {
+    width: 100%;
+    padding: 2%;
+  }
+
+  .modalTitle {
+    font-size: 18px;
+  }
+
+  .modalButton button {
+    width: 100%;
+  }
+
+  .button {
+    font-size: 12pt;
+  }
+
+  .value1,
+  .value2,
+  .value3,
+  .value4 {
+    font-size: 16pt;
+  }
+
+  .title {
+    font-size: 13pt;
+  }
+
+  .tabela {
+    font-size: 11pt;
+  }
+
+  .tableContainer {
+    width: 75%;
+    margin: auto;
+    padding: 1%;
+    overflow-x: auto;
+    margin-bottom: 40px;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-primary)) transparent;
+  }
 }
