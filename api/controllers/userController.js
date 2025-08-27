@@ -16,7 +16,6 @@ export const updateUserCredential = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado para o ID informado." });
     }
-    console.log(features)
    
     const updatedUser = await updateUser(uuid, {companyName: companyName, ownerName: ownerName, color:color, accessibility:accessibility, features:features} );
     if (!updatedUser || updatedUser.length === 0) {
