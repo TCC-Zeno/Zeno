@@ -444,7 +444,7 @@ export default function LandingPage() {
               />
               <h6>Caio Costa</h6>
               <div className={S.popover}>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+                <p>Realizou a Documentação. </p>
               </div>
             </div>
             <div
@@ -461,7 +461,7 @@ export default function LandingPage() {
               />
               <h6>José de Souza</h6>
               <div className={S.popover}>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+                <p>Realizou o Back-End. </p>
               </div>
             </div>
             <div
@@ -478,7 +478,7 @@ export default function LandingPage() {
               />
               <h6>Naresh Sharma</h6>
               <div className={S.popover}>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+                <p>Realizou o Back-End . </p>
               </div>
             </div>
             <div
@@ -495,7 +495,7 @@ export default function LandingPage() {
               />
               <h6>Nicolas Spinelli</h6>
               <div className={S.popover}>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+                <p>Realizou o Layout e Design. </p>
               </div>
             </div>
             <div
@@ -512,7 +512,7 @@ export default function LandingPage() {
               />
               <h6>Nicollas Reis</h6>
               <div className={S.popover}>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+                <p>Realizou o Front-End. </p>
               </div>
             </div>
             <div
@@ -529,7 +529,7 @@ export default function LandingPage() {
               />
               <h6>Vinícius Porto</h6>
               <div className={S.popover}>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+                <p>Realizou o Front-End e Back-End. </p>
               </div>
             </div>
           </div>

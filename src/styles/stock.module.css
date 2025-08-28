@@ -26,20 +26,22 @@
 
 .containerCards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   background-color: #d9d9d9;
   margin-top: 1.5%;
+
 }
 
 .Cards {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: white;
+  background-color: rgb(228, 30, 30);
   border-radius: 10px;
   transition: 1s all;
   padding: 7%;
   margin: 2.5%;
+  max-width: 300px;
 }
 
 .images {
@@ -101,6 +103,7 @@
   padding: 7%;
   margin: 2.5%;
   background-color: white;
+  max-width: 300px;
 }
 
 .add {

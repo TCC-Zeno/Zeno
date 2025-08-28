@@ -30,7 +30,7 @@
   font-size: 100%;
   font-weight: 700;
   cursor: pointer;
-  transition: 0.4s ease;
+  transition: all 0.4s ;
 }
 .links:hover {
   font-size: 14pt;

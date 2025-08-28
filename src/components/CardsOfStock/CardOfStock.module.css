@@ -40,6 +40,8 @@
   transition: 1s all;
   padding: 7%;
   margin: 2.5%;
+  max-width: 300px;
+  max-height: 1000px;
 }
 
 .images {
