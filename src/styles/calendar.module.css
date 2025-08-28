@@ -38,14 +38,19 @@
   padding-top: 10px;
 }
 .formModalAddEvent .submitButton {
-  background-color: rgb(var(--color-primary));
+  background-color: green;
+  margin-top: 10px;
+  color: whitesmoke;
+}
+.submitButtonDelete{
+  background-color: red;
   margin-top: 10px;
   color: whitesmoke;
 }
 @media screen and (max-width: 768px) {
   .containerCalendar {
     padding: 5% 2.5%;
-    height: 70vh;
+    height: 85vh;
   }
   .containerCalendar :global(.fc-header-toolbar) {
     flex-direction: column;
@@ -97,6 +102,10 @@
     color: #333;
   }
   .containerCalendar :global(.fc .fc-scrollgrid-liquid) {
-    height: 45vh !important;
+    /* height: 85vh !important; */
+    height: 100%;
+  }
+  .containerCalendar :global(.fc .fc-media-screen .fc-direction-ltr .fc-theme-standard) {
+    height: 100vh !important;
   }
 }

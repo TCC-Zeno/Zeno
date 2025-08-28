@@ -14,9 +14,12 @@ import axios from "axios";
 export default function Calendar() {
   //? documentação da lib: https://fullcalendar.io/docs
   //* https://www.youtube.com/watch?v=uxbIQALflYs nesse video ele fala como fazer em PHP, eu tive que olhar a maior parte na documentação e em tutoriais, mas acabou saindo
-  const { register, handleSubmit } = useForm();
+  const { register: addRegister, handleSubmit: handleSubmitAdd } = useForm();
+  const { register: editRegister, handleSubmit: handleSubmitEdit } = useForm();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalEditEvent, setModalEditEvent] = useState(false);
+  const [dataEdit, setDataEdit] = useState([]);
   const [select, setSelect] = useState(null);
   const [events, setEvents] = useState([]);
   const profileinfo = useSelector((state) => state.userReducer.userData);
@@ -24,51 +27,54 @@ export default function Calendar() {
   const dispatch = useDispatch();
 
   const fetchEvents = async () => {
-  try {
-    const resposta = await axios.post(
-      `${import.meta.env.VITE_API_URL}/calendar/fetch`,
-      {
-        uuid: profileinfo.uuid,
-      }
-    );
-    
-    console.log("resposta:", resposta.data);
-    
-    // Transform data to match FullCalendar's expected format
-    const transformedEvents = resposta.data.map(event => ({
-      id: event.id,
-      title: event.title,
-      start: event.initial_date,
-      end: event.end_date,
-    }));
-    
-    console.log("transformed events:", transformedEvents);
-    setEvents(transformedEvents);
-  } catch (err) {
-    console.error("Erro ao buscar eventos:", err);
-  }
-};
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/calendar/fetch`,
+        {
+          uuid: profileinfo.uuid,
+        }
+      );
 
-const onSubmit = async (data) => {
-  try {
-    const resposta = await axios.post(
-      `${import.meta.env.VITE_API_URL}/calendar/insert`,
-      {
-        uuid: profileinfo.uuid,
-        title: data.title,
-        initial_date: data.dateStart,
-        end_date: data.dateEnd,
-      }
-    );
-    
-    // Close modal and refresh events after successful insertion
-    handleModalClose();
-    await fetchEvents(); // Refresh the calendar events
-    
-  } catch (err) {
-    alert(err.response?.data?.error || "Erro ao atualizar informações");
-  }
-};
+      console.log("resposta:", resposta.data);
+
+      // Transform data to match FullCalendar's expected format
+      const transformedEvents = resposta.data.map((event) => ({
+        id: event.id,
+        title: event.title,
+        start: event.initial_date,
+        end: event.end_date,
+      }));
+
+      console.log("transformed events:", transformedEvents);
+      setEvents(transformedEvents);
+    } catch (err) {
+      console.error("Erro ao buscar eventos:", err);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/calendar/insert`,
+        {
+          uuid: profileinfo.uuid,
+          title: data.title,
+          initial_date: data.dateStart,
+          end_date: data.dateEnd,
+        }
+      );
+
+      // Close modal and refresh events after successful insertion
+      handleModalClose();
+      await fetchEvents(); // Refresh the calendar events
+    } catch (err) {
+      alert(err.response?.data?.error || "Erro ao atualizar informações");
+    }
+  };
+
+  const onSubmitEdit = async (data) => {
+    console.log(data);
+  };
 
   useEffect(() => {
     fetchEvents();
@@ -91,6 +97,20 @@ const onSubmit = async (data) => {
     });
   };
 
+  const handleEventDrop = (info) => {
+    console.log("Clicked event:", info);
+    const { event } = info;
+    console.log("Dropped event:", event);
+  };
+
+  const handleEventClick = (info) => {
+    console.log("Clicked event:", info);
+    const { event } = info;
+    // tem que fazer um select para pegar os dados do evento de acordo com o id do banco de dados. Ele está em event._def.publicId e ai passa para o setDataEdit
+    setModalEditEvent(true, event._def);
+    setDataEdit(event._def);
+  };
+
   const handleModalClose = () => setIsModalOpen(false);
   const handleModalOpen = () => setIsModalOpen(true);
   return (
@@ -102,6 +122,8 @@ const onSubmit = async (data) => {
           initialView="dayGridMonth"
           selectable={true}
           editable={true}
+          eventDrop={handleEventDrop}
+          eventClick={handleEventClick}
           selectMirror={true}
           dayMaxEvents={true}
           weekends={true}
@@ -138,14 +160,14 @@ const onSubmit = async (data) => {
         />
       </div>
       <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-        <form onSubmit={handleSubmit(onSubmit)} className={S.formModalAddEvent}>
+        <form onSubmit={handleSubmitAdd(onSubmit)} className={S.formModalAddEvent}>
           <h2>Adicione um título para o evento</h2>
           <input
             placeholder="Adicione seu título para o evento"
             type="text"
             name="title"
             id="title"
-            {...register("title")}
+            {...addRegister("title")}
           />
           <h2>Selecione a data inicial para o evento</h2>
           <input
@@ -153,7 +175,7 @@ const onSubmit = async (data) => {
             name="dateStart"
             id="dateStart"
             defaultValue={select?.start || ""}
-            {...register("dateStart", { required: true })}
+            {...addRegister("dateStart", { required: true })}
           />
           <h2>Selecione a data final para o evento</h2>
           <input
@@ -161,9 +183,40 @@ const onSubmit = async (data) => {
             name="dateEnd"
             id="dateEnd"
             defaultValue={select?.end || ""}
-            {...register("dateEnd")}
+            {...addRegister("dateEnd")}
           />
           <input className={S.submitButton} type="submit" />
+        </form>
+      </Modal>
+      <Modal isOpen={modalEditEvent} onClose={() => setModalEditEvent(false)}>
+        <form onSubmit={handleSubmitEdit(onSubmitEdit)} className={S.formModalAddEvent}>
+          <h2>Adicione um título para o evento</h2>
+          <input
+            placeholder="Adicione seu título para o evento"
+            type="text"
+            name="title"
+            id="title"
+            defaultValue={dataEdit?.title || ""}
+            {...editRegister("title")}
+          />
+          <h2>Selecione a data inicial para o evento</h2>
+          <input
+            type="date"
+            name="dateStart"
+            id="dateStart"
+            defaultValue={dataEdit?.start || ""}
+            {...editRegister("dateStart", { required: true })}
+          />
+          <h2>Selecione a data final para o evento</h2>
+          <input
+            type="date"
+            name="dateEnd"
+            id="dateEnd"
+            defaultValue={dataEdit?.end || ""}
+            {...editRegister("dateEnd")}
+          />
+          <input className={S.submitButton} type="submit" />
+          <input className={S.submitButtonDelete} type="button" title="Excluir" onClick={() => handleEventClick(dataEdit.id)} value="Excluir" />
         </form>
       </Modal>
     </DefaultLayout>
