@@ -111,6 +111,7 @@
   transition: all 0.5s;
   font-weight: bold;
   font-size: 20pt;
+  text-align: center;
 }
 
 .button:hover {
@@ -164,6 +165,15 @@
 
 .button2:hover {
   transform: scale(1.1);
+}
+
+.select {
+  background-color: rgb(var(--color-primary));
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 14pt;
+  width: 100%;
 }
 
 @media (max-width: 768px) {

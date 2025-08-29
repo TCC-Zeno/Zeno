@@ -55,6 +55,15 @@ export default function Report() {
     .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
 
   const profitValue = amountValue - expensesValue;
+
+  function dateFormatter(dateString) {
+    return new Date(dateString).toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  }
+
   return (
     <>
       <DefaultLayout loading={loading}>
@@ -62,15 +71,25 @@ export default function Report() {
           {!permissao && (
             <>
               <div className={style.buttonContainer}>
-                <button
+                <div
                   className={style.button}
                   onClick={() => {
                     generateReport();
                     setPermissao(!permissao);
                   }}
                 >
-                  Gerar Relatório
-                </button>
+                  <span>Gerar Relatório</span>
+                  <select className={style.select} onClick={(e) => {e.stopPropagation();
+                    console.log(dateFormatter(e.target.value));
+                  }}>
+                    <option value={new Date()}>Diário</option>
+                    <option value={new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)}>Semanal</option>
+                    <option value={new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)}>Mensal</option>
+                    <option value={new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)}>Trimestral</option>
+                    <option value={new Date(Date.now() - 180 * 24 * 60 * 60 * 1000)}>Semestral</option>
+                    <option value={new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)}>Anual</option>
+                  </select>
+                </div>
               </div>
             </>
           )}
