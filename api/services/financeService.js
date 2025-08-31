@@ -36,12 +36,15 @@ export const getFinanceID = async (uuid) => {
 };
 
 export const getFinanceWithPeriod = async (uuid, periodStart, periodEnd) => {
+  const startDateTime = new Date(periodStart + "T00:00:00-03:00").toISOString();
+  const endDateTime = new Date(periodEnd + "T23:59:59-03:00").toISOString();
+
   const { data, error } = await supabase
     .from("finance")
     .select("*")
     .eq("uuid", uuid)
-    .gte("created_at", periodStart)
-    .lt("created_at", periodEnd);
+    .gte("created_at", startDateTime)
+    .lte("created_at", endDateTime);
   if (error) throw new Error(error.message);
   return data;
 };

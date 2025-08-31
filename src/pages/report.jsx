@@ -5,7 +5,6 @@ import { report } from "../redux/Route/slice";
 import style from "./../styles/report.module.css";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import PuffLoader from "react-spinners/PuffLoader";
 import axios from "axios";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -15,21 +14,78 @@ export default function Report() {
   const profileinfo = useSelector((state) => state.userReducer.userData);
   const [loading, setLoading] = useState(false);
   const [permissao, setPermissao] = useState(false);
+
+  function dateFormatter(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function getStartOfDay(date) {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  }
+
+  function getEndOfDay(date) {
+    const newDate = new Date(date);
+    newDate.setHours(23, 59, 59, 999);
+    return newDate;
+  }
+
+  function getStartOfWeek(date) {
+    const newDate = new Date(date);
+    const day = newDate.getDay();
+    const diff = newDate.getDate() - day;
+    newDate.setDate(diff);
+    return getStartOfDay(newDate);
+  }
+
+  function calculatePeriodDates(option) {
+    const now = new Date();
+    switch (option) {
+      case "daily":
+        return dateFormatter(getStartOfDay(now));
+      case "weekly":
+        return dateFormatter(getStartOfWeek(now));
+      case "monthly":
+        return dateFormatter(
+          new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+        );
+      case "quarterly":
+        return dateFormatter(
+          new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000)
+        );
+      case "semesterly":
+        return dateFormatter(
+          new Date(now.getTime() - 180 * 24 * 60 * 60 * 1000)
+        );
+      case "yearly":
+        return dateFormatter(
+          new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000)
+        );
+      default:
+        return dateFormatter(
+          new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+        );
+    }
+  }
+
   const [selectedPeriod, setSelectedPeriod] = useState(
-    dateFormatter(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000))
+    calculatePeriodDates("daily")
   );
   const dispatch = useDispatch();
+  const [reportData, setReportData] = useState("");
+  const [dataArray, setDataArray] = useState([]);
+
   useEffect(() => {
     dispatch(report());
   }, [dispatch]);
 
-  const [reportData, setReportData] = useState("");
-  const [dataArray, setDataArray] = useState([]);
-
-  async function generateReport(
-    start = dateFormatter(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000))
-  ) {
-    const end = dateFormatter(new Date(Date.now()));
+  async function generateReport(start = selectedPeriod) {
+    const end = dateFormatter(getEndOfDay(new Date()));
     console.log(end, start);
     setLoading(true);
     try {
@@ -46,7 +102,6 @@ export default function Report() {
         const report = response.data;
         console.log(report);
         setDataArray(response.data.table);
-
         setReportData(response.data.report);
       }
     } catch (err) {
@@ -65,14 +120,6 @@ export default function Report() {
     .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
 
   const profitValue = amountValue - expensesValue;
-
-  function dateFormatter(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
 
   const generatePDF = async () => {
     const element = contentRef.current;
@@ -103,44 +150,24 @@ export default function Report() {
                   <span>Gerar Relatório</span>
                   <select
                     className={style.select}
-                    onChange={(e) => setSelectedPeriod(e.target.value)}
+                    defaultValue="daily"
+                    onChange={(e) => {
+                      const periodDate = calculatePeriodDates(e.target.value);
+                      setSelectedPeriod(periodDate);
+                    }}
                     onClick={(e) => {
                       e.stopPropagation();
                       console.log(e.target.value);
                     }}
                   >
-                    <option value={dateFormatter(new Date())}>Diário</option>
-                    <option value={dateFormatter(new Date(Date.now()))}>
-                      Semanal
+                    <option defaultChecked value="daily">
+                      Diário
                     </option>
-                    <option
-                      value={dateFormatter(
-                        new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-                      )}
-                    >
-                      Mensal
-                    </option>
-                    <option
-                      value={dateFormatter(
-                        new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
-                      )}
-                    >
-                      Trimestral
-                    </option>
-                    <option
-                      value={dateFormatter(
-                        new Date(Date.now() - 180 * 24 * 60 * 60 * 1000)
-                      )}
-                    >
-                      Semestral
-                    </option>
-                    <option
-                      value={dateFormatter(
-                        new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)
-                      )}
-                    >
-                      Anual
-                    </option>
+                    <option value="weekly">Semanal</option>
+                    <option value="monthly">Mensal</option>
+                    <option value="quarterly">Trimestral</option>
+                    <option value="semesterly">Semestral</option>
+                    <option value="yearly">Anual</option>
                   </select>
                 </div>
               </div>
@@ -207,48 +234,48 @@ export default function Report() {
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       components={{
-                        h1: ({ node, ...props }) => (
+                        h1: (props) => (
                           <h1 className={style.markdownH1} {...props} />
                         ),
-                        h2: ({ node, ...props }) => (
+                        h2: (props) => (
                           <h2 className={style.markdownH2} {...props} />
                         ),
-                        h3: ({ node, ...props }) => (
+                        h3: (props) => (
                           <h3 className={style.markdownH3} {...props} />
                         ),
-                        p: ({ node, ...props }) => (
+                        p: (props) => (
                           <p className={style.markdownP} {...props} />
                         ),
-                        ul: ({ node, ...props }) => (
+                        ul: (props) => (
                           <ul className={style.markdownUl} {...props} />
                         ),
-                        ol: ({ node, ...props }) => (
+                        ol: (props) => (
                           <ol className={style.markdownOl} {...props} />
                         ),
-                        li: ({ node, ...props }) => (
+                        li: (props) => (
                           <li className={style.markdownLi} {...props} />
                         ),
-                        strong: ({ node, ...props }) => (
+                        strong: (props) => (
                           <strong className={style.markdownStrong} {...props} />
                         ),
-                        table: ({ node, ...props }) => (
+                        table: (props) => (
                           <div className={style.markdownTableContainer}>
                             <table className={style.markdownTable} {...props} />
                           </div>
                         ),
-                        thead: ({ node, ...props }) => (
+                        thead: (props) => (
                           <thead className={style.markdownThead} {...props} />
                         ),
-                        tbody: ({ node, ...props }) => (
+                        tbody: (props) => (
                           <tbody className={style.markdownTbody} {...props} />
                         ),
-                        tr: ({ node, ...props }) => (
+                        tr: (props) => (
                           <tr className={style.markdownTr} {...props} />
                         ),
-                        th: ({ node, ...props }) => (
+                        th: (props) => (
                           <th className={style.markdownTh} {...props} />
                         ),
-                        td: ({ node, ...props }) => (
+                        td: (props) => (
                           <td className={style.markdownTd} {...props} />
                         ),
                       }}
