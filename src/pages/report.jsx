@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { report } from "../redux/Route/slice";
@@ -7,11 +7,17 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import PuffLoader from "react-spinners/PuffLoader";
 import axios from "axios";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 export default function Report() {
+  const contentRef = useRef();
   const profileinfo = useSelector((state) => state.userReducer.userData);
   const [loading, setLoading] = useState(false);
   const [permissao, setPermissao] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState(
+    dateFormatter(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000))
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(report());
@@ -20,15 +26,19 @@ export default function Report() {
   const [reportData, setReportData] = useState("");
   const [dataArray, setDataArray] = useState([]);
 
-  async function generateReport() {
+  async function generateReport(
+    start = dateFormatter(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000))
+  ) {
+    const end = dateFormatter(new Date(Date.now()));
+    console.log(end, start);
     setLoading(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/report/generateReport`,
         {
           uuid: profileinfo.uuid,
-          periodStart: "2022-01-01",
-          periodEnd: "2029-01-31",
+          periodStart: start,
+          periodEnd: end,
         }
       );
       console.log(response);
@@ -57,12 +67,24 @@ export default function Report() {
   const profitValue = amountValue - expensesValue;
 
   function dateFormatter(dateString) {
-    return new Date(dateString).toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
+
+  const generatePDF = async () => {
+    const element = contentRef.current;
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+    const imgWidth = 210;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    pdf.save("documento.pdf");
+  };
 
   return (
     <>
@@ -74,20 +96,51 @@ export default function Report() {
                 <div
                   className={style.button}
                   onClick={() => {
-                    generateReport();
+                    generateReport(selectedPeriod);
                     setPermissao(!permissao);
                   }}
                 >
                   <span>Gerar Relatório</span>
-                  <select className={style.select} onClick={(e) => {e.stopPropagation();
-                    console.log(dateFormatter(e.target.value));
-                  }}>
-                    <option value={new Date()}>Diário</option>
-                    <option value={new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)}>Semanal</option>
-                    <option value={new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)}>Mensal</option>
-                    <option value={new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)}>Trimestral</option>
-                    <option value={new Date(Date.now() - 180 * 24 * 60 * 60 * 1000)}>Semestral</option>
-                    <option value={new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)}>Anual</option>
+                  <select
+                    className={style.select}
+                    onChange={(e) => setSelectedPeriod(e.target.value)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log(e.target.value);
+                    }}
+                  >
+                    <option value={dateFormatter(new Date())}>Diário</option>
+                    <option value={dateFormatter(new Date(Date.now()))}>
+                      Semanal
+                    </option>
+                    <option
+                      value={dateFormatter(
+                        new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+                      )}
+                    >
+                      Mensal
+                    </option>
+                    <option
+                      value={dateFormatter(
+                        new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+                      )}
+                    >
+                      Trimestral
+                    </option>
+                    <option
+                      value={dateFormatter(
+                        new Date(Date.now() - 180 * 24 * 60 * 60 * 1000)
+                      )}
+                    >
+                      Semestral
+                    </option>
+                    <option
+                      value={dateFormatter(
+                        new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)
+                      )}
+                    >
+                      Anual
+                    </option>
                   </select>
                 </div>
               </div>
@@ -95,7 +148,7 @@ export default function Report() {
           )}
 
           {permissao && (
-            <div className={style.containerReport}>
+            <div className={style.containerReport} ref={contentRef}>
               <div className={style.title}>
                 <h2>Resumo do Relatório</h2>
               </div>
@@ -210,6 +263,9 @@ export default function Report() {
               <div className={style.buttonContainer2}>
                 <button className={style.button2} onClick={generateReport}>
                   Atualizar Relatorio
+                </button>
+                <button className={style.button2} onClick={() => generatePDF()}>
+                  Baixar PDF
                 </button>
               </div>
             </div>

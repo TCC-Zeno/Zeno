@@ -182,6 +182,7 @@ export default function Service() {
           <td className={style.statusAndamContainer}>
             <span className={style.statusAndamTable}>Em Andamento</span>{" "}
             <button
+              title="Clique para concluir serviço"
               className={style.buttonCheck}
               type="button"
               onClick={(e) => {

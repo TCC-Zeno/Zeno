@@ -178,6 +178,12 @@
   padding: 12px;
   color: #444;
   font-size: 12pt;
+  vertical-align: middle;
+}
+
+.td:nth-child(4) {
+  vertical-align: middle;
+  text-align: center;
 }
 
 .statusAgendTable {
@@ -207,7 +213,9 @@
   font-weight: bold;
   padding: 6px 12px;
   border-radius: 20px;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-wrap: nowrap;
 }
 
@@ -362,6 +370,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  height: 49px;
 }
 .buttonCheck {
   padding: 5px;
