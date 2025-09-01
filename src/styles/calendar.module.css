@@ -1,4 +1,5 @@
 .containerCalendar {
+  min-height: calc(100vh - 170px);
   padding: 0 5%;
   padding-bottom: 5%;
 }
@@ -42,7 +43,7 @@
   margin-top: 10px;
   color: whitesmoke;
 }
-.submitButtonDelete{
+.submitButtonDelete {
   background-color: red;
   margin-top: 10px;
   color: whitesmoke;
@@ -50,7 +51,8 @@
 @media screen and (max-width: 768px) {
   .containerCalendar {
     padding: 5% 2.5%;
-    height: 85vh;
+    min-height: calc(100vh - 320px - 20%);
+
   }
   .containerCalendar :global(.fc-header-toolbar) {
     flex-direction: column;
@@ -105,7 +107,8 @@
     /* height: 85vh !important; */
     height: 100%;
   }
-  .containerCalendar :global(.fc .fc-media-screen .fc-direction-ltr .fc-theme-standard) {
+  .containerCalendar
+    :global(.fc .fc-media-screen .fc-direction-ltr .fc-theme-standard) {
     height: 100vh !important;
   }
 }
