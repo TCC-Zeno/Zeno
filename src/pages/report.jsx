@@ -8,12 +8,19 @@ import remarkGfm from "remark-gfm";
 import axios from "axios";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Report() {
   const contentRef = useRef();
   const profileinfo = useSelector((state) => state.userReducer.userData);
   const [loading, setLoading] = useState(false);
   const [permissao, setPermissao] = useState(false);
+  const [dataOfPaymentMethod, setDataOfPaymentMethod] = useState({});
+  const [dataOfCategory, setDataOfCategory] = useState({});
+  const [dataOfFlowType, setDataOfFlowType] = useState({});
 
   function dateFormatter(dateString) {
     const date = new Date(dateString);
@@ -123,15 +130,140 @@ export default function Report() {
 
   const generatePDF = async () => {
     const element = contentRef.current;
-    const canvas = await html2canvas(element);
+    const canvas = await html2canvas(element, { scale: 2 });
     const imgData = canvas.toDataURL("image/png");
 
     const pdf = new jsPDF("p", "mm", "a4");
-    const imgWidth = 210;
+    const pageWidth = 210;
+    const pageHeight = 297;
+
+    const imgWidth = pageWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
     pdf.save("documento.pdf");
   };
+
+  function countDataOfPaymentMethod() {
+    return dataArray.reduce((acumulador, item) => {
+      const paymentMethod = item.payment_method || "Desconhecido";
+      acumulador[paymentMethod] = (acumulador[paymentMethod] || 0) + 1;
+      return acumulador;
+    }, {});
+  }
+
+  function countDataOfCategory() {
+    return dataArray.reduce((acumulador, item) => {
+      const category = item.category || "Desconhecida";
+      acumulador[category] = (acumulador[category] || 0) + 1;
+      return acumulador;
+    }, {});
+  }
+
+  function countDataOfFlowType() {
+    return dataArray.reduce((acumulador, item) => {
+      const flowType = item.type_flow || "Desconhecido";
+      acumulador[flowType] = (acumulador[flowType] || 0) + 1;
+      return acumulador;
+    }, {});
+  }
+
+  useEffect(() => {
+    const paymentMethodCounts = countDataOfPaymentMethod();
+    const categoryCounts = countDataOfCategory();
+    const flowTypeCounts = countDataOfFlowType();
+
+    setDataOfPaymentMethod({
+      labels: Object.keys(paymentMethodCounts),
+      datasets: [
+        {
+          label: "Vezes pagas com esse método",
+          data: Object.values(paymentMethodCounts),
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    });
+    setDataOfCategory({
+      labels: Object.keys(categoryCounts),
+      datasets: [
+        {
+          label: "Quantas vezes essa categoria",
+          data: Object.values(categoryCounts),
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    });
+    setDataOfFlowType({
+      labels: Object.keys(flowTypeCounts),
+      datasets: [
+        {
+          label: "Quantas vezes esse tipo de fluxo",
+          data: Object.values(flowTypeCounts),
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    });
+  }, [dataArray]);
 
   return (
     <>
@@ -174,129 +306,180 @@ export default function Report() {
             </>
           )}
 
-          {permissao && (
-            <div className={style.containerReport} ref={contentRef}>
-              <div className={style.title}>
-                <h2>Resumo do Relatório</h2>
+          {permissao ? (
+            dataArray.length > 0 ? (
+              <div className={style.containerReport}>
+                <div className={style.containerReport} ref={contentRef}>
+                  <div className={style.title}>
+                    <h2>Resumo do Relatório</h2>
+                  </div>
+                  <div className={style.containerTable}>
+                    <table className={style.table}>
+                      <thead className={style.thead}>
+                        <tr className={style.tr}>
+                          <th className={style.th}>Data</th>
+                          <th className={style.th}>Nome</th>
+                          <th className={style.th}>Valor(R$)</th>
+                          <th className={style.th}>Metodo de Pagamento</th>
+                          <th className={style.th}>Categoria</th>
+                          <th className={style.th}>Tipo de Fluxo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {dataArray.map((data) => (
+                          <tr className={style.conteudo} key={data.id}>
+                            <td>
+                              {data.created_at
+                                ? new Date(data.created_at).toLocaleDateString(
+                                    "pt-BR",
+                                    { day: "2-digit", month: "2-digit" }
+                                  )
+                                : "N/A"}
+                            </td>
+                            <td>{data.name}</td>
+                            <td>{data.value}</td>
+                            <td>{data.payment_method}</td>
+                            <td>{data.category}</td>
+                            <td className={style.tipoFluxo}>
+                              {data.type_flow}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className={style.containerChart}>
+                    <div className={style.cardChart}>
+                      <h2 className={style.titleChart}>Métodos de Pagamento</h2>
+                      <Doughnut data={dataOfPaymentMethod} />
+                    </div>
+                    <div className={style.cardChart}>
+                      <h2 className={style.titleChart}>Categorias</h2>
+                      <Doughnut data={dataOfCategory} />
+                    </div>
+                    <div className={style.cardChart}>
+                      <h2 className={style.titleChart}>Tipos de Fluxo</h2>
+                      <Doughnut data={dataOfFlowType} />
+                    </div>
+                    <div className={style.cardChart}>
+                      <h2 className={style.titleChart}>
+                        Não sei oq colocar pra ficar par
+                      </h2>
+                      <Doughnut data={dataOfPaymentMethod} />
+                    </div>
+                  </div>
+
+                  <div className={style.textIA}>
+                    {reportData ? (
+                      <>
+                        <h2 className={style.markdownP}>
+                          <strong className={style.markdownStrong}>
+                            Cálculos:
+                          </strong>
+                        </h2>
+                        <ul class="_markdownUl_mycij_419">
+                          <li class="_markdownLi_mycij_433">
+                            <b>Total de Entradas:</b> R${" "}
+                            {amountValue.toFixed(2)}
+                          </li>
+                          <li class="_markdownLi_mycij_433">
+                            <b>Total de Saídas:</b> R${" "}
+                            {expensesValue.toFixed(2)}
+                          </li>
+                          <li class="_markdownLi_mycij_433">
+                            <b>Saldo Final:</b> R$ {profitValue.toFixed(2)}
+                          </li>
+                        </ul>
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            h1: (props) => (
+                              <h1 className={style.markdownH1} {...props} />
+                            ),
+                            h2: (props) => (
+                              <h2 className={style.markdownH2} {...props} />
+                            ),
+                            h3: (props) => (
+                              <h3 className={style.markdownH3} {...props} />
+                            ),
+                            p: (props) => (
+                              <p className={style.markdownP} {...props} />
+                            ),
+                            ul: (props) => (
+                              <ul className={style.markdownUl} {...props} />
+                            ),
+                            ol: (props) => (
+                              <ol className={style.markdownOl} {...props} />
+                            ),
+                            li: (props) => (
+                              <li className={style.markdownLi} {...props} />
+                            ),
+                            strong: (props) => (
+                              <strong
+                                className={style.markdownStrong}
+                                {...props}
+                              />
+                            ),
+                            table: (props) => (
+                              <div className={style.markdownTableContainer}>
+                                <table
+                                  className={style.markdownTable}
+                                  {...props}
+                                />
+                              </div>
+                            ),
+                            thead: (props) => (
+                              <thead
+                                className={style.markdownThead}
+                                {...props}
+                              />
+                            ),
+                            tbody: (props) => (
+                              <tbody
+                                className={style.markdownTbody}
+                                {...props}
+                              />
+                            ),
+                            tr: (props) => (
+                              <tr className={style.markdownTr} {...props} />
+                            ),
+                            th: (props) => (
+                              <th className={style.markdownTh} {...props} />
+                            ),
+                            td: (props) => (
+                              <td className={style.markdownTd} {...props} />
+                            ),
+                          }}
+                        >
+                          {reportData}
+                        </ReactMarkdown>
+                      </>
+                    ) : (
+                      <p>Carregando análise da IA...</p>
+                    )}
+                  </div>
+                </div>
+                <div className={style.buttonContainer2}>
+                  <button className={style.button2} onClick={generateReport}>
+                    Atualizar Relatorio
+                  </button>
+                  <button
+                    className={style.button2}
+                    onClick={() => generatePDF()}
+                  >
+                    Baixar PDF
+                  </button>
+                </div>
               </div>
-              <div className={style.containerTable}>
-                <table className={style.table}>
-                  <thead className={style.thead}>
-                    <tr className={style.tr}>
-                      <th className={style.th}>Data</th>
-                      <th className={style.th}>Nome</th>
-                      <th className={style.th}>Valor(R$)</th>
-                      <th className={style.th}>Metodo de Pagamento</th>
-                      <th className={style.th}>Categoria</th>
-                      <th className={style.th}>Tipo de Fluxo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {dataArray.map((data) => (
-                      <tr className={style.conteudo} key={data.id}>
-                        <td>
-                          {data.created_at
-                            ? new Date(data.created_at).toLocaleDateString(
-                                "pt-BR",
-                                { day: "2-digit", month: "2-digit" }
-                              )
-                            : "N/A"}
-                        </td>
-                        <td>{data.name}</td>
-                        <td>{data.value}</td>
-                        <td>{data.payment_method}</td>
-                        <td>{data.category}</td>
-                        <td className={style.tipoFluxo}>{data.type_flow}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            ) : (
+              <div className={style.container}>
+                <h1 className={style.title}>
+                  Não possui dados suficientes para gerar relatórios.
+                </h1>
               </div>
-              <div className={style.textIA}>
-                {reportData ? (
-                  <>
-                    <h2 className={style.markdownP}>
-                      <strong className={style.markdownStrong}>
-                        Cálculos:
-                      </strong>
-                    </h2>
-                    <ul class="_markdownUl_mycij_419">
-                      <li class="_markdownLi_mycij_433">
-                        <b>Total de Entradas:</b> R$ {amountValue.toFixed(2)}
-                      </li>
-                      <li class="_markdownLi_mycij_433">
-                        <b>Total de Saídas:</b> R$ {expensesValue.toFixed(2)}
-                      </li>
-                      <li class="_markdownLi_mycij_433">
-                        <b>Saldo Final:</b> R$ {profitValue.toFixed(2)}
-                      </li>
-                    </ul>
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm]}
-                      components={{
-                        h1: (props) => (
-                          <h1 className={style.markdownH1} {...props} />
-                        ),
-                        h2: (props) => (
-                          <h2 className={style.markdownH2} {...props} />
-                        ),
-                        h3: (props) => (
-                          <h3 className={style.markdownH3} {...props} />
-                        ),
-                        p: (props) => (
-                          <p className={style.markdownP} {...props} />
-                        ),
-                        ul: (props) => (
-                          <ul className={style.markdownUl} {...props} />
-                        ),
-                        ol: (props) => (
-                          <ol className={style.markdownOl} {...props} />
-                        ),
-                        li: (props) => (
-                          <li className={style.markdownLi} {...props} />
-                        ),
-                        strong: (props) => (
-                          <strong className={style.markdownStrong} {...props} />
-                        ),
-                        table: (props) => (
-                          <div className={style.markdownTableContainer}>
-                            <table className={style.markdownTable} {...props} />
-                          </div>
-                        ),
-                        thead: (props) => (
-                          <thead className={style.markdownThead} {...props} />
-                        ),
-                        tbody: (props) => (
-                          <tbody className={style.markdownTbody} {...props} />
-                        ),
-                        tr: (props) => (
-                          <tr className={style.markdownTr} {...props} />
-                        ),
-                        th: (props) => (
-                          <th className={style.markdownTh} {...props} />
-                        ),
-                        td: (props) => (
-                          <td className={style.markdownTd} {...props} />
-                        ),
-                      }}
-                    >
-                      {reportData}
-                    </ReactMarkdown>
-                  </>
-                ) : (
-                  <p>Carregando análise da IA...</p>
-                )}
-              </div>
-              <div className={style.buttonContainer2}>
-                <button className={style.button2} onClick={generateReport}>
-                  Atualizar Relatorio
-                </button>
-                <button className={style.button2} onClick={() => generatePDF()}>
-                  Baixar PDF
-                </button>
-              </div>
-            </div>
-          )}
+            )
+          ) : null}
         </div>
       </DefaultLayout>
     </>
