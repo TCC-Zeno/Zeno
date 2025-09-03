@@ -7,6 +7,7 @@ import {
   deleteUser,
   searchUsers*/
 } from "../services/authService.js";
+import argon2 from "argon2";
 
 // Cadastrar usuário
 export const signup = async (req, res) => {
@@ -28,7 +29,9 @@ export const signup = async (req, res) => {
       });
     }
     // Cria usuário
-    const userData = { cnpj, email, password };
+    const hashedPassword = await argon2.hash(password);
+
+    const userData = { cnpj, email, password: hashedPassword };
     const newUser = await createUser(userData);
     res.status(201).json({ 
       success: true, 
@@ -54,8 +57,8 @@ export const signin = async (req, res) => {
         error: "Usário não encontrado" 
       });
     }
-  // Verifica senha (simples, sem criptografia)
-    if (user.password !== password) {
+  // Verifica senha (com criptografia)
+    if (!await argon2.verify(user.password, password)) {
       return res.status(401).json({ 
         success: false, 
         error: "Senha incorreta" 
