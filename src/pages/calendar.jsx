@@ -29,13 +29,12 @@ export default function Calendar() {
   const fetchEvents = async () => {
     try {
       const resposta = await axios.post(
-        `${import.meta.env.VITE_API_URL}/calendar/fetch`,
+        `${import.meta.env.VITE_API_URL}/calendar/fetchUuid`,
         {
           uuid: profileinfo.uuid,
         }
       );
 
-      console.log("resposta:", resposta.data);
 
       // Transform data to match FullCalendar's expected format
       const transformedEvents = resposta.data.map((event) => ({
@@ -45,7 +44,6 @@ export default function Calendar() {
         end: event.end_date,
       }));
 
-      console.log("transformed events:", transformedEvents);
       setEvents(transformedEvents);
     } catch (err) {
       console.error("Erro ao buscar eventos:", err);
@@ -103,12 +101,26 @@ export default function Calendar() {
     console.log("Dropped event:", event);
   };
 
-  const handleEventClick = (info) => {
+  const handleEventClick = async (info) => {
     console.log("Clicked event:", info);
     const { event } = info;
     // tem que fazer um select para pegar os dados do evento de acordo com o id do banco de dados. Ele está em event._def.publicId e ai passa para o setDataEdit
-    setModalEditEvent(true, event._def);
-    setDataEdit(event._def);
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/calendar/fetchId`,
+        {
+          id: event._def.publicId,
+        }
+      );
+
+      console.log("resposta:", resposta.data[0]);
+      setDataEdit(resposta.data[0]);
+      setModalEditEvent(true);
+      
+    } catch (err) {
+      alert(err.response?.data?.error || "Erro ao atualizar informações");
+    }
+
   };
 
   const handleModalClose = () => setIsModalOpen(false);
@@ -160,7 +172,10 @@ export default function Calendar() {
         />
       </div>
       <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-        <form onSubmit={handleSubmitAdd(onSubmit)} className={S.formModalAddEvent}>
+        <form
+          onSubmit={handleSubmitAdd(onSubmit)}
+          className={S.formModalAddEvent}
+        >
           <h2>Adicione um título para o evento</h2>
           <input
             placeholder="Adicione seu título para o evento"
@@ -189,7 +204,10 @@ export default function Calendar() {
         </form>
       </Modal>
       <Modal isOpen={modalEditEvent} onClose={() => setModalEditEvent(false)}>
-        <form onSubmit={handleSubmitEdit(onSubmitEdit)} className={S.formModalAddEvent}>
+        <form
+          onSubmit={handleSubmitEdit(onSubmitEdit)}
+          className={S.formModalAddEvent}
+        >
           <h2>Adicione um título para o evento</h2>
           <input
             placeholder="Adicione seu título para o evento"
@@ -204,7 +222,7 @@ export default function Calendar() {
             type="date"
             name="dateStart"
             id="dateStart"
-            defaultValue={dataEdit?.start || ""}
+            defaultValue={dataEdit?.initial_date ? dataEdit.initial_date.slice(0, 10) : ""}
             {...editRegister("dateStart", { required: true })}
           />
           <h2>Selecione a data final para o evento</h2>
@@ -212,11 +230,17 @@ export default function Calendar() {
             type="date"
             name="dateEnd"
             id="dateEnd"
-            defaultValue={dataEdit?.end || ""}
+            defaultValue={dataEdit?.end_date ? dataEdit.end_date.slice(0, 10) : ""}
             {...editRegister("dateEnd")}
           />
           <input className={S.submitButton} type="submit" />
-          <input className={S.submitButtonDelete} type="button" title="Excluir" onClick={() => handleEventClick(dataEdit.id)} value="Excluir" />
+          <input
+            className={S.submitButtonDelete}
+            type="button"
+            title="Excluir"
+            onClick={() => handleEventClick(dataEdit.id)}
+            value="Excluir"
+          />
         </form>
       </Modal>
     </DefaultLayout>

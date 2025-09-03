@@ -10,6 +10,16 @@ export const getAppoimentByUuid = async (uuid) => {
   return data;
 };
 
+export const getAppoimentById = async (id) => {
+  const { data, error } = await supabase
+    .from("calendar")
+    .select("*")
+    .eq("id", id)
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
 export const insertEvents = async (uuid, title, initial_date, end_date ) => {
   const { data, error } = await supabase
   .from("calendar")

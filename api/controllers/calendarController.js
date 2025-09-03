@@ -1,33 +1,54 @@
 import {
   destroy,
   getAppoimentByUuid,
+  getAppoimentById,
   insertEvents,
   update,
 } from "../services/calendarService.js";
 
-export const getAppoiment = async (req, res) => {
+export const getAppoimentUuid = async (req, res) => {
   try {
     const { uuid } = req.body;
-    console.log("Fetching appointments for UUID:", uuid);
 
     if (!uuid) {
       return res.status(400).json({ error: "UUID é obrigatório" });
     }
 
-    const getInfos = await getAppoimentByUuid(uuid);
+    const getInfosByUuid = await getAppoimentByUuid(uuid);
 
-    if (!getInfos || getInfos.length === 0) {
+    if (!getInfosByUuid || getInfosByUuid.length === 0) {
       return res
         .status(404)
         .json({ error: "Nenhum evento encontrado para este usuário" });
     }
 
-    return res.status(200).json(getInfos);
+    return res.status(200).json(getInfosByUuid);
   } catch (err) {
     console.error("Error in getAppoiment:", err);
     res.status(500).json({ error: `Erro interno: ${err.message}` });
   }
 };
+export const getAppoimentId = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ error: "Id é obrigatório" });
+    }
+
+    const getInfosById = await getAppoimentById(id);
+    if (!getInfosById || getInfosById.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "Nenhum evento encontrado para este usuário" });
+    }
+    return res.status(200).json(getInfosById);
+  } catch (err) {
+    console.error("Error in getAppoiment:", err);
+    res.status(500).json({ error: `Erro interno: ${err.message}` });
+  }
+};
+
 
 export const insertAppoitment = async (req, res) => {
   try {
