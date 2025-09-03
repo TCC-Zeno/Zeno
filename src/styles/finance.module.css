@@ -67,7 +67,7 @@
   justify-content: space-around;
   border: solid 1.75px black;
   border-radius: 6px;
-  width: 24%;
+  width: 28%;
   height: auto;
   padding: 1%;
 }
@@ -89,6 +89,8 @@
   font-size: 20pt;
   transition: 0.5s;
   font-weight: bold;
+  display: flex;
+  gap: 10px;
 }
 .number:hover {
   transform: scale(1.05);
@@ -104,6 +106,8 @@
   font-size: 20pt;
   transition: 0.5s;
   font-weight: bold;
+  display: flex;
+  gap: 10px;
 }
 .number2:hover {
   transform: scale(1.05);
@@ -119,6 +123,8 @@
   font-size: 20pt;
   transition: 0.5s;
   font-weight: bold;
+  display: flex;
+  gap: 10px;
 }
 .number3Negative:hover {
   transform: scale(1.05);
@@ -129,10 +135,19 @@
   font-size: 20pt;
   transition: 0.5s;
   font-weight: bold;
+  display: flex;
+  gap: 10px;
 }
 .number3:hover {
   transform: scale(1.05);
   cursor: pointer;
+}
+
+.currencyInput{
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  background-color: transparent;
 }
 
 .line {
@@ -233,6 +248,15 @@
   font-size: 16pt;
   font-weight: 500;
   font-family: "Coolvetica Rg";
+}
+
+.valueTable{
+  display: flex;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .financeContainer {

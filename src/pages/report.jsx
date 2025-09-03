@@ -10,6 +10,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import CurrencyInput from "react-currency-input-field";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -337,7 +338,7 @@ export default function Report() {
                                 : "N/A"}
                             </td>
                             <td>{data.name}</td>
-                            <td>{data.value}</td>
+                            <td className={style.valueTable}>R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={data.value.toFixed(2)} className={style.currencyInput} /></td>
                             <td>{data.payment_method}</td>
                             <td>{data.category}</td>
                             <td className={style.tipoFluxo}>
@@ -379,16 +380,16 @@ export default function Report() {
                           </strong>
                         </h2>
                         <ul class="_markdownUl_mycij_419">
-                          <li class="_markdownLi_mycij_433">
+                          <li className={style.Li}>
                             <b>Total de Entradas:</b> R${" "}
-                            {amountValue.toFixed(2)}
+                            <CurrencyInput decimalSeparator="," groupSeparator="." value={amountValue.toFixed(2)} className={style.currencyInput} />
                           </li>
-                          <li class="_markdownLi_mycij_433">
+                          <li className={style.Li}>
                             <b>Total de Saídas:</b> R${" "}
-                            {expensesValue.toFixed(2)}
+                            <CurrencyInput decimalSeparator="," groupSeparator="." value={expensesValue.toFixed(2)} className={style.currencyInput} />
                           </li>
-                          <li class="_markdownLi_mycij_433">
-                            <b>Saldo Final:</b> R$ {profitValue.toFixed(2)}
+                          <li className={style.Li}>
+                            <b>Saldo Final:</b> R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={profitValue.toFixed(2)} className={style.currencyInput} />
                           </li>
                         </ul>
                         <ReactMarkdown

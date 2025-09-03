@@ -205,6 +205,27 @@
   font-weight: bold;
 }
 
+.currencyInput{
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  background-color: transparent;
+}
+
+.valueTable{
+  display: flex;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.Li{
+  display: flex;
+  gap: 10px;
+}
+
 @media (max-width: 768px) {
 .containerChart {
   display: grid;

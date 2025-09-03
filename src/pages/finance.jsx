@@ -314,7 +314,7 @@ export default function Finance() {
                 <FaArrowTrendUp className={style.top} />
               </div>
               <h2 className={style.number} id="amount-value">
-                R$ {amountValue.toFixed(2)}
+                R$  <CurrencyInput decimalSeparator="," groupSeparator="." value={amountValue.toFixed(2)} className={style.currencyInput} />
               </h2>
             </div>
             <div className={style.views}>
@@ -323,7 +323,7 @@ export default function Finance() {
                 <FaArrowTrendDown className={style.down} />
               </div>
               <h2 className={style.number2} id="expenses-value">
-                R$ {expensesValue.toFixed(2)}
+                R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={expensesValue.toFixed(2)} className={style.currencyInput} />
               </h2>
             </div>
             <div className={style.views}>
@@ -341,7 +341,7 @@ export default function Finance() {
                 }
                 id="profit-value"
               >
-                R$ {profitValue.toFixed(2)}
+                R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={profitValue.toFixed(2)} className={style.currencyInput} />
               </h2>
             </div>
           </div>
@@ -429,7 +429,7 @@ export default function Finance() {
               {filteredData.map((data) => (
                 <tr className={style.conteudo} key={data.id}>
                   <td>{data.name}</td>
-                  <td>R$ {data.value}</td>
+                  <td className={style.valueTable}>R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={data.value.toFixed(2)} className={style.currencyInput} /></td>
                   <td>{data.payment_method}</td>
                   <td>{data.category}</td>
                   <td
