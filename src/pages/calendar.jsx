@@ -14,7 +14,7 @@ import axios from "axios";
 export default function Calendar() {
   //? documentação da lib: https://fullcalendar.io/docs
   //* https://www.youtube.com/watch?v=uxbIQALflYs nesse video ele fala como fazer em PHP, eu tive que olhar a maior parte na documentação e em tutoriais, mas acabou saindo
-  const { register: addRegister, handleSubmit: handleSubmitAdd } = useForm();
+  const { register: addRegister, handleSubmit: handleSubmitAdd, reset:addReset  } = useForm();
   const { register: editRegister, handleSubmit: handleSubmitEdit } = useForm();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,6 +70,20 @@ export default function Calendar() {
     }
   };
 
+    function dateFormatter(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  function eventMove(dateString, delta){
+const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth()).padStart(2, "0");
+    const day = String(date.getDate() - delta).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
   const onSubmitEdit = async (data) => {
     console.log(data);
   };
@@ -171,7 +185,9 @@ export default function Calendar() {
           }}
         />
       </div>
-      <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+      <Modal isOpen={isModalOpen} onClose={()=>{handleModalClose()
+        addReset()
+      }}>
         <form
           onSubmit={handleSubmitAdd(onSubmit)}
           className={S.formModalAddEvent}
@@ -197,7 +213,7 @@ export default function Calendar() {
             type="date"
             name="dateEnd"
             id="dateEnd"
-            defaultValue={select?.end || ""}
+            defaultValue={dateFormatter(select?.end) || ""}
             {...addRegister("dateEnd")}
           />
           <input className={S.submitButton} type="submit" />
