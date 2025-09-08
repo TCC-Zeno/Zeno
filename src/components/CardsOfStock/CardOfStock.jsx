@@ -5,6 +5,7 @@ import Modal from "../Modal/Modal";
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
 import CurrencyInput from "react-currency-input-field";
+import noImage from "../../assets/imagemSemImagem.png";
 
 export function CardOfStock({ product, fetchData }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -158,7 +159,11 @@ export function CardOfStock({ product, fetchData }) {
         onClick={() => setModalOpen(true)}
       >
         <div>
-          <img className={S.images} src={product.image} alt={product.name} />
+          <img
+            className={S.images}
+            src={product.image || noImage}
+            alt={product.name}
+          />
         </div>
         <div className={S.content}>
           <h1 className={S.titleCard}>{product.name}</h1>
@@ -368,35 +373,38 @@ export function CardOfStock({ product, fetchData }) {
                 </h3>
               </div>
 
-              <div className={S.line} />
-
-              <div className={S.ModalForne}>
-                <h1>Fornecedor</h1>
-                <h3 className={S.ModalTitle}>
-                  Nome:{" "}
-                  <span className={S.ModalTxt}>
-                    {supplierData?.[0]?.name || "N/A"}
-                  </span>
-                </h3>
-                <h3 className={S.ModalTitle}>
-                  Endereço:{" "}
-                  <span className={S.ModalTxt}>
-                    {supplierData?.[0]?.Address || "N/A"}
-                  </span>
-                </h3>
-                <h3 className={S.ModalTitle}>
-                  Telefone:{" "}
-                  <span className={S.ModalTxt}>
-                    {supplierData?.[0]?.Number || "N/A"}
-                  </span>
-                </h3>
-                <h3 className={S.ModalTitle}>
-                  Email:{" "}
-                  <span className={S.ModalTxt}>
-                    {supplierData?.[0]?.email || "N/A"}
-                  </span>
-                </h3>
-              </div>
+              {supplierData && (
+                <>
+                  <div className={S.line} />
+                  <div className={S.ModalForne}>
+                    <h1>Fornecedor</h1>
+                    <h3 className={S.ModalTitle}>
+                      Nome:{" "}
+                      <span className={S.ModalTxt}>
+                        {supplierData?.[0]?.name || "N/A"}
+                      </span>
+                    </h3>
+                    <h3 className={S.ModalTitle}>
+                      Endereço:{" "}
+                      <span className={S.ModalTxt}>
+                        {supplierData?.[0]?.Address || "N/A"}
+                      </span>
+                    </h3>
+                    <h3 className={S.ModalTitle}>
+                      Telefone:{" "}
+                      <span className={S.ModalTxt}>
+                        {supplierData?.[0]?.Number || "N/A"}
+                      </span>
+                    </h3>
+                    <h3 className={S.ModalTitle}>
+                      Email:{" "}
+                      <span className={S.ModalTxt}>
+                        {supplierData?.[0]?.email || "N/A"}
+                      </span>
+                    </h3>
+                  </div>
+                </>
+              )}
 
               <div className={S.line} />
 
@@ -428,7 +436,7 @@ export function CardOfStock({ product, fetchData }) {
               <div className={S.modalImg}>
                 <img
                   className={S.modalImages}
-                  src={product.image}
+                  src={product.image || noImage}
                   alt="produto"
                 />
                 <h3 className={S.ModalTitle}>

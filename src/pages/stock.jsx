@@ -134,7 +134,7 @@ export default function Stock() {
       Price1: data.Price1,
       StockQuantity: data.StockQuantity,
       MinQuantity: data.MinQuantity,
-      Image: selectedFile,
+      Image: selectedFile || null,
       SupplierInfo: addForn
         ? {
             SupplierName: data.SupplierName,
@@ -142,7 +142,7 @@ export default function Stock() {
             SupplierAddress: data.SupplierAddress,
             SupplierEmail: data.SupplierEmail,
           }
-        : Number(data.Supplier),
+        : Number(data.Supplier) || null,
     };
 
     console.log(addProductData);
@@ -159,33 +159,33 @@ export default function Stock() {
       formData.append("MinQuantity", addProductData.MinQuantity);
       formData.append("FixedQuantity", addProductData.FixedQuantity);
 
-      if (addForn) {
+      if (addForn && addProductData.SupplierInfo) {
         formData.append(
           "SupplierName",
-          addProductData.SupplierInfo.SupplierName
+          addProductData.SupplierInfo.SupplierName || ""
         );
         formData.append(
           "SupplierNumber",
-          addProductData.SupplierInfo.SupplierNumber
+          addProductData.SupplierInfo.SupplierNumber || ""
         );
         formData.append(
           "SupplierAddress",
-          addProductData.SupplierInfo.SupplierAddress
+          addProductData.SupplierInfo.SupplierAddress || ""
         );
         formData.append(
           "SupplierEmail",
-          addProductData.SupplierInfo.SupplierEmail
+          addProductData.SupplierInfo.SupplierEmail || ""
         );
-      } else {
+      } else if (addProductData.SupplierInfo) {
         formData.append("SupplierInfo", addProductData.SupplierInfo);
       }
 
       if (addProductData.Image) {
         formData.append("image", addProductData.Image);
       } else {
-        console.error("Imagem não selecionada");
-        alert("Por favor, selecione uma imagem para o produto.");
-        return;
+        console.log("Imagem não selecionada");
+        // alert("Por favor, selecione uma imagem para o produto.");
+        // return;
       }
 
       const response = await axios.post(
@@ -563,10 +563,9 @@ export default function Stock() {
                   <input
                     ref={fileInputRef}
                     type="file"
-                    required
                     id="uploadFile"
                     name="uploadedFile"
-                    accept="image/*"
+                    accept="image/png, image/jpeg, image/jpg"
                     onChange={handleFileChange}
                   />
                   <div className={style.fileInfo}>
