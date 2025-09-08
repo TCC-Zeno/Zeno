@@ -10,6 +10,7 @@ export function CardOfStock({ product, fetchData }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [supplierData, setSupplierData] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
 
   const { register, control, reset, handleSubmit } = useForm({
     defaultValues: {
@@ -121,6 +122,23 @@ export function CardOfStock({ product, fetchData }) {
       console.error("Erro ao atualizar status:", err);
     }
   };
+
+  async function handleDelete(id) {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/stock/deleteProductById`,
+        {
+          id,
+        }
+      );
+
+      if (response.status === 200) {
+        fetchData();
+      }
+    } catch (err) {
+      console.error("Erro ao excluir produto:", err);
+    }
+  }
 
   useEffect(() => {
     if (product.supplierInfo) {
@@ -428,10 +446,35 @@ export function CardOfStock({ product, fetchData }) {
                 >
                   Editar
                 </button>
+                <button
+                  className={S.buttonDelete}
+                  onClick={() => setIsDelete(true)}
+                >
+                  Excluir
+                </button>
               </div>
             </div>
           </div>
         )}
+      </Modal>
+      <Modal isOpen={isDelete} onClose={() => setIsDelete(false)}>
+        <div className={S.modalDelete}>
+          <h1>Tem certeza que deseja excluir este produto?</h1>
+          <div className={S.buttonsDelete}>
+            <button
+              className={S.buttonCancel}
+              onClick={() => setIsDelete(false)}
+            >
+              Cancelar
+            </button>
+            <button
+              className={S.buttonDelete}
+              onClick={() => handleDelete(product.id)}
+            >
+              Excluir
+            </button>
+          </div>
+        </div>
       </Modal>
     </>
   );

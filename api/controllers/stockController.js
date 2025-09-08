@@ -216,7 +216,7 @@ export const updateProductById = async (req, res) => {
 
 export const deleteProductById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const data = await deleteProduct(id);
     res.status(200).json(data);
   } catch (error) {

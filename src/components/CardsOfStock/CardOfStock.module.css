@@ -608,6 +608,14 @@
   max-width: 192px;
 }
 
+.buttonsDelete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 5%;
+}
+
 @media screen and (max-width: 768px) {
   .dropzoneBox {
     padding: 12px;
