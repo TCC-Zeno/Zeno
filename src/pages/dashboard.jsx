@@ -8,6 +8,7 @@ import Modal from "../components/Modal/Modal";
 import ResourceBlocked from "../components/ResourceBlocked/ResourceBlocked";
 import CurrencyInput from "react-currency-input-field";
 import Counter from "../components/Counter/Counter";
+import axios from "axios";
 
 export default function Dashboard() {
   // Resumo de caixa
@@ -88,12 +89,13 @@ export default function Dashboard() {
     { id: 9, name: "Produto I" },
     { id: 10, name: "Produto J" },
   ];
-
+//  const userId = useSelector((state) => state.userReducer.user)
   const [resourceToUnlock, setResourceToUnlock] = useState(null);
   const [protectedModalOpen, setProtectedModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const dispatch = useDispatch();
+//  const [dataFinance, setDataFinance] = useState([]);
+  const dispatch = useDispatch();;
   const blockedResources = useSelector(
     (state) => state.userReducer.blockedResources
   );
@@ -108,24 +110,63 @@ export default function Dashboard() {
     service: blockedResources.service,
   });
 
+   
+
   useEffect(() => {
     dispatch(dashboard());
   }, [dispatch]);
 
-  const {
+const {
     register,
     handleSubmit,
     control,
-    // formState: { errors },
-  } = useForm();
+    reset: addReset,
+    formState: { errors: addErrors },
+  } = useForm({
+    defaultValues: { price: 0 },
+    mode: "onChange",
+  }); 
 
-  const onSubmit = (data) => {
-    if (data.Price) {
-      const numericValue = data.Price.replace(",", ".");
-      data.Price = parseFloat(numericValue);
-    }
-    console.log(data);
-  };
+  const onSubmit = async (data) => {
+  //   const priceDot = data.price?.toString().replace(",", ".");
+  //   try {
+  //     const response = await axios.post(
+  //       `${import.meta.env.VITE_API_URL}/dashboard/addFinanceForm`,
+  //       {
+  //         userId: userId.uuid,
+  //         name: data.name,
+  //         value: parseFloat(priceDot),
+  //         category: data.category,
+  //         payment_method: data.paymentMethod,
+  //         type_flow: data.flow,
+  //       }
+  //     );
+
+  //     if (response.status === 201) {
+  //       addReset();
+  //       fetchData();
+  //     }
+  //   } catch (error) {
+  //     const errorMessage =
+  //       error.response?.data?.message || "Erro ao adicionar finança";
+  //     console.error("Erro ao adicionar finança:", errorMessage);
+  //   }
+  // };
+
+  //   async function fetchData() {
+  //   try {
+  //     const data = await axios.post(
+  //       `${import.meta.env.VITE_API_URL}/finance/financeId`,
+  //       {
+  //         uuid: userId.uuid,
+  //       }
+  //     );
+  //     setDataFinance(data.data);
+  //   } catch (error) {
+  //     console.error("Erro ao buscar dados:", error);
+  //   }
+   };
+  
 
   return (
     <>
