@@ -112,7 +112,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                   <FaArrowLeft size={20} />
                 </span>
               </button>
-              <h1 className={S.title}>Contribuintes</h1>
+              <h1 className={S.title}>Contribuinte</h1>
             </div>
             {type === "view" ? (
               <>
@@ -173,7 +173,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                 <div className={S.divider02}></div>
                 <div className={S.checkboxsContainer}>
                   <h1 className={S.checkboxTitle}>
-                    Perdições do contribuintes
+                    Permissões do contribuinte
                   </h1>
                   <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
