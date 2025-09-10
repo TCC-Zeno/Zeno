@@ -23,6 +23,7 @@ export default function Report() {
   const [dataOfCategory, setDataOfCategory] = useState({});
   const [dataOfFlowType, setDataOfFlowType] = useState({});
   const [dataOfOthersCount, setDataOfOthersCount] = useState({});
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   function dateFormatter(dateString) {
     const date = new Date(dateString);
@@ -132,32 +133,109 @@ export default function Report() {
 
   const dataValues = [amountValue, expensesValue, profitValue];
 
-  const generatePDF = async () => {
+  const generatePDF = async (print = false) => {
+    setIsGeneratingPDF(true);
     const element = contentRef.current;
-    const canvas = await html2canvas(element, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
 
     const pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = 210;
     const pageHeight = 297;
+    const margin = 10;
+    const contentWidth = pageWidth - margin * 2;
+    const contentHeight = pageHeight - margin * 2;
 
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-    let heightLeft = imgHeight;
-    let position = 0;
+      const canvas = await html2canvas(element, {
+        scale: 1.5,
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: "#ffffff",
+        height: element.scrollHeight,
+        width: element.scrollWidth,
+      });
 
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+      const imgData = canvas.toDataURL("image/png", 0.8);
+      const imgWidth = contentWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      if (imgHeight <= contentHeight) {
+        pdf.addImage(imgData, "PNG", margin, margin, imgWidth, imgHeight);
+      } else {
+        let yPosition = 0;
+        let pageNumber = 1;
+
+        while (yPosition < imgHeight) {
+          const remainingHeight = imgHeight - yPosition;
+          const currentSectionHeight = Math.min(contentHeight, remainingHeight);
+
+          if (pageNumber > 1) {
+            pdf.addPage();
+          }
+
+          const sourceY = (yPosition * canvas.height) / imgHeight;
+          const sourceHeight =
+            (currentSectionHeight * canvas.height) / imgHeight;
+
+          const tempCanvas = document.createElement("canvas");
+          const tempCtx = tempCanvas.getContext("2d");
+
+          tempCanvas.width = canvas.width;
+          tempCanvas.height = sourceHeight;
+
+          tempCtx.fillStyle = "#ffffff";
+          tempCtx.fillRect(0, 0, canvas.width, sourceHeight);
+
+          tempCtx.drawImage(
+            canvas,
+            0,
+            sourceY,
+            canvas.width,
+            sourceHeight,
+            0,
+            0,
+            canvas.width,
+            sourceHeight
+          );
+
+          const sectionImgData = tempCanvas.toDataURL("image/png", 0.8);
+          pdf.addImage(
+            sectionImgData,
+            "PNG",
+            margin,
+            margin,
+            imgWidth,
+            currentSectionHeight
+          );
+
+          pdf.setFontSize(8);
+          pdf.setTextColor(128, 128, 128);
+          pdf.text(
+            `Página ${pageNumber}`,
+            pageWidth - margin - 15,
+            pageHeight - 5
+          );
+
+          yPosition += contentHeight;
+          pageNumber++;
+        }
+      }
+
+      const timestamp = new Date().toISOString().split("T")[0];
+
+      if (print) {
+        pdf.autoPrint();
+        window.open(pdf.output("bloburl"), "_blank");
+      } else {
+        pdf.save(`relatorio_financeiro_${timestamp}.pdf`);
+      }
+    } catch (error) {
+      console.error("Erro ao gerar PDF:", error);
+      alert("Erro ao gerar PDF. Tente novamente.");
+    } finally {
+      setIsGeneratingPDF(false);
     }
-
-    pdf.save("documento.pdf");
   };
 
   function countDataOfPaymentMethod() {
@@ -183,7 +261,6 @@ export default function Report() {
       return acumulador;
     }, {});
   }
-
 
   useEffect(() => {
     const paymentMethodCounts = countDataOfPaymentMethod();
@@ -294,7 +371,6 @@ export default function Report() {
         },
       ],
     });
-    
   }, [dataArray]);
 
   return (
@@ -341,88 +417,173 @@ export default function Report() {
           {permissao ? (
             dataArray.length > 0 ? (
               <div className={style.containerReport}>
-                <div className={style.containerReport} ref={contentRef}>
+                <div
+                  className={style.containerReport}
+                  ref={contentRef}
+                  id="report-content"
+                >
+                  {isGeneratingPDF && (
+                    <div className={style.pdfOnlyHeader}>
+                      <h1>RELATÓRIO FINANCEIRO DETALHADO</h1>
+                      <p>
+                        <strong>Data de geração:</strong>{" "}
+                        {new Date().toLocaleString("pt-BR")}
+                      </p>
+                      <p>
+                        <strong>Usuário:</strong>{" "}
+                        {profileinfo.company_name || "N/A"}
+                      </p>
+                      <p>
+                        <strong>Período:</strong> {selectedPeriod} até{" "}
+                        {new Date().toLocaleDateString("pt-BR")}
+                      </p>
+                      <p>
+                        <strong>Total de transações:</strong> {dataArray.length}
+                      </p>
+                      <hr
+                        style={{ margin: "20px 0", border: "1px solid #ccc" }}
+                      />
+                    </div>
+                  )}
+
                   <div className={style.title}>
-                    <h2>Resumo do Relatório</h2>
-                  </div>
-                  <div className={style.containerTable}>
-                    <table className={style.table}>
-                      <thead className={style.thead}>
-                        <tr className={style.tr}>
-                          <th className={style.th}>Data</th>
-                          <th className={style.th}>Nome</th>
-                          <th className={style.th}>Valor(R$)</th>
-                          <th className={style.th}>Metodo de Pagamento</th>
-                          <th className={style.th}>Categoria</th>
-                          <th className={style.th}>Tipo de Fluxo</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {dataArray.map((data) => (
-                          <tr className={style.conteudo} key={data.id}>
-                            <td>
-                              {data.created_at
-                                ? new Date(data.created_at).toLocaleDateString(
-                                    "pt-BR",
-                                    { day: "2-digit", month: "2-digit" }
-                                  )
-                                : "N/A"}
-                            </td>
-                            <td>{data.name}</td>
-                            <td className={style.valueTable}>R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={data.value.toFixed(2)} className={style.currencyInput} /></td>
-                            <td>{data.payment_method}</td>
-                            <td>{data.category}</td>
-                            <td className={style.tipoFluxo}>
-                              {data.type_flow}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    <h2>
+                      {isGeneratingPDF
+                        ? "Relatório Completo"
+                        : "Tabela do Relatório"}
+                    </h2>
                   </div>
 
+                  {!isGeneratingPDF && (
+                    <div className={`${style.containerTable} avoid-break`}>
+                      <table className={style.table}>
+                        <thead className={style.thead}>
+                          <tr className={style.tr}>
+                            <th className={style.th}>Data</th>
+                            <th className={style.th}>Nome</th>
+                            <th className={style.th}>Valor(R$)</th>
+                            <th className={style.th}>Método de Pagamento</th>
+                            <th className={style.th}>Categoria</th>
+                            <th className={style.th}>Tipo de Fluxo</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {dataArray.map((data) => (
+                            <tr className={style.conteudo} key={data.id}>
+                              <td>
+                                {data.created_at
+                                  ? new Date(
+                                      data.created_at
+                                    ).toLocaleDateString("pt-BR", {
+                                      day: "2-digit",
+                                      month: "2-digit",
+                                    })
+                                  : "N/A"}
+                              </td>
+                              <td>{data.name}</td>
+                              <td className={style.valueTable}>
+                                R${" "}
+                                <CurrencyInput
+                                  decimalSeparator=","
+                                  groupSeparator="."
+                                  value={data.value.toFixed(2)}
+                                  className={style.currencyInput}
+                                  disabled
+                                />
+                              </td>
+                              <td>{data.payment_method}</td>
+                              <td>{data.category}</td>
+                              <td className={style.tipoFluxo}>
+                                {data.type_flow}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+
+                  {isGeneratingPDF && (
+                    <div
+                      style={{ pageBreakBefore: "always", marginTop: "40px" }}
+                    >
+                      <h2>Análise Visual dos Dados</h2>
+                      <hr style={{ margin: "10px 0" }} />
+                    </div>
+                  )}
+
                   <div className={style.containerChart}>
-                    <div className={style.cardChart}>
+                    <div className={`${style.cardChart} avoid-break`}>
                       <h2 className={style.titleChart}>Métodos de Pagamento</h2>
                       <Doughnut data={dataOfPaymentMethod} />
                     </div>
-                    <div className={style.cardChart}>
+                    <div className={`${style.cardChart} avoid-break`}>
                       <h2 className={style.titleChart}>Categorias</h2>
                       <Doughnut data={dataOfCategory} />
                     </div>
-                    <div className={style.cardChart}>
+                    <div className={`${style.cardChart} avoid-break`}>
                       <h2 className={style.titleChart}>Tipos de Fluxo</h2>
                       <Doughnut data={dataOfFlowType} />
                     </div>
-                    <div className={style.cardChart}>
-                      <h2 className={style.titleChart}>
-                        Resumo de caixa:
-                      </h2>
+                    <div className={`${style.cardChart} avoid-break`}>
+                      <h2 className={style.titleChart}>Resumo de caixa</h2>
                       <Doughnut data={dataOfOthersCount} />
                     </div>
                   </div>
 
-                  <div className={style.textIA}>
+                  <div className={`${style.textIA} avoid-break`}>
                     {reportData ? (
                       <>
+                        {isGeneratingPDF && (
+                          <div
+                            style={{
+                              pageBreakBefore: "always",
+                              marginTop: "40px",
+                            }}
+                          >
+                            <h2>Análise Detalhada</h2>
+                            <hr style={{ margin: "10px 0" }} />
+                          </div>
+                        )}
+
                         <h2 className={style.markdownP}>
                           <strong className={style.markdownStrong}>
                             Cálculos:
                           </strong>
                         </h2>
-                        <ul class="_markdownUl_mycij_419">
+                        <ul className="_markdownUl_mycij_419">
                           <li className={style.Li}>
                             <b>Total de Entradas:</b> R${" "}
-                            <CurrencyInput decimalSeparator="," groupSeparator="." value={amountValue.toFixed(2)} className={style.currencyInput} />
+                            <CurrencyInput
+                              decimalSeparator=","
+                              groupSeparator="."
+                              value={amountValue.toFixed(2)}
+                              className={style.currencyInput}
+                              disabled
+                            />
                           </li>
                           <li className={style.Li}>
                             <b>Total de Saídas:</b> R${" "}
-                            <CurrencyInput decimalSeparator="," groupSeparator="." value={expensesValue.toFixed(2)} className={style.currencyInput} />
+                            <CurrencyInput
+                              decimalSeparator=","
+                              groupSeparator="."
+                              value={expensesValue.toFixed(2)}
+                              className={style.currencyInput}
+                              disabled
+                            />
                           </li>
                           <li className={style.Li}>
-                            <b>Saldo Final:</b> R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={profitValue.toFixed(2)} className={style.currencyInput} />
+                            <b>Saldo Final:</b> R${" "}
+                            <CurrencyInput
+                              decimalSeparator=","
+                              groupSeparator="."
+                              value={profitValue.toFixed(2)}
+                              className={style.currencyInput}
+                              disabled
+                            />
                           </li>
                         </ul>
+
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
                           components={{
@@ -492,15 +653,28 @@ export default function Report() {
                     )}
                   </div>
                 </div>
+
                 <div className={style.buttonContainer2}>
-                  <button className={style.button2} onClick={generateReport}>
-                    Atualizar Relatorio
+                  <button
+                    className={style.button2}
+                    onClick={generateReport}
+                    disabled={loading}
+                  >
+                    Atualizar Relatório
                   </button>
                   <button
                     className={style.button2}
-                    onClick={() => generatePDF()}
+                    onClick={() => generatePDF(false)}
+                    disabled={loading || isGeneratingPDF}
                   >
-                    Baixar PDF
+                    {isGeneratingPDF ? "Gerando PDF..." : "Baixar PDF"}
+                  </button>
+                  <button
+                    className={style.button2}
+                    onClick={() => generatePDF(true)}
+                    disabled={loading || isGeneratingPDF}
+                  >
+                    {isGeneratingPDF ? "Imprimindo PDF..." : "Imprimir PDF"}
                   </button>
                 </div>
               </div>
