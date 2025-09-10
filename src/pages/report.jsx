@@ -22,6 +22,7 @@ export default function Report() {
   const [dataOfPaymentMethod, setDataOfPaymentMethod] = useState({});
   const [dataOfCategory, setDataOfCategory] = useState({});
   const [dataOfFlowType, setDataOfFlowType] = useState({});
+  const [dataOfOthersCount, setDataOfOthersCount] = useState({});
 
   function dateFormatter(dateString) {
     const date = new Date(dateString);
@@ -129,6 +130,8 @@ export default function Report() {
 
   const profitValue = amountValue - expensesValue;
 
+  const dataValues = [amountValue, expensesValue, profitValue];
+
   const generatePDF = async () => {
     const element = contentRef.current;
     const canvas = await html2canvas(element, { scale: 2 });
@@ -180,6 +183,7 @@ export default function Report() {
       return acumulador;
     }, {});
   }
+
 
   useEffect(() => {
     const paymentMethodCounts = countDataOfPaymentMethod();
@@ -264,6 +268,33 @@ export default function Report() {
         },
       ],
     });
+    setDataOfOthersCount({
+      labels: ["Total de Entradas", "Total de Saídas", "Saldo Final"],
+      datasets: [
+        {
+          label: "Quantas vezes esse tipo de fluxo",
+          data: dataValues,
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    });
+    
   }, [dataArray]);
 
   return (
@@ -365,9 +396,9 @@ export default function Report() {
                     </div>
                     <div className={style.cardChart}>
                       <h2 className={style.titleChart}>
-                        Não sei oq colocar pra ficar par
+                        Resumo de caixa:
                       </h2>
-                      <Doughnut data={dataOfPaymentMethod} />
+                      <Doughnut data={dataOfOthersCount} />
                     </div>
                   </div>
 
