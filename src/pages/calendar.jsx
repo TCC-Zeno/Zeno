@@ -14,7 +14,11 @@ import axios from "axios";
 export default function Calendar() {
   //? documentação da lib: https://fullcalendar.io/docs
   //* https://www.youtube.com/watch?v=uxbIQALflYs nesse video ele fala como fazer em PHP, eu tive que olhar a maior parte na documentação e em tutoriais, mas acabou saindo
-  const { register: addRegister, handleSubmit: handleSubmitAdd, reset:addReset  } = useForm();
+  const {
+    register: addRegister,
+    handleSubmit: handleSubmitAdd,
+    reset: addReset,
+  } = useForm();
   const { register: editRegister, handleSubmit: handleSubmitEdit } = useForm();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +39,6 @@ export default function Calendar() {
         }
       );
 
-
       // Transform data to match FullCalendar's expected format
       const transformedEvents = resposta.data.map((event) => ({
         id: event.id,
@@ -52,6 +55,7 @@ export default function Calendar() {
 
   const onSubmit = async (data) => {
     try {
+      console.log("A: ", data)
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/calendar/insert`,
         {
@@ -70,22 +74,44 @@ export default function Calendar() {
     }
   };
 
-    function dateFormatter(dateString) {
+  function dateFormatter(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
-  function eventMove(dateString, delta){
-const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth()).padStart(2, "0");
-    const day = String(date.getDate() - delta).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+
+  function eventMove(dateString, delta) {
+    const date = new Date(dateString);
+    if (delta.days < 0 || delta.years < 0 || delta.mouths < 0) {
+      const day = String(date.getDay() - delta.days).padStart(2, "0");
+      const year = date.getFullYear() - delta.years;
+      const month = String(date.getMonth() - delta.months).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }else{
+      const day = String(date.getDay() + delta.days).padStart(2, "0");
+      const year = date.getFullYear() + delta.years;
+      const month = String(date.getMonth() + delta.months).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
   }
   const onSubmitEdit = async (data) => {
-    console.log(data);
+    try{
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/calendar/update`,
+        {
+          uuid: profileinfo.uuid,
+          title: data.title,
+          initial_date: data.event._instance.range.start,
+          end_date: data.event._instance.range.end,
+        }
+      );
+      handleModalClose();
+      await fetchEvents(); 
+    }catch(err){
+       alert(err.response?.data?.error || "Erro ao atualizar informações");
+    }
   };
 
   useEffect(() => {
@@ -109,10 +135,27 @@ const date = new Date(dateString);
     });
   };
 
-  const handleEventDrop = (info) => {
+  const handleEventDrop = async (info) => {
     console.log("Clicked event:", info);
     const { event } = info;
     console.log("Dropped event:", event);
+    try{
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/calendar/update`,
+        {
+          id: event._def.publicId,
+          title: null,
+          initial_date: info.event._instance.range.start,
+          end_date: info.event._instance.range.end,
+        }
+      );
+      console.log("resposta: ", resposta)
+      handleModalClose();
+      await fetchEvents(); 
+    }catch(err){
+      console.log(err);
+       alert(err.response?.data?.error || "Erro ao atualizar informações");
+    }
   };
 
   const handleEventClick = async (info) => {
@@ -130,11 +173,9 @@ const date = new Date(dateString);
       console.log("resposta:", resposta.data[0]);
       setDataEdit(resposta.data[0]);
       setModalEditEvent(true);
-      
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao atualizar informações");
     }
-
   };
 
   const handleModalClose = () => setIsModalOpen(false);
@@ -185,9 +226,13 @@ const date = new Date(dateString);
           }}
         />
       </div>
-      <Modal isOpen={isModalOpen} onClose={()=>{handleModalClose()
-        addReset()
-      }}>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          handleModalClose();
+          addReset();
+        }}
+      >
         <form
           onSubmit={handleSubmitAdd(onSubmit)}
           className={S.formModalAddEvent}
@@ -238,7 +283,9 @@ const date = new Date(dateString);
             type="date"
             name="dateStart"
             id="dateStart"
-            defaultValue={dataEdit?.initial_date ? dataEdit.initial_date.slice(0, 10) : ""}
+            defaultValue={
+              dataEdit?.initial_date ? dataEdit.initial_date.slice(0, 10) : ""
+            }
             {...editRegister("dateStart", { required: true })}
           />
           <h2>Selecione a data final para o evento</h2>
@@ -246,7 +293,9 @@ const date = new Date(dateString);
             type="date"
             name="dateEnd"
             id="dateEnd"
-            defaultValue={dataEdit?.end_date ? dataEdit.end_date.slice(0, 10) : ""}
+            defaultValue={
+              dataEdit?.end_date ? dataEdit.end_date.slice(0, 10) : ""
+            }
             {...editRegister("dateEnd")}
           />
           <input className={S.submitButton} type="submit" />

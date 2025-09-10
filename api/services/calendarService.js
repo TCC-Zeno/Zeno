@@ -29,11 +29,11 @@ export const insertEvents = async (uuid, title, initial_date, end_date ) => {
   if (error) throw new Error(error.message);
   return data;
 };
-export const  update = async (uuid, title, initial_date, end_date) =>{
+export const  update = async (id, title, initial_date, end_date) =>{
   const {data, error} = await supabase
   .from("calendar")
-  .update({uuid, title, initial_date, end_date})
-  .eq("uuid", uuid)
+  .update({id, title, initial_date, end_date})
+  .eq("id", id)
   .select()
 
   if (error) throw new Error(error.message);

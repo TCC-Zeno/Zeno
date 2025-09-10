@@ -81,17 +81,17 @@ export const insertAppoitment = async (req, res) => {
 };
 export const updateAppoiment = async (req, res) => {
   try {
-    const { uuid, title, initial_date, end_date } = req.body;
-    if (!uuid) {
+    const { id, title, initial_date, end_date } = req.body;
+    if (!id) {
       return res.status(400).json({ error: "ID não informado." });
     }
-    const user = await getAppoimentByUuid(uuid);
+    const user = await getAppoimentId(id);
     if (!user) {
       return res
         .status(404)
         .json({ error: "Usuário não encontrado para o ID informado." });
     }
-    const updateEvents = await update(uuid, {
+    const updateEvents = await update(id, {
       title: title,
       initial_date: initial_date,
       end_date: end_date,
