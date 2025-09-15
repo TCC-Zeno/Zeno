@@ -20,7 +20,7 @@ export function TermsPage() {
           <div className={S.content}>
             <div className={S.titleContainer}>
               <h1 className={S.title}>Termos e Condições de Uso - Zeno</h1>
-              <p className={S.lastUpdate}>Última atualização: 17/06/2025</p>
+              <p className={S.lastUpdate}>Última atualização: 10/09/2025</p>
             </div>
 
             <div className={S.intro}>
@@ -154,6 +154,10 @@ export function TermsPage() {
                 <li className={S.listItem}>
                   O usuário pode solicitar a exclusão de seus dados a qualquer
                   momento, mediante solicitação formal.
+                </li>
+                <li className={S.listItem}>
+                  Os seus dados vão ser fornecidos a Inteligência Artificial do
+                  Gemini.
                 </li>
               </ul>
             </section>
