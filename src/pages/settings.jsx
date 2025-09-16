@@ -305,7 +305,7 @@ export default function Settings() {
                   <option value="Achromatopsia">Achromatopsia</option>
                 </select>
                 <h2>Coloque a sua logo aqui</h2>
-                <Dropzone />
+                <Dropzone id="logo-dropzone" />
                 <h2>
                   Funções
                   <button onClick={() => setFunctionGuideOpen(true)}>
@@ -394,7 +394,7 @@ export default function Settings() {
           Batata da função?
         </Modal>
         <Modal isOpen={blockGuideOpen} onClose={() => setBlockGuideOpen(false)}>
-          Batata do block?
+          Isso não está funcionando no momento.
         </Modal>
         {/* <Modal
           isOpen={modalBlockResourcesOpen}

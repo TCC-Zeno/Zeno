@@ -6,6 +6,13 @@ import S from "./guideUsers.module.css";
 import Modal from "../../components/Modal/Modal";
 import { dashboardSteps } from "./dashboardSteps.jsx";
 import { initSteps } from "./initSteps.jsx";
+import { stockSteps } from "./stockSteps.jsx";
+import { financeSteps } from "./financeSteps.jsx";
+import { calendarSteps } from "./calendarSteps.jsx";
+import { tasksSteps } from "./tasksSteps.jsx";
+import { reportSteps } from "./reportSteps.jsx";
+import { serviceSteps } from "./serviceSteps.jsx";
+import { settingsSteps } from "./settingsSteps.jsx";
 
 export default function GuideUsers() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
@@ -32,8 +39,20 @@ export default function GuideUsers() {
       case "dashboard":
         if (tourPhase === "init") return initSteps;
         return dashboardSteps;
-      case "reports":
-        return "a";
+      case "stock":
+        return stockSteps;
+      case "finance":
+        return financeSteps;
+      case "calendar":
+        return calendarSteps;
+      case "task":
+        return tasksSteps;
+      case "report":
+        return reportSteps;
+      case "service":
+        return serviceSteps;
+      case "settings":
+        return settingsSteps;
       default:
         return [];
     }
@@ -93,7 +112,7 @@ export default function GuideUsers() {
   useEffect(() => {
     setRunTour(false);
     setTourIndex(0);
-    setTourPhase(rotaStatus); 
+    setTourPhase(rotaStatus);
   }, [rotaStatus]);
 
   const handleStartTourFromModal = () => {

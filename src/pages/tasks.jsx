@@ -98,7 +98,7 @@ export default function Tasks() {
   return (
     <DefaultLayout>
       <h1 className={S.titlePage}>Tarefas do mês</h1>
-      <section className={S.sectionOrganizer}>
+      <section className={S.sectionOrganizer} id="organizer">
         <TaskColumn
           title="A fazer"
           icon={<LuListTodo />}

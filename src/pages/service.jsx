@@ -256,7 +256,7 @@ export default function Service() {
     <>
       <DefaultLayout>
         <div className={style.tudo}>
-          <div className={style.addContainer}>
+          <div className={style.addContainer} id="add-service">
             <button
               className={style.buttonAdd}
               onClick={() => setModalOpen(true)}
@@ -264,7 +264,7 @@ export default function Service() {
               <FaPlus /> Adicionar Serviço
             </button>
           </div>
-          <div className={style.statusContainer}>
+          <div className={style.statusContainer} id="status-container">
             <div className={style.statusAgend}>
               <div className={style.titleAgend}>
                 <h2 className={style.title}>Agendados</h2>

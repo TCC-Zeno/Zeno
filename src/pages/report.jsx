@@ -381,6 +381,7 @@ export default function Report() {
             <>
               <div className={style.buttonContainer}>
                 <div
+                  id="generate-report"
                   className={style.button}
                   onClick={() => {
                     generateReport(selectedPeriod);

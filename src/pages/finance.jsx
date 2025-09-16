@@ -307,7 +307,7 @@ export default function Finance() {
     <>
       <DefaultLayout loading={loading}>
         <div className={style.containerViewAndFilter}>
-          <div className={style.containerView}>
+          <div className={style.containerView} id="container-view">
             <div className={style.views}>
               <div className={style.titleIcon}>
                 <p>Entradas do mês</p>
@@ -349,7 +349,7 @@ export default function Finance() {
 
           <form
             className={style.row0}
-            onSubmit={handleFilterSubmit(onFilterSubmit)}
+            onSubmit={handleFilterSubmit(onFilterSubmit)} id="input-filter"
           >
             <div className={style.date}>
               <div>
@@ -406,6 +406,7 @@ export default function Finance() {
                 type="button"
                 onClick={clearFilters}
                 className={style.clearButton}
+                id="btn-filters-clear"
               >
                 <AiOutlineClear />
               </button>
@@ -414,7 +415,7 @@ export default function Finance() {
         </div>
 
         <div className={style.containerTable}>
-          <table className={style.table}>
+          <table className={style.table} id="table">
             <thead className={style.thead}>
               <tr className={style.tr}>
                 <th className={style.th}>Nome</th>
@@ -468,7 +469,7 @@ export default function Finance() {
           )}
         </div>
 
-        <section className={style.sectionDashboard}>
+        <section className={style.sectionDashboard} id="container-add">
           <div className={style.financeTitle}>
             <h1>Adicionar</h1>
           </div>
@@ -602,7 +603,7 @@ export default function Finance() {
           />
         </section>
 
-        <section className={style.sectionDashboard}>
+        <section className={style.sectionDashboard} id="section-category">
           <div className={style.financeTitle}>
             <h1>Adicionar Categoria</h1>
           </div>

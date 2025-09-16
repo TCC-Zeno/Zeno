@@ -5,7 +5,7 @@ import S from "./dropzone.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { userData } from "../../redux/User/slice";
 
-export default function Dropzone() {
+export default function Dropzone(id) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
@@ -89,6 +89,7 @@ console.log(profileinfo)
       className={S.dropzoneBox}
       onReset={handleReset}
       onSubmit={handleSubmit}
+      id={id.id}
     >
       <p>Clique para fazer upload ou arraste e solte</p>
 

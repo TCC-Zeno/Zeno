@@ -169,7 +169,7 @@ export function CardOfStock({ product, fetchData }) {
           <h1 className={S.titleCard}>{product.name}</h1>
           <p className={S.textCard}>{product.description}</p>
         </div>
-        <div className={S.actions}>
+        <div className={S.actions} id="actions-card">
           <button
             className={S.button}
             id="button-back-counter"

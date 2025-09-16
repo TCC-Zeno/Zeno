@@ -8,14 +8,6 @@ export const initSteps = [
         >
           🚀 Início
         </h2>
-        {/* <p style={{ margin: "0 0 10px 0" }}>
-          Visualize todas as informações importantes de forma rápida.
-        </p>
-        <p>
-          Tenha acesso rápido às principais métricas do seu negócio, como resumo
-          de caixa, inserção ágil de despesas e receitas, resumos de tarefas e
-          detalhes do seu estoque.
-        </p> */}
         <p style={{ margin: "0 0 10px 0" }}>
           Acompanhe de forma rápida o resumo de caixa, despesas, receitas,
           tarefas e estoque.
@@ -34,17 +26,6 @@ export const initSteps = [
         >
           📦 Estoque
         </h2>
-        {/* <p style={{ margin: "0 0 10px 0" }}>
-          Adicione produtos ao seu estoque para manter o controle do que está
-          disponível.
-        </p>
-        <p>
-          Ao adicionar produtos, você pode definir as informações básicas,
-          informar dados do fornecedor para facilitar o reabastecimento, e
-          inserir o custo e o preço. Assim, você acompanha seu lucro e margem.
-          Além disso, você pode definir a quantidade mínima para que o sistema o
-          avise quando o estoque estiver baixo.
-        </p> */}
         <p style={{ margin: "0 0 10px 0" }}>
           Controle produtos, preços e receba alertas de reposição.
         </p>
@@ -69,19 +50,6 @@ export const initSteps = [
         >
           💰 Financeiro
         </h2>
-        {/* <p style={{ margin: "0 0 10px 0" }}>
-          Controle as entradas e saídas de dinheiro de forma direta e clara.
-        </p>
-        <p>
-          Adicione suas receitas e despesas para ter controle total sobre suas
-          finanças. Ao separá-las por categorias, você consegue entender melhor
-          para onde seu dinheiro está indo ou de onde ele está vindo.
-        </p>
-        <p>
-          Você também tem acesso rápido às principais métricas do seu negócio,
-          vendo as entradas e saídas de acordo com o que foi registrado e com os
-          filtros aplicados.
-        </p> */}
         <p style={{ margin: "0 0 10px 0" }}>
           Registre entradas e saídas, categorize despesas e receitas e acompanhe
           suas finanças de forma clara.
@@ -99,13 +67,6 @@ export const initSteps = [
         >
           🗓️ Calendário
         </h2>
-        {/* <p style={{ margin: "0 0 10px 0" }}>
-          Não perca mais um compromisso. Agende reuniões, entregas e tarefas.
-        </p>
-        <p>
-          Você pode adicionar eventos, tarefas e lembretes para se manter
-          organizado, selecionando dias específicos no calendário.
-        </p> */}
         <p style={{ margin: "0 0 10px 0" }}>
           Organize os compromissos, as tarefas e prazos para não perder nada
           importante.
@@ -123,14 +84,6 @@ export const initSteps = [
         >
           ✅ Tarefas
         </h2>
-        {/* <p style={{ margin: "0 0 10px 0" }}>
-          Organize o que precisa ser feito de forma simples.
-        </p>
-        <p>
-          Utilize o método de organização internacional Kanban para gerenciar
-          suas tarefas, movendo-as entre colunas que representam os diferentes
-          estágios do fluxo de trabalho.
-        </p> */}
         <p style={{ margin: "0 0 10px 0" }}>
           Organize seu trabalho com o método Kanban, movendo atividades entre
           etapas de a fazer fazendo e concluído, também delimite funções para os
@@ -149,15 +102,6 @@ export const initSteps = [
         >
           📊 Relatórios
         </h2>
-        {/* <p style={{ margin: "0 0 10px 0" }}>
-          Tenha um relatório completo das suas finanças.
-        </p>
-        <p>
-          Gere um relatório detalhado das suas finanças, incluindo receitas,
-          despesas e saldo dos últimos 30 dias. Este relatório será gerado por
-          uma inteligência artificial do Google que analisará todos os dados
-          registrados.
-        </p> */}
         <p style={{ margin: "0 0 10px 0" }}>
           Acompanhe receitas, despesas e saldo em relatórios rápidos. Com dicas
           para melhorar a lucratividade da sua empresa.
