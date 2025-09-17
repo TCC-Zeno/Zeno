@@ -26,7 +26,6 @@
     "@sideway/address": "^5.0.0",
     "@sideway/formula": "^3.0.1",
     "@supabase/supabase-js": "^2.57.4",
-    "@tailwindcss/postcss": "^4.1.13",
     "argon2": "^0.44.0",
     "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
