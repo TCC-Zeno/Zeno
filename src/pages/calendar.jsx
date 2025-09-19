@@ -55,7 +55,7 @@ export default function Calendar() {
 
   const onSubmit = async (data) => {
     try {
-      console.log("A: ", data)
+      console.log("A: ", data);
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/calendar/insert`,
         {
@@ -74,43 +74,47 @@ export default function Calendar() {
     }
   };
 
-  function dateFormatter(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
+ function dateFormatter(dateString) {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
-  function eventMove(dateString, delta) {
-    const date = new Date(dateString);
-    if (delta.days < 0 || delta.years < 0 || delta.mouths < 0) {
-      const day = String(date.getDay() - delta.days).padStart(2, "0");
-      const year = date.getFullYear() - delta.years;
-      const month = String(date.getMonth() - delta.months).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    }else{
-      const day = String(date.getDay() + delta.days).padStart(2, "0");
-      const year = date.getFullYear() + delta.years;
-      const month = String(date.getMonth() + delta.months).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    }
-  }
+  // function eventMove(dateString, delta) {
+  //   const date = new Date(dateString);
+  //   if (delta.days < 0 || delta.years < 0 || delta.mouths < 0) {
+  //     const day = String(date.getDay() - delta.days).padStart(2, "0");
+  //     const year = date.getFullYear() - delta.years;
+  //     const month = String(date.getMonth() - delta.months).padStart(2, "0");
+  //     return `${year}-${month}-${day}`;
+  //   } else {
+  //     const day = String(date.getDay() + delta.days).padStart(2, "0");
+  //     const year = date.getFullYear() + delta.years;
+  //     const month = String(date.getMonth() + delta.months).padStart(2, "0");
+  //     return `${year}-${month}-${day}`;
+  //   }
+  // }
+  
   const onSubmitEdit = async (data) => {
-    try{
+    try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/calendar/update`,
         {
-          uuid: profileinfo.uuid,
+          id: dataEdit.id, // Usa o ID do evento editado
           title: data.title,
-          initial_date: data.event._instance.range.start,
-          end_date: data.event._instance.range.end,
+          initial_date: data.dateStart,
+          end_date: data.dateEnd,
         }
       );
+
       handleModalClose();
-      await fetchEvents(); 
-    }catch(err){
-       alert(err.response?.data?.error || "Erro ao atualizar informações");
+      setModalEditEvent(false);
+      await fetchEvents();
+    } catch (err) {
+      alert(err.response?.data?.error || "Erro ao atualizar informações");
     }
   };
 
@@ -139,22 +143,22 @@ export default function Calendar() {
     console.log("Clicked event:", info);
     const { event } = info;
     console.log("Dropped event:", event);
-    try{
+    try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/calendar/update`,
         {
           id: event._def.publicId,
-          title: null,
+          title: event._def.title,
           initial_date: info.event._instance.range.start,
           end_date: info.event._instance.range.end,
         }
       );
-      console.log("resposta: ", resposta)
+      console.log("resposta: ", resposta);
       handleModalClose();
-      await fetchEvents(); 
-    }catch(err){
+      await fetchEvents();
+    } catch (err) {
       console.log(err);
-       alert(err.response?.data?.error || "Erro ao atualizar informações");
+      alert(err.response?.data?.error || "Erro ao atualizar informações");
     }
   };
 
@@ -175,6 +179,24 @@ export default function Calendar() {
       setModalEditEvent(true);
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao atualizar informações");
+    }
+  };
+
+  const handleDeleteEvent = async (eventId) => {
+    if (!confirm("Tem certeza que deseja excluir este evento?")) return;
+
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/calendar/delete`, // Você precisará criar esta rota
+        {
+          id: eventId,
+        }
+      );
+
+      setModalEditEvent(false);
+      await fetchEvents();
+    } catch (err) {
+      alert(err.response?.data?.error || "Erro ao excluir evento");
     }
   };
 
@@ -303,7 +325,7 @@ export default function Calendar() {
             className={S.submitButtonDelete}
             type="button"
             title="Excluir"
-            onClick={() => handleEventClick(dataEdit.id)}
+            onClick={() => handleDeleteEvent(dataEdit.id)} // Corrige a chamada
             value="Excluir"
           />
         </form>

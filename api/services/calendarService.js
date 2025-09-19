@@ -1,5 +1,6 @@
 import supabase from "../config/supabaseClient.js";
 
+//pegar evento com o UUID
 export const getAppoimentByUuid = async (uuid) => {
   const { data, error } = await supabase
     .from("calendar")
@@ -10,6 +11,7 @@ export const getAppoimentByUuid = async (uuid) => {
   return data;
 };
 
+//Pegar evento pelo ID
 export const getAppoimentById = async (id) => {
   const { data, error } = await supabase
     .from("calendar")
@@ -20,6 +22,7 @@ export const getAppoimentById = async (id) => {
   return data;
 };
 
+//inserir evento
 export const insertEvents = async (uuid, title, initial_date, end_date ) => {
   const { data, error } = await supabase
   .from("calendar")
@@ -29,6 +32,8 @@ export const insertEvents = async (uuid, title, initial_date, end_date ) => {
   if (error) throw new Error(error.message);
   return data;
 };
+
+//atualizar evento
 export const  update = async (id, title, initial_date, end_date) =>{
   const {data, error} = await supabase
   .from("calendar")
@@ -40,6 +45,7 @@ export const  update = async (id, title, initial_date, end_date) =>{
   console.log("Service: ", data);
   return data;
 }
+//deletar evento
 export const destroy = async (id)=> {
   const {data, error} = await supabase
   .from("calendar")
