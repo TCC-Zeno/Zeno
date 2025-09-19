@@ -91,11 +91,8 @@ export const updateAppoiment = async (req, res) => {
         .status(404)
         .json({ error: "Usuário não encontrado para o ID informado." });
     }
-    const updateEvents = await update(id, {
-      title: title,
-      initial_date: initial_date,
-      end_date: end_date,
-    });
+    // Corrigir chamada: passar argumentos separados
+    const updateEvents = await update(id, title, initial_date, end_date);
     if (!updateEvents || updateEvents.length === 0) {
       return res
         .status(400)
