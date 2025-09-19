@@ -19,7 +19,11 @@ export default function Calendar() {
     handleSubmit: handleSubmitAdd,
     reset: addReset,
   } = useForm();
-  const { register: editRegister, handleSubmit: handleSubmitEdit } = useForm();
+  const { 
+    register: editRegister, 
+    handleSubmit: handleSubmitEdit, 
+    reset: editReset, 
+  } = useForm();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalEditEvent, setModalEditEvent] = useState(false);
@@ -39,7 +43,7 @@ export default function Calendar() {
         }
       );
 
-      // Transform data to match FullCalendar's expected format
+  
       const transformedEvents = resposta.data.map((event) => ({
         id: event.id,
         title: event.title,
@@ -49,13 +53,11 @@ export default function Calendar() {
 
       setEvents(transformedEvents);
     } catch (err) {
-      console.error("Erro ao buscar eventos:", err);
     }
   };
 
   const onSubmit = async (data) => {
     try {
-      console.log("A: ", data);
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/calendar/insert`,
         {
@@ -66,38 +68,22 @@ export default function Calendar() {
         }
       );
 
-      // Close modal and refresh events after successful insertion
       handleModalClose();
-      await fetchEvents(); // Refresh the calendar events
+      await fetchEvents(); 
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao atualizar informações");
     }
   };
 
- function dateFormatter(dateString) {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+  function dateFormatter(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
-  // function eventMove(dateString, delta) {
-  //   const date = new Date(dateString);
-  //   if (delta.days < 0 || delta.years < 0 || delta.mouths < 0) {
-  //     const day = String(date.getDay() - delta.days).padStart(2, "0");
-  //     const year = date.getFullYear() - delta.years;
-  //     const month = String(date.getMonth() - delta.months).padStart(2, "0");
-  //     return `${year}-${month}-${day}`;
-  //   } else {
-  //     const day = String(date.getDay() + delta.days).padStart(2, "0");
-  //     const year = date.getFullYear() + delta.years;
-  //     const month = String(date.getMonth() + delta.months).padStart(2, "0");
-  //     return `${year}-${month}-${day}`;
-  //   }
-  // }
-  
   const onSubmitEdit = async (data) => {
     try {
       const resposta = await axios.post(
@@ -108,8 +94,9 @@ export default function Calendar() {
           initial_date: data.dateStart,
           end_date: data.dateEnd,
         }
-      );
-
+      )
+      editReset();
+      addReset();
       handleModalClose();
       setModalEditEvent(false);
       await fetchEvents();
@@ -140,9 +127,7 @@ export default function Calendar() {
   };
 
   const handleEventDrop = async (info) => {
-    console.log("Clicked event:", info);
     const { event } = info;
-    console.log("Dropped event:", event);
     try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/calendar/update`,
@@ -150,7 +135,7 @@ export default function Calendar() {
           id: event._def.publicId,
           title: event._def.title,
           initial_date: info.event._instance.range.start,
-          end_date: info.event._instance.range.end,
+          end_date: dateFormatter(info.event._instance.range.end),
         }
       );
       console.log("resposta: ", resposta);
@@ -165,7 +150,7 @@ export default function Calendar() {
   const handleEventClick = async (info) => {
     console.log("Clicked event:", info);
     const { event } = info;
-    // tem que fazer um select para pegar os dados do evento de acordo com o id do banco de dados. Ele está em event._def.publicId e ai passa para o setDataEdit
+
     try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/calendar/fetchId`,
@@ -187,16 +172,18 @@ export default function Calendar() {
 
     try {
       const resposta = await axios.post(
-        `${import.meta.env.VITE_API_URL}/calendar/delete`, // Você precisará criar esta rota
+        `${import.meta.env.VITE_API_URL}/calendar/delete`, 
         {
           id: eventId,
         }
       );
-
+      editReset();
+      addReset();
       setModalEditEvent(false);
       await fetchEvents();
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao excluir evento");
+      console.error(err)
     }
   };
 
@@ -286,7 +273,7 @@ export default function Calendar() {
           <input className={S.submitButton} type="submit" />
         </form>
       </Modal>
-      <Modal isOpen={modalEditEvent} onClose={() => setModalEditEvent(false)}>
+      <Modal isOpen={modalEditEvent} onClose={() => { setModalEditEvent(false); editReset(); }}>
         <form
           onSubmit={handleSubmitEdit(onSubmitEdit)}
           className={S.formModalAddEvent}

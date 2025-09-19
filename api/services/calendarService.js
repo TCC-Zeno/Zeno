@@ -42,9 +42,10 @@ export const  update = async (id, title, initial_date, end_date) =>{
   .select()
 
   if (error) throw new Error(error.message);
-  console.log("Service: ", data);
+  
   return data;
 }
+
 //deletar evento
 export const destroy = async (id)=> {
   const {data, error} = await supabase
@@ -52,6 +53,6 @@ export const destroy = async (id)=> {
   .delete()
   .eq("id", id)
 
-  if (error) throw new Error(error.message);
+ if (error) throw new Error(error.message); 
   return data;
 }

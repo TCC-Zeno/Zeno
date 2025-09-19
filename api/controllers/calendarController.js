@@ -17,11 +17,7 @@ export const getAppoimentUuid = async (req, res) => {
 
     const getInfosByUuid = await getAppoimentByUuid(uuid);
 
-    if (!getInfosByUuid || getInfosByUuid.length === 0) {
-      return res
-        .status(404)
-        .json({ error: "Nenhum evento encontrado para este usuário" });
-    }
+
 
     return res.status(200).json(getInfosByUuid);
   } catch (err) {
@@ -85,8 +81,7 @@ export const insertAppoitment = async (req, res) => {
 export const updateAppoiment = async (req, res) => {
   try {
     const { id, title, initial_date, end_date } = req.body;
-    console.log('id: ', id)
-    console.log('req body:', req.body);
+
 
     if (!id) {
       return res.status(400).json({ error: "ID não informado." });
@@ -95,14 +90,6 @@ export const updateAppoiment = async (req, res) => {
     if (!title && !initial_date && !end_date) {
       return res.status(400).json({ error: "Pelo menos um campo deve ser fornecido para atualização." });
     }
-
-    // const event = await getAppoimentId(id);
-    //  console.log('event:' , event);
-    // if (!event) {
-    //   return res
-    //     .status(404)
-    //     .json({ error: "Evento não encontrado para o ID informado." });
-    //}
     const updateEvents = await update(id, title, initial_date, end_date);
 
     if (!updateEvents || updateEvents.length === 0) {
@@ -113,7 +100,6 @@ export const updateAppoiment = async (req, res) => {
         });
     }
     
-    console.log("Controller: ", updateEvents);
     return res.status(200).json(updateEvents);
   } catch (err) {
     res.status(500).json({ error: `Erro interno: ${err.message}` });
@@ -126,9 +112,6 @@ export const deleteAppoiment = async (req, res) => {
     const {id} = req.body;
 
     const deleteEvents = await destroy(id);
-    if(!deleteEvents || deleteEvents.length === 0){
-      return res.status(400).json({ error: "Falha ao deletar evento." });
-    }
     return res.status(200).json(deleteEvents);
     }catch(err){
       res.status(505).json({ error: `Erro interno: ${err.message}` });

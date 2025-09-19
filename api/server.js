@@ -15,9 +15,10 @@ import financeRoutes from "./routes/finance.js";
 import taskRoutes from "./routes/task.js";
 import stockRoutes from "./routes/stock.js";
 import reportRoutes from "./routes/report.js";
-import calendarRoutes from "./routes/calendar.js"
-import servicesRoutes from "./routes/services.js"
-import dashboardRoutes from "./routes/dashboard.js" 
+import calendarRoutes from "./routes/calendar.js";
+import servicesRoutes from "./routes/services.js";
+import dashboardRoutes from "./routes/dashboard.js" ;
+import employeeRoutes from "./routes/employee.js";
 
 dotenv.config();
 const app = express();
@@ -63,6 +64,7 @@ app.use("/report", reportRoutes);
 app.use("/calendar", calendarRoutes);
 app.use("/services", servicesRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/employee", employeeRoutes);
 
 // Inicializando servidor
 const PORT = process.env.PORT || 3000;

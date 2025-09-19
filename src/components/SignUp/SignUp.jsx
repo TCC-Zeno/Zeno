@@ -63,9 +63,10 @@ export default function SignUp() {
           cnpj: data.cnpj,
           email: data.email,
           password: data.password,
+          user_type: "admin"
         }
       );
-      console.log(resposta);
+      
       // Se cadastro OK, segue para dashboard
       if (resposta.status === 201) {
         // Após cadastro bem sucedido, faz o login

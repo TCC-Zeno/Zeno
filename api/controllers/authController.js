@@ -12,7 +12,7 @@ import argon2 from "argon2";
 // Cadastrar usuário
 export const signup = async (req, res) => {
   try {
-    const { cnpj, email, password } = req.body;
+    const { cnpj, email, password, user_type } = req.body;
     // Validação básica
     if (!cnpj || !email || !password) {
       return res.status(400).json({ 
@@ -31,7 +31,7 @@ export const signup = async (req, res) => {
     // Cria usuário
     const hashedPassword = await argon2.hash(password);
 
-    const userData = { cnpj, email, password: hashedPassword };
+    const userData = { cnpj, email, password: hashedPassword, user_type };
     const newUser = await createUser(userData);
     res.status(201).json({ 
       success: true, 

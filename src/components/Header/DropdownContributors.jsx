@@ -4,32 +4,48 @@ import { motion, AnimatePresence } from "framer-motion";
 import S from "./header.module.css";
 import ContributorsCardView from "../ContributorsCardView/ContributorsCardView";
 import { useForm } from "react-hook-form";
+import axios from "axios"
 
 export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const modalRef = useRef(null);
   const closeButtonRef = useRef(null);
-  const [type, setType] = useState("view"); // view ou add
+  const [type, setType] = useState("view");
+  const profileinfo = useSelector((state) => state.userReducer.userData);
+
+   const [features, setFeatures] = useState({
+    service: profileinfo?.features?.service ?? true,
+    stock: profileinfo?.features?.stock ?? true,
+    finance: profileinfo?.features?.finance ?? true,
+    calendar: profileinfo?.features?.calendar ?? true,
+    task: profileinfo?.features?.task ?? true,
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/employee/signup`,
+        {
+          cnpj: profileinfo.cnpj,
+          companyName: profileinfo.companyName,
+          ownerName: profileinfo.ownerName,
+          color: profileinfo.color ?? theme,
+          email: data.email,
+          password: data.password,
+          user_type: "employee",
+          features: features,
+        }
+      );
+    } catch (err) {
+      alert(err.response?.data?.error || "Erro ao excluir evento");
+      console.error(err)
+    }
+  }
 
-  const contributors = [
-    { id: 1, name: "Nicollas Reias", email: "goias@exemplo.com" },
-    { id: 2, name: "Jose Marguarido", email: "jose@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 1, name: "Nicollas Reias", email: "goias@exemplo.com" },
-    { id: 2, name: "Jose Marguarido", email: "jose@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-  ];
 
   const dropdownVariants = {
     hidden: {
@@ -177,21 +193,21 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                   </h1>
                   <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input type="checkbox" className={S.switch} checked={features.stock}/>
                       <span className={S.blockLabel}>Estoque</span>
                     </div>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input type="checkbox" className={S.switch} checked={features.finance}/>
                       <span className={S.blockLabel}>Fluxo de caixa</span>
                     </div>
                   </div>
                   <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input type="checkbox" className={S.switch} checked={features.calendar} />
                       <span className={S.blockLabel}>Agenda</span>
                     </div>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} />
+                      <input type="checkbox" className={S.switch} checked = {features.task}/>
                       <span className={S.blockLabel}>Organizador</span>
                     </div>
                   </div>
