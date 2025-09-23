@@ -5,6 +5,7 @@ import S from "./header.module.css";
 import ContributorsCardView from "../ContributorsCardView/ContributorsCardView";
 import { useForm } from "react-hook-form";
 import axios from "axios"
+import { useSelector } from "react-redux";
 
 export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const modalRef = useRef(null);
@@ -46,6 +47,20 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
     }
   }
 
+  const contributors = [
+    { id: 1, name: "Nicollas Reias", email: "goias@exemplo.com" },
+    { id: 2, name: "Jose Marguarido", email: "jose@exemplo.com" },
+    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
+    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
+    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
+    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
+    { id: 1, name: "Nicollas Reias", email: "goias@exemplo.com" },
+    { id: 2, name: "Jose Marguarido", email: "jose@exemplo.com" },
+    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
+    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
+    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
+    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
+  ];
 
   const dropdownVariants = {
     hidden: {
