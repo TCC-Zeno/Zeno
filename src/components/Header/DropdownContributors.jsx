@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import S from "./header.module.css";
 import ContributorsCardView from "../ContributorsCardView/ContributorsCardView";
 import { useForm } from "react-hook-form";
-import axios from "axios"
+import axios from "axios";
 import { useSelector } from "react-redux";
 
 export default function DropdownContributors({ isOpen = false, setIsOpen }) {
@@ -13,7 +13,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const [type, setType] = useState("view");
   const profileinfo = useSelector((state) => state.userReducer.userData);
 
-   const [features, setFeatures] = useState({
+  const [features, setFeatures] = useState({
     service: profileinfo?.features?.service ?? true,
     stock: profileinfo?.features?.stock ?? true,
     finance: profileinfo?.features?.finance ?? true,
@@ -21,6 +21,13 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
     task: profileinfo?.features?.task ?? true,
   });
 
+  const handleFeatureChange = async (e) => {
+    const { name, checked } = e.target;
+    setFeatures((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+  };
   const {
     register,
     handleSubmit,
@@ -39,26 +46,17 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           password: data.password,
           user_type: "employee",
           features: features,
-        }
-      );
+        });
+        console.log(resposta);
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao excluir evento");
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
   const contributors = [
     { id: 1, name: "Nicollas Reias", email: "goias@exemplo.com" },
     { id: 2, name: "Jose Marguarido", email: "jose@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 1, name: "Nicollas Reias", email: "goias@exemplo.com" },
-    { id: 2, name: "Jose Marguarido", email: "jose@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
     { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
   ];
 
@@ -208,22 +206,52 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                   </h1>
                   <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} checked={features.stock}/>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={features.stock}
+                        onChange={handleFeatureChange}
+
+                      />
                       <span className={S.blockLabel}>Estoque</span>
                     </div>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} checked={features.finance}/>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={features.finance}
+                        onChange={handleFeatureChange}
+                      />
                       <span className={S.blockLabel}>Fluxo de caixa</span>
                     </div>
                   </div>
                   <div className={S.blockRow}>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} checked={features.calendar} />
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={features.calendar}
+                        onChange={handleFeatureChange}
+                      />
                       <span className={S.blockLabel}>Agenda</span>
                     </div>
                     <div className={S.blockWrapper}>
-                      <input type="checkbox" className={S.switch} checked = {features.task}/>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={features.task}
+                        onChange={handleFeatureChange}
+                      />
                       <span className={S.blockLabel}>Organizador</span>
+                    </div>
+                    <div className={S.blockWrapper}>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        checked={features.service}
+                        onChange={handleFeatureChange}
+                      />
+                      <span className={S.blockLabel}>Serviços</span>
                     </div>
                   </div>
                 </div>
@@ -236,7 +264,11 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                   >
                     Cancelar
                   </button>
-                  <input className={S.addBtn} type="submit" id="btn-add-contributor" />
+                  <input
+                    className={S.addBtn}
+                    type="submit"
+                    id="btn-add-contributor"
+                  />
                 </div>
               </form>
             )}
