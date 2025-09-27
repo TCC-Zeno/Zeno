@@ -15,6 +15,7 @@ import { AiOutlineClear } from "react-icons/ai";
 import { ErrorMessage } from "../components/ErrorMessage/ErrorMessage";
 import Modal from "../components/Modal/Modal";
 import { useNavigate } from "react-router-dom";
+import { Slide, toast, ToastContainer } from "react-toastify";
 
 export default function Finance() {
   const userId = useSelector((state) => state.userReducer.userData);
@@ -143,11 +144,13 @@ export default function Finance() {
       if (response.status === 201) {
         addReset();
         fetchData();
+        toast.success("Finança adicionada com sucesso!");
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Erro ao adicionar finança";
       console.error("Erro ao adicionar finança:", errorMessage);
+      toast.error("Erro ao adicionar finança!");
     }
   };
 
@@ -184,6 +187,7 @@ export default function Finance() {
       const errorMessage =
         error.response?.data?.message || "Erro ao adicionar finança";
       console.error("Erro ao adicionar finança:", errorMessage);
+      toast.error("Erro ao adicionar categoria!");
     }
   };
 
@@ -203,10 +207,10 @@ export default function Finance() {
       const errorMessage =
         error.response?.data?.message || "Erro ao ler categoria";
       console.error("Erro ao ler categoria:", errorMessage);
+      toast.error("Erro ao ler categoria!");
     }
   }
 
-  // ! Naresh, falta fazer essas duas funções
   // Função para editar item
   async function onEditSubmit(id, data) {
     console.log("Dados do item a ser editado:", id, data);
@@ -229,12 +233,14 @@ export default function Finance() {
         setCategoryData(response.data);
         editReset();
         setIsModalOpen(false);
+        toast.success("Editado com sucesso!");
         fetchData();
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Erro ao editar item";
       console.error("Erro ao editar item:", errorMessage);
+      toast.error("Erro ao editar item!");
     }
   }
 
@@ -249,12 +255,14 @@ export default function Finance() {
         }
       );
       if (response.status === 200) {
+        toast.success("Deletado com sucesso!");
         fetchData();
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Erro ao deletar item";
       console.error("Erro ao deletar item:", errorMessage);
+      toast.error("Erro ao deletar item!");
     }
   }
 
@@ -314,7 +322,13 @@ export default function Finance() {
                 <FaArrowTrendUp className={style.top} />
               </div>
               <h2 className={style.number} id="amount-value">
-                R$  <CurrencyInput decimalSeparator="," groupSeparator="." value={amountValue.toFixed(2)} className={style.currencyInput} />
+                R${" "}
+                <CurrencyInput
+                  decimalSeparator=","
+                  groupSeparator="."
+                  value={amountValue.toFixed(2)}
+                  className={style.currencyInput}
+                />
               </h2>
             </div>
             <div className={style.views}>
@@ -323,7 +337,13 @@ export default function Finance() {
                 <FaArrowTrendDown className={style.down} />
               </div>
               <h2 className={style.number2} id="expenses-value">
-                R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={expensesValue.toFixed(2)} className={style.currencyInput} />
+                R${" "}
+                <CurrencyInput
+                  decimalSeparator=","
+                  groupSeparator="."
+                  value={expensesValue.toFixed(2)}
+                  className={style.currencyInput}
+                />
               </h2>
             </div>
             <div className={style.views}>
@@ -341,7 +361,13 @@ export default function Finance() {
                 }
                 id="profit-value"
               >
-                R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={profitValue.toFixed(2)} className={style.currencyInput} />
+                R${" "}
+                <CurrencyInput
+                  decimalSeparator=","
+                  groupSeparator="."
+                  value={profitValue.toFixed(2)}
+                  className={style.currencyInput}
+                />
               </h2>
             </div>
           </div>
@@ -349,7 +375,8 @@ export default function Finance() {
 
           <form
             className={style.row0}
-            onSubmit={handleFilterSubmit(onFilterSubmit)} id="input-filter"
+            onSubmit={handleFilterSubmit(onFilterSubmit)}
+            id="input-filter"
           >
             <div className={style.date}>
               <div>
@@ -430,7 +457,15 @@ export default function Finance() {
               {filteredData.map((data) => (
                 <tr className={style.conteudo} key={data.id}>
                   <td>{data.name}</td>
-                  <td className={style.valueTable}>R$ <CurrencyInput decimalSeparator="," groupSeparator="." value={data.value.toFixed(2)} className={style.currencyInput} /></td>
+                  <td className={style.valueTable}>
+                    R${" "}
+                    <CurrencyInput
+                      decimalSeparator=","
+                      groupSeparator="."
+                      value={data.value.toFixed(2)}
+                      className={style.currencyInput}
+                    />
+                  </td>
                   <td>{data.payment_method}</td>
                   <td>{data.category}</td>
                   <td
@@ -746,6 +781,19 @@ export default function Finance() {
             </form>
           </div>
         </Modal>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Slide}
+        />
       </DefaultLayout>
     </>
   );
