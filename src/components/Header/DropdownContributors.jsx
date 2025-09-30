@@ -39,15 +39,13 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
         `${import.meta.env.VITE_API_URL}/employee/signup`,
         {
           cnpj: profileinfo.cnpj,
-          companyName: profileinfo.companyName,
-          ownerName: profileinfo.ownerName,
+          company_name: profileinfo.company_name,
+          name: data.name,
           color: profileinfo.color ?? theme,
           email: data.email,
           password: data.password,
-          user_type: "employee",
           features: features,
         });
-        console.log(resposta);
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao excluir evento");
       console.error(err);

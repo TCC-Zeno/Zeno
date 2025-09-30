@@ -63,7 +63,6 @@ export default function SignUp() {
           cnpj: data.cnpj,
           email: data.email,
           password: data.password,
-          user_type: "admin"
         }
       );
       

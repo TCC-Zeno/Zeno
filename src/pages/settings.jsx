@@ -62,7 +62,7 @@ export default function Settings() {
   const [companyName, setCompanyName] = useState(
     profileinfo.company_name ?? ""
   );
-  const [ownerName, setOwnerName] = useState(profileinfo.owner_name ?? "");
+  const [name, setname] = useState(profileinfo.owner_name ?? "");
 
   const handleColorSelect = async (color) => {
     dispatch(setTheme(color));
@@ -86,7 +86,7 @@ export default function Settings() {
         {
           uuid: profileinfo.uuid,
           companyName: companyName,
-          ownerName: ownerName,
+          name: name,
           color: override.color ?? theme,
           accessibility: override.accessibility ?? colorBlindness,
           features: override.features ?? features,
@@ -96,7 +96,7 @@ export default function Settings() {
       const updatedUser = resposta.data[0];
 
       setCompanyName(updatedUser.company_name);
-      setOwnerName(updatedUser.owner_name);
+      setname(updatedUser.owner_name);
 
       // Atualiza todo o userData no Redux
       dispatch(userData(updatedUser));
@@ -171,12 +171,12 @@ export default function Settings() {
               onBlur={updateinfos}
             />
             <input
-              id="ownername"
+              id="name"
               className={S.inputName}
               type="text"
               placeholder="Nome do dono da empresa"
-              value={ownerName}
-              onChange={(e) => setOwnerName(e.target.value)}
+              value={name}
+              onChange={(e) => setname(e.target.value)}
               onBlur={updateinfos}
             />
             <div className={S.containerInternalForm}>
