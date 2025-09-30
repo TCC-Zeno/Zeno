@@ -8,6 +8,7 @@ import { LuListTodo } from "react-icons/lu";
 import { GrInProgress } from "react-icons/gr";
 import { IoMdDoneAll } from "react-icons/io";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const oldTasks = localStorage.getItem("tasks");
 
@@ -32,6 +33,7 @@ export default function Tasks() {
       );
       setTasks(response.data);
     } catch (error) {
+      toast.error("Erro ao buscar tarefas");
       console.error("Erro ao buscar tarefas:", error);
     }
   }
@@ -76,6 +78,7 @@ export default function Tasks() {
         setTasks(updatedTasks);
       }
     } catch (error) {
+      toast.error("Erro ao atualizar status da tarefa");
       console.error("Erro ao atualizar status:", error);
     }
   };
@@ -85,6 +88,7 @@ export default function Tasks() {
       try {
         await fetchTasks();
       } catch (error) {
+        toast.error("Erro ao inicializar dados");
         console.error("Erro ao inicializar dados:", error);
       } finally {
         setLoading(false);

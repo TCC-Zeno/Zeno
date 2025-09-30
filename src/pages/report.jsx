@@ -11,6 +11,8 @@ import jsPDF from "jspdf";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import CurrencyInput from "react-currency-input-field";
+import Modal from "../components/Modal/Modal";
+import { toast } from "react-toastify";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -24,6 +26,7 @@ export default function Report() {
   const [dataOfFlowType, setDataOfFlowType] = useState({});
   const [dataOfOthersCount, setDataOfOthersCount] = useState({});
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [modalPermitionOpen, setModalPermitionOpen] = useState(false);
 
   function dateFormatter(dateString) {
     const date = new Date(dateString);
@@ -95,6 +98,10 @@ export default function Report() {
   }, [dispatch]);
 
   async function generateReport(start = selectedPeriod) {
+    if (localStorage.getItem("LGPDAccepted") !== "true") {
+      setModalPermitionOpen(true);
+      return;
+    }
     const end = dateFormatter(getEndOfDay(new Date()));
     console.log(end, start);
     setLoading(true);
@@ -107,14 +114,14 @@ export default function Report() {
           periodEnd: end,
         }
       );
-      console.log(response);
       if (response.status == 200) {
-        const report = response.data;
-        console.log(report);
+        // const report = response.data;
+        toast.success("Relatório gerado com sucesso!");
         setDataArray(response.data.table);
         setReportData(response.data.report);
       }
     } catch (err) {
+      toast.error("Erro ao gerar relatório");
       console.error(err);
     } finally {
       setLoading(false);
@@ -232,7 +239,7 @@ export default function Report() {
       }
     } catch (error) {
       console.error("Erro ao gerar PDF:", error);
-      alert("Erro ao gerar PDF. Tente novamente.");
+      toast.error("Erro ao gerar PDF. Tente novamente.");
     } finally {
       setIsGeneratingPDF(false);
     }
@@ -688,6 +695,40 @@ export default function Report() {
             )
           ) : null}
         </div>
+        <Modal
+          isOpen={modalPermitionOpen}
+          onClose={() => setModalPermitionOpen(false)}
+        >
+          <div className={style.modalContainer}>
+            <h1 className={style.title}>Permissão Necessária</h1>
+            <p>
+              Para gerar relatórios, é necessário aceitar nossa política de
+              privacidade e termos de uso, garantindo a conformidade com a LGPD.
+            </p>
+            <p style={{ marginTop: "10px" }}>
+              Ao aceitar você concorda que TODOS seus dados possam ser enviados
+              para a inteligência artificial do Google, que gerará relatórios
+              baseados nas suas transações.
+            </p>
+            <div className={style.modalButtons}>
+              <button
+                className={style.cancelButton}
+                onClick={() => setModalPermitionOpen(false)}
+              >
+                Recusar
+              </button>
+              <button
+                className={style.acceptButton}
+                onClick={() => {
+                  localStorage.setItem("LGPDAccepted", "true");
+                  setModalPermitionOpen(false);
+                }}
+              >
+                Aceitar
+              </button>
+            </div>
+          </div>
+        </Modal>
       </DefaultLayout>
     </>
   );

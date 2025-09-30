@@ -5,6 +5,7 @@ import SignIn from "../components/SignIn/SignIn";
 import S from "../styles/login.module.css";
 import { useLocation } from "react-router-dom";
 import { Particles } from "../components/Particles/Particles";
+import { Slide, ToastContainer } from "react-toastify";
 
 export default function Login() {
   const location = useLocation();
@@ -53,6 +54,20 @@ export default function Login() {
         </div>
       </section>
       {loginOption === "signUp" ? <SignUp /> : null}
+
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Slide}
+      />
     </main>
   );
 }

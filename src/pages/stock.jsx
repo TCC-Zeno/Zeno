@@ -5,8 +5,6 @@ import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { stock } from "../redux/Route/slice";
 import style from "./../styles/stock.module.css";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
-import coxinha from "./../assets/Coxinha.jpg";
-import feijoada from "./../assets/Feijoada.jpg";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { LuPlus } from "react-icons/lu";
@@ -17,11 +15,11 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { CardOfStock } from "../components/CardsOfStock/CardOfStock";
+import { toast } from "react-toastify";
 
 export default function Stock() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
   const [modalBigOpen, setModalBigOpen] = useState(false);
   const [addForn, setAddForn] = useState(false);
   const [stockQuantity, setStockQuantity] = useState(0);
@@ -35,6 +33,17 @@ export default function Stock() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [costPrice, setCostPrice] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(0);
+  const [profit, setProfit] = useState(0);
+
+  useEffect(() => {
+    const cost = parseFloat(costPrice) || 0;
+    const final = parseFloat(finalPrice) || 0;
+    const calculatedProfit = final - cost;
+
+    setProfit(calculatedProfit.toFixed(2));
+  }, [costPrice, finalPrice]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -60,7 +69,7 @@ export default function Stock() {
     const file = e.target.files[0];
     if (file) {
       if (file.size > FILE_LIMIT) {
-        alert("Arquivo excede o tamanho máximo de 25MB");
+        toast.info("Arquivo excede o tamanho máximo de 25MB");
         return;
       }
       setSelectedFile(file);
@@ -83,7 +92,7 @@ export default function Stock() {
     const file = e.dataTransfer.files[0];
     if (file) {
       if (file.size > FILE_LIMIT) {
-        alert("Arquivo excede o tamanho máximo de 25MB");
+        toast.info("Arquivo excede o tamanho máximo de 25MB");
         return;
       }
       fileInputRef.current.files = e.dataTransfer.files;
@@ -183,9 +192,7 @@ export default function Stock() {
       if (addProductData.Image) {
         formData.append("image", addProductData.Image);
       } else {
-        console.log("Imagem não selecionada");
-        // alert("Por favor, selecione uma imagem para o produto.");
-        // return;
+        toast.info("Imagem não selecionada");
       }
 
       const response = await axios.post(
@@ -199,6 +206,7 @@ export default function Stock() {
       );
 
       if (response.status === 201) {
+        toast.success("Produto adicionado com sucesso!");
         fetchData();
         reset();
         setModalBigOpen(false);
@@ -209,9 +217,8 @@ export default function Stock() {
         error.response?.data?.error ||
         error.response?.data?.message ||
         "Erro ao adicionar produto";
+      toast.error( errorMessage);
       console.error("Erro ao adicionar produto:", errorMessage);
-
-      alert(`Erro: ${errorMessage}`);
     }
   };
 
@@ -281,6 +288,7 @@ export default function Stock() {
         await fetchData();
         await readSupplier();
       } catch (error) {
+        toast.error("Erro ao inicializar dados");
         console.error("Erro ao inicializar dados:", error);
       } finally {
         setLoading(false);
@@ -532,7 +540,10 @@ export default function Stock() {
                     decimalSeparator=","
                     groupSeparator="."
                     prefix="R$ "
-                    onValueChange={(value) => onChange(value)}
+                    onValueChange={(value) => {
+                      onChange(value);
+                      setCostPrice(value || 0);
+                    }}
                     value={value === 0 ? "" : value}
                     className={`${style.inputPrice} ${error ? "error" : ""}`}
                   />
@@ -564,18 +575,43 @@ export default function Stock() {
                     decimalSeparator=","
                     groupSeparator="."
                     prefix="R$ "
-                    onValueChange={(value) => onChange(value)}
+                    onValueChange={(value) => {
+                      onChange(value);
+                      setFinalPrice(value || 0);
+                    }}
                     value={value === 0 ? "" : value}
                     className={`${style.inputPrice} ${error ? "error" : ""}`}
                   />
                 )}
               />
               <h2>Lucro</h2>
-              <input
-                type="text"
+              <Controller
                 disabled
-                placeholder="R$ 0,00"
-                className={style.inputPrice}
+                name="Total"
+                control={control}
+                rules={{
+                  validate: (value) => {
+                    const numValue = parseFloat(value);
+                    if (isNaN(numValue) || numValue <= 0) {
+                      return "Digite um valor válido maior que zero";
+                    }
+                    return true;
+                  },
+                }}
+                render={({ field: { name }, fieldState: { error } }) => (
+                  <CurrencyInput
+                    disabled
+                    name={name}
+                    placeholder="R$ 0,00"
+                    decimalsLimit={2}
+                    decimalScale={2}
+                    decimalSeparator=","
+                    groupSeparator="."
+                    prefix="R$ "
+                    value={profit === 0 ? "" : profit}
+                    className={`${style.inputPrice} ${error ? "error" : ""}`}
+                  />
+                )}
               />
             </div>
 
@@ -677,6 +713,11 @@ export default function Stock() {
                     reset();
                     setStockQuantity(0);
                     setMinQuantity(0);
+                    setCostPrice(0);
+                    setFinalPrice(0);
+                    setProfit(0);
+                    setSelectedFile(null);
+                    setModalBigOpen(false);
                   }}
                 >
                   Excluir

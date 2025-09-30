@@ -4,6 +4,7 @@ import S from "./taskForm.module.css";
 import { IoMdAdd } from "react-icons/io";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const TaskForm = ({
   status = "todo",
@@ -53,6 +54,7 @@ const TaskForm = ({
           }
         );
         if (response.status === 200) {
+          toast.success("Tarefa editada com sucesso!");
           await fetchTasks();
         }
       } else {
@@ -66,10 +68,12 @@ const TaskForm = ({
           }
         );
         if (response.status === 201) {
+          toast.success("Tarefa adicionada com sucesso!");
           await fetchTasks();
         }
       }
     } catch (error) {
+      toast.error("Erro ao adicionar tarefa");
       console.error("Erro ao adicionar tarefa:", error);
     }
 

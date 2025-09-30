@@ -12,8 +12,8 @@ import { FaPlus } from "react-icons/fa6";
 import Modal from "../components/Modal/Modal";
 import CurrencyInput from "react-currency-input-field";
 import axios from "axios";
-import { Check, CheckIcon, Trash } from "lucide-react";
-import { ErrorMessage } from "../components/ErrorMessage/ErrorMessage";
+import { CheckIcon, Trash } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function Service() {
   const [scheduled, setScheduled] = useState(0);
@@ -58,15 +58,15 @@ export default function Service() {
       );
 
       if (response.status === 201) {
+        toast.success("Serviço adicionado com sucesso!");
         addReset();
         fetchData();
       }
     } catch (error) {
+      toast.error("Erro ao adicionar serviço!");
       console.error("Erro ao adicionar serviço:", error);
     }
 
-    console.log(data);
-    console.log();
     setModalOpen(false);
   };
 
@@ -102,6 +102,7 @@ export default function Service() {
 
       setValue(totalValue);
     } catch (error) {
+      toast.error("Erro ao buscar dados!");
       console.error("Erro ao buscar dados:", error);
     }
   }
@@ -126,11 +127,13 @@ export default function Service() {
       );
 
       if (response.status === 200) {
+        toast.success("Serviço editado com sucesso!");
         editReset();
         setModalEditOpen(false);
         await fetchData();
       }
     } catch (error) {
+      toast.error("Erro ao editar serviço!");
       console.error("Erro ao editar serviço:", error);
     }
   }
@@ -145,11 +148,13 @@ export default function Service() {
       );
 
       if (response.status === 200) {
+        toast.success("Serviço excluído com sucesso!");
         editReset();
         setModalEditOpen(false);
         await fetchData();
       }
     } catch (error) {
+      toast.error("Erro ao excluir serviço!");
       console.error("Erro ao excluir serviço:", error);
     }
   }
@@ -165,10 +170,12 @@ export default function Service() {
       );
 
       if (response.status === 200) {
+        toast.success("Status atualizado com sucesso!");
         editReset();
         await fetchData();
       }
     } catch (error) {
+      toast.error("Erro ao atualizar status!");
       console.error("Erro ao atualizar status:", error);
     }
   }
@@ -243,6 +250,7 @@ export default function Service() {
       try {
         await fetchData();
       } catch (error) {
+        toast.error("Erro ao inicializar dados!");
         console.error("Erro ao inicializar dados:", error);
       } finally {
         setLoading(false);

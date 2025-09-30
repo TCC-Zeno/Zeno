@@ -23,6 +23,7 @@ import PageTransition from "./components/PageTransition/PageTransition";
 import { Support } from "./pages/support";
 import { AuthProvider } from "./contexts/AuthContext";
 import { TermsPage } from "./pages/terms";
+import { Slide, ToastContainer } from "react-toastify";
 
 const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(
@@ -51,6 +52,19 @@ ReactDOM.createRoot(root).render(
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Slide}
+          />
           {/* </PageTransition> */}
         </BrowserRouter>
       </AuthProvider>

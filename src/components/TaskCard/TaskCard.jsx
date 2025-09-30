@@ -4,6 +4,7 @@ import S from "./taskCard.module.css";
 import { MdDelete } from "react-icons/md";
 import { FaCalendarAlt, FaEdit } from "react-icons/fa";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const TaskCard = ({
   information,
@@ -12,7 +13,7 @@ const TaskCard = ({
   setActiveCard,
   id,
   fetchTasks,
-  onEditClick
+  onEditClick,
 }) => {
   const handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = "move";
@@ -34,9 +35,11 @@ const TaskCard = ({
         }
       );
       if (response.status === 200) {
+        toast.success("Tarefa deletada com sucesso!");
         await fetchTasks();
       }
     } catch (error) {
+      toast.error("Erro ao deletar tarefa");
       console.error("Erro ao deletar item:", error);
       const errorMessage =
         error.response?.data?.message || "Erro ao deletar item";
@@ -58,7 +61,11 @@ const TaskCard = ({
         <div className={S.row02}>
           <FaCalendarAlt className={S.iconCalendar} />
           <span>{date}</span>
-          <button className={S.buttonEdit} id="btn-edit-task" onClick={onEditClick}>
+          <button
+            className={S.buttonEdit}
+            id="btn-edit-task"
+            onClick={onEditClick}
+          >
             <FaEdit className={S.iconEdit} />
           </button>
           <button

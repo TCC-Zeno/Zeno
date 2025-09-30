@@ -281,6 +281,41 @@
 .pageBreakBefore {
   page-break-before: always;
 }
+.modalButtons{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.cancelButton{
+  transition: all 50ms;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #ce0000;
+  padding: 5px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+transition: all 0.3s;
+}
+.cancelButton:hover{
+  background-color: #a80000;
+  transform: scale(1.05);
+}
+
+.acceptButton{
+  transition: all 50ms;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #008000;
+  padding: 5px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+transition: all 0.3s;
+}
+.acceptButton:hover{
+  background-color: #006600;
+  transform: scale(1.05);
+}
 
 @media print {
   .containerReport {

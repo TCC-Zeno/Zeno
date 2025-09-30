@@ -7,13 +7,15 @@ import { Controller, useForm } from "react-hook-form";
 import Modal from "../components/Modal/Modal";
 import ResourceBlocked from "../components/ResourceBlocked/ResourceBlocked";
 import CurrencyInput from "react-currency-input-field";
-import Counter from "../components/Counter/Counter";
-import axios from "axios";
 
 export default function Dashboard() {
   // Resumo de caixa
   const [selectedPeriod, setSelectedPeriod] = useState("daily");
+  const profileinfo = useSelector((state) => state.userReducer.userData);
 
+  useEffect(() => {
+    console.log(profileinfo);
+  }, [profileinfo]);
   // Organizador diário
   const tasksToDo = [
     { id: 1, name: "Reunião com a equipe" },
@@ -89,13 +91,13 @@ export default function Dashboard() {
     { id: 9, name: "Produto I" },
     { id: 10, name: "Produto J" },
   ];
-//  const userId = useSelector((state) => state.userReducer.user)
+  //  const userId = useSelector((state) => state.userReducer.user)
   const [resourceToUnlock, setResourceToUnlock] = useState(null);
   const [protectedModalOpen, setProtectedModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-//  const [dataFinance, setDataFinance] = useState([]);
-  const dispatch = useDispatch();;
+  //  const [dataFinance, setDataFinance] = useState([]);
+  const dispatch = useDispatch();
   const blockedResources = useSelector(
     (state) => state.userReducer.blockedResources
   );
@@ -110,13 +112,11 @@ export default function Dashboard() {
     service: blockedResources.service,
   });
 
-   
-
   useEffect(() => {
     dispatch(dashboard());
   }, [dispatch]);
 
-const {
+  const {
     register,
     handleSubmit,
     control,
@@ -125,52 +125,57 @@ const {
   } = useForm({
     defaultValues: { price: 0 },
     mode: "onChange",
-  }); 
+  });
 
   const onSubmit = async (data) => {
-  //   const priceDot = data.price?.toString().replace(",", ".");
-  //   try {
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_API_URL}/dashboard/addFinanceForm`,
-  //       {
-  //         userId: userId.uuid,
-  //         name: data.name,
-  //         value: parseFloat(priceDot),
-  //         category: data.category,
-  //         payment_method: data.paymentMethod,
-  //         type_flow: data.flow,
-  //       }
-  //     );
-
-  //     if (response.status === 201) {
-  //       addReset();
-  //       fetchData();
-  //     }
-  //   } catch (error) {
-  //     const errorMessage =
-  //       error.response?.data?.message || "Erro ao adicionar finança";
-  //     console.error("Erro ao adicionar finança:", errorMessage);
-  //   }
-  // };
-
-  //   async function fetchData() {
-  //   try {
-  //     const data = await axios.post(
-  //       `${import.meta.env.VITE_API_URL}/finance/financeId`,
-  //       {
-  //         uuid: userId.uuid,
-  //       }
-  //     );
-  //     setDataFinance(data.data);
-  //   } catch (error) {
-  //     console.error("Erro ao buscar dados:", error);
-  //   }
-   };
-  
+    //   const priceDot = data.price?.toString().replace(",", ".");
+    //   try {
+    //     const response = await axios.post(
+    //       `${import.meta.env.VITE_API_URL}/dashboard/addFinanceForm`,
+    //       {
+    //         userId: userId.uuid,
+    //         name: data.name,
+    //         value: parseFloat(priceDot),
+    //         category: data.category,
+    //         payment_method: data.paymentMethod,
+    //         type_flow: data.flow,
+    //       }
+    //     );
+    //     if (response.status === 201) {
+    //       addReset();
+    //       fetchData();
+    //     }
+    //   } catch (error) {
+    //     const errorMessage =
+    //       error.response?.data?.message || "Erro ao adicionar finança";
+    //     console.error("Erro ao adicionar finança:", errorMessage);
+    //   }
+    // };
+    //   async function fetchData() {
+    //   try {
+    //     const data = await axios.post(
+    //       `${import.meta.env.VITE_API_URL}/finance/financeId`,
+    //       {
+    //         uuid: userId.uuid,
+    //       }
+    //     );
+    //     setDataFinance(data.data);
+    //   } catch (error) {
+    //     console.error("Erro ao buscar dados:", error);
+    //   }
+  };
 
   return (
     <>
       <DefaultLayout>
+        {profileinfo.user_type === "employee" && (
+          <div style={{ height: "30px", color: "red", textAlign: "center" }}>
+            <h1 style={{ fontSize: "20pt", fontWeight: "bold" }}>
+              Seu pobre, você é CLT escala 7x0
+            </h1>
+          </div>
+        )}
+
         {!permissions.cash && (
           <section
             className={`${S.sectionDashboard} ${S.sectionCash} sectionCash`}
@@ -374,7 +379,7 @@ const {
         )}
         {!permissions.stock && (
           <section
-            className={`${S.sectionDashboard} ${S.sectionStock} sectionStock`} 
+            className={`${S.sectionDashboard} ${S.sectionStock} sectionStock`}
             id="stock-control-section"
           >
             <div className={S.stockTitle}>

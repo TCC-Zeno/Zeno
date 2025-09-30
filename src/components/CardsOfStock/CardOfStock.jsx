@@ -6,6 +6,7 @@ import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
 import CurrencyInput from "react-currency-input-field";
 import noImage from "../../assets/imagemSemImagem.png";
+import { toast } from "react-toastify";
 
 export function CardOfStock({ product, fetchData }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -45,7 +46,6 @@ export function CardOfStock({ product, fetchData }) {
   };
 
   const handleSave = async (data) => {
-    console.log("Dados editados:", data);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/stock/updateProductById`,
@@ -56,10 +56,12 @@ export function CardOfStock({ product, fetchData }) {
       );
       console.log(response);
       if (response.status === 200) {
+        toast.success("Produto atualizado com sucesso!");
         fetchData();
         setIsEdit(false);
       }
     } catch (err) {
+      toast.error("Erro ao atualizar produto");
       console.log(err);
     }
   };
@@ -74,6 +76,7 @@ export function CardOfStock({ product, fetchData }) {
         setSupplierData(response.data);
       }
     } catch (error) {
+      toast.error("Erro ao buscar dados do fornecedor");
       console.error("Erro ao buscar dados do fornecedor:", error);
     }
   }
@@ -92,6 +95,7 @@ export function CardOfStock({ product, fetchData }) {
         fetchData();
       }
     } catch (err) {
+      toast.error("Erro ao atualizar quantidade");
       console.error("Erro ao atualizar quantidade:", err);
     }
   };
@@ -120,6 +124,7 @@ export function CardOfStock({ product, fetchData }) {
         fetchData();
       }
     } catch (err) {
+      toast.error("Erro ao atualizar status");
       console.error("Erro ao atualizar status:", err);
     }
   };
@@ -134,9 +139,11 @@ export function CardOfStock({ product, fetchData }) {
       );
 
       if (response.status === 200) {
+        toast.success("Produto excluído com sucesso!");
         fetchData();
       }
     } catch (err) {
+      toast.error("Erro ao excluir produto");
       console.error("Erro ao excluir produto:", err);
     }
   }

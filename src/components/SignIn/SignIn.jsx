@@ -9,6 +9,7 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 import Modal from "../Modal/Modal";
 import { useAuth } from "../../contexts/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function SignIn() {
   const { login } = useAuth();
@@ -53,6 +54,7 @@ export default function SignIn() {
       const result = await login(data.email, data.password);
 
       if (result.success) {
+        toast.success("Login realizado com sucesso!")
         dispatch(userData(result.user));
         dispatch(setTheme(result.user.color));
         dispatch(setColorBlindness(result.user.accessibility));

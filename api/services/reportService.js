@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from '@google/genai';
 
 const API_KEY = process.env.GEMINI_API_KEY;
 
@@ -6,9 +6,12 @@ export async function createReport(context) {
   if (!API_KEY) {
     return "Não tem a KEY do google";
   }
-  const IA = new GoogleGenerativeAI(API_KEY);
+  
+  const ai = new GoogleGenAI({
+    apiKey: API_KEY,
+  });
 
-  const model = IA.getGenerativeModel({ model: "gemini-2.0-flash" });
+  const model = 'gemini-2.0-flash';
 
   const formattedContext = JSON.stringify(context, null, 2);
 
@@ -31,14 +34,37 @@ export async function createReport(context) {
   ${formattedContext}
   `;
 
-  try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+  const contents = [
+    {
+      role: 'user',
+      parts: [
+        {
+          text: prompt,
+        },
+      ],
+    },
+  ];
 
-    return text;
+  try {
+    const response = await ai.models.generateContentStream({
+      model,
+      contents,
+    });
+
+    let fullText = '';
+    
+    for await (const chunk of response) {
+      if (chunk.text) {
+        fullText += chunk.text;
+      }
+    }
+
+    return fullText;
   } catch (err) {
-    console.error(err);
-    return err;
+    if (err.status === 429) {
+      console.error("Limite de taxa excedido ao gerar relatório.");
+    }
+    console.error("Erro ao gerar relatório:", err);
+    return "Erro ao gerar relatório. Por favor, tente novamente.";
   }
 }

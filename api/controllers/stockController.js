@@ -16,9 +16,6 @@ import {
 
 export const createProduct = async (req, res) => {
   try {
-    console.log("req.body:", req.body);
-    console.log("req.file:", req.file);
-
     const ProductName = req.body.ProductName;
     const Description = req.body.Description;
     const Category = req.body.Category;

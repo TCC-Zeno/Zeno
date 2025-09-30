@@ -15,7 +15,7 @@ import { AiOutlineClear } from "react-icons/ai";
 import { ErrorMessage } from "../components/ErrorMessage/ErrorMessage";
 import Modal from "../components/Modal/Modal";
 import { useNavigate } from "react-router-dom";
-import { Slide, toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function Finance() {
   const userId = useSelector((state) => state.userReducer.userData);
@@ -781,19 +781,6 @@ export default function Finance() {
             </form>
           </div>
         </Modal>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Slide}
-        />
       </DefaultLayout>
     </>
   );

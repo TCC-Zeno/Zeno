@@ -54,7 +54,7 @@ export const signin = async (req, res) => {
     if (!user) {
       return res.status(401).json({ 
         success: false, 
-        error: "Usário não encontrado" 
+        error: "Usuário não encontrado" 
       });
     }
   // Verifica senha (com criptografia)

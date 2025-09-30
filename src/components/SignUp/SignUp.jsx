@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 import PropagateLoader from "react-spinners/PropagateLoader";
+import { toast } from "react-toastify";
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +44,7 @@ export default function SignUp() {
       status: 200,
     });
     if (!cnpj.isValid(data.cnpj)) {
+      toast.error("Seu CNPJ é falso");
       setError({
         cnpjErr: "Seu CNPJ é falso",
       });
@@ -50,6 +52,7 @@ export default function SignUp() {
     }
 
     if (data.password !== data.confirmPassword) {
+      toast.error("A senha inserida nos campos precisam ser idênticas");
       setError({
         password: "A senha inserida nos campos precisam ser idênticas",
       });
@@ -72,6 +75,7 @@ export default function SignUp() {
         const loginResult = await authLogin(data.email, data.password);
 
         if (loginResult.success) {
+          toast.success("Cadastro realizado com sucesso!");
           dispatch(userData(loginResult.user));
           dispatch(setTheme("blue"));
           dispatch(setColorBlindness("Padrão"));
@@ -79,6 +83,7 @@ export default function SignUp() {
           navigate("/dashboard");
         } else {
           setIsLoading(false);
+          toast.error("Erro ao fazer login após cadastro");
           throw new Error(
             loginResult.error || "Erro ao fazer login após cadastro"
           );
@@ -87,6 +92,7 @@ export default function SignUp() {
     } catch (err) {
       console.log(err);
       setIsLoading(false);
+      toast.error("Erro ao fazer cadastro. Verifique os dados.");
       // Se erro, mostra mensagem
       if (err.status == 401) {
         setError({
