@@ -169,7 +169,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                   <FaArrowLeft size={20} />
                 </span>
               </button>
-              <h1 className={S.title}>Contribuinte</h1>
+              <h1 className={S.title}>Contribuintes</h1>
             </div>
             {type === "view" ? (
               <>
