@@ -64,6 +64,15 @@
   margin-top: 5%;
 }
 
+.inputQuantity {
+  width: 100%;
+  padding: 5px;
+  font-size: 16pt;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
 .button {
   background-color: rgb(var(--color-primary));
   color: white;

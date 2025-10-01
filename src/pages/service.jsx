@@ -14,6 +14,7 @@ import CurrencyInput from "react-currency-input-field";
 import axios from "axios";
 import { CheckIcon, Trash } from "lucide-react";
 import { toast } from "react-toastify";
+import PhoneInput from "react-phone-number-input/input";
 
 export default function Service() {
   const [scheduled, setScheduled] = useState(0);
@@ -459,13 +460,27 @@ export default function Service() {
                       required: "Nome do cliente é obrigatório",
                     })}
                   />
-                  <input
-                    type="text"
-                    placeholder="Contato Cliente"
-                    className={style.modalInput}
-                    {...register("clientContact", {
+                  <Controller
+                    name="clientContact"
+                    control={control}
+                    rules={{
                       required: "Contato do cliente é obrigatório",
-                    })}
+                      validate: (value) => {
+                        if (!value) {
+                          return "Contato do cliente é obrigatório";
+                        }
+                        return true;
+                      }
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                      <PhoneInput
+                        placeholder="Contato Cliente"
+                        defaultCountry="BR"
+                        value={value}
+                        onChange={onChange}
+                        className={style.modalInput}
+                      />
+                    )}
                   />
                 </div>
                 <div className={style.modalRow}>
@@ -569,14 +584,28 @@ export default function Service() {
                     })}
                     defaultValue={serviceEdit.name_customer}
                   />
-                  <input
-                    type="text"
-                    placeholder="Contato Cliente"
-                    className={style.modalInput}
-                    {...editRegister("clientContact", {
+                 <Controller
+                    name="clientContact"
+                    control={editControl}
+                    defaultValue={serviceEdit.number_customer || ""}
+                    rules={{
                       required: "Contato do cliente é obrigatório",
-                    })}
-                    defaultValue={serviceEdit.number_customer}
+                      validate: (value) => {
+                        if (!value) {
+                          return "Contato do cliente é obrigatório";
+                        }
+                        return true;
+                      }
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                      <PhoneInput
+                        placeholder="Contato Cliente"
+                        defaultCountry="BR"
+                        value={value}
+                        onChange={onChange}
+                        className={style.modalInput}
+                      />
+                    )}
                   />
                 </div>
                 <div className={style.modalRow}>

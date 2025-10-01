@@ -706,7 +706,7 @@ export default function Report() {
               privacidade e termos de uso, garantindo a conformidade com a LGPD.
             </p>
             <p style={{ marginTop: "10px" }}>
-              Ao aceitar você concorda que TODOS seus dados possam ser enviados
+              Ao aceitar você concorda que TODOS os dados inseridos na página Fluxo de Caixa possam ser enviados
               para a inteligência artificial do Google, que gerará relatórios
               baseados nas suas transações.
             </p>

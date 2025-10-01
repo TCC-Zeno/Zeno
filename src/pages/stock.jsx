@@ -640,7 +640,7 @@ export default function Stock() {
                 >
                   <IoIosArrowBack className={style.Arrowicon} />
                 </button>
-                <h1 className={style.counter}>{stockQuantity}</h1>
+                <input type="number" className={style.inputQuantity} defaultValue={stockQuantity}  />
                 <button
                   type="button"
                   className={style.button}
@@ -681,7 +681,7 @@ export default function Stock() {
                 >
                   <IoIosArrowBack className={style.Arrowicon} />
                 </button>
-                <h1 className={style.counter}>{minQuantity}</h1>
+                <input type="number" className={style.inputQuantity} defaultValue={minQuantity} />
                 <button
                   type="button"
                   className={style.button}
