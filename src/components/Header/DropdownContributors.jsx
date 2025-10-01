@@ -12,6 +12,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const closeButtonRef = useRef(null);
   const [type, setType] = useState("view");
   const profileinfo = useSelector((state) => state.userReducer.userData);
+  const [contributors, setContributors] = useState([])
 
   const [features, setFeatures] = useState({
     service: profileinfo?.features?.service ?? true,
@@ -45,19 +46,30 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           email: data.email,
           password: data.password,
           features: features,
-        });
+        }
+      );
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao excluir evento");
       console.error(err);
     }
   };
-
-  const contributors = [
-    { id: 1, name: "Nicollas Reias", email: "goias@exemplo.com" },
-    { id: 2, name: "Jose Marguarido", email: "jose@exemplo.com" },
-    { id: 3, name: "Alice da Silva", email: "alice@exemplo.com" },
-  ];
-
+useEffect(()=>{
+async function contributors(){
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/employee/contributors`,
+        {
+          cnpj: profileinfo.cnpj,
+        }
+      );
+      setContributors(resposta.data)
+    } catch (error) {
+      console.error("Erro ao listar funcionários:", error);
+      return [];
+    }
+  };
+  contributors();
+}, [profileinfo.cnpj, isOpen]);
   const dropdownVariants = {
     hidden: {
       opacity: 0,
@@ -146,8 +158,8 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                 <div className={S.viewContributors}>
                   {contributors.map((contributor) => (
                     <ContributorsCardView
-                      key={contributor.id}
-                      id={contributor.id}
+                      key={contributor.uuid}
+                      id={contributor.uuid}
                       name={contributor.name}
                       email={contributor.email}
                     />
@@ -209,7 +221,6 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                         className={S.switch}
                         checked={features.stock}
                         onChange={handleFeatureChange}
-
                       />
                       <span className={S.blockLabel}>Estoque</span>
                     </div>

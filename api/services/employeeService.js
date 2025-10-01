@@ -13,3 +13,15 @@ export const create = async (employeeData) => {
     }
     return data;
 }
+export const getEmployeeCnpj = async (cnpj) => {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("cnpj", cnpj)
+
+  console.log("service: ", data)
+  if (error) {
+    throw error;
+  }
+  return data;
+};
