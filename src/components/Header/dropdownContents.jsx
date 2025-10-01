@@ -5,7 +5,6 @@ import { IoPeopleSharp } from "react-icons/io5";
 import { GrHelpBook } from "react-icons/gr";
 import { IoIosArrowDown } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
-import Logo from "./../../assets/logo/LogoZeno_LogoBrancoSFundo.png";
 import S from "./header.module.css";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
@@ -17,6 +16,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useSelector } from "react-redux";
 import ZenoGIF from "./../../assets/loadingZENO.gif";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export function NotificationContent() {
   const [loading, setLoading] = useState(true);
@@ -38,6 +38,7 @@ export function NotificationContent() {
         setDataArray(response.data);
       }
     } catch (err) {
+      toast.error("Erro ao selecionar categorias.");
       console.error("Erro ao selecionar categorias:", err);
     }
   }
@@ -47,6 +48,7 @@ export function NotificationContent() {
       try {
         await fetchProdutsAlert();
       } catch (error) {
+        toast.error("Erro ao inicializar dados.");
         console.error("Erro ao inicializar dados:", error);
       } finally {
         setLoading(false);

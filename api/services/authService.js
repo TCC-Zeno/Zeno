@@ -19,6 +19,7 @@ export const getUserByEmail = async (email) => {
     .eq("email", email)
     .single();
 
+    console.log(error)
   if (error && error.code !== "PGRST116") throw new Error(error.message);
   return data;
 };
