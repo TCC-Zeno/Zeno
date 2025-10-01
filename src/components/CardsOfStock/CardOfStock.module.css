@@ -625,19 +625,19 @@
   margin-top: 5%;
 }
 
-.modalDelete h1{
+.modalDelete h1 {
   font-size: 15pt;
   font-weight: 300;
 }
 
-.buttonCancel{
+.buttonCancel {
   border: 1px solid black;
   padding: 2% 3%;
   border-radius: 5px;
   transition: 1s all;
 }
 
-.buttonCancel:hover{
+.buttonCancel:hover {
   transform: scale(1.1);
 }
 
@@ -725,4 +725,14 @@
     font-size: 14px;
     padding: 4px 10px;
   }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

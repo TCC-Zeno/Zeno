@@ -217,7 +217,7 @@ export default function Stock() {
         error.response?.data?.error ||
         error.response?.data?.message ||
         "Erro ao adicionar produto";
-      toast.error( errorMessage);
+      toast.error(errorMessage);
       console.error("Erro ao adicionar produto:", errorMessage);
     }
   };
@@ -631,25 +631,28 @@ export default function Stock() {
                   type="button"
                   className={style.button}
                   onClick={() =>
-                    handleCounterChange(
-                      setStockQuantity,
-                      "StockQuantity",
-                      stockQuantity - 1
+                    setStockQuantity(
+                      Math.max(0, Number(stockQuantity || 0) - 1)
                     )
                   }
                 >
                   <IoIosArrowBack className={style.Arrowicon} />
                 </button>
-                <input type="number" className={style.inputQuantity} defaultValue={stockQuantity}  />
+                <input
+                  type="number"
+                  className={style.inputQuantity}
+                  value={stockQuantity}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setStockQuantity(value === "" ? "" : Number(value));
+                  }}
+                  min="0"
+                />
                 <button
                   type="button"
                   className={style.button}
                   onClick={() =>
-                    handleCounterChange(
-                      setStockQuantity,
-                      "StockQuantity",
-                      stockQuantity + 1
-                    )
+                    setStockQuantity(Number(stockQuantity || 0) + 1)
                   }
                 >
                   <IoIosArrowForward className={style.Arrowicon} />
@@ -658,6 +661,7 @@ export default function Stock() {
             </div>
 
             <div className={style.linha} />
+
             <div className={style.quantStock}>
               <div className={style.containerTitleQuant}>
                 <div className={style.titleQuant}>
@@ -672,26 +676,25 @@ export default function Stock() {
                   type="button"
                   className={style.button}
                   onClick={() =>
-                    handleCounterChange(
-                      setMinQuantity,
-                      "MinQuantity",
-                      minQuantity - 1
-                    )
+                    setMinQuantity(Math.max(0, Number(minQuantity || 0) - 1))
                   }
                 >
                   <IoIosArrowBack className={style.Arrowicon} />
                 </button>
-                <input type="number" className={style.inputQuantity} defaultValue={minQuantity} />
+                <input
+                  type="number"
+                  className={style.inputQuantity}
+                  value={minQuantity}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setMinQuantity(value === "" ? 0 : Number(value));
+                  }}
+                  min="0"
+                />
                 <button
                   type="button"
                   className={style.button}
-                  onClick={() =>
-                    handleCounterChange(
-                      setMinQuantity,
-                      "MinQuantity",
-                      minQuantity + 1
-                    )
-                  }
+                  onClick={() => setMinQuantity(Number(minQuantity || 0) + 1)}
                 >
                   <IoIosArrowForward className={style.Arrowicon} />
                 </button>

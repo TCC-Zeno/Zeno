@@ -176,7 +176,11 @@ export function CardOfStock({ product, fetchData }) {
           <h1 className={S.titleCard}>{product.name}</h1>
           <p className={S.textCard}>{product.description}</p>
         </div>
-        <div className={S.actions} id="actions-card" onClick={(e) => e.stopPropagation()}>
+        <div
+          className={S.actions}
+          id="actions-card"
+          onClick={(e) => e.stopPropagation()}
+        >
           <button
             className={S.button}
             id="button-back-counter"
@@ -191,7 +195,17 @@ export function CardOfStock({ product, fetchData }) {
           </button>
 
           <h1 className={S.counter} id="counter">
-             <input type="number" className={S.inputQuantity} value={product.quantity_of_product} readOnly />
+            <input
+              type="number"
+              className={S.inputQuantity}
+              defaultValue={product.quantity_of_product}
+              onChange={(e) => {
+                const value =
+                  e.target.value === "" ? 0 : Number(e.target.value);
+                updateQuantity(value);
+              }}
+              min={0}
+            />
           </h1>
 
           <button
