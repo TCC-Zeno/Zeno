@@ -28,6 +28,7 @@ export default function Service() {
   const [dataServicesFilter, setDataServicesFilter] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(service());
   }, [dispatch]);
@@ -39,8 +40,10 @@ export default function Service() {
     handleSubmit: handleSubmitEdit,
     control: editControl,
     reset: editReset,
+    setValue: setEditValue,
     formState: { errors: editErrors },
   } = useForm();
+
   const onSubmit = async (data) => {
     const priceDot = data.price?.toString().replace(",", ".");
     try {
@@ -81,7 +84,6 @@ export default function Service() {
       const services = response.data;
       setDataServices(services);
 
-      // Calcula os totais
       const scheduledCount = services.filter(
         (s) => s.status === "agendado"
       ).length;
@@ -96,7 +98,6 @@ export default function Service() {
       setInProgress(inProgressCount);
       setCompleted(completedCount);
 
-      //valor total recebido
       const totalValue = services
         .filter((s) => s.status === "concluido")
         .reduce((acc, s) => acc + parseFloat(s.pending_amount || 0), 0);
@@ -237,7 +238,56 @@ export default function Service() {
 
   function handleServiceClick(service) {
     setServiceEdit(service);
+
+    // Formata o número de telefone para o padrão internacional
+    const formattedPhone = formatNumberForDisplay(service.number_customer);
+
+    // Resetar e definir todos os valores do formulário
+    editReset({
+      serviceName: service.name_services || "",
+      price: service.pending_amount || "",
+      description: service.description || "",
+      clientName: service.name_customer || "",
+      clientContact: formattedPhone,
+      status: service.status || "",
+      date: service.date || "",
+    });
+
     setModalEditOpen(true);
+  }
+
+  function formatNumberForDisplay(value) {
+    if (!value) return "";
+
+    try {
+      let cleaned = value.toString().replace(/\D/g, "");
+
+      if (cleaned.length < 10) {
+        toast.info("Número muito curto, retornando vazio");
+        return "";
+      }
+
+      if (cleaned.startsWith("55")) {
+        return "+" + cleaned;
+      }
+
+      if (cleaned.startsWith("0")) {
+        cleaned = cleaned.substring(1);
+      }
+
+      const formatted = "+55" + cleaned;
+
+      return formatted;
+    } catch (error) {
+      toast.error("Erro ao formatar número:", error);
+      return "";
+    }
+  }
+
+  function handleModalClose() {
+    editReset();
+    setServiceEdit({});
+    setModalEditOpen(false);
   }
 
   useEffect(() => {
@@ -261,6 +311,7 @@ export default function Service() {
       initializeData();
     }
   }, []);
+
   return (
     <>
       <DefaultLayout>
@@ -469,15 +520,20 @@ export default function Service() {
                         if (!value) {
                           return "Contato do cliente é obrigatório";
                         }
+                        // Valida se tem pelo menos o formato básico de telefone
+                        const cleaned = value.replace(/\D/g, "");
+                        if (cleaned.length < 10) {
+                          return "Número de telefone inválido";
+                        }
                         return true;
-                      }
+                      },
                     }}
                     render={({ field: { onChange, value } }) => (
                       <PhoneInput
                         placeholder="Contato Cliente"
                         defaultCountry="BR"
-                        value={value}
-                        onChange={onChange}
+                        value={value || ""}
+                        onChange={(val) => onChange(val || "")}
                         className={style.modalInput}
                       />
                     )}
@@ -511,7 +567,7 @@ export default function Service() {
         </div>
       </Modal>
 
-      <Modal isOpen={modalEditOpen} onClose={() => setModalEditOpen(false)}>
+      <Modal isOpen={modalEditOpen} onClose={handleModalClose}>
         <div className={style.modalContainer}>
           <div className={style.modalTitle}>
             <h2>Editar Serviço</h2>
@@ -527,12 +583,10 @@ export default function Service() {
                     {...editRegister("serviceName", {
                       required: "Nome do serviço é obrigatório",
                     })}
-                    defaultValue={serviceEdit.name_services}
                   />
                   <Controller
                     name="price"
                     control={editControl}
-                    defaultValue={serviceEdit.pending_amount}
                     rules={{
                       required: "Preço é obrigatório",
                       validate: (value) => {
@@ -548,7 +602,7 @@ export default function Service() {
                       fieldState: { error },
                     }) => (
                       <CurrencyInput
-                        id="input-price"
+                        id="input-price-edit"
                         name={name}
                         placeholder="R$ 0,00"
                         decimalsLimit={2}
@@ -572,7 +626,6 @@ export default function Service() {
                   {...editRegister("description", {
                     required: "Descrição do serviço é obrigatória",
                   })}
-                  defaultValue={serviceEdit.description}
                 />
                 <div className={style.modalRow}>
                   <input
@@ -582,27 +635,30 @@ export default function Service() {
                     {...editRegister("clientName", {
                       required: "Nome do cliente é obrigatório",
                     })}
-                    defaultValue={serviceEdit.name_customer}
                   />
-                 <Controller
+                  <Controller
                     name="clientContact"
                     control={editControl}
-                    defaultValue={serviceEdit.number_customer || ""}
                     rules={{
                       required: "Contato do cliente é obrigatório",
                       validate: (value) => {
                         if (!value) {
                           return "Contato do cliente é obrigatório";
                         }
+                        // Valida se tem pelo menos o formato básico de telefone
+                        const cleaned = value.replace(/\D/g, "");
+                        if (cleaned.length < 10) {
+                          return "Número de telefone inválido";
+                        }
                         return true;
-                      }
+                      },
                     }}
                     render={({ field: { onChange, value } }) => (
                       <PhoneInput
                         placeholder="Contato Cliente"
                         defaultCountry="BR"
-                        value={value}
-                        onChange={onChange}
+                        value={value || ""}
+                        onChange={(val) => onChange(val || "")}
                         className={style.modalInput}
                       />
                     )}
@@ -614,7 +670,6 @@ export default function Service() {
                     {...editRegister("status", {
                       required: "Status é obrigatório",
                     })}
-                    defaultValue={serviceEdit.status}
                   >
                     <option value="">Selecione o Status</option>
                     <option value="agendado">Agendado</option>
@@ -628,11 +683,9 @@ export default function Service() {
                     {...editRegister("date", {
                       required: "Data é obrigatória",
                     })}
-                    defaultValue={serviceEdit.date}
                   />
                 </div>
               </div>
-              {/* <ErrorMessage condition={editErrors} message={editErrors} /> */}
               <div className={style.modalButton}>
                 <button type="submit">Editar</button>
                 <button
