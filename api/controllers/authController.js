@@ -1,4 +1,4 @@
-import { 
+import {
   createUser,
   getUserByEmail,
   getUserById,
@@ -12,36 +12,36 @@ import argon2 from "argon2";
 // Cadastrar usuário
 export const signup = async (req, res) => {
   try {
-    const { cnpj, email, password,} = req.body;
+    const { cnpj, email, password, } = req.body;
     // Validação básica
     if (!cnpj || !email || !password) {
-      return res.status(400).json({ 
-        success: false, 
-        error: "Todos os campos são obrigatórios." 
+      return res.status(400).json({
+        success: false,
+        error: "Todos os campos são obrigatórios."
       });
     }
     // Verifica se o usuário já existe
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
-      return res.status(409).json({ 
-        success: false, 
-        error: "E-mail já cadastrado." 
+      return res.status(409).json({
+        success: false,
+        error: "E-mail já cadastrado."
       });
     }
     // Cria usuário
     const hashedPassword = await argon2.hash(password);
 
-    const userData = { cnpj, email, password: hashedPassword, user_type:'admin' };
+    const userData = { cnpj, email, password: hashedPassword, user_type: 'admin' };
     const newUser = await createUser(userData);
-    res.status(201).json({ 
-      success: true, 
-      user: newUser 
+    res.status(201).json({
+      success: true,
+      user: newUser
     });
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
-    res.status(400).json({ 
-      success: false, 
-      error: error.message 
+    res.status(400).json({
+      success: false,
+      error: error.message
     });
   }
 };
@@ -52,19 +52,19 @@ export const signin = async (req, res) => {
     const { email, password } = req.body;
     const user = await getUserByEmail(email);
     if (!user) {
-      return res.status(401).json({ 
-        success: false, 
-        error: "Usuário não encontrado" 
+      return res.status(401).json({
+        success: false,
+        error: "Usuário não encontrado"
       });
     }
-  // Verifica senha (com criptografia)
+    // Verifica senha (com criptografia)
     if (!await argon2.verify(user.password, password)) {
-      return res.status(401).json({ 
-        success: false, 
-        error: "Senha incorreta" 
+      return res.status(401).json({
+        success: false,
+        error: "Senha incorreta"
       });
     }
-    
+
     // Salvar na sessão
     req.session.userId = user.uuid;
     req.session.user = {
@@ -72,22 +72,22 @@ export const signin = async (req, res) => {
       email: user.email,
       cnpj: user.cnpj
     };
-    
+
     // Force salvar a sessão
     req.session.save((err) => {
       if (err) {
         console.error('Erro ao salvar sessão:', err);
-        return res.status(500).json({ 
-          success: false, 
-          error: "Erro ao salvar sessão" 
+        return res.status(500).json({
+          success: false,
+          error: "Erro ao salvar sessão"
         });
       }
-      
+
       // Remove senha da resposta pq é feio 
       const { password: _, ...userWithoutPassword } = user;
-      
-      res.status(200).json({ 
-        success: true, 
+
+      res.status(200).json({
+        success: true,
         user: userWithoutPassword,
         debug: {
           sessionId: req.sessionID,
@@ -95,12 +95,12 @@ export const signin = async (req, res) => {
         }
       });
     });
-    
+
   } catch (error) {
     console.error("Erro no login:", error);
-    res.status(500).json({ 
-      success: false, 
-      error: "Erro interno do servidor" 
+    res.status(500).json({
+      success: false,
+      error: "Erro interno do servidor"
     });
   }
 };
@@ -109,8 +109,8 @@ export const signin = async (req, res) => {
 export const checkSession = (req, res) => {
   try {
     if (req.session && req.session.userId && req.session.user) {
-      res.status(200).json({ 
-        success: true, 
+      res.status(200).json({
+        success: true,
         user: req.session.user,
         debug: {
           sessionId: req.sessionID,
@@ -118,16 +118,16 @@ export const checkSession = (req, res) => {
         }
       });
     } else {
-      res.status(401).json({ 
-        success: false, 
+      res.status(401).json({
+        success: false,
         error: "Sessão não encontrada",
       });
     }
   } catch (error) {
     console.error("Erro ao verificar sessão:", error);
-    res.status(500).json({ 
-      success: false, 
-      error: "Erro interno do servidor" 
+    res.status(500).json({
+      success: false,
+      error: "Erro interno do servidor"
     });
   }
 };
@@ -147,7 +147,7 @@ export const getSession = async (req, res) => {
 
       const user = await getUserById(userId);
       if (!user) {
-        return res.status(404).json({ 
+        return res.status(404).json({
           success: false,
           error: "Usuário não encontrado"
         });
@@ -159,16 +159,16 @@ export const getSession = async (req, res) => {
       });
     }
 
-    return res.status(401).json({ 
+    return res.status(401).json({
       success: false,
       error: "Sessão não encontrada"
     });
 
   } catch (error) {
     console.error("Erro ao obter sessão:", error);
-    return res.status(500).json({ 
-      success: false, 
-      error: "Erro ao obter sessão" 
+    return res.status(500).json({
+      success: false,
+      error: "Erro ao obter sessão"
     });
   }
 };
@@ -180,31 +180,31 @@ export const logout = (req, res) => {
     req.session.destroy((err) => {
       if (err) {
         console.error("Erro ao destruir sessão:", err);
-        return res.status(500).json({ 
-          success: false, 
-          error: "Erro ao fazer logout" 
+        return res.status(500).json({
+          success: false,
+          error: "Erro ao fazer logout"
         });
       }
-      
+
       res.clearCookie('connect.sid');
-      res.status(200).json({ 
-        success: true, 
-        message: "Logout realizado com sucesso" 
+      res.status(200).json({
+        success: true,
+        message: "Logout realizado com sucesso"
       });
     });
   } catch (error) {
     console.error("Erro no logout:", error);
-    res.status(500).json({ 
-      success: false, 
-      error: "Erro interno do servidor" 
+    res.status(500).json({
+      success: false,
+      error: "Erro interno do servidor"
     });
   }
 };
 
 //Google Login
-export const sucessGoogleLogin = (req, res) =>{
+export const sucessGoogleLogin = (req, res) => {
   if (!req.user) {
-    res.redirect("/failure"); 
+    res.redirect("/failure");
   }
   console.log("Usuário autenticado com sucesso:", req.user);
   res.status(200).json({

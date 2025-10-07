@@ -17,9 +17,10 @@ import { VscGithubAlt } from "react-icons/vsc";
 import ScrollToTopButton from "../components/ScrollToTopButton/ScrollToTopButton ";
 import { Particles } from "../components/Particles/Particles";
 import { useAuth } from "../contexts/AuthContext";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function LandingPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, isCheckingSession, checkSession } = useAuth();
   const navigate = useNavigate();
   const [burger, setBurguer] = useState(false);
 
@@ -90,14 +91,25 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
-    if (user && !loading) {
+    if (user && !loading && !isCheckingSession) {
       navigate("/dashboard");
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, isCheckingSession, navigate]);
+
+  useEffect(() => {
+    const promise = checkSession();
+
+    toast.promise(promise, {
+      pending: "Verificando sessão...",
+      success: "Sessão verificada!",
+      error: "Erro ao verificar sessão",
+    });
+  }, []);
 
   return (
     <>
       <ScrollToTopButton />
+      <ToastContainer position="bottom-right" theme="dark" />
 
       <header>
         <nav className={S.navbar}>
@@ -369,7 +381,7 @@ export default function LandingPage() {
               className={S.video}
               src="https://www.youtube.com/embed/eyDT3jrz4VY?si=6dFgz7SMcUk6emge"
               title="YouTube video player"
-              frameBorder="0" 
+              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen

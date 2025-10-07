@@ -9,48 +9,47 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
 
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/auth/check-session`,
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
+  const checkSession = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/auth/check-session`,
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.data.success && response.data.user) {
+        const userSession = await axios.get(
+          `${import.meta.env.VITE_API_URL}/auth/session`,
+          { withCredentials: true }
         );
 
-        if (response.data.success && response.data.user) {
-          const userSession = await axios.get(
-            `${import.meta.env.VITE_API_URL}/auth/session`,
-            { withCredentials: true }
-          );
-
-          dispatch(userData(userSession.data.user));
-          dispatch(setTheme(userSession.data.user.color));
-          dispatch(setColorBlindness(userSession.data.user.accessibility));
-          setUser(userSession.data.user);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error("Erro ao verificar sessão:", error);
-        // Tente novamente após um curto período em caso de erro de rede
-        setTimeout(() => {
-          if (!user) setUser(null);
-        }, 2000);
-      } finally {
-        setLoading(false);
+        dispatch(userData(userSession.data.user));
+        dispatch(setTheme(userSession.data.user.color));
+        dispatch(setColorBlindness(userSession.data.user.accessibility));
+        setUser(userSession.data.user);
+      } else {
+        setUser(null);
       }
-    };
+    } catch (error) {
+      console.error("Erro ao verificar sessão:", error);
+      setUser(null);
+    } finally {
+      setIsCheckingSession(false);
+    }
+  };
 
+  useEffect(() => {
     checkSession();
   }, [dispatch]);
 
   const login = async (email, password) => {
     try {
+      setLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/signin`,
         { email, password },
@@ -74,11 +73,14 @@ export function AuthProvider({ children }) {
         success: false,
         error: error.response?.data?.error || "Erro ao fazer login",
       };
+    } finally {
+      setLoading(false);
     }
   };
 
   const logout = async () => {
     try {
+      setLoading(true);
       await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/logout`,
         {},
@@ -91,16 +93,26 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error("Erro no logout:", error);
       setUser(null);
+    } finally {
+      setLoading(false);
     }
   };
 
   const isAuthenticated = !!user;
-  
+
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, loading, isAuthenticated }}
+      value={{
+        user,
+        login,
+        logout,
+        loading,
+        isAuthenticated,
+        isCheckingSession,
+        checkSession,
+      }}
     >
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }
