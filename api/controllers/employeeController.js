@@ -25,7 +25,6 @@ export const createEmployee = async (req, res) => {
       color: color,
       email: email,
       password: hashedPassword,
-      user_type: "employee",
       features: features
     };
     const newUser = await create(employeeData);

@@ -3,7 +3,7 @@ import supabase from "../config/supabaseClient.js"
 export const create = async (employeeData) => {
 
     const { data, error } = await supabase
-        .from("users")
+        .from("employee")
         .insert([employeeData])
         .select();
 
@@ -15,7 +15,7 @@ export const create = async (employeeData) => {
 }
 export const getEmployeeCnpj = async (cnpj) => {
   const { data, error } = await supabase
-    .from("users")
+    .from("employee")
     .select("*")
     .eq("cnpj", cnpj)
 

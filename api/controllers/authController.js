@@ -31,7 +31,7 @@ export const signup = async (req, res) => {
     // Cria usuário
     const hashedPassword = await argon2.hash(password);
 
-    const userData = { cnpj, email, password: hashedPassword, user_type: 'admin' };
+    const userData = { cnpj, email, password: hashedPassword };
     const newUser = await createUser(userData);
     res.status(201).json({
       success: true,
