@@ -25,3 +25,14 @@ export const getEmployeeCnpj = async (cnpj) => {
   }
   return data;
 };
+export const getEmployeeByEmail = async (email) => {
+  const { data, error } = await supabase
+    .from("employee")
+    .select("*")
+    .eq("email", email)
+    .maybeSingle();
+
+    console.log(error)
+  if (error && error.code !== "PGRST116") throw new Error(error.message);
+  return data;
+};

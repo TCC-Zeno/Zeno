@@ -6,15 +6,13 @@ import ContributorsCardView from "../ContributorsCardView/ContributorsCardView";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
-import { toast } from "react-toastify";
 
 export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const modalRef = useRef(null);
   const closeButtonRef = useRef(null);
   const [type, setType] = useState("view");
   const profileinfo = useSelector((state) => state.userReducer.userData);
-  const [contributors, setContributors] = useState([]);
+  const [contributors, setContributors] = useState([])
 
   const [features, setFeatures] = useState({
     service: profileinfo?.features?.service ?? true,
@@ -35,18 +33,13 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
-
   const onSubmit = async (data) => {
-    console.log(errors);
-    setType("view");
-    reset();
-
     try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/employee/signup`,
         {
+          owner_uuid: profileinfo.uuid,
           cnpj: profileinfo.cnpj,
           company_name: profileinfo.company_name,
           name: data.name,
@@ -56,38 +49,28 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           features: features,
         }
       );
-
-      if(resposta.status == 201){
-        toast.success("Funcionário adicionado com sucesso.");
-        return;
-      }
-
     } catch (err) {
-    
-      toast.error("Error ao excluir evento");
       alert(err.response?.data?.error || "Erro ao excluir evento");
       console.error(err);
     }
   };
-
-  useEffect(() => {
-    async function contributors() {
-      try {
-        const resposta = await axios.post(
-          `${import.meta.env.VITE_API_URL}/employee/contributors`,
-          {
-            cnpj: profileinfo.cnpj,
-          }
-        );
-        setContributors(resposta.data);
-      } catch (error) {
-        toast.error("Erro ao listar funcionários.");
-        console.error("Erro ao listar funcionários:", error);
-        return;
-      }
+useEffect(()=>{
+async function fetchContributors(){
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/employee/fetchContributors`,
+        {
+          cnpj: profileinfo.cnpj,
+        }
+      );
+      setContributors(resposta.data)
+    } catch (error) {
+      console.error("Erro ao listar funcionários:", error);
+      return [];
     }
-    contributors();
-  }, [profileinfo.cnpj, isOpen]);
+  };
+  fetchContributors();
+}, [profileinfo.cnpj, isOpen]);
   const dropdownVariants = {
     hidden: {
       opacity: 0,
@@ -169,7 +152,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                   <FaArrowLeft size={20} />
                 </span>
               </button>
-              <h1 className={S.title}>Contribuintes</h1>
+              <h1 className={S.title}>Contribuinte</h1>
             </div>
             {type === "view" ? (
               <>

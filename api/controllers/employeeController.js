@@ -1,11 +1,10 @@
-import { create, getEmployeeCnpj } from "../services/employeeService.js"
+import { create, getEmployeeCnpj, getEmployeeByEmail } from "../services/employeeService.js"
 import { getUserByEmail } from "../services/authService.js"
 import argon2 from "argon2";
 
 export const createEmployee = async (req, res) => {
   try {
-    const { cnpj, email, password, company_name, name, color, features } = req.body
-    console.log("req.body:", req.body);
+    const { owner_uuid, cnpj, email, password, company_name, name, color, features } = req.body
 
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
@@ -15,10 +14,20 @@ export const createEmployee = async (req, res) => {
       });
     }
 
+    // Verifica se o funcionário já existe
+    const existingEmployee = await getEmployeeByEmail(email);
+    if(existingEmployee){
+      return res.status(409).json({
+        success: false,
+        error: "Funcionário já cadastrado."
+      });
+    }
+
     // Cria usuário
     const hashedPassword = await argon2.hash(password);
 
     const employeeData = {
+      uuid: owner_uuid,
       cnpj: cnpj,
       company_name: company_name,
       name: name,
@@ -27,16 +36,18 @@ export const createEmployee = async (req, res) => {
       password: hashedPassword,
       features: features
     };
+    console.log("Controller employeeData:", employeeData);
     const newUser = await create(employeeData);
     res.status(201).json({
       success: true,
       user: newUser
     });
 
+    console.log("Novo funcionário criado:", newUser);
   } catch (err) {
     res.status(400).json({
       success: false,
-      error: err
+      error: err.message || err.details || JSON.stringify(err)
     });
   }
 }

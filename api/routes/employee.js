@@ -6,6 +6,5 @@ const router = express.Router();
 // rotas do employee
 
 router.post("/signup", createEmployee)
-router.post("/contributors", getEmployee)
-
+router.post("/fetchContributors", getEmployee)
 export default router;
