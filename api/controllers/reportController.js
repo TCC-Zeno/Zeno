@@ -1,5 +1,5 @@
 import { getFinanceWithPeriod } from "../services/financeService.js";
-import { createReport } from "../services/reportService.js";
+// import { createReport } from "../services/reportService.js";
 
 export async function generateReport(req, res) {
   try {
@@ -9,7 +9,8 @@ export async function generateReport(req, res) {
     }
     const tableData = await getFinanceWithPeriod(uuid, periodStart, periodEnd);
 
-    const response = await createReport(tableData);
+    // const response = await createReport(tableData);
+    const response = "Esse recurso está temporariamente indisponível.";
 
     res.json({ table: tableData, report: response });
   } catch (err) {

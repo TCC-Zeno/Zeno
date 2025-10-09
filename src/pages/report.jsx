@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { report } from "../redux/Route/slice";
 import style from "./../styles/report.module.css";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+// import ReactMarkdown from "react-markdown";
+// import remarkGfm from "remark-gfm";
 import axios from "axios";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import CurrencyInput from "react-currency-input-field";
-import Modal from "../components/Modal/Modal";
+// import Modal from "../components/Modal/Modal";
 import { toast } from "react-toastify";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -26,7 +26,7 @@ export default function Report() {
   const [dataOfFlowType, setDataOfFlowType] = useState({});
   const [dataOfOthersCount, setDataOfOthersCount] = useState({});
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const [modalPermitionOpen, setModalPermitionOpen] = useState(false);
+  // const [modalPermitionOpen, setModalPermitionOpen] = useState(false);
 
   function dateFormatter(dateString) {
     const date = new Date(dateString);
@@ -90,7 +90,7 @@ export default function Report() {
     calculatePeriodDates("daily")
   );
   const dispatch = useDispatch();
-  const [reportData, setReportData] = useState("");
+  // const [reportData, setReportData] = useState("");
   const [dataArray, setDataArray] = useState([]);
 
   useEffect(() => {
@@ -98,10 +98,10 @@ export default function Report() {
   }, [dispatch]);
 
   async function generateReport(start = selectedPeriod) {
-    if (localStorage.getItem("LGPDAccepted") !== "true") {
-      setModalPermitionOpen(true);
-      return;
-    }
+    // if (localStorage.getItem("LGPDAccepted") !== "true") {
+    //   setModalPermitionOpen(true);
+    //   return;
+    // }
     const end = dateFormatter(getEndOfDay(new Date()));
     console.log(end, start);
     setLoading(true);
@@ -115,10 +115,9 @@ export default function Report() {
         }
       );
       if (response.status == 200) {
-        // const report = response.data;
         toast.success("Relatório gerado com sucesso!");
         setDataArray(response.data.table);
-        setReportData(response.data.report);
+        // setReportData(response.data.report);
       }
     } catch (err) {
       toast.error("Erro ao gerar relatório");
@@ -142,79 +141,117 @@ export default function Report() {
 
   const generatePDF = async (print = false) => {
     setIsGeneratingPDF(true);
+    document.body.classList.add("generating-pdf");
     const element = contentRef.current;
 
     const pdf = new jsPDF("p", "mm", "a4");
-    const pageWidth = 210;
-    const pageHeight = 297;
-    const margin = 10;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 12;
     const contentWidth = pageWidth - margin * 2;
     const contentHeight = pageHeight - margin * 2;
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
-      const canvas = await html2canvas(element, {
-        scale: 1.5,
-        useCORS: true,
-        allowTaint: false,
-        backgroundColor: "#ffffff",
-        height: element.scrollHeight,
-        width: element.scrollWidth,
-      });
+      const sections = [
+        { selector: ".pdfOnlyHeader", name: "Cabeçalho" },
+        { selector: `.${style.containerChart}`, name: "Gráficos" },
+        { selector: `.${style.textIA}`, name: "Análise" },
+        { selector: `.pdf-only-table`, name: "Tabela" }, // Busca pela classe específica
+      ];
 
-      const imgData = canvas.toDataURL("image/png", 0.8);
-      const imgWidth = contentWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let currentY = margin;
+      let pageNumber = 1;
+      let isFirstSection = true;
 
-      if (imgHeight <= contentHeight) {
-        pdf.addImage(imgData, "PNG", margin, margin, imgWidth, imgHeight);
-      } else {
-        let yPosition = 0;
-        let pageNumber = 1;
+      for (const section of sections) {
+        const sectionElement = element.querySelector(section.selector);
 
-        while (yPosition < imgHeight) {
-          const remainingHeight = imgHeight - yPosition;
-          const currentSectionHeight = Math.min(contentHeight, remainingHeight);
+        if (!sectionElement) continue;
 
-          if (pageNumber > 1) {
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
+        const canvas = await html2canvas(sectionElement, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: "#ffffff",
+          logging: false,
+          width: sectionElement.scrollWidth,
+          height: sectionElement.scrollHeight,
+        });
+
+        const imgData = canvas.toDataURL("image/png", 0.95);
+        const imgWidth = contentWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        if (imgHeight > contentHeight) {
+          let remainingHeight = imgHeight;
+          let sourceY = 0;
+
+          while (remainingHeight > 0) {
+            if (!isFirstSection) {
+              pdf.addPage();
+              currentY = margin;
+              pageNumber++;
+            }
+
+            const availableHeight = pageHeight - currentY - margin;
+            const sectionHeight = Math.min(availableHeight, remainingHeight);
+            const sourceHeight = (sectionHeight * canvas.height) / imgHeight;
+
+            const tempCanvas = document.createElement("canvas");
+            const tempCtx = tempCanvas.getContext("2d");
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = sourceHeight;
+
+            tempCtx.fillStyle = "#ffffff";
+            tempCtx.fillRect(0, 0, canvas.width, sourceHeight);
+
+            tempCtx.drawImage(
+              canvas,
+              0,
+              sourceY,
+              canvas.width,
+              sourceHeight,
+              0,
+              0,
+              canvas.width,
+              sourceHeight
+            );
+
+            const sectionImgData = tempCanvas.toDataURL("image/png", 0.95);
+            pdf.addImage(
+              sectionImgData,
+              "PNG",
+              margin,
+              currentY,
+              imgWidth,
+              sectionHeight
+            );
+
+            pdf.setFontSize(8);
+            pdf.setTextColor(128, 128, 128);
+            pdf.text(
+              `Página ${pageNumber}`,
+              pageWidth - margin - 15,
+              pageHeight - 5
+            );
+
+            sourceY += sourceHeight;
+            remainingHeight -= sectionHeight;
+            currentY += sectionHeight;
+            isFirstSection = false;
+          }
+        } else {
+          if (currentY + imgHeight > pageHeight - margin) {
             pdf.addPage();
+            currentY = margin;
+            pageNumber++;
           }
 
-          const sourceY = (yPosition * canvas.height) / imgHeight;
-          const sourceHeight =
-            (currentSectionHeight * canvas.height) / imgHeight;
-
-          const tempCanvas = document.createElement("canvas");
-          const tempCtx = tempCanvas.getContext("2d");
-
-          tempCanvas.width = canvas.width;
-          tempCanvas.height = sourceHeight;
-
-          tempCtx.fillStyle = "#ffffff";
-          tempCtx.fillRect(0, 0, canvas.width, sourceHeight);
-
-          tempCtx.drawImage(
-            canvas,
-            0,
-            sourceY,
-            canvas.width,
-            sourceHeight,
-            0,
-            0,
-            canvas.width,
-            sourceHeight
-          );
-
-          const sectionImgData = tempCanvas.toDataURL("image/png", 0.8);
-          pdf.addImage(
-            sectionImgData,
-            "PNG",
-            margin,
-            margin,
-            imgWidth,
-            currentSectionHeight
-          );
+          pdf.addImage(imgData, "PNG", margin, currentY, imgWidth, imgHeight);
 
           pdf.setFontSize(8);
           pdf.setTextColor(128, 128, 128);
@@ -224,8 +261,8 @@ export default function Report() {
             pageHeight - 5
           );
 
-          yPosition += contentHeight;
-          pageNumber++;
+          currentY += imgHeight + 5;
+          isFirstSection = false;
         }
       }
 
@@ -237,10 +274,13 @@ export default function Report() {
       } else {
         pdf.save(`relatorio_financeiro_${timestamp}.pdf`);
       }
+
+      toast.success("PDF gerado com sucesso!");
     } catch (error) {
       console.error("Erro ao gerar PDF:", error);
       toast.error("Erro ao gerar PDF. Tente novamente.");
     } finally {
+      document.body.classList.remove("generating-pdf"); // Remove classe do body
       setIsGeneratingPDF(false);
     }
   };
@@ -356,23 +396,17 @@ export default function Report() {
       labels: ["Total de Entradas", "Total de Saídas", "Saldo Final"],
       datasets: [
         {
-          label: "Quantas vezes esse tipo de fluxo",
+          label: "Resumo financeiro",
           data: dataValues,
           backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
+            "rgba(76, 175, 80, 0.2)",
+            "rgba(244, 67, 54, 0.2)",
+            "rgba(33, 150, 243, 0.2)",
           ],
           borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-            "rgba(255, 159, 64, 1)",
+            "rgba(76, 175, 80, 1)",
+            "rgba(244, 67, 54, 1)",
+            "rgba(33, 150, 243, 1)",
           ],
           borderWidth: 1,
         },
@@ -405,12 +439,9 @@ export default function Report() {
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      console.log(e.target.value);
                     }}
                   >
-                    <option defaultChecked value="daily">
-                      Diário
-                    </option>
+                    <option value="daily">Diário</option>
                     <option value="weekly">Semanal</option>
                     <option value="monthly">Mensal</option>
                     <option value="quarterly">Trimestral</option>
@@ -431,21 +462,28 @@ export default function Report() {
                   id="report-content"
                 >
                   {isGeneratingPDF && (
-                    <div className={style.pdfOnlyHeader}>
-                      <h1>RELATÓRIO FINANCEIRO DETALHADO</h1>
-                      <p>
+                    <div
+                      className="pdfOnlyHeader"
+                      style={{ padding: "20px", marginBottom: "20px" }}
+                    >
+                      <h1
+                        style={{ margin: 0, fontSize: "24pt", color: "#333" }}
+                      >
+                        RELATÓRIO FINANCEIRO DETALHADO
+                      </h1>
+                      <p style={{ margin: "10px 0" }}>
                         <strong>Data de geração:</strong>{" "}
                         {new Date().toLocaleString("pt-BR")}
                       </p>
-                      <p>
+                      <p style={{ margin: "5px 0" }}>
                         <strong>Usuário:</strong>{" "}
                         {profileinfo.company_name || "N/A"}
                       </p>
-                      <p>
+                      <p style={{ margin: "5px 0" }}>
                         <strong>Período:</strong> {selectedPeriod} até{" "}
                         {new Date().toLocaleDateString("pt-BR")}
                       </p>
-                      <p>
+                      <p style={{ margin: "5px 0" }}>
                         <strong>Total de transações:</strong> {dataArray.length}
                       </p>
                       <hr
@@ -463,7 +501,9 @@ export default function Report() {
                   </div>
 
                   {!isGeneratingPDF && (
-                    <div className={`${style.containerTable} avoid-break`}>
+                    <div
+                      className={`${style.containerTable} screen-only-table`}
+                    >
                       <table className={style.table}>
                         <thead className={style.thead}>
                           <tr className={style.tr}>
@@ -511,88 +551,67 @@ export default function Report() {
                     </div>
                   )}
 
-                  {isGeneratingPDF && (
-                    <div
-                      style={{ pageBreakBefore: "always", marginTop: "40px" }}
-                    >
-                      <h2>Análise Visual dos Dados</h2>
-                      <hr style={{ margin: "10px 0" }} />
-                    </div>
-                  )}
-
                   <div className={style.containerChart}>
-                    <div className={`${style.cardChart} avoid-break`}>
+                    <div className={style.cardChart}>
                       <h2 className={style.titleChart}>Métodos de Pagamento</h2>
                       <Doughnut data={dataOfPaymentMethod} />
                     </div>
-                    <div className={`${style.cardChart} avoid-break`}>
+                    <div className={style.cardChart}>
                       <h2 className={style.titleChart}>Categorias</h2>
                       <Doughnut data={dataOfCategory} />
                     </div>
-                    <div className={`${style.cardChart} avoid-break`}>
+                    <div className={style.cardChart}>
                       <h2 className={style.titleChart}>Tipos de Fluxo</h2>
                       <Doughnut data={dataOfFlowType} />
                     </div>
-                    <div className={`${style.cardChart} avoid-break`}>
+                    <div className={style.cardChart}>
                       <h2 className={style.titleChart}>Resumo de caixa</h2>
                       <Doughnut data={dataOfOthersCount} />
                     </div>
                   </div>
 
-                  <div className={`${style.textIA} avoid-break`}>
-                    {reportData ? (
-                      <>
-                        {isGeneratingPDF && (
-                          <div
-                            style={{
-                              pageBreakBefore: "always",
-                              marginTop: "40px",
-                            }}
-                          >
-                            <h2>Análise Detalhada</h2>
-                            <hr style={{ margin: "10px 0" }} />
-                          </div>
-                        )}
+                  <div className={style.textIA}>
+                    {/* {reportData ? ( */}
+                    <>
+                      <h2 className={style.markdownP}>
+                        <strong className={style.markdownStrong}>
+                          Cálculos:
+                        </strong>
+                      </h2>
+                      <ul className={style.markdownUl}>
+                        <li className={style.Li}>
+                          <b>Total de Entradas:</b> R${" "}
+                          <CurrencyInput
+                            decimalSeparator=","
+                            groupSeparator="."
+                            value={amountValue.toFixed(2)}
+                            className={style.currencyInput}
+                            disabled
+                          />
+                        </li>
+                        <li className={style.Li}>
+                          <b>Total de Saídas:</b> R${" "}
+                          <CurrencyInput
+                            decimalSeparator=","
+                            groupSeparator="."
+                            value={expensesValue.toFixed(2)}
+                            className={style.currencyInput}
+                            disabled
+                          />
+                        </li>
+                        <li className={style.Li}>
+                          <b>Saldo Final:</b> R${" "}
+                          <CurrencyInput
+                            decimalSeparator=","
+                            groupSeparator="."
+                            value={profitValue.toFixed(2)}
+                            className={style.currencyInput}
+                            disabled
+                          />
+                        </li>
+                      </ul>
 
-                        <h2 className={style.markdownP}>
-                          <strong className={style.markdownStrong}>
-                            Cálculos:
-                          </strong>
-                        </h2>
-                        <ul className="_markdownUl_mycij_419">
-                          <li className={style.Li}>
-                            <b>Total de Entradas:</b> R${" "}
-                            <CurrencyInput
-                              decimalSeparator=","
-                              groupSeparator="."
-                              value={amountValue.toFixed(2)}
-                              className={style.currencyInput}
-                              disabled
-                            />
-                          </li>
-                          <li className={style.Li}>
-                            <b>Total de Saídas:</b> R${" "}
-                            <CurrencyInput
-                              decimalSeparator=","
-                              groupSeparator="."
-                              value={expensesValue.toFixed(2)}
-                              className={style.currencyInput}
-                              disabled
-                            />
-                          </li>
-                          <li className={style.Li}>
-                            <b>Saldo Final:</b> R${" "}
-                            <CurrencyInput
-                              decimalSeparator=","
-                              groupSeparator="."
-                              value={profitValue.toFixed(2)}
-                              className={style.currencyInput}
-                              disabled
-                            />
-                          </li>
-                        </ul>
-
-                        <ReactMarkdown
+                      {/* <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
                           components={{
                             h1: (props) => (
@@ -654,12 +673,64 @@ export default function Report() {
                           }}
                         >
                           {reportData}
-                        </ReactMarkdown>
-                      </>
-                    ) : (
+                        </ReactMarkdown> */}
+                    </>
+                    {/* ) : (
                       <p>Carregando análise da IA...</p>
-                    )}
+                    )} */}
                   </div>
+
+                  {isGeneratingPDF && (
+                    <div className={`${style.containerTable} pdf-only-table`}>
+                      <div className={style.title}>
+                        <h2>Detalhamento de Transações</h2>
+                      </div>
+                      <table className={style.table}>
+                        <thead className={style.thead}>
+                          <tr className={style.tr}>
+                            <th className={style.th}>Data</th>
+                            <th className={style.th}>Nome</th>
+                            <th className={style.th}>Valor(R$)</th>
+                            <th className={style.th}>Método de Pagamento</th>
+                            <th className={style.th}>Categoria</th>
+                            <th className={style.th}>Tipo de Fluxo</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {dataArray.map((data) => (
+                            <tr className={style.conteudo} key={data.id}>
+                              <td>
+                                {data.created_at
+                                  ? new Date(
+                                      data.created_at
+                                    ).toLocaleDateString("pt-BR", {
+                                      day: "2-digit",
+                                      month: "2-digit",
+                                    })
+                                  : "N/A"}
+                              </td>
+                              <td>{data.name}</td>
+                              <td className={style.valueTable}>
+                                R${" "}
+                                <CurrencyInput
+                                  decimalSeparator=","
+                                  groupSeparator="."
+                                  value={data.value.toFixed(2)}
+                                  className={style.currencyInput}
+                                  disabled
+                                />
+                              </td>
+                              <td>{data.payment_method}</td>
+                              <td>{data.category}</td>
+                              <td className={style.tipoFluxo}>
+                                {data.type_flow}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </div>
 
                 <div className={style.buttonContainer2}>
@@ -682,7 +753,9 @@ export default function Report() {
                     onClick={() => generatePDF(true)}
                     disabled={loading || isGeneratingPDF}
                   >
-                    {isGeneratingPDF ? "Imprimindo PDF..." : "Imprimir PDF"}
+                    {isGeneratingPDF
+                      ? "Preparando Impressão..."
+                      : "Imprimir PDF"}
                   </button>
                 </div>
               </div>
@@ -695,7 +768,7 @@ export default function Report() {
             )
           ) : null}
         </div>
-        <Modal
+        {/* <Modal
           isOpen={modalPermitionOpen}
           onClose={() => setModalPermitionOpen(false)}
         >
@@ -706,9 +779,9 @@ export default function Report() {
               privacidade e termos de uso, garantindo a conformidade com a LGPD.
             </p>
             <p style={{ marginTop: "10px" }}>
-              Ao aceitar você concorda que TODOS os dados inseridos na página Fluxo de Caixa possam ser enviados
-              para a inteligência artificial do Google, que gerará relatórios
-              baseados nas suas transações.
+              Ao aceitar você concorda que TODOS os dados inseridos na página
+              Fluxo de Caixa possam ser enviados para a inteligência artificial
+              do Google, que gerará relatórios baseados nas suas transações.
             </p>
             <div className={style.modalButtons}>
               <button
@@ -728,7 +801,7 @@ export default function Report() {
               </button>
             </div>
           </div>
-        </Modal>
+        </Modal> */}
       </DefaultLayout>
     </>
   );
