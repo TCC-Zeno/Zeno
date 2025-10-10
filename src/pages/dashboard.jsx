@@ -12,10 +12,8 @@ export default function Dashboard() {
   // Resumo de caixa
   const [selectedPeriod, setSelectedPeriod] = useState("daily");
   const profileinfo = useSelector((state) => state.userReducer.userData);
+  const employee = useSelector((state) => state.userReducer.employee);
 
-  useEffect(() => {
-    console.log(profileinfo);
-  }, [profileinfo]);
   // Organizador diário
   const tasksToDo = [
     { id: 1, name: "Reunião com a equipe" },

@@ -1,7 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setColorBlindness, setTheme, userData } from "../redux/User/slice";
+import {
+  setColorBlindness,
+  setEmployee,
+  setTheme,
+  userData,
+} from "../redux/User/slice";
 import { toast } from "react-toastify";
 
 const AuthContext = createContext();
@@ -29,6 +34,7 @@ export function AuthProvider({ children }) {
         );
 
         dispatch(userData(userSession.data.user));
+        dispatch(setEmployee(response.data.employee));
         dispatch(setTheme(userSession.data.user.color));
         dispatch(setColorBlindness(userSession.data.user.accessibility));
         setUser(userSession.data.user);
@@ -64,7 +70,7 @@ export function AuthProvider({ children }) {
       if (response.data.success) {
         toast.success("Login realizado com sucesso!");
         setUser(response.data.user);
-        //o tipo de usuário (employee) é verificado no backend e retornado na resposta
+        dispatch(setEmployee(response.data.employee));
         return { success: true, user: response.data.user };
       }
     } catch (error) {

@@ -113,6 +113,8 @@ export function ProfileContent() {
   const colorBlindness = useSelector(
     (state) => state.userReducer.colorBlindness
   );
+  const employee = useSelector((state) => state.userReducer.employee);
+
   async function logoutuser() {
     try {
       await logout();
@@ -134,17 +136,25 @@ export function ProfileContent() {
         </div>
         <div className={S.divider}></div>
         <div className={S.userManeger}>
-          <Link className={S.manegerOption} onClick={() => setModalOpen(true)}>
-            <MdManageAccounts />
-            <span>Conta</span>
-          </Link>
-          <button
-            className={S.manegerOption}
-            onClick={() => setDropdownContributors(!dropdownContributors)}
-          >
-            <IoPeopleSharp />
-            <span>Contribuintes</span>
-          </button>
+          {!employee && (
+            <>
+              <Link
+                className={S.manegerOption}
+                onClick={() => setModalOpen(true)}
+              >
+                <MdManageAccounts />
+                <span>Conta</span>
+              </Link>
+              <button
+                className={S.manegerOption}
+                onClick={() => setDropdownContributors(!dropdownContributors)}
+              >
+                <IoPeopleSharp />
+                <span>Contribuintes</span>
+              </button>
+            </>
+          )}
+
           <Link className={S.manegerOption} to="/guide">
             <GrHelpBook />
             <span>Guia</span>
@@ -154,8 +164,16 @@ export function ProfileContent() {
             <span>Ajuda</span>
           </Link>
         </div>
-        <div className={S.divider}></div>
-        <button className={S.configureSignature}>Configurar assinatura</button>
+
+        {!employee && (
+          <>
+            <div className={S.divider}></div>
+            <button className={S.configureSignature}>
+              Configurar assinatura
+            </button>
+          </>
+        )}
+
         <div className={S.divider}></div>
         <button className={S.manegerOption} onClick={logoutuser}>
           <TbLogout />

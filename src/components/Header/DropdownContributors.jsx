@@ -13,13 +13,14 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const [type, setType] = useState("view");
   const profileinfo = useSelector((state) => state.userReducer.userData);
   const [contributors, setContributors] = useState([]);
+  const [editData, setEditData] = useState(null);
 
   const [features, setFeatures] = useState({
-    service: false,
-    stock: false,
-    finance: false,
-    calendar: false,
-    task: false,
+    service: editData?.features?.service ?? false,
+    stock: editData?.features?.stock ?? false,
+    finance: editData?.features?.finance ?? false,
+    calendar: editData?.features?.calendar ?? false,
+    task: editData?.features?.task ?? false,
   });
 
   const handleFeatureChange = async (e) => {
@@ -32,8 +33,20 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const {
     register,
     handleSubmit,
+    reset: addReset,
     formState: { errors },
   } = useForm();
+  const {
+    register: editRegister,
+    handleSubmit: editHandleSubmit,
+    reset: editReset,
+    formState: { errors: editErrors },
+  } = useForm();
+
+  const editSubmit = async (data) => {
+    console.log(data);
+  };
+
   const onSubmit = async (data) => {
     try {
       const resposta = await axios.post(
@@ -55,6 +68,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
       console.error(err);
     }
   };
+
   async function fetchContributors() {
     try {
       const resposta = await axios.post(
@@ -69,6 +83,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
       return [];
     }
   }
+
   useEffect(() => {
     fetchContributors(profileinfo.cnpj, setContributors);
   }, [profileinfo.cnpj, isOpen]);
@@ -100,14 +115,29 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
 
   // Função para fechar o dropdown
   const handleClose = () => {
+    resetFeaturesToDefault();
     setIsOpen(false);
+    setEditData(null);
+    if (typeof editReset === "function")
+      editReset({ name: "", email: "", password: "" });
+    if (typeof addReset === "function")
+      addReset({ name: "", email: "", password: "", confirmPassword: "" });
     setType("view");
+  };
+
+  const resetFeaturesToDefault = () => {
+    setFeatures({
+      service: false,
+      stock: false,
+      finance: false,
+      calendar: false,
+      task: false,
+    });
   };
 
   // Função para quando clicar fora o Dropdown sumir
   useEffect(() => {
     function handleClickOutside(event) {
-      // Se clicou no botão de fechar, não fazer nada (deixar o onClick do botão funcionar)
       if (
         closeButtonRef.current &&
         closeButtonRef.current.contains(event.target)
@@ -129,6 +159,31 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen, setIsOpen]);
+
+  function handleEditContributor(data) {
+    // ensure the react-hook-form edit form is populated immediately
+    if (typeof editReset === "function") {
+      editReset({
+        name: data.name || "",
+        email: data.email || "",
+        password: "",
+      });
+    }
+    setEditData(data);
+    setFeatures(data.features || {});
+    setType("edit");
+  }
+
+  // Quando editData mudar, popular os campos do form de edição
+  useEffect(() => {
+    if (typeof editReset === "function") {
+      editReset({
+        name: editData?.name || "",
+        email: editData?.email || "",
+        password: "",
+      });
+    }
+  }, [editData, editReset]);
 
   return (
     <AnimatePresence>
@@ -155,15 +210,18 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
               </button>
               <h1 className={S.title}>Contribuinte</h1>
             </div>
+
             {type === "view" ? (
               <>
                 <div className={S.viewContributors}>
-                  {contributors.map((contributor) => (
+                  {contributors.map((c) => (
                     <ContributorsCardView
-                      key={contributor.id}
-                      id={contributor.id}
-                      name={contributor.name}
-                      email={contributor.email}
+                      key={c.id}
+                      id={c.id}
+                      name={c.name}
+                      email={c.email}
+                      features={c.features}
+                      onEdit={handleEditContributor}
                     />
                   ))}
                 </div>
@@ -178,7 +236,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                   </button>
                 </div>
               </>
-            ) : (
+            ) : type === "add" ? (
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className={S.addContributorForm}
@@ -275,7 +333,121 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                   <button
                     className={S.cancelBtn}
                     id="btn-cancel-add-contributor"
-                    onClick={() => setType("view")}
+                    onClick={() => {
+                      resetFeaturesToDefault();
+                      setEditData(null);
+                      if (typeof editReset === "function")
+                        editReset({ name: "", email: "", password: "" });
+                      setType("view");
+                    }}
+                    type="button"
+                  >
+                    Cancelar
+                  </button>
+                  <input
+                    className={S.addBtn}
+                    type="submit"
+                    id="btn-add-contributor"
+                  />
+                </div>
+              </form>
+            ) : (
+              <form
+                onSubmit={editHandleSubmit(editSubmit)}
+                className={S.addContributorForm}
+              >
+                <input
+                  className={S.input}
+                  id="input-name"
+                  type="text"
+                  placeholder="Nome"
+                  {...editRegister("name", { required: true })}
+                  defaultValue={editData?.name || ""}
+                />
+                <input
+                  className={S.input}
+                  id="input-email"
+                  type="email"
+                  placeholder="Email"
+                  {...editRegister("email", { required: true, maxLength: 50 })}
+                  defaultValue={editData?.email || ""}
+                />
+                <input
+                  className={S.input}
+                  id="input-password"
+                  type="password"
+                  placeholder="Senha"
+                  {...editRegister("password", { maxLength: 25 })}
+                  defaultValue={editData?.password || ""}
+                />
+                <div className={S.divider02}></div>
+                <div className={S.checkboxsContainer}>
+                  <h1 className={S.checkboxTitle}>
+                    Permissões do contribuinte
+                  </h1>
+                  <div className={S.blockRow}>
+                    <div className={S.blockWrapper}>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="stock"
+                        checked={features.stock}
+                        onChange={handleFeatureChange}
+                      />
+                      <span className={S.blockLabel}>Estoque</span>
+                    </div>
+                    <div className={S.blockWrapper}>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="finance"
+                        checked={features.finance}
+                        onChange={handleFeatureChange}
+                      />
+                      <span className={S.blockLabel}>Fluxo de caixa</span>
+                    </div>
+                  </div>
+                  <div className={S.blockRow}>
+                    <div className={S.blockWrapper}>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="calendar"
+                        checked={features.calendar}
+                        onChange={handleFeatureChange}
+                      />
+                      <span className={S.blockLabel}>Agenda</span>
+                    </div>
+                    <div className={S.blockWrapper}>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="task"
+                        checked={features.task}
+                        onChange={handleFeatureChange}
+                      />
+                      <span className={S.blockLabel}>Organizador</span>
+                    </div>
+                    <div className={S.blockWrapper}>
+                      <input
+                        type="checkbox"
+                        className={S.switch}
+                        name="service"
+                        checked={features.service}
+                        onChange={handleFeatureChange}
+                      />
+                      <span className={S.blockLabel}>Serviços</span>
+                    </div>
+                  </div>
+                </div>
+                <div className={S.actionsButtons}>
+                  <button
+                    className={S.cancelBtn}
+                    id="btn-cancel-add-contributor"
+                    onClick={() => {
+                      resetFeaturesToDefault();
+                      setType("view");
+                    }}
                     type="button"
                   >
                     Cancelar

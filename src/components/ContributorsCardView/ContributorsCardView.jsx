@@ -5,7 +5,13 @@ import axios from "axios";
 
 import S from "./ContributorsCardView.module.css";
 
-export default function ContributorsCardView({ id, name, email }) {
+export default function ContributorsCardView({
+  id,
+  name,
+  email,
+  features,
+  onEdit,
+}) {
   async function handleDelete(id) {
     // Função para deletar o colaborador
     try {
@@ -30,7 +36,11 @@ export default function ContributorsCardView({ id, name, email }) {
         </p>
       </div>
       <div className={S.buttonsContributors}>
-        <button className={S.buttonEdit} id={`btn-edit-${id}`}>
+        <button
+          className={S.buttonEdit}
+          id={`btn-edit-${id}`}
+          onClick={() => onEdit({ id, name, email, features })}
+        >
           <FaEdit />
         </button>
         <button

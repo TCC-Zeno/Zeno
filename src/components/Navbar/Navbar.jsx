@@ -11,13 +11,13 @@ import { MdHomeRepairService } from "react-icons/md";
 import { FaGear } from "react-icons/fa6";
 import { BiSupport } from "react-icons/bi";
 import { TfiMenu } from "react-icons/tfi";
-import { AiOutlineDoubleLeft, AiOutlineClose } from "react-icons/ai";
 import Logo from "../../assets/logo/LogoZeno_LogoPretoSFundo.png";
 import { useSelector } from "react-redux";
 
 export function Navbar() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
   const profileInfo = useSelector((state) => state.userReducer.userData);
+  const employee = useSelector((state) => state.userReducer.employee);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -158,17 +158,19 @@ export function Navbar() {
             </Link>
           )}
 
-          <Link
-            className={`${styles.nav_link} ${
-              rotaStatus === "settings" ? styles.active : ""
-            }`}
-            to="/settings"
-            onClick={closeMenu}
-            id="settings"
-          >
-            <FaGear className={styles.icons} />
-            <span>Personalizar</span>
-          </Link>
+          {!employee && (
+            <Link
+              className={`${styles.nav_link} ${
+                rotaStatus === "settings" ? styles.active : ""
+              }`}
+              to="/settings"
+              onClick={closeMenu}
+              id="settings"
+            >
+              <FaGear className={styles.icons} />
+              <span>Personalizar</span>
+            </Link>
+          )}
         </div>
 
         <div className={styles.help}>

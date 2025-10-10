@@ -14,6 +14,7 @@ const initialState = {
     service: false,
   },
   userData: {},
+  employee: "",
 };
 
 export const userSlice = createSlice({
@@ -52,10 +53,13 @@ export const userSlice = createSlice({
     userData: (state,action) =>{
       state.userData = action.payload;
       
+    },
+    setEmployee: (state, action) => {
+      state.employee = action.payload;
     }
   },
 });
 
-export const { login, logout, setTheme, setColorBlindness, toggleBlockedResource, userData } = userSlice.actions;
+export const { login, logout, setTheme, setColorBlindness, toggleBlockedResource, userData, setEmployee } = userSlice.actions;
 
 export default userSlice.reducer;
