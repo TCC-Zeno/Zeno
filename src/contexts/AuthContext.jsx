@@ -64,6 +64,7 @@ export function AuthProvider({ children }) {
       if (response.data.success) {
         toast.success("Login realizado com sucesso!");
         setUser(response.data.user);
+        //o tipo de usuário (employee) é verificado no backend e retornado na resposta
         return { success: true, user: response.data.user };
       }
     } catch (error) {

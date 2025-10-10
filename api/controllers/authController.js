@@ -7,6 +7,7 @@ import {
   deleteUser,
   searchUsers*/
 } from "../services/authService.js";
+import { getEmployeeByEmail } from "../services/employeeService.js"
 import argon2 from "argon2";
 
 // Cadastrar usuário
@@ -50,12 +51,16 @@ export const signup = async (req, res) => {
 export const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await getUserByEmail(email);
+
+    let user = await getUserByEmail(email);
     if (!user) {
-      return res.status(401).json({
-        success: false,
-        error: "Usuário não encontrado"
-      });
+      user = await getEmployeeByEmail(email);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          error: "Usuário não encontrado"
+        });
+      }
     }
     // Verifica senha (com criptografia)
     if (!await argon2.verify(user.password, password)) {
@@ -89,6 +94,7 @@ export const signin = async (req, res) => {
       res.status(200).json({
         success: true,
         user: userWithoutPassword,
+        employee: user.id ? true : false,
         debug: {
           sessionId: req.sessionID,
           userId: req.session.userId

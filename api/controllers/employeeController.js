@@ -1,10 +1,10 @@
-import { create, getEmployeeCnpj, getEmployeeByEmail } from "../services/employeeService.js"
+import { create, getEmployeeCnpj, getEmployeeByEmail, destroy } from "../services/employeeService.js"
 import { getUserByEmail } from "../services/authService.js"
 import argon2 from "argon2";
 
 export const createEmployee = async (req, res) => {
   try {
-    const { owner_uuid, cnpj, email, password, company_name, name, color, features } = req.body
+    const { owner_uuid, cnpj, email, password, company_name, name, color, features, logo } = req.body
 
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
@@ -16,7 +16,7 @@ export const createEmployee = async (req, res) => {
 
     // Verifica se o funcionário já existe
     const existingEmployee = await getEmployeeByEmail(email);
-    if(existingEmployee){
+    if (existingEmployee) {
       return res.status(409).json({
         success: false,
         error: "Funcionário já cadastrado."
@@ -34,7 +34,8 @@ export const createEmployee = async (req, res) => {
       color: color,
       email: email,
       password: hashedPassword,
-      features: features
+      features: features,
+      logo: logo
     };
     console.log("Controller employeeData:", employeeData);
     const newUser = await create(employeeData);
@@ -62,9 +63,27 @@ export const getEmployee = async (req, res) => {
     if (!data || data.length === 0) {
       return res.status(404).json("Funcionário não encontrado");
     }
-    
+
     res.status(200).json(data);
   } catch (err) {
-    res.status(400).json({error: err.message});
+    res.status(400).json({ error: err.message });
+  }
+}
+export const deleteEmployee = async (req, res) => {
+  try {
+    const { id } = req.body;
+    console.log("Controller ID to delete:", id);
+    if (!id) {
+      return res.status(400).json({ error: "ID do funcionário é obrigatório" });
+    }
+
+    const result = await destroy(id);
+    if (result.error) {
+      return res.status(400).json({ error: result.error });
+    }
+
+    res.status(200).json({ message: "Funcionário deletado com sucesso" });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 }

@@ -47,6 +47,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           email: data.email,
           password: data.password,
           features: features,
+          logo: profileinfo.logo
         }
       );
     } catch (err) {
@@ -54,8 +55,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
       console.error(err);
     }
   };
-useEffect(()=>{
-async function fetchContributors(){
+  async function fetchContributors() {
     try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/employee/fetchContributors`,
@@ -68,8 +68,9 @@ async function fetchContributors(){
       console.error("Erro ao listar funcionários:", error);
       return [];
     }
-  };
-  fetchContributors();
+  }
+useEffect(()=>{
+  fetchContributors(profileinfo.cnpj, setContributors);
 }, [profileinfo.cnpj, isOpen]);
   const dropdownVariants = {
     hidden: {
@@ -159,8 +160,8 @@ async function fetchContributors(){
                 <div className={S.viewContributors}>
                   {contributors.map((contributor) => (
                     <ContributorsCardView
-                      key={contributor.uuid}
-                      id={contributor.uuid}
+                      key={contributor.id}
+                      id={contributor.id}
                       name={contributor.name}
                       email={contributor.email}
                     />
