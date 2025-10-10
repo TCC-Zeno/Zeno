@@ -12,14 +12,14 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const closeButtonRef = useRef(null);
   const [type, setType] = useState("view");
   const profileinfo = useSelector((state) => state.userReducer.userData);
-  const [contributors, setContributors] = useState([])
+  const [contributors, setContributors] = useState([]);
 
   const [features, setFeatures] = useState({
-    service: profileinfo?.features?.service ?? true,
-    stock: profileinfo?.features?.stock ?? true,
-    finance: profileinfo?.features?.finance ?? true,
-    calendar: profileinfo?.features?.calendar ?? true,
-    task: profileinfo?.features?.task ?? true,
+    service: false,
+    stock: false,
+    finance: false,
+    calendar: false,
+    task: false,
   });
 
   const handleFeatureChange = async (e) => {
@@ -47,7 +47,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           email: data.email,
           password: data.password,
           features: features,
-          logo: profileinfo.logo
+          logo: profileinfo.logo,
         }
       );
     } catch (err) {
@@ -63,15 +63,15 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           cnpj: profileinfo.cnpj,
         }
       );
-      setContributors(resposta.data)
+      setContributors(resposta.data);
     } catch (error) {
       console.error("Erro ao listar funcionários:", error);
       return [];
     }
   }
-useEffect(()=>{
-  fetchContributors(profileinfo.cnpj, setContributors);
-}, [profileinfo.cnpj, isOpen]);
+  useEffect(() => {
+    fetchContributors(profileinfo.cnpj, setContributors);
+  }, [profileinfo.cnpj, isOpen]);
   const dropdownVariants = {
     hidden: {
       opacity: 0,
@@ -221,6 +221,7 @@ useEffect(()=>{
                       <input
                         type="checkbox"
                         className={S.switch}
+                        name="stock"
                         checked={features.stock}
                         onChange={handleFeatureChange}
                       />
@@ -230,6 +231,7 @@ useEffect(()=>{
                       <input
                         type="checkbox"
                         className={S.switch}
+                        name="finance"
                         checked={features.finance}
                         onChange={handleFeatureChange}
                       />
@@ -241,6 +243,7 @@ useEffect(()=>{
                       <input
                         type="checkbox"
                         className={S.switch}
+                        name="calendar"
                         checked={features.calendar}
                         onChange={handleFeatureChange}
                       />
@@ -250,6 +253,7 @@ useEffect(()=>{
                       <input
                         type="checkbox"
                         className={S.switch}
+                        name="task"
                         checked={features.task}
                         onChange={handleFeatureChange}
                       />
@@ -259,6 +263,7 @@ useEffect(()=>{
                       <input
                         type="checkbox"
                         className={S.switch}
+                        name="service"
                         checked={features.service}
                         onChange={handleFeatureChange}
                       />
