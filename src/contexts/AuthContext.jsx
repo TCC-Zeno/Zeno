@@ -33,11 +33,23 @@ export function AuthProvider({ children }) {
           { withCredentials: true }
         );
 
-        dispatch(userData(userSession.data.user));
-        dispatch(setEmployee(response.data.employee));
-        dispatch(setTheme(userSession.data.user.color));
-        dispatch(setColorBlindness(userSession.data.user.accessibility));
-        setUser(userSession.data.user);
+        const owner = userSession.data.user || null;
+        const employee = userSession.data.employee || null;
+
+        const activeUser = employee || owner;
+
+        if (activeUser) {
+          dispatch(userData(activeUser));
+          dispatch(setEmployee(!!employee));
+
+          dispatch(setTheme(activeUser.color || owner?.color));
+          dispatch(
+            setColorBlindness(activeUser.accessibility || owner?.accessibility)
+          );
+          setUser(activeUser);
+        } else {
+          setUser(null);
+        }
       } else {
         setUser(null);
       }

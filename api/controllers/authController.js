@@ -7,7 +7,7 @@ import {
   deleteUser,
   searchUsers*/
 } from "../services/authService.js";
-import { getEmployeeByEmail } from "../services/employeeService.js"
+import { getEmployeeByEmail, getEmployeeById } from "../services/employeeService.js"
 import argon2 from "argon2";
 
 // Cadastrar usuário
@@ -71,12 +71,26 @@ export const signin = async (req, res) => {
     }
 
     // Salvar na sessão
-    req.session.userId = user.uuid;
-    req.session.user = {
-      id: user.uuid,
-      email: user.email,
-      cnpj: user.cnpj
-    };
+    if (user.id) {
+      // employee
+      req.session.userId = user.uuid; 
+      req.session.employeeId = user.id; 
+      req.session.user = {
+        id: user.uuid,
+        employeeId: user.id,
+        email: user.email,
+        cnpj: user.cnpj
+      };
+    } else {
+      // usuário normal
+      req.session.userId = user.uuid;
+      req.session.user = {
+        id: user.uuid,
+        email: user.email,
+        cnpj: user.cnpj
+      };
+    }
+
 
     // Force salvar a sessão
     req.session.save((err) => {
@@ -97,7 +111,8 @@ export const signin = async (req, res) => {
         employee: user.id ? true : false,
         debug: {
           sessionId: req.sessionID,
-          userId: req.session.userId
+          userId: req.session.userId,
+          employeeId: req.session.employeeId || null
         }
       });
     });
@@ -142,7 +157,7 @@ export const checkSession = (req, res) => {
 export const getSession = async (req, res) => {
   try {
     if (req.session && req.session.user) {
-      const userId = req.session.user.id || req.session.user.uuid || req.session.user._id;
+      const userId = req.session.userId || req.session.user.id || req.session.user.uuid || req.session.user._id;
 
       if (!userId) {
         return res.status(400).json({
@@ -159,9 +174,15 @@ export const getSession = async (req, res) => {
         });
       }
 
+      let employee = null;
+      if (req.session.employeeId) {
+        employee = await getEmployeeById(req.session.employeeId);
+      }
+
       return res.status(200).json({
         success: true,
-        user
+        user,
+        employee
       });
     }
 
@@ -192,7 +213,7 @@ export const logout = (req, res) => {
         });
       }
 
-      res.clearCookie('connect.sid');
+      res.clearCookie('sessionId');
       res.status(200).json({
         success: true,
         message: "Logout realizado com sucesso"

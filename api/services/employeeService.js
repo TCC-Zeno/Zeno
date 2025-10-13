@@ -36,6 +36,17 @@ export const getEmployeeByEmail = async (email) => {
   if (error && error.code !== "PGRST116") throw new Error(error.message);
   return data;
 };
+export const getEmployeeById = async (id) => {
+  if (!id) return null;
+  const { data, error } = await supabase
+    .from('employee')
+    .select('*')
+    .eq('id', id)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
 export const destroy = async (id) => {
   const { error } = await supabase
     .from("employee")

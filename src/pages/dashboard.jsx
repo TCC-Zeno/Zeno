@@ -25,7 +25,7 @@ export default function Dashboard() {
     { id: 7, name: "Organizar arquivos" },
     { id: 8, name: "Preparar apresentação" },
     { id: 9, name: "Analisar resultados" },
-    { id: 10, name: "Fazer backup de dados" },
+    { id: 10, name: "Fazer bckup de dados" },
   ];
   const tasksProgress = [
     { id: 1, name: "Reunião com a equipe" },
