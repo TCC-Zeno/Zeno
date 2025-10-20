@@ -7,12 +7,76 @@ import { Controller, useForm } from "react-hook-form";
 import Modal from "../components/Modal/Modal";
 import ResourceBlocked from "../components/ResourceBlocked/ResourceBlocked";
 import CurrencyInput from "react-currency-input-field";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
   // Resumo de caixa
   const [selectedPeriod, setSelectedPeriod] = useState("daily");
   const profileinfo = useSelector((state) => state.userReducer.userData);
   const employee = useSelector((state) => state.userReducer.employee);
+
+  const [dataFinance, setDataFinance] = useState([]);
+
+  async function fetchData() {
+    if (!profileinfo?.uuid) return;
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/financeId`,
+        {
+          uuid: profileinfo.uuid,
+        }
+      );
+      setDataFinance(resposta.data);
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [profileinfo?.uuid]);
+
+
+  const onSubmit = async (data) => {
+    console.log("Form data:", data);
+      const priceDot = data.price?.toString().replace(",", ".");
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/finance/addFinanceForm`,
+          {
+            userId: profileinfo?.uuid,
+            name: data.name,
+            value: parseFloat(priceDot),
+            category: data.category,
+            payment_method: data.payment_method,
+            type_flow: data.flow,
+          }
+        );
+  
+        if (response.status === 201) {
+          addReset();
+          fetchData();
+          toast.success("Finança adicionada com sucesso!");
+        }
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message || "Erro ao adicionar finança";
+        console.error("Erro ao adicionar finança:", errorMessage);
+        toast.error("Erro ao adicionar finança!");
+        console.log(error);
+      }
+    };
+
+  const amountValue = dataFinance
+    .filter((item) => item.type_flow === "Entrada")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const expensesValue = dataFinance
+    .filter((item) => item.type_flow === "Saída")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const profitValue = amountValue - expensesValue;
 
   // Organizador diário
   const tasksToDo = [
@@ -125,7 +189,7 @@ export default function Dashboard() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data) => {
+  //const onSubmit = async (data) => {
     //   const priceDot = data.price?.toString().replace(",", ".");
     //   try {
     //     const response = await axios.post(
@@ -161,7 +225,7 @@ export default function Dashboard() {
     //   } catch (error) {
     //     console.error("Erro ao buscar dados:", error);
     //   }
-  };
+  //};
 
   return (
     <>
@@ -197,15 +261,39 @@ export default function Dashboard() {
             <div className={S.cashContainer}>
               <div className={S.cashAmount}>
                 <h4>Montante</h4>
-                <p id="amount-value">R$ 1000</p>
+                <p id="amount-value">
+                  R${" "}
+                  <CurrencyInput
+                    decimalSeparator=","
+                    groupSeparator="."
+                    value={amountValue.toFixed(2)}
+                    //className={S.currencyInput}
+                  />
+                </p>
               </div>
               <div className={S.cashProfit}>
                 <h4>Lucro</h4>
-                <p id="profit-value">R$ 1000</p>
+                <p id="profit-value">
+                  R${" "}
+                  <CurrencyInput
+                    decimalSeparator=","
+                    groupSeparator="."
+                    value={profitValue.toFixed(2)}
+                    //className={S.currencyInput}
+                  />
+                </p>
               </div>
               <div className={S.cashExpenses}>
                 <h4>Despesas</h4>
-                <p id="expenses-value">R$ 1000</p>
+                <p id="expenses-value">
+                  R${" "}
+                  <CurrencyInput
+                    decimalSeparator=","
+                    groupSeparator="."
+                    value={expensesValue.toFixed(2)}
+                    //className={S.currencyInput}
+                  />
+                </p>
               </div>
             </div>
           </section>
@@ -235,7 +323,7 @@ export default function Dashboard() {
                     className={S.inputName}
                     type="text"
                     placeholder="Nome completo"
-                    {...register("Full name", { required: true })}
+                    {...register("name", { required: true })}
                   />
                   {/* oq está logo abaixo é o input de preço, usei uma lib que tem mais info aqui https://github.com/cchanxzy/react-currency-input-field. By Vinicius */}
                   <Controller
@@ -267,9 +355,9 @@ export default function Dashboard() {
                 </div>
                 <div className={S.row02}>
                   <select
-                    id="input-payment-method"
+                    id="input-payment_method"
                     className={S.financeSelect}
-                    {...register("payment-method", { required: true })}
+                    {...register("payment_method", { required: true })}
                   >
                     <option value="Método de pagamento" disabled selected>
                       Método de pagamento

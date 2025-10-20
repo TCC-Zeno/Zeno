@@ -13,6 +13,7 @@ import { BiSupport } from "react-icons/bi";
 import { TfiMenu } from "react-icons/tfi";
 import Logo from "../../assets/logo/LogoZeno_LogoPretoSFundo.png";
 import { useSelector } from "react-redux";
+import { AiOutlineClose } from "react-icons/ai";
 
 export function Navbar() {
   const rotaStatus = useSelector((state) => state.rotaReducer.rota);
