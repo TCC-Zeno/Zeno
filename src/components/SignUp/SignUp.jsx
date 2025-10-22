@@ -7,15 +7,17 @@ import { IMaskInput } from "react-imask";
 import { cnpj } from "cpf-cnpj-validator";
 import axios from "axios";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { toast } from "react-toastify";
+import Modal from "../Modal/Modal";
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { login: authLogin } = useAuth();
   const [error, setError] = useState({
     cnpjErr: "",
@@ -34,6 +36,10 @@ export default function SignUp() {
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    setShowModal(false);
+  }, [error]);
+
   const onSubmit = async (data) => {
     setIsLoading(true);
     setError({
@@ -48,6 +54,7 @@ export default function SignUp() {
       setError({
         cnpjErr: "Seu CNPJ é falso",
       });
+      setShowModal(false);
       return;
     }
 
@@ -56,6 +63,16 @@ export default function SignUp() {
       setError({
         password: "A senha inserida nos campos precisam ser idênticas",
       });
+      setShowModal(false);
+      return;
+    }
+
+    if (!data.phrase || data.phrase.length < 5) {
+      toast.error("A frase de recuperação deve ter ao menos 5 caracteres");
+      setError({
+        phrase: "A frase de recuperação deve ter ao menos 5 caracteres",
+      });
+      setShowModal(false);
       return;
     }
 
@@ -68,7 +85,7 @@ export default function SignUp() {
           password: data.password,
         }
       );
-      
+
       // Se cadastro OK, segue para dashboard
       if (resposta.status === 201) {
         // Após cadastro bem sucedido, faz o login
@@ -93,6 +110,7 @@ export default function SignUp() {
       console.log(err);
       setIsLoading(false);
       toast.error("Erro ao fazer cadastro. Verifique os dados.");
+      setShowModal(false);
       // Se erro, mostra mensagem
       if (err.status == 401) {
         setError({
@@ -159,14 +177,6 @@ export default function SignUp() {
             {...register("email", { required: true, min: 5, maxLength: 100 })}
             className={errors.email ? S.errorInput : ""}
           />
-          {/* <input
-            id="input-password"
-            type="password"
-            placeholder="Senha"
-            autoComplete="new-password"
-            {...register("password", { required: true })}
-            className={error.password || errors.password ? S.errorInput : ""}
-          /> */}
           <div className={S.passwordWrapper}>
             <input
               id="input-password"
@@ -207,28 +217,53 @@ export default function SignUp() {
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          {/* <input
-            id="input-confirm-password"
-            type="password"
-            placeholder="Confirmar senha"
-            autoComplete="pass"
-            {...register("confirmPassword", { required: true })}
-            className={
-              error.password || errors.confirmPassword ? S.errorInput : ""
-            }
-          /> */}
+          <input
+            id="input-phrase"
+            type="text"
+            placeholder="Frase de recuperação"
+            {...register("phrase", { required: true, min: 5, maxLength: 100 })}
+            className={errors.phrase ? S.errorInput : ""}
+          />
           <ErrorMessage condition={error.cnpjErr} message={error.cnpjErr} />
           <ErrorMessage condition={error.password} message={error.password} />
           <ErrorMessage condition={error.server} message={error.server} />
           <ErrorMessage condition={error.user} message={error.user} />
+          <ErrorMessage condition={error.phrase} message={error.phrase} />
 
           <div className={S.containerButton}>
-            {isLoading ? (
+            <button
+              className={S.button}
+              type="button"
+              onClick={() => setShowModal(true)}
+            >
+              {" "}
+              Entrar{" "}
+            </button>
+            {/* {isLoading ? (
               <PropagateLoader />
             ) : (
               <input id="btn-submit" type="submit" value="Entrar" />
-            )}
+            )} */}
           </div>
+          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+            <div className={S.modalContent}>
+              <h2>Frase de recuperação</h2>
+              <p>
+                Guarde bem sua frase de recuperação. Ela será necessária para
+                recuperar sua conta caso você esqueça sua senha.
+              </p>
+              <p>
+                A Zeno não tem acesso às senhas ou frases de recuperação dos
+                usuários, portanto, não poderá ajudar na recuperação da conta
+                sem essa frase.
+              </p>
+              {isLoading ? (
+                <PropagateLoader />
+              ) : (
+                <input id="btn-submit" type="submit" value="Entrar" />
+              )}
+            </div>
+          </Modal>
         </form>
       </div>
     </section>

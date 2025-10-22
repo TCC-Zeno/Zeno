@@ -114,6 +114,43 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
   border: 2px solid red;
 }
 
+.button {
+  margin-top: 50px;
+  padding: 10px;
+  background-color: rgb(70, 135, 243);
+  border-radius: 15px;
+  color: #ffffff;
+  font-size: 20pt;
+  font-family: "Coolvetica Rg", sans;
+  transition: 1s all;
+  width: 30%;
+  cursor: pointer;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.modalContent h2 {
+  font-size: 15pt;
+  font-family: "Coolvetica Rg", sans;
+}
+
+.modalContent input {
+  font-size: 12pt;
+  text-align: center;
+  padding: 8px 15px;
+  border-radius: 10px;
+  background-color: rgb(var(--color-primary));
+  color: #fff;
+}
+.modalContent input:hover {
+  transform: scale(1.06);
+}
+
 @media only screen and (max-width: 1400px) {
   .wrapperForm h3 {
     font-size: 20pt;
