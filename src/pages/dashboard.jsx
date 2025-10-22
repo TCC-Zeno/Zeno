@@ -9,200 +9,20 @@ import ResourceBlocked from "../components/ResourceBlocked/ResourceBlocked";
 import CurrencyInput from "react-currency-input-field";
 import axios from "axios";
 import { toast } from "react-toastify";
-// import { use } from "passport";
 
 export default function Dashboard() {
-  // Resumo de caixa
+  const [loading, setLoading] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState("daily");
   const profileinfo = useSelector((state) => state.userReducer.userData);
-  const employee = useSelector((state) => state.userReducer.employee);
 
   const [dataFinance, setDataFinance] = useState([]);
   const [dataStock, setDataStock] = useState([]);
   const [dataTasks, setDataTasks] = useState([]);
 
-  async function fetchData() {
-    if (!profileinfo?.uuid) return;
-    try {
-      const resposta = await axios.post(
-        `${import.meta.env.VITE_API_URL}/finance/financeId`,
-        {
-          uuid: profileinfo.uuid,
-        }
-      );
-      setDataFinance(resposta.data);
-    } catch (error) {
-      console.error("Erro ao buscar dados:", error);
-    }
-  }
-
-  useEffect(() => {
-    fetchData();
-    fetchTasks();
-  }, [profileinfo?.uuid]);
-
-
-  const onSubmit = async (data) => {
-    console.log("Form data:", data);
-      const priceDot = data.price?.toString().replace(",", ".");
-      try {
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/finance/addFinanceForm`,
-          {
-            userId: profileinfo?.uuid,
-            name: data.name,
-            value: parseFloat(priceDot),
-            category: data.category,
-            payment_method: data.payment_method,
-            type_flow: data.flow,
-          }
-        );
-  
-        if (response.status === 201) {
-          addReset();
-          fetchData();
-          toast.success("Finança adicionada com sucesso!");
-        }
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.message || "Erro ao adicionar finança";
-        console.error("Erro ao adicionar finança:", errorMessage);
-        toast.error("Erro ao adicionar finança!");
-        console.log(error);
-      }
-    };
-
-  const amountValue = dataFinance
-    .filter((item) => item.type_flow === "Entrada")
-    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
-
-  const expensesValue = dataFinance
-    .filter((item) => item.type_flow === "Saída")
-    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
-
-  const profitValue = amountValue - expensesValue;
-
-  //  const [searchTerm, setSearchTerm] = useState("");
-
-    async function fetchData() {
-    try {
-      const data = await axios.post(
-        `${import.meta.env.VITE_API_URL}/stock/readProduct`,
-        {
-          userId: profileinfo?.uuid,
-        }
-      );
-      setDataStock(data.data);
-    } catch (error) {
-      console.error("Erro ao buscar dados:", error);
-    }
-  }
-
-  // Validação e tratamento de erros para os filtros
-  const itensStock = dataStock.filter((item) => item?.alert === "default");
-  const itensRefill = dataStock.filter((item) => item?.alert === "restock");
-  const itensBuy = dataStock.filter((item) => item?.alert === "lowstock");
-
-  async function fetchTasks() {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/tasks/taskID`,
-        {
-          uuid: profileinfo?.uuid,
-        }
-      );
-      setDataTasks(response.data);
-    } catch (error) {
-      toast.error("Erro ao buscar tarefas");
-      console.error("Erro ao buscar tarefas:", error);
-    }
-  }
-
-  const tasksToDo = dataTasks.filter((item) => item?.status === "todo");
-  const tasksProgress = dataTasks.filter((item) => item?.status === "doing");
-  const tasksDone = dataTasks.filter((item) => item?.status === "done");
-
-  // Organizador diário
-  // const tasksToDo = [
-  //   { id: 1, name: "Reunião com a equipe" },
-  //   { id: 2, name: "Entregar projeto" },
-  //   { id: 3, name: "Revisar documentos" },
-  //   { id: 4, name: "Planejar próxima semana" },
-  //   { id: 5, name: "Atualizar site" },
-  //   { id: 6, name: "Responder e-mails" },
-  //   { id: 7, name: "Organizar arquivos" },
-  //   { id: 8, name: "Preparar apresentação" },
-  //   { id: 9, name: "Analisar resultados" },
-  //   { id: 10, name: "Fazer bckup de dados" },
-  // ];
-  // const tasksProgress = [
-  //   { id: 1, name: "Reunião com a equipe" },
-  //   { id: 2, name: "Entregar projeto" },
-  //   { id: 3, name: "Revisar documentos" },
-  //   { id: 4, name: "Planejar próxima semana" },
-  //   { id: 5, name: "Atualizar site" },
-  //   { id: 6, name: "Responder e-mails" },
-  //   { id: 7, name: "Organizar arquivos" },
-  //   { id: 8, name: "Preparar apresentação" },
-  //   { id: 9, name: "Analisar resultados" },
-  //   { id: 10, name: "Fazer backup de dados" },
-  // ];
-  // const tasksDone = [
-  //   { id: 1, name: "Reunião com a equipe" },
-  //   { id: 2, name: "Entregar projeto" },
-  //   { id: 3, name: "Revisar documentos" },
-  //   { id: 4, name: "Planejar próxima semana" },
-  //   { id: 5, name: "Atualizar site" },
-  //   { id: 6, name: "Responder e-mails" },
-  //   { id: 7, name: "Organizar arquivos" },
-  //   { id: 8, name: "Preparar apresentação" },
-  //   { id: 9, name: "Analisar resultados" },
-  //   { id: 10, name: "Fazer backup de dados" },
-  // ];
-
-  // Estoque
-  /*const itensStock = [
-    { id: 1, name: "Produto A" },
-    { id: 2, name: "Produto B" },
-    { id: 3, name: "Produto C" },
-    { id: 4, name: "Produto D" },
-    { id: 5, name: "Produto E" },
-    { id: 6, name: "Produto F" },
-    { id: 7, name: "Produto G" },
-    { id: 8, name: "Produto H" },
-    { id: 9, name: "Produto I" },
-    { id: 10, name: "Produto J" },
-  ];
-  const itensRefill = [
-    { id: 1, name: "Produto A" },
-    { id: 2, name: "Produto B" },
-    { id: 3, name: "Produto C" },
-    { id: 4, name: "Produto D" },
-    { id: 5, name: "Produto E" },
-    { id: 6, name: "Produto F" },
-    { id: 7, name: "Produto G" },
-    { id: 8, name: "Produto H" },
-    { id: 9, name: "Produto I" },
-    { id: 10, name: "Produto J" },
-  ];
-  const itensBuy = [
-    { id: 1, name: "Produto A" },
-    { id: 2, name: "Produto B" },
-    { id: 3, name: "Produto C" },
-    { id: 4, name: "Produto D" },
-    { id: 5, name: "Produto E" },
-    { id: 6, name: "Produto F" },
-    { id: 7, name: "Produto G" },
-    { id: 8, name: "Produto H" },
-    { id: 9, name: "Produto I" },
-    { id: 10, name: "Produto J" },
-     */
-  //  const userId = useSelector((state) => state.userReducer.user)
   const [resourceToUnlock, setResourceToUnlock] = useState(null);
   const [protectedModalOpen, setProtectedModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  //  const [dataFinance, setDataFinance] = useState([]);
   const dispatch = useDispatch();
   const blockedResources = useSelector(
     (state) => state.userReducer.blockedResources
@@ -227,61 +47,127 @@ export default function Dashboard() {
     handleSubmit,
     control,
     reset: addReset,
-    formState: { errors: addErrors },
   } = useForm({
     defaultValues: { price: 0 },
     mode: "onChange",
   });
 
-  //const onSubmit = async (data) => {
-    //   const priceDot = data.price?.toString().replace(",", ".");
-    //   try {
-    //     const response = await axios.post(
-    //       `${import.meta.env.VITE_API_URL}/dashboard/addFinanceForm`,
-    //       {
-    //         userId: userId.uuid,
-    //         name: data.name,
-    //         value: parseFloat(priceDot),
-    //         category: data.category,
-    //         payment_method: data.paymentMethod,
-    //         type_flow: data.flow,
-    //       }
-    //     );
-    //     if (response.status === 201) {
-    //       addReset();
-    //       fetchData();
-    //     }
-    //   } catch (error) {
-    //     const errorMessage =
-    //       error.response?.data?.message || "Erro ao adicionar finança";
-    //     console.error("Erro ao adicionar finança:", errorMessage);
-    //   }
-    // };
-    //   async function fetchData() {
-    //   try {
-    //     const data = await axios.post(
-    //       `${import.meta.env.VITE_API_URL}/finance/financeId`,
-    //       {
-    //         uuid: userId.uuid,
-    //       }
-    //     );
-    //     setDataFinance(data.data);
-    //   } catch (error) {
-    //     console.error("Erro ao buscar dados:", error);
-    //   }
-  //};
+  async function fetchData() {
+    if (!profileinfo?.uuid) return;
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/financeId`,
+        {
+          uuid: profileinfo.uuid,
+        }
+      );
+      setDataFinance(resposta.data);
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  }
+
+  const onSubmit = async (data) => {
+    console.log("Form data:", data);
+    const priceDot = data.price?.toString().replace(",", ".");
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/finance/addFinanceForm`,
+        {
+          userId: profileinfo?.uuid,
+          name: data.name,
+          value: parseFloat(priceDot),
+          category: data.category,
+          payment_method: data.payment_method,
+          type_flow: data.flow,
+        }
+      );
+
+      if (response.status === 201) {
+        addReset();
+        fetchData();
+        toast.success("Finança adicionada com sucesso!");
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Erro ao adicionar finança";
+      console.error("Erro ao adicionar finança:", errorMessage);
+      toast.error("Erro ao adicionar finança!");
+      console.log(error);
+    }
+  };
+
+  async function fetchStock() {
+    try {
+      const data = await axios.post(
+        `${import.meta.env.VITE_API_URL}/stock/readProduct`,
+        {
+          userId: profileinfo?.uuid,
+        }
+      );
+      setDataStock(data.data);
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  }
+  async function fetchTasks() {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/tasks/taskID`,
+        {
+          uuid: profileinfo?.uuid,
+        }
+      );
+      setDataTasks(response.data);
+    } catch (error) {
+      toast.error("Erro ao buscar tarefas");
+      console.error("Erro ao buscar tarefas:", error);
+    }
+  }
+
+  const amountValue = dataFinance
+    .filter((item) => item.type_flow === "Entrada")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const expensesValue = dataFinance
+    .filter((item) => item.type_flow === "Saída")
+    .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
+
+  const profitValue = amountValue - expensesValue;
+
+  // Validação e tratamento de erros para os filtros
+  const itensStock = dataStock.filter((item) => item?.alert === "default");
+  const itensRefill = dataStock.filter((item) => item?.alert === "restock");
+  const itensBuy = dataStock.filter((item) => item?.alert === "lowstock");
+
+  const tasksToDo = dataTasks.filter((item) => item?.status === "todo");
+  const tasksProgress = dataTasks.filter((item) => item?.status === "doing");
+  const tasksDone = dataTasks.filter((item) => item?.status === "done");
+
+  useEffect(() => {
+    // initialize when we have a user
+    async function initializeData() {
+      setLoading(true);
+      try {
+        await fetchData();
+        await fetchTasks();
+        await fetchStock();
+      } catch (error) {
+        console.error("Erro ao inicializar dados:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (profileinfo?.uuid) {
+      initializeData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileinfo?.uuid]);
 
   return (
     <>
-      <DefaultLayout>
-        {profileinfo.user_type === "employee" && (
-          <div style={{ height: "30px", color: "red", textAlign: "center" }}>
-            <h1 style={{ fontSize: "20pt", fontWeight: "bold" }}>
-              Seu pobre, você é CLT escala 7x0
-            </h1>
-          </div>
-        )}
-
+      <DefaultLayout loading={loading}>
         {!permissions.cash && (
           <section
             className={`${S.sectionDashboard} ${S.sectionCash} sectionCash`}
@@ -293,7 +179,6 @@ export default function Dashboard() {
                 className={S.cashSelectPeriod}
                 name="cash-summary-period"
                 id="cash-summary-period"
-                defaultValue="daily"
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
               >
@@ -306,31 +191,20 @@ export default function Dashboard() {
               <div className={S.cashAmount}>
                 <h4>Montante</h4>
                 <p id="amount-value">
-                  R${" "}
-                  <CurrencyInput
-                    decimalSeparator=","
-                    groupSeparator="."
-                    value={amountValue.toFixed(2)}
-                    //className={S.currencyInput}
-                  />
+                  R${amountValue.toFixed(2)}
                 </p>
               </div>
               <div className={S.cashProfit}>
                 <h4>Lucro</h4>
                 <p id="profit-value">
-                  R${" "}
-                  <CurrencyInput
-                    decimalSeparator=","
-                    groupSeparator="."
-                    value={profitValue.toFixed(2)}
-                    //className={S.currencyInput}
-                  />
+                  R${profitValue.toFixed(2)}
                 </p>
               </div>
               <div className={S.cashExpenses}>
                 <h4>Despesas</h4>
                 <p id="expenses-value">
                   R${" "}
+                  {expensesValue.toFixed(2)}
                   <CurrencyInput
                     decimalSeparator=","
                     groupSeparator="."
@@ -402,8 +276,9 @@ export default function Dashboard() {
                     id="input-payment_method"
                     className={S.financeSelect}
                     {...register("payment_method", { required: true })}
+                    defaultValue=""
                   >
-                    <option value="Método de pagamento" disabled selected>
+                    <option value="" disabled>
                       Método de pagamento
                     </option>
                     <option value="Cartão de crédito">Cartão de crédito</option>
@@ -416,8 +291,9 @@ export default function Dashboard() {
                     id="input-payment-category"
                     className={S.financeSelect}
                     {...register("category", { required: true })}
+                    defaultValue=""
                   >
-                    <option value="Categorias" disabled selected>
+                    <option value="" disabled>
                       Categorias
                     </option>
                     <option value="Compras">Compras</option>
@@ -429,8 +305,9 @@ export default function Dashboard() {
                     id="input-payment-flow"
                     className={S.financeSelect}
                     {...register("flow", { required: true })}
+                    defaultValue=""
                   >
-                    <option value="Tipo de fluxo" disabled selected>
+                    <option value="" disabled>
                       Tipo de fluxo
                     </option>
                     <option value="Entrada">Entrada</option>
