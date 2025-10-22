@@ -9,6 +9,7 @@ import ResourceBlocked from "../components/ResourceBlocked/ResourceBlocked";
 import CurrencyInput from "react-currency-input-field";
 import axios from "axios";
 import { toast } from "react-toastify";
+// import { use } from "passport";
 
 export default function Dashboard() {
   // Resumo de caixa
@@ -17,6 +18,8 @@ export default function Dashboard() {
   const employee = useSelector((state) => state.userReducer.employee);
 
   const [dataFinance, setDataFinance] = useState([]);
+  const [dataStock, setDataStock] = useState([]);
+  const [dataTasks, setDataTasks] = useState([]);
 
   async function fetchData() {
     if (!profileinfo?.uuid) return;
@@ -35,6 +38,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchData();
+    fetchTasks();
   }, [profileinfo?.uuid]);
 
 
@@ -78,46 +82,86 @@ export default function Dashboard() {
 
   const profitValue = amountValue - expensesValue;
 
+  //  const [searchTerm, setSearchTerm] = useState("");
+
+    async function fetchData() {
+    try {
+      const data = await axios.post(
+        `${import.meta.env.VITE_API_URL}/stock/readProduct`,
+        {
+          userId: profileinfo?.uuid,
+        }
+      );
+      setDataStock(data.data);
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  }
+
+  // Validação e tratamento de erros para os filtros
+  const itensStock = dataStock.filter((item) => item?.alert === "default");
+  const itensRefill = dataStock.filter((item) => item?.alert === "restock");
+  const itensBuy = dataStock.filter((item) => item?.alert === "lowstock");
+
+  async function fetchTasks() {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/tasks/taskID`,
+        {
+          uuid: profileinfo?.uuid,
+        }
+      );
+      setDataTasks(response.data);
+    } catch (error) {
+      toast.error("Erro ao buscar tarefas");
+      console.error("Erro ao buscar tarefas:", error);
+    }
+  }
+
+  const tasksToDo = dataTasks.filter((item) => item?.status === "todo");
+  const tasksProgress = dataTasks.filter((item) => item?.status === "doing");
+  const tasksDone = dataTasks.filter((item) => item?.status === "done");
+
   // Organizador diário
-  const tasksToDo = [
-    { id: 1, name: "Reunião com a equipe" },
-    { id: 2, name: "Entregar projeto" },
-    { id: 3, name: "Revisar documentos" },
-    { id: 4, name: "Planejar próxima semana" },
-    { id: 5, name: "Atualizar site" },
-    { id: 6, name: "Responder e-mails" },
-    { id: 7, name: "Organizar arquivos" },
-    { id: 8, name: "Preparar apresentação" },
-    { id: 9, name: "Analisar resultados" },
-    { id: 10, name: "Fazer bckup de dados" },
-  ];
-  const tasksProgress = [
-    { id: 1, name: "Reunião com a equipe" },
-    { id: 2, name: "Entregar projeto" },
-    { id: 3, name: "Revisar documentos" },
-    { id: 4, name: "Planejar próxima semana" },
-    { id: 5, name: "Atualizar site" },
-    { id: 6, name: "Responder e-mails" },
-    { id: 7, name: "Organizar arquivos" },
-    { id: 8, name: "Preparar apresentação" },
-    { id: 9, name: "Analisar resultados" },
-    { id: 10, name: "Fazer backup de dados" },
-  ];
-  const tasksDone = [
-    { id: 1, name: "Reunião com a equipe" },
-    { id: 2, name: "Entregar projeto" },
-    { id: 3, name: "Revisar documentos" },
-    { id: 4, name: "Planejar próxima semana" },
-    { id: 5, name: "Atualizar site" },
-    { id: 6, name: "Responder e-mails" },
-    { id: 7, name: "Organizar arquivos" },
-    { id: 8, name: "Preparar apresentação" },
-    { id: 9, name: "Analisar resultados" },
-    { id: 10, name: "Fazer backup de dados" },
-  ];
+  // const tasksToDo = [
+  //   { id: 1, name: "Reunião com a equipe" },
+  //   { id: 2, name: "Entregar projeto" },
+  //   { id: 3, name: "Revisar documentos" },
+  //   { id: 4, name: "Planejar próxima semana" },
+  //   { id: 5, name: "Atualizar site" },
+  //   { id: 6, name: "Responder e-mails" },
+  //   { id: 7, name: "Organizar arquivos" },
+  //   { id: 8, name: "Preparar apresentação" },
+  //   { id: 9, name: "Analisar resultados" },
+  //   { id: 10, name: "Fazer bckup de dados" },
+  // ];
+  // const tasksProgress = [
+  //   { id: 1, name: "Reunião com a equipe" },
+  //   { id: 2, name: "Entregar projeto" },
+  //   { id: 3, name: "Revisar documentos" },
+  //   { id: 4, name: "Planejar próxima semana" },
+  //   { id: 5, name: "Atualizar site" },
+  //   { id: 6, name: "Responder e-mails" },
+  //   { id: 7, name: "Organizar arquivos" },
+  //   { id: 8, name: "Preparar apresentação" },
+  //   { id: 9, name: "Analisar resultados" },
+  //   { id: 10, name: "Fazer backup de dados" },
+  // ];
+  // const tasksDone = [
+  //   { id: 1, name: "Reunião com a equipe" },
+  //   { id: 2, name: "Entregar projeto" },
+  //   { id: 3, name: "Revisar documentos" },
+  //   { id: 4, name: "Planejar próxima semana" },
+  //   { id: 5, name: "Atualizar site" },
+  //   { id: 6, name: "Responder e-mails" },
+  //   { id: 7, name: "Organizar arquivos" },
+  //   { id: 8, name: "Preparar apresentação" },
+  //   { id: 9, name: "Analisar resultados" },
+  //   { id: 10, name: "Fazer backup de dados" },
+  // ];
 
   // Estoque
-  const itensStock = [
+  /*const itensStock = [
     { id: 1, name: "Produto A" },
     { id: 2, name: "Produto B" },
     { id: 3, name: "Produto C" },
@@ -152,7 +196,7 @@ export default function Dashboard() {
     { id: 8, name: "Produto H" },
     { id: 9, name: "Produto I" },
     { id: 10, name: "Produto J" },
-  ];
+     */
   //  const userId = useSelector((state) => state.userReducer.user)
   const [resourceToUnlock, setResourceToUnlock] = useState(null);
   const [protectedModalOpen, setProtectedModalOpen] = useState(false);
@@ -426,7 +470,7 @@ export default function Dashboard() {
                 <div>
                   <ul>
                     {tasksToDo.map((task) => (
-                      <li key={task.id}>{task.name}</li>
+                      <li key={task.id}>{task.information}</li>
                     ))}
                   </ul>
                 </div>
@@ -436,7 +480,7 @@ export default function Dashboard() {
                 <div>
                   <ul>
                     {tasksProgress.map((task) => (
-                      <li key={task.id}>{task.name}</li>
+                      <li key={task.id}>{task.information}</li>
                     ))}
                   </ul>
                 </div>
@@ -446,7 +490,7 @@ export default function Dashboard() {
                 <div>
                   <ul>
                     {tasksDone.map((task) => (
-                      <li key={task.id}>{task.name}</li>
+                      <li key={task.id}>{task.information}</li>
                     ))}
                   </ul>
                 </div>
