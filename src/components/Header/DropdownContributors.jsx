@@ -44,7 +44,22 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   } = useForm();
 
   const editSubmit = async (data) => {
-    console.log(data);
+    try{
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/employee/edit`,
+        {
+          id: editData.id,
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          features: features,
+        }
+      );
+    } catch (err) {
+      alert(err.response?.data?.error || "Erro ao excluir evento");
+      console.error(err);
+    }
+
   };
 
   const onSubmit = async (data) => {
@@ -56,7 +71,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           cnpj: profileinfo.cnpj,
           company_name: profileinfo.company_name,
           name: data.name,
-          color: profileinfo.color ?? theme,
+          color: profileinfo.color,
           email: data.email,
           password: data.password,
           features: features,

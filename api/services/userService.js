@@ -2,14 +2,13 @@ import supabase from "../config/supabaseClient.js";
 
 
 export const updateUser = async (uuid, updateData = {}) => {
-  console.log(updateData);
   //const featuresJSON = JSON.stringify(updateData.features, null, 2);
 
   const { data, error } = await supabase
     .from("users")
     .update({
       company_name: updateData.companyName,
-      owner_name: updateData.ownerName,
+      name: updateData.name,
       color: updateData.color,
       accessibility: updateData.accessibility || "Padrão",
       features: updateData.features 

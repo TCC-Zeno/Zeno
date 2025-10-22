@@ -1,5 +1,5 @@
 import express from "express";
-import { createEmployee, getEmployee, deleteEmployee } from "../controllers/employeeController.js";
+import { createEmployee, getEmployee, deleteEmployee, updateEmployee } from "../controllers/employeeController.js";
 
 const router = express.Router();
 
@@ -8,5 +8,6 @@ const router = express.Router();
 router.post("/signup", createEmployee)
 router.post("/fetchContributors", getEmployee)
 router.post("/delete", deleteEmployee)
+router.post("/edit", updateEmployee)
 
 export default router;

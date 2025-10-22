@@ -1,16 +1,32 @@
-import { create, getEmployeeCnpj, getEmployeeByEmail, destroy } from "../services/employeeService.js"
-import { getUserByEmail } from "../services/authService.js"
+import {
+  create,
+  getEmployeeCnpj,
+  getEmployeeByEmail,
+  destroy,
+  update,
+} from "../services/employeeService.js";
+import { getUserByEmail } from "../services/authService.js";
 import argon2 from "argon2";
 
 export const createEmployee = async (req, res) => {
   try {
-    const { owner_uuid, cnpj, email, password, company_name, name, color, features, logo } = req.body
+    const {
+      owner_uuid,
+      cnpj,
+      email,
+      password,
+      company_name,
+      name,
+      color,
+      features,
+      logo,
+    } = req.body;
 
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        error: "E-mail já cadastrado."
+        error: "E-mail já cadastrado.",
       });
     }
 
@@ -19,7 +35,7 @@ export const createEmployee = async (req, res) => {
     if (existingEmployee) {
       return res.status(409).json({
         success: false,
-        error: "Funcionário já cadastrado."
+        error: "Funcionário já cadastrado.",
       });
     }
 
@@ -35,23 +51,23 @@ export const createEmployee = async (req, res) => {
       email: email,
       password: hashedPassword,
       features: features,
-      logo: logo
+      logo: logo,
     };
     console.log("Controller employeeData:", employeeData);
     const newUser = await create(employeeData);
     res.status(201).json({
       success: true,
-      user: newUser
+      user: newUser,
     });
 
     console.log("Novo funcionário criado:", newUser);
   } catch (err) {
     res.status(400).json({
       success: false,
-      error: err.message || err.details || JSON.stringify(err)
+      error: err.message || err.details || JSON.stringify(err),
     });
   }
-}
+};
 
 export const getEmployee = async (req, res) => {
   try {
@@ -68,7 +84,7 @@ export const getEmployee = async (req, res) => {
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-}
+};
 export const deleteEmployee = async (req, res) => {
   try {
     const { id } = req.body;
@@ -77,13 +93,40 @@ export const deleteEmployee = async (req, res) => {
       return res.status(400).json({ error: "ID do funcionário é obrigatório" });
     }
 
-    const result = await destroy(id);
-    if (result.error) {
-      return res.status(400).json({ error: result.error });
+    const resultado = await destroy(id);
+    if (resultado.error) {
+      return res.status(400).json({ error: resultado.error });
     }
 
     res.status(200).json({ message: "Funcionário deletado com sucesso" });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-}
+};
+
+export const updateEmployee = async (req, res) => {
+  try {
+    const { id, name, email, password, features } = req.body;
+    if (!id) {
+      return res.status(400).json({ error: "ID do funcionário é obrigatório" });
+    }
+
+    const hashedPassword = await argon2.hash(password);
+
+    const updateData = {
+      id: id,
+      name: name,
+      email: email,
+      password: hashedPassword,
+      features: features,
+    };
+    const resultado = await update(updateData);
+
+    if (resultado.error) {
+      return res.status(400).json({ error: resultado.error });
+    }
+    res.status(200).json({ message: "Funcionário atualizado com sucesso" });
+  } catch (err) {
+    res.status(500).json({ "Erro inteno ao atualizar": err.message });
+  }
+};

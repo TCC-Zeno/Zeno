@@ -1,25 +1,23 @@
-import supabase from "../config/supabaseClient.js"
+import supabase from "../config/supabaseClient.js";
 
 export const create = async (employeeData) => {
-
   const { data, error } = await supabase
     .from("employee")
     .insert([employeeData])
     .select();
 
-
   if (error) {
     throw error;
   }
   return data;
-}
+};
 export const getEmployeeCnpj = async (cnpj) => {
   const { data, error } = await supabase
     .from("employee")
     .select("*")
-    .eq("cnpj", cnpj)
+    .eq("cnpj", cnpj);
 
-  console.log("service: ", data)
+  console.log("service: ", data);
   if (error) {
     throw error;
   }
@@ -32,16 +30,16 @@ export const getEmployeeByEmail = async (email) => {
     .eq("email", email)
     .maybeSingle();
 
-  console.log(error)
+  console.log(error);
   if (error && error.code !== "PGRST116") throw new Error(error.message);
   return data;
 };
 export const getEmployeeById = async (id) => {
   if (!id) return null;
   const { data, error } = await supabase
-    .from('employee')
-    .select('*')
-    .eq('id', id)
+    .from("employee")
+    .select("*")
+    .eq("id", id)
     .maybeSingle();
 
   if (error) throw new Error(error.message);
@@ -56,4 +54,18 @@ export const destroy = async (id) => {
 
   if (error) throw new Error(error.message);
   return { success: true, message: "Employee deleted successfully" };
+};
+export const update = async (updateData) => {
+  const { error, data } = await supabase
+    .from("employee")
+    .update({
+      name: updateData.name,
+      email: updateData.email,
+      password: updateData.password,
+      features: updateData.features,
+    })
+    .eq("id", updateData.id)
+    .select();
+  if (error) throw new Error(error.message);
+  return data;
 };
