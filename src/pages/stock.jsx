@@ -164,8 +164,8 @@ export default function Stock() {
       formData.append("Category", addProductData.Category);
       formData.append("Price", addProductData.Price);
       formData.append("Price1", addProductData.Price1);
-      formData.append("StockQuantity", addProductData.StockQuantity);
-      formData.append("MinQuantity", addProductData.MinQuantity);
+      formData.append("StockQuantity", stockQuantity);
+      formData.append("MinQuantity", minQuantity);
       formData.append("FixedQuantity", addProductData.FixedQuantity);
 
       if (addForn && addProductData.SupplierInfo) {

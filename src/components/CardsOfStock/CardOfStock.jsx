@@ -13,6 +13,9 @@ export function CardOfStock({ product, fetchData }) {
   const [supplierData, setSupplierData] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const [localQuantity, setLocalQuantity] = useState(
+    product.quantity_of_product || 0
+  );
 
   const { register, control, reset, handleSubmit } = useForm({
     defaultValues: {
@@ -156,6 +159,7 @@ export function CardOfStock({ product, fetchData }) {
 
   useEffect(() => {
     updateStatus();
+    setLocalQuantity(product.quantity_of_product || 0);
   }, [product.quantity_of_product]);
 
   return (
@@ -186,9 +190,9 @@ export function CardOfStock({ product, fetchData }) {
             id="button-back-counter"
             onClick={(e) => {
               e.stopPropagation();
-              if (product.quantity_of_product > 0) {
-                updateQuantity(product.quantity_of_product - 1);
-              }
+              const newVal = Math.max(0, (localQuantity || 0) - 1);
+              setLocalQuantity(newVal);
+              updateQuantity(newVal);
             }}
           >
             <IoIosArrowBack className={S.Arrowicon} />
@@ -198,10 +202,10 @@ export function CardOfStock({ product, fetchData }) {
             <input
               type="number"
               className={S.inputQuantity}
-              defaultValue={product.quantity_of_product}
+              value={localQuantity}
               onChange={(e) => {
-                const value =
-                  e.target.value === "" ? 0 : Number(e.target.value);
+                const value = e.target.value === "" ? 0 : Number(e.target.value);
+                setLocalQuantity(value);
                 updateQuantity(value);
               }}
               min={0}
@@ -213,7 +217,9 @@ export function CardOfStock({ product, fetchData }) {
             id="button-forward-counter"
             onClick={(e) => {
               e.stopPropagation();
-              updateQuantity(product.quantity_of_product + 1);
+              const newVal = (localQuantity || 0) + 1;
+              setLocalQuantity(newVal);
+              updateQuantity(newVal);
             }}
           >
             <IoIosArrowForward className={S.Arrowicon} />
