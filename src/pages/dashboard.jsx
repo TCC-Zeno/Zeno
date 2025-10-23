@@ -4,8 +4,6 @@ import { dashboard } from "../redux/Route/slice";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import S from "../styles/dashboard.module.css";
 import { Controller, useForm } from "react-hook-form";
-import Modal from "../components/Modal/Modal";
-import ResourceBlocked from "../components/ResourceBlocked/ResourceBlocked";
 import CurrencyInput from "react-currency-input-field";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -18,25 +16,7 @@ export default function Dashboard() {
   const [dataFinance, setDataFinance] = useState([]);
   const [dataStock, setDataStock] = useState([]);
   const [dataTasks, setDataTasks] = useState([]);
-
-  const [resourceToUnlock, setResourceToUnlock] = useState(null);
-  const [protectedModalOpen, setProtectedModalOpen] = useState(false);
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
   const dispatch = useDispatch();
-  const blockedResources = useSelector(
-    (state) => state.userReducer.blockedResources
-  );
-
-  const [permissions, setPermissions] = useState({
-    cash: blockedResources.cash,
-    organizer: blockedResources.organizer,
-    finance: blockedResources.finance,
-    stock: blockedResources.stock,
-    agenda: blockedResources.agenda,
-    calendar: blockedResources.calendar,
-    service: blockedResources.service,
-  });
 
   useEffect(() => {
     dispatch(dashboard());
@@ -145,7 +125,6 @@ export default function Dashboard() {
   const tasksDone = dataTasks.filter((item) => item?.status === "done");
 
   useEffect(() => {
-    // initialize when we have a user
     async function initializeData() {
       setLoading(true);
       try {
@@ -168,331 +147,234 @@ export default function Dashboard() {
   return (
     <>
       <DefaultLayout loading={loading}>
-        {!permissions.cash && (
-          <section
-            className={`${S.sectionDashboard} ${S.sectionCash} sectionCash`}
-            id="cash-summary-section"
-          >
-            <div className={S.cashTitle}>
-              <h1>Resumo de caixa</h1>
-              <select
-                className={S.cashSelectPeriod}
-                name="cash-summary-period"
-                id="cash-summary-period"
-                value={selectedPeriod}
-                onChange={(e) => setSelectedPeriod(e.target.value)}
-              >
-                <option value="daily">Diário</option>
-                <option value="monthly">Mensal</option>
-                <option value="annual">Anual</option>
-              </select>
-            </div>
-            <div className={S.cashContainer}>
-              <div className={S.cashAmount}>
-                <h4>Montante</h4>
-                <p id="amount-value">
-                  R${amountValue.toFixed(2)}
-                </p>
+        <div className={S.containerDashboard}>
+          {profileinfo.features.finance && (
+            <section
+              className={`${S.sectionDashboard} ${S.sectionCash} sectionCash`}
+              id="cash-summary-section"
+            >
+              <div className={S.cashTitle}>
+                <h1>Resumo de caixa</h1>
+                <select
+                  className={S.cashSelectPeriod}
+                  name="cash-summary-period"
+                  id="cash-summary-period"
+                  value={selectedPeriod}
+                  onChange={(e) => setSelectedPeriod(e.target.value)}
+                >
+                  <option value="daily">Diário</option>
+                  <option value="monthly">Mensal</option>
+                  <option value="annual">Anual</option>
+                </select>
               </div>
-              <div className={S.cashProfit}>
-                <h4>Lucro</h4>
-                <p id="profit-value">
-                  R${profitValue.toFixed(2)}
-                </p>
+              <div className={S.cashContainer}>
+                <div className={S.cashAmount}>
+                  <h4>Montante</h4>
+                  <p id="amount-value">R$ {amountValue.toFixed(2)}</p>
+                </div>
+                <div className={S.cashProfit}>
+                  <h4>Lucro</h4>
+                  <p id="profit-value">R$ {profitValue.toFixed(2)}</p>
+                </div>
+                <div className={S.cashExpenses}>
+                  <h4>Despesas</h4>
+                  <p id="expenses-value">R$ {expensesValue.toFixed(2)}</p>
+                </div>
               </div>
-              <div className={S.cashExpenses}>
-                <h4>Despesas</h4>
-                <p id="expenses-value">
-                  R${" "}
-                  {expensesValue.toFixed(2)}
-                  <CurrencyInput
-                    decimalSeparator=","
-                    groupSeparator="."
-                    value={expensesValue.toFixed(2)}
-                    //className={S.currencyInput}
-                  />
-                </p>
-              </div>
-            </div>
-          </section>
-        )}
-        {permissions.cash && (
-          <ResourceBlocked
-            title="Resumo de caixa"
-            onUnlock={() => {
-              setResourceToUnlock("cash");
-              setProtectedModalOpen(true);
-            }}
-          />
-        )}
-        {!permissions.finance && (
-          <section
-            className={`${S.sectionDashboard} ${S.sectionFinance} sectionFinance`}
-            id="finance-flow-section"
-          >
-            <div className={S.financeTitle}>
-              <h1>Fluxo de caixa</h1>
-            </div>
-            <div className={S.financeContainer}>
-              <form className={S.financeForm} onSubmit={handleSubmit(onSubmit)}>
-                <div className={S.row01}>
-                  <input
-                    id="input-name"
-                    className={S.inputName}
-                    type="text"
-                    placeholder="Nome completo"
-                    {...register("name", { required: true })}
-                  />
-                  {/* oq está logo abaixo é o input de preço, usei uma lib que tem mais info aqui https://github.com/cchanxzy/react-currency-input-field. By Vinicius */}
-                  <Controller
-                    name="price"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { onChange, value, name } }) => (
-                      <CurrencyInput
-                        id="input-price"
-                        name={name}
-                        placeholder="R$ 0,00"
-                        decimalsLimit={2}
-                        decimalScale={2}
-                        decimalSeparator=","
-                        groupSeparator="."
-                        prefix="R$ "
-                        onValueChange={(value) => onChange(value)}
-                        value={value === 0 ? "" : value}
-                        className={S.inputPrice}
-                      />
-                    )}
-                  />
+            </section>
+          )}
 
-                  <input
-                    id="btn-submit-finance"
-                    className={S.button}
-                    type="submit"
-                  />
-                </div>
-                <div className={S.row02}>
-                  <select
-                    id="input-payment_method"
-                    className={S.financeSelect}
-                    {...register("payment_method", { required: true })}
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Método de pagamento
-                    </option>
-                    <option value="Cartão de crédito">Cartão de crédito</option>
-                    <option value="Cartão de débito">Cartão de débito</option>
-                    <option value="Dinheiro">Dinheiro</option>
-                    <option value="Pix">Pix</option>
-                    <option value="Outros">Outros</option>
-                  </select>
-                  <select
-                    id="input-payment-category"
-                    className={S.financeSelect}
-                    {...register("category", { required: true })}
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Categorias
-                    </option>
-                    <option value="Compras">Compras</option>
-                    <option value="Contas">Contas</option>
-                    <option value="Manutenção">Manutenção</option>
-                    <option value="Outros">Outros</option>
-                  </select>
-                  <select
-                    id="input-payment-flow"
-                    className={S.financeSelect}
-                    {...register("flow", { required: true })}
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Tipo de fluxo
-                    </option>
-                    <option value="Entrada">Entrada</option>
-                    <option value="Saída">Saída</option>
-                  </select>
-                  {/* Fiz uma gambiarra pra deixar responsivo, então tem o botão pra desktop e pra mobile */}
-                  <input
-                    id="btn-submit-finance-mobile"
-                    className={S.buttonM}
-                    type="submit"
-                  />
-                </div>
-              </form>
-            </div>
-          </section>
-        )}
-        {permissions.finance && (
-          <ResourceBlocked
-            title="Fluxo de caixa"
-            onUnlock={() => {
-              setResourceToUnlock("finance");
-              setProtectedModalOpen(true);
-            }}
-          />
-        )}
-        {!permissions.organizer && (
-          <section
-            className={`${S.sectionDashboard} ${S.sectionOrganizer} sectionOrganizer`}
-            id="daily-organizer-section"
-          >
-            <div className={S.organizerTitle}>
-              <h1>Organizador diário</h1>
-            </div>
-            <div className={S.organizerContainer}>
-              <div className={S.organizerToDo}>
-                <p>A fazer</p>
-                <div>
-                  <ul>
-                    {tasksToDo.map((task) => (
-                      <li key={task.id}>{task.information}</li>
-                    ))}
-                  </ul>
-                </div>
+          {profileinfo.features.finance && (
+            <section
+              className={`${S.sectionDashboard} ${S.sectionFinance} sectionFinance`}
+              id="finance-flow-section"
+            >
+              <div className={S.financeTitle}>
+                <h1>Fluxo de caixa</h1>
               </div>
-              <div className={S.organizerProgress}>
-                <p>Em andamento</p>
-                <div>
-                  <ul>
-                    {tasksProgress.map((task) => (
-                      <li key={task.id}>{task.information}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className={S.organizerDone}>
-                <p>Concluído</p>
-                <div>
-                  <ul>
-                    {tasksDone.map((task) => (
-                      <li key={task.id}>{task.information}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-        {permissions.organizer && (
-          <ResourceBlocked
-            title="Organizador"
-            onUnlock={() => {
-              setResourceToUnlock("organizer");
-              setProtectedModalOpen(true);
-            }}
-          />
-        )}
-        {!permissions.stock && (
-          <section
-            className={`${S.sectionDashboard} ${S.sectionStock} sectionStock`}
-            id="stock-control-section"
-          >
-            <div className={S.stockTitle}>
-              <h1>Estoque</h1>
-            </div>
-            <div className={S.stockContainer}>
-              <div className={S.stockInStock}>
-                <p>Em estoque</p>
-                <div>
-                  <ul>
-                    {itensStock.map((task) => (
-                      <li key={task.id}>{task.name}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className={S.stockRefill}>
-                <p>Para repor</p>
-                <div>
-                  <ul>
-                    {itensRefill.map((task) => (
-                      <li key={task.id}>{task.name}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className={S.stockBuy}>
-                <p>Para comprar</p>
-                <div>
-                  <ul>
-                    {itensBuy.map((task) => (
-                      <li key={task.id}>{task.name}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-        {permissions.stock && (
-          <ResourceBlocked
-            title="Estoque"
-            onUnlock={() => {
-              setResourceToUnlock("stock");
-              setProtectedModalOpen(true);
-            }}
-          />
-        )}
-        <Modal
-          isOpen={protectedModalOpen}
-          onClose={() => {
-            setProtectedModalOpen(false);
-            setResourceToUnlock(null);
-            setPassword("");
-            setPasswordError("");
-          }}
-        >
-          <div className={S.passwordModal}>
-            <h2>Desbloquear recurso</h2>
-            <p>Digite sua senha para desbloquear este recurso.</p>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Digite sua senha"
-              className={S.passwordInput}
-            />
-            {passwordError && <p className={S.errorText}>{passwordError}</p>}
-            <div className={S.modalButtons}>
-              <button
-                className={S.cancelButton}
-                onClick={() => {
-                  setProtectedModalOpen(false);
-                  setResourceToUnlock(null);
-                  setPassword("");
-                  setPasswordError("");
-                }}
-              >
-                Cancelar
-              </button>
-              <button
-                className={S.confirmButton}
-                onClick={() => {
-                  const correctPassword = "vinicius";
-                  if (password === correctPassword) {
-                    if (resourceToUnlock) {
-                      setPermissions({
-                        ...permissions,
-                        [resourceToUnlock]: false,
-                      });
+              <div className={S.financeContainer}>
+                <form
+                  className={S.financeForm}
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <div className={S.row01}>
+                    <input
+                      id="input-name"
+                      className={S.inputName}
+                      type="text"
+                      placeholder="Nome completo"
+                      {...register("name", { required: true })}
+                    />
+                    {/* oq está logo abaixo é o input de preço, usei uma lib que tem mais info aqui https://github.com/cchanxzy/react-currency-input-field. By Vinicius */}
+                    <Controller
+                      name="price"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value, name } }) => (
+                        <CurrencyInput
+                          id="input-price"
+                          name={name}
+                          placeholder="R$ 0,00"
+                          decimalsLimit={2}
+                          decimalScale={2}
+                          decimalSeparator=","
+                          groupSeparator="."
+                          prefix="R$ "
+                          onValueChange={(value) => onChange(value)}
+                          value={value === 0 ? "" : value}
+                          className={S.inputPrice}
+                        />
+                      )}
+                    />
 
-                      setProtectedModalOpen(false);
-                      setResourceToUnlock(null);
-                      setPassword("");
-                      setPasswordError("");
-                    }
-                  } else {
-                    setPasswordError("Senha incorreta. Tente novamente.");
-                  }
-                }}
-              >
-                Confirmar
-              </button>
-            </div>
-          </div>
-        </Modal>
+                    <input
+                      id="btn-submit-finance"
+                      className={S.button}
+                      type="submit"
+                    />
+                  </div>
+                  <div className={S.row02}>
+                    <select
+                      id="input-payment_method"
+                      className={S.financeSelect}
+                      {...register("payment_method", { required: true })}
+                      defaultValue=""
+                    >
+                      <option value="" disabled>
+                        Método de pagamento
+                      </option>
+                      <option value="Cartão de crédito">
+                        Cartão de crédito
+                      </option>
+                      <option value="Cartão de débito">Cartão de débito</option>
+                      <option value="Dinheiro">Dinheiro</option>
+                      <option value="Pix">Pix</option>
+                      <option value="Outros">Outros</option>
+                    </select>
+                    <select
+                      id="input-payment-category"
+                      className={S.financeSelect}
+                      {...register("category", { required: true })}
+                      defaultValue=""
+                    >
+                      <option value="" disabled>
+                        Categorias
+                      </option>
+                      <option value="Compras">Compras</option>
+                      <option value="Contas">Contas</option>
+                      <option value="Manutenção">Manutenção</option>
+                      <option value="Outros">Outros</option>
+                    </select>
+                    <select
+                      id="input-payment-flow"
+                      className={S.financeSelect}
+                      {...register("flow", { required: true })}
+                      defaultValue=""
+                    >
+                      <option value="" disabled>
+                        Tipo de fluxo
+                      </option>
+                      <option value="Entrada">Entrada</option>
+                      <option value="Saída">Saída</option>
+                    </select>
+                    {/* Fiz uma gambiarra pra deixar responsivo, então tem o botão pra desktop e pra mobile */}
+                    <input
+                      id="btn-submit-finance-mobile"
+                      className={S.buttonM}
+                      type="submit"
+                    />
+                  </div>
+                </form>
+              </div>
+            </section>
+          )}
+
+          {profileinfo.features.task && (
+            <section
+              className={`${S.sectionDashboard} ${S.sectionOrganizer} sectionOrganizer`}
+              id="daily-organizer-section"
+            >
+              <div className={S.organizerTitle}>
+                <h1>Organizador diário</h1>
+              </div>
+              <div className={S.organizerContainer}>
+                <div className={S.organizerToDo}>
+                  <p>A fazer</p>
+                  <div>
+                    <ul>
+                      {tasksToDo.map((task) => (
+                        <li key={task.id}>{task.information}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <div className={S.organizerProgress}>
+                  <p>Em andamento</p>
+                  <div>
+                    <ul>
+                      {tasksProgress.map((task) => (
+                        <li key={task.id}>{task.information}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <div className={S.organizerDone}>
+                  <p>Concluído</p>
+                  <div>
+                    <ul>
+                      {tasksDone.map((task) => (
+                        <li key={task.id}>{task.information}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {profileinfo.features.stock && (
+            <section
+              className={`${S.sectionDashboard} ${S.sectionStock} sectionStock`}
+              id="stock-control-section"
+            >
+              <div className={S.stockTitle}>
+                <h1>Estoque</h1>
+              </div>
+              <div className={S.stockContainer}>
+                <div className={S.stockInStock}>
+                  <p>Em estoque</p>
+                  <div>
+                    <ul>
+                      {itensStock.map((task) => (
+                        <li key={task.id}>{task.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <div className={S.stockRefill}>
+                  <p>Para repor</p>
+                  <div>
+                    <ul>
+                      {itensRefill.map((task) => (
+                        <li key={task.id}>{task.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <div className={S.stockBuy}>
+                  <p>Para comprar</p>
+                  <div>
+                    <ul>
+                      {itensBuy.map((task) => (
+                        <li key={task.id}>{task.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+        </div>
       </DefaultLayout>
     </>
   );

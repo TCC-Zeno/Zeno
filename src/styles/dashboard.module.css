@@ -4,6 +4,11 @@
 .dashboardPage {
   margin-left: 18%;
 }
+
+.containerDashboard {
+  min-height: calc(100vh - 170px);
+}
+
 .sectionDashboard {
   margin: 0 10%;
   margin-bottom: 50px;
@@ -348,13 +353,13 @@
   }
 }
 
-.passwordModal h2{
+.passwordModal h2 {
   font-size: 15pt;
   font-family: "Coolvetica Rg";
   text-align: center;
   margin-bottom: 15px;
 }
-.passwordModal input{
+.passwordModal input {
   margin-bottom: 15px;
   background-color: rgb(var(--color-background-secondary));
   color: #000;
@@ -364,25 +369,25 @@
   width: 100%;
   height: 36px;
 }
-.passwordModal .confirmButton{
+.passwordModal .confirmButton {
   transition: all 50ms;
   color: #fff;
   background-color: #0084ff;
   padding: 12px 20px;
   border-radius: 10px;
 }
-.passwordModal .confirmButton:hover{
+.passwordModal .confirmButton:hover {
   transform: scale(1.1);
   transition: all 50ms;
 }
-.passwordModal .cancelButton{
+.passwordModal .cancelButton {
   transition: all 50ms;
   color: #fff;
   background-color: #c70606;
   padding: 5px 15px;
   border-radius: 10px;
 }
-.passwordModal .cancelButton:hover{
+.passwordModal .cancelButton:hover {
   transform: scale(1.1);
   transition: all 50ms;
 }
@@ -391,6 +396,6 @@
   justify-content: flex-end;
   gap: 15px;
 }
-.errorText{
+.errorText {
   color: #ff0000;
 }
