@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2500;
 }
 
 .modalBackdrop {
@@ -30,7 +30,7 @@
   max-height: 80vh;
   overflow-y: auto;
   overflow-x: hidden;
-  z-index: 1001;
+  z-index: 2500;
   scrollbar-width: thin;
   scrollbar-color: rgb(var(--color-primary)) transparent;
 }

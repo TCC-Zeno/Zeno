@@ -483,8 +483,7 @@ button.manegerOption {
   transform: scale(1.05);
 }
 .cancelBtn {
-  background-color: rgba(var(--color-primary), 0.7);
-  color: white;
+  background-color: rgba(var(--color-background));
   border: none;
   padding: 5px 20px;
   border-radius: 5px;
@@ -547,6 +546,27 @@ button.manegerOption {
 .load {
   width: 75px;
   height: 75px;
+}
+
+.deleteBtn {
+  background-color: #c70606;
+  color: white;
+  border: none;
+  padding: 5px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  width: auto;
+  transition: all 0.3s;
+}
+.deleteBtn:hover {
+  transform: scale(1.05);
+}
+.actionsButtons{
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
 @media screen and (max-width: 768px) {

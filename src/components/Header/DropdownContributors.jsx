@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import { motion, AnimatePresence } from "framer-motion";
 import S from "./header.module.css";
@@ -6,6 +6,7 @@ import ContributorsCardView from "../ContributorsCardView/ContributorsCardView";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Modal from "../Modal/Modal";
 
 export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const modalRef = useRef(null);
@@ -14,6 +15,8 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const profileinfo = useSelector((state) => state.userReducer.userData);
   const [contributors, setContributors] = useState([]);
   const [editData, setEditData] = useState(null);
+  const [modalDelete, setModalDelete] = useState(false);
+  const [contributorToDelete, setContributorToDelete] = useState(null);
 
   const [features, setFeatures] = useState({
     service: editData?.features?.service ?? false,
@@ -30,21 +33,15 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
       [name]: checked,
     }));
   };
-  const {
-    register,
-    handleSubmit,
-    reset: addReset,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, reset: addReset } = useForm();
   const {
     register: editRegister,
     handleSubmit: editHandleSubmit,
     reset: editReset,
-    formState: { errors: editErrors },
   } = useForm();
 
   const editSubmit = async (data) => {
-    try{
+    try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/employee/edit`,
         {
@@ -55,11 +52,15 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           features: features,
         }
       );
+      if (resposta.status === 200) {
+        fetchContributors();
+        setType("view");
+        setEditData(null);
+      }
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao excluir evento");
       console.error(err);
     }
-
   };
 
   const onSubmit = async (data) => {
@@ -78,13 +79,19 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           logo: profileinfo.logo,
         }
       );
+
+      if (resposta.status === 201) {
+        fetchContributors();
+        setType("view");
+        addReset({ name: "", email: "", password: "", confirmPassword: "" });
+      }
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao excluir evento");
       console.error(err);
     }
   };
 
-  async function fetchContributors() {
+  const fetchContributors = useCallback(async () => {
     try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/employee/fetchContributors`,
@@ -97,11 +104,11 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
       console.error("Erro ao listar funcionários:", error);
       return [];
     }
-  }
+  }, [profileinfo.cnpj]);
 
   useEffect(() => {
-    fetchContributors(profileinfo.cnpj, setContributors);
-  }, [profileinfo.cnpj, isOpen]);
+    fetchContributors();
+  }, [fetchContributors, isOpen]);
   const dropdownVariants = {
     hidden: {
       opacity: 0,
@@ -200,6 +207,30 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
     }
   }, [editData, editReset]);
 
+  const openDeleteModal = (contributorId) => {
+    setContributorToDelete(contributorId);
+    setModalDelete(true);
+  };
+
+  const deleteContributor = async () => {
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/employee/delete`,
+        {
+          id: contributorToDelete,
+        }
+      );
+      if (resposta.status === 200) {
+        fetchContributors();
+        setModalDelete(false);
+        setContributorToDelete(null);
+      }
+    } catch (err) {
+      alert(err.response?.data?.error || "Erro ao excluir contribuidor");
+      console.error(err);
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -237,6 +268,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                       email={c.email}
                       features={c.features}
                       onEdit={handleEditContributor}
+                      onDelete={() => openDeleteModal(c.id)}
                     />
                   ))}
                 </div>
@@ -478,6 +510,29 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
           </div>
         </motion.div>
       )}
+      <Modal isOpen={modalDelete} onClose={() => setModalDelete(false)}>
+        <div className={S.modalDelete}>
+          <h1>Tem certeza que deseja excluir o colaborador?</h1>
+          <div className={S.actionsButtons}>
+            <button
+              className={S.cancelBtn}
+              id="btn-cancel-delete-contributor"
+              onClick={() => setModalDelete(false)}
+              type="button"
+            >
+              Cancelar
+            </button>
+            <button
+              className={S.deleteBtn}
+              id="btn-confirm-delete-contributor"
+              onClick={deleteContributor}
+              type="button"
+            >
+              Excluir
+            </button>
+          </div>
+        </div>
+      </Modal>
     </AnimatePresence>
   );
 }
