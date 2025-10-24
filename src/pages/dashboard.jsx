@@ -117,8 +117,8 @@ export default function Dashboard() {
 
   // Validação e tratamento de erros para os filtros
   const itensStock = dataStock.filter((item) => item?.alert === "default");
-  const itensRefill = dataStock.filter((item) => item?.alert === "restock");
-  const itensBuy = dataStock.filter((item) => item?.alert === "lowstock");
+  const itensRefill = dataStock.filter((item) => item?.alert === "low_stock");
+  const itensBuy = dataStock.filter((item) => item?.alert === "restock");
 
   const tasksToDo = dataTasks.filter((item) => item?.status === "todo");
   const tasksProgress = dataTasks.filter((item) => item?.status === "doing");

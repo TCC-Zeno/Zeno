@@ -17,6 +17,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   const [editData, setEditData] = useState(null);
   const [modalDelete, setModalDelete] = useState(false);
   const [contributorToDelete, setContributorToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [features, setFeatures] = useState({
     service: editData?.features?.service ?? false,
@@ -208,11 +209,14 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
   }, [editData, editReset]);
 
   const openDeleteModal = (contributorId) => {
+    if (modalDelete || isDeleting) return;
     setContributorToDelete(contributorId);
     setModalDelete(true);
   };
 
   const deleteContributor = async () => {
+    if (isDeleting) return;
+    setIsDeleting(true);
     try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/employee/delete`,
@@ -228,6 +232,8 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
     } catch (err) {
       alert(err.response?.data?.error || "Erro ao excluir contribuidor");
       console.error(err);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -268,7 +274,7 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
                       email={c.email}
                       features={c.features}
                       onEdit={handleEditContributor}
-                      onDelete={() => openDeleteModal(c.id)}
+                      onDelete={openDeleteModal}
                     />
                   ))}
                 </div>
@@ -527,8 +533,10 @@ export default function DropdownContributors({ isOpen = false, setIsOpen }) {
               id="btn-confirm-delete-contributor"
               onClick={deleteContributor}
               type="button"
+              disabled={isDeleting}
+              aria-busy={isDeleting}
             >
-              Excluir
+              {isDeleting ? "Excluindo..." : "Excluir"}
             </button>
           </div>
         </div>
