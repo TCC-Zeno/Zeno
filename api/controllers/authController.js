@@ -228,6 +228,37 @@ export const logout = (req, res) => {
   }
 };
 
+//Verificação de frase
+export const forgotPassword = async (req, res) => {
+  try{
+    const {email, security_phrase} = req.body;
+    
+    const user =  await getUserByEmail (email);
+    if(!user){
+      return res.status(404).json({
+        success: false,
+        error: "Usuário não encontrado"
+      });
+    }
+    if(user.security_phrase !== security_phrase){
+      return res.status(401).json({
+        success: false,
+        error: "Frase de segurança inválida"
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Frase de segurança verificada com sucesso"
+    });
+  }catch(error){
+    console.error("Erro na verificação da frase de segurança:", error);
+    res.status(500).json({
+      success: false,
+      error: "Erro interno do servidor"
+    });
+  }
+}
+
 //Google Login
 export const sucessGoogleLogin = (req, res) => {
   if (!req.user) {

@@ -10,6 +10,7 @@ import Modal from "../Modal/Modal";
 import { useAuth } from "../../contexts/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function SignIn() {
   const { login } = useAuth();
@@ -78,7 +79,21 @@ export default function SignIn() {
 
   const onSubmitForgotPassword = async (data) => {
     setIsLoadingForgot(true);
-    console.log(data);
+    try{
+      const resposta = await axios.post(`${import.meta.env.VITE_API_URL}/auth/forgot-password`, {
+        email: data.email,
+        security_phrase:data.phrase
+      });
+      if (resposta.status === 200) {
+        toast.success("Frase verificada com sucesso!");
+        closeModal();
+      }
+    } catch (error) {
+      console.error("Frase de verificação inválida:", error);
+      toast.error("Frase de verificação inválida.");
+    } finally {
+      setIsLoadingForgot(false);
+    }
 
     setTimeout(() => {
       setIsLoadingForgot(false);
@@ -184,17 +199,17 @@ export default function SignIn() {
             <input
               type="text"
               placeholder="Código de Verificação"
-              {...registerForgot("code", {
-                required: "Código é obrigatório",
-                minLength: { value: 4, message: "Código muito curto" },
-                maxLength: { value: 10, message: "Código muito longo" },
+              {...registerForgot("phrase", {
+                required: "A frase de Verificação é obrigatória",
+                // minLength: { value: 4, message: "Código muito curto" },
+                // maxLength: { value: 10, message: "Código muito longo" },
               })}
-              className={errorsForgot.code ? S.errorInput : ""}
+              className={errorsForgot.phrase ? S.errorInput : ""}
               autoComplete="off"
               disabled={isLoadingForgot}
             />
-            {errorsForgot.code && (
-              <span className={S.errorText}>{errorsForgot.code.message}</span>
+            {errorsForgot.phrase && (
+              <span className={S.errorText}>{errorsForgot.phrase.message}</span>
             )}
             <div className={S.buttonContainer}>
               <button
