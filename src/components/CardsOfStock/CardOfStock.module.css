@@ -25,16 +25,20 @@
 }
 
 .containerCards {
-  display: grid;
+   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   background-color: #d9d9d9;
   margin-top: 1.5%;
+  justify-self : center; /* Centraliza os cards horizontalmente */
+  align-content: center;   /* Centraliza verticalmente dentro do container */
+  height: 100vh;           /* Ocupa a altura total da tela (ou ajuste conforme o necessário) */
+  gap: 20px; 
 }
 
 .Cards {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-self: center;
   background-color: white;
   border-radius: 10px;
   transition: 1s all;
@@ -105,13 +109,14 @@
 .Cardadd {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-self: center;
+  background-color: white;
   border-radius: 10px;
   transition: 1s all;
   padding: 7%;
   margin: 2.5%;
-  background-color: white;
+  max-width: 300px;
+  max-height: 1000px;
 }
 
 .add {

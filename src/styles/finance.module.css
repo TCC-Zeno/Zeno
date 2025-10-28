@@ -186,7 +186,11 @@
 }
 
 .th {
-  margin: 110%;
+  padding: 30px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .thead {
@@ -414,12 +418,22 @@
 
 .inputDate {
   background-color: #d9d9d9;
-  color: #000;
+  color: #000; /* garante visibilidade */
+  border: none;
   border-radius: 5px;
   width: 100%;
   height: 30px;
   margin-left: 2%;
   padding: 5px;
+  font-size: 16px;
+
+  /* evita que o tema escuro mude o texto */
+  color-scheme: light;
+
+  /* mantém o comportamento padrão do seletor */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .containerViewAndFilter {
@@ -544,5 +558,9 @@
   }
   .date {
     justify-self: center;
+  }
+  
+  .th{
+    width: 1000px
   }
 }
