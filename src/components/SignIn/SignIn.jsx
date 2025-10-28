@@ -19,6 +19,7 @@ export default function SignIn() {
   const [isLoadingForgot, setIsLoadingForgot] = useState(false);
   const [modalForgotPasswordOpen, setModalForgotPasswordOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isForgotPartPrimary, setIsForgotPartPrimary] = useState(true);
   const [error, setError] = useState({
     user: "",
     password: "",
@@ -42,6 +43,13 @@ export default function SignIn() {
     reset: resetForgot,
   } = useForm();
 
+  const {
+    register: registerNewPassword,
+    handleSubmit: handleSubmitNewPassword,
+    formState: { errors: errorsNewPassword },
+    reset: resetNewPassword,
+  } = useForm();
+
   const onSubmitLogin = async (data) => {
     setIsLoading(true);
     setError({
@@ -55,7 +63,7 @@ export default function SignIn() {
       const result = await login(data.email, data.password);
 
       if (result.success) {
-        toast.success("Login realizado com sucesso!")
+        toast.success("Login realizado com sucesso!");
         dispatch(userData(result.user));
         dispatch(setTheme(result.user.color));
         dispatch(setColorBlindness(result.user.accessibility));
@@ -79,14 +87,17 @@ export default function SignIn() {
 
   const onSubmitForgotPassword = async (data) => {
     setIsLoadingForgot(true);
-    try{
-      const resposta = await axios.post(`${import.meta.env.VITE_API_URL}/auth/forgot-password`, {
-        email: data.email,
-        security_phrase:data.phrase
-      });
+    try {
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/forgot-password`,
+        {
+          email: data.email,
+          security_phrase: data.phrase,
+        }
+      );
       if (resposta.status === 200) {
         toast.success("Frase verificada com sucesso!");
-        closeModal();
+        setIsForgotPartPrimary(false);
       }
     } catch (error) {
       console.error("Frase de verificação inválida:", error);
@@ -94,16 +105,17 @@ export default function SignIn() {
     } finally {
       setIsLoadingForgot(false);
     }
+  };
 
-    setTimeout(() => {
-      setIsLoadingForgot(false);
-      closeModal();
-    }, 2000);
+  const onSubmitForgotNewPassword = async (data) => {
+    console.log(data);
   };
 
   const closeModal = () => {
     setModalForgotPasswordOpen(false);
+    setIsForgotPartPrimary(true);
     resetForgot();
+    resetNewPassword();
   };
 
   return (
@@ -174,54 +186,103 @@ export default function SignIn() {
       </div>
 
       <Modal isOpen={modalForgotPasswordOpen} onClose={closeModal}>
-        <div className={S.modalContainer}>
-          <h2>Recuperar Senha</h2>
-          <p>
-            Para recuperar sua senha, por favor, insira seu e-mail cadastrado e
-            seu código de verificação.
-          </p>
+        {isForgotPartPrimary ? (
+          <div className={S.modalContainer}>
+            <h2>Recuperar Senha</h2>
+            <p>
+              Para recuperar sua senha, por favor, insira seu e-mail cadastrado
+              e seu código de verificação.
+            </p>
 
-          <form onSubmit={handleSubmitForgot(onSubmitForgotPassword)}>
-            <input
-              type="email"
-              placeholder="E-mail"
-              {...registerForgot("email", {
-                required: "E-mail é obrigatório",
-              })}
-              className={errorsForgot.email ? S.errorInput : ""}
-              autoComplete="email"
-              disabled={isLoadingForgot}
-            />
-            {errorsForgot.email && (
-              <span className={S.errorText}>{errorsForgot.email.message}</span>
-            )}
-
-            <input
-              type="text"
-              placeholder="Código de Verificação"
-              {...registerForgot("phrase", {
-                required: "A frase de Verificação é obrigatória",
-                // minLength: { value: 4, message: "Código muito curto" },
-                // maxLength: { value: 10, message: "Código muito longo" },
-              })}
-              className={errorsForgot.phrase ? S.errorInput : ""}
-              autoComplete="off"
-              disabled={isLoadingForgot}
-            />
-            {errorsForgot.phrase && (
-              <span className={S.errorText}>{errorsForgot.phrase.message}</span>
-            )}
-            <div className={S.buttonContainer}>
-              <button
-                type="submit"
-                className={S.submitButton}
+            <form onSubmit={handleSubmitForgot(onSubmitForgotPassword)}>
+              <input
+                type="email"
+                placeholder="E-mail"
+                {...registerForgot("email", {
+                  required: "E-mail é obrigatório",
+                })}
+                className={errorsForgot.email ? S.errorInput : ""}
+                autoComplete="email"
                 disabled={isLoadingForgot}
-              >
-                Enviar
-              </button>
-            </div>
-          </form>
-        </div>
+              />
+              {errorsForgot.email && (
+                <span className={S.errorText}>
+                  {errorsForgot.email.message}
+                </span>
+              )}
+
+              <input
+                type="text"
+                placeholder="Código de Verificação"
+                {...registerForgot("phrase", {
+                  required: "A frase de Verificação é obrigatória",
+                })}
+                className={errorsForgot.phrase ? S.errorInput : ""}
+                autoComplete="off"
+                disabled={isLoadingForgot}
+              />
+              {errorsForgot.phrase && (
+                <span className={S.errorText}>
+                  {errorsForgot.phrase.message}
+                </span>
+              )}
+              <div className={S.buttonContainer}>
+                <button
+                  type="submit"
+                  className={S.submitButton}
+                  disabled={isLoadingForgot}
+                >
+                  Enviar
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <div className={S.modalContainer}>
+            <h2>Recuperar Senha</h2>
+            <p>
+              Agora digite sua nova senha para concluir o processo de
+              recuperação.
+            </p>
+
+            <form onSubmit={handleSubmitNewPassword(onSubmitForgotNewPassword)}>
+              <input
+                type="password"
+                placeholder="Nova Senha"
+                {...registerNewPassword("password", {
+                  required: "Senha é obrigatório",
+                })}
+                className={errorsForgot.password ? S.errorInput : ""}
+                autoComplete="new-password"
+                disabled={isLoadingForgot}
+              />
+              <input 
+                type="password"
+                placeholder="Confirmar Nova Senha"
+                {...registerNewPassword("confirmPassword", {
+                  required: "Confirmação de senha é obrigatório",
+                })}
+                className={errorsForgot.password ? S.errorInput : ""}
+                autoComplete="new-password"
+                disabled={isLoadingForgot}
+              />
+              {errorsForgot.password && (
+                <span className={S.errorText}>
+                  {errorsForgot.password.message}
+                </span>
+              )}
+              <div className={S.buttonContainer}>
+                <button
+                  type="submit"
+                  className={S.submitButton}
+                  disabled={isLoadingForgot}
+                >
+                  Enviar
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </Modal>
     </section>
   );
