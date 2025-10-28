@@ -13,9 +13,9 @@ import argon2 from "argon2";
 // Cadastrar usuário
 export const signup = async (req, res) => {
   try {
-    const { cnpj, email, password, } = req.body;
+    const { cnpj, email, password, security_phrase } = req.body;
     // Validação básica
-    if (!cnpj || !email || !password) {
+    if (!cnpj || !email || !password || !security_phrase) {
       return res.status(400).json({
         success: false,
         error: "Todos os campos são obrigatórios."
@@ -32,7 +32,7 @@ export const signup = async (req, res) => {
     // Cria usuário
     const hashedPassword = await argon2.hash(password);
 
-    const userData = { cnpj, email, password: hashedPassword };
+    const userData = { cnpj, email, password: hashedPassword, security_phrase };
     const newUser = await createUser(userData);
     res.status(201).json({
       success: true,

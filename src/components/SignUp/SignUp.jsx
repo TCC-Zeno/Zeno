@@ -83,6 +83,7 @@ export default function SignUp() {
           cnpj: data.cnpj,
           email: data.email,
           password: data.password,
+          security_phrase: data.phrase   
         }
       );
 
