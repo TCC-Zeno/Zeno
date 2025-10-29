@@ -176,12 +176,12 @@
     margin-bottom: 5%;
   }
 
-  .help {
+  /* .help {
     margin-top: 30%;
     right: 0;
     justify-content: flex-start;
     transform: translateY(25%);
-  }
+  } */
 
   .active {
     width: 90%;
