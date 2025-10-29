@@ -57,7 +57,6 @@ export function CardOfStock({ product, fetchData }) {
           data,
         }
       );
-      console.log(response);
       if (response.status === 200) {
         toast.success("Produto atualizado com sucesso!");
         fetchData();
@@ -65,7 +64,7 @@ export function CardOfStock({ product, fetchData }) {
       }
     } catch (err) {
       toast.error("Erro ao atualizar produto");
-      console.log(err);
+      console.error(err);
     }
   };
 

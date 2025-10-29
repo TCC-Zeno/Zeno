@@ -33,8 +33,6 @@ export function NotificationContent() {
       );
 
       if (response.status === 200) {
-        console.log(response);
-
         setDataArray(response.data);
       }
     } catch (err) {
@@ -119,7 +117,7 @@ export function ProfileContent() {
     try {
       await logout();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
   return (
@@ -268,8 +266,6 @@ export function FilterContent() {
       );
 
       if (response.status === 200) {
-        console.log(getUniqueCategories(response.data));
-
         setDataCategory(getUniqueCategories(response.data));
       }
     } catch (err) {

@@ -114,12 +114,6 @@ export default function Calendar() {
   }, [dispatch]);
 
   const selectDates = (selectInfo) => {
-    console.log(
-      "Selected dates:",
-      selectInfo.startStr,
-      "to",
-      selectInfo.endStr
-    );
     setSelect({
       start: selectInfo.startStr,
       end: selectInfo.endStr,
@@ -138,17 +132,15 @@ export default function Calendar() {
           end_date: dateFormatter(info.event._instance.range.end),
         }
       );
-      console.log("resposta: ", resposta);
       handleModalClose();
       await fetchEvents();
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert(err.response?.data?.error || "Erro ao atualizar informações");
     }
   };
 
   const handleEventClick = async (info) => {
-    console.log("Clicked event:", info);
     const { event } = info;
 
     try {
@@ -159,7 +151,6 @@ export default function Calendar() {
         }
       );
 
-      console.log("resposta:", resposta.data[0]);
       setDataEdit(resposta.data[0]);
       setModalEditEvent(true);
     } catch (err) {

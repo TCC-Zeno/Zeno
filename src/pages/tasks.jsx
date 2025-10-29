@@ -53,7 +53,6 @@ export default function Tasks() {
   };
 
   const onDrop = async (status, position) => {
-    console.log(`${activeCard} ta indo para ${status} e a posição ${position}`);
     if (activeCard == null || activeCard === undefined) return;
 
     const taskToMove = tasks[activeCard];

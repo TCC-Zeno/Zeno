@@ -154,7 +154,6 @@ export default function Stock() {
         : Number(data.Supplier) || null,
     };
 
-    console.log(addProductData);
 
     try {
       const formData = new FormData();
@@ -241,7 +240,6 @@ export default function Stock() {
   //le supplier
   async function readSupplier() {
     try {
-      console.log("Lendo fornecedor com ID:", userId.uuid);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/stock/readSupplier`,
         {
@@ -249,7 +247,6 @@ export default function Stock() {
         }
       );
       if (response.status === 200) {
-        console.log("Dados do fornecedor:", response.data);
         setSupplierData(response.data);
       }
     } catch (error) {

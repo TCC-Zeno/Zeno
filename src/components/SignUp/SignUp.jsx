@@ -108,7 +108,7 @@ export default function SignUp() {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setIsLoading(false);
       toast.error("Erro ao fazer cadastro. Verifique os dados.");
       setShowModal(false);

@@ -32,8 +32,6 @@ export function Support() {
   const onSubmit = async (data) => {
     const serviceID = "service_jovc4m8";
     const templateID = "template_5m4ref4";
-    console.log(data);
-    console.log(profileinfo);
 
     const templateParams = {
       title: data.topic,
@@ -53,7 +51,6 @@ export function Support() {
           template_params: templateParams,
         }
       );
-      console.log(response);
       if (response.status === 200) {
         setModalSuccess(true);
       } else {
@@ -68,7 +65,6 @@ export function Support() {
 
   function handleFunction() {
     setIsMessageDivActive(!isMessageDivActive);
-    console.log(isMessageDivActive);
   }
   return (
     <DefaultLayout>

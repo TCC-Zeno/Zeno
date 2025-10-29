@@ -146,7 +146,6 @@ export default function Settings() {
   ]);
 
   useEffect(() => {
-    console.log(features);
   }, [features]);
 
   useEffect(() => {

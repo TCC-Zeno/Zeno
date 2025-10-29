@@ -63,22 +63,21 @@ export default function Dropzone(id) {
         return;
       }
       const formData = new FormData();
-      formData.append("logo", selectedFile); 
-      formData.append("uuid", profileinfo.uuid); 
-   
+      formData.append("logo", selectedFile);
+      formData.append("uuid", profileinfo.uuid);
+
       const resposta = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/logo`, formData,
+        `${import.meta.env.VITE_API_URL}/user/logo`,
+        formData,
         {
-          header:{
+          header: {
             "Content-Type": "multipart/form-data",
           },
-        },
-        
+        }
       );
-     if (resposta.status === 200) {
-  dispatch(userData({ ...profileinfo, logo: resposta.data.logo }));
-}
-console.log(profileinfo)
+      if (resposta.status === 200) {
+        dispatch(userData({ ...profileinfo, logo: resposta.data.logo }));
+      }
     } else {
       alert("Nenhum arquivo selecionado");
     }

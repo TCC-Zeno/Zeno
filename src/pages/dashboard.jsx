@@ -48,7 +48,6 @@ export default function Dashboard() {
   }
 
   const onSubmit = async (data) => {
-    console.log("Form data:", data);
     const priceDot = data.price?.toString().replace(",", ".");
     try {
       const response = await axios.post(
@@ -69,11 +68,8 @@ export default function Dashboard() {
         toast.success("Finança adicionada com sucesso!");
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Erro ao adicionar finança";
-      console.error("Erro ao adicionar finança:", errorMessage);
+      console.error("Erro ao adicionar finança:", error);
       toast.error("Erro ao adicionar finança!");
-      console.log(error);
     }
   };
 

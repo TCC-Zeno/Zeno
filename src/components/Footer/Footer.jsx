@@ -14,7 +14,7 @@ export function Footer() {
     try {
       await logout();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
   return (

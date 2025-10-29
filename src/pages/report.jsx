@@ -103,7 +103,6 @@ export default function Report() {
     //   return;
     // }
     const end = dateFormatter(getEndOfDay(new Date()));
-    console.log(end, start);
     setLoading(true);
     try {
       const response = await axios.post(

@@ -116,9 +116,9 @@ export default function Finance() {
   }, [watchedFilters, dataFinance, applyFilters]);
 
   // Função inutil, só esta aqui pra não dar erro
-  const onFilterSubmit = async (data) => {
-    console.log("Filtros aplicados:", data);
-  };
+  // const onFilterSubmit = async (data) => {
+  //   console.log("Filtros aplicados:", data);
+  // };
 
   // Limpa os filtros
   const clearFilters = () => {
@@ -147,9 +147,7 @@ export default function Finance() {
         toast.success("Finança adicionada com sucesso!");
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Erro ao adicionar finança";
-      console.error("Erro ao adicionar finança:", errorMessage);
+      console.error("Erro ao adicionar finança:", error);
       toast.error("Erro ao adicionar finança!");
     }
   };
@@ -184,9 +182,7 @@ export default function Finance() {
         await ReadCategory();
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Erro ao adicionar finança";
-      console.error("Erro ao adicionar finança:", errorMessage);
+      console.error("Erro ao adicionar finança:", error);
       toast.error("Erro ao adicionar categoria!");
     }
   };
@@ -204,16 +200,13 @@ export default function Finance() {
         setCategoryData(response.data);
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Erro ao ler categoria";
-      console.error("Erro ao ler categoria:", errorMessage);
+      console.error("Erro ao ler categoria:", error);
       toast.error("Erro ao ler categoria!");
     }
   }
 
   // Função para editar item
   async function onEditSubmit(id, data) {
-    console.log("Dados do item a ser editado:", id, data);
     const priceDot = data.price?.toString().replace(",", ".");
     try {
       const response = await axios.post(
@@ -228,7 +221,6 @@ export default function Finance() {
           id: id,
         }
       );
-      console.log(response);
       if (response.status === 200) {
         setCategoryData(response.data);
         editReset();
@@ -237,9 +229,7 @@ export default function Finance() {
         fetchData();
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Erro ao editar item";
-      console.error("Erro ao editar item:", errorMessage);
+      console.error("Erro ao editar item:", error);
       toast.error("Erro ao editar item!");
     }
   }
@@ -247,7 +237,6 @@ export default function Finance() {
   // Função para deletar item
   async function financeDelete(id) {
     try {
-      console.log("ID do item a ser deletado:", id);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/finance/financeDelete`,
         {
@@ -259,9 +248,7 @@ export default function Finance() {
         fetchData();
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Erro ao deletar item";
-      console.error("Erro ao deletar item:", errorMessage);
+      console.error("Erro ao deletar item:", error);
       toast.error("Erro ao deletar item!");
     }
   }
