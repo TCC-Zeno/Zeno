@@ -17,7 +17,6 @@ export const getEmployeeCnpj = async (cnpj) => {
     .select("*")
     .eq("cnpj", cnpj);
 
-  console.log("service: ", data);
   if (error) {
     throw error;
   }
@@ -30,7 +29,6 @@ export const getEmployeeByEmail = async (email) => {
     .eq("email", email)
     .maybeSingle();
 
-  console.log(error);
   if (error && error.code !== "PGRST116") throw new Error(error.message);
   return data;
 };

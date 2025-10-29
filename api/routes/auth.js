@@ -7,7 +7,8 @@ import {
   getSession,
   sucessGoogleLogin,
   failureGoogleLogin,
-  forgotPassword
+  forgotPassword,
+  resetPassword
 } from "../controllers/authController.js";
 import passport from "passport";
 
@@ -22,6 +23,7 @@ router.post("/logout", logout);
 router.get("/check-session", checkSession);
 router.get("/session", getSession);
 router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 
 // Rotas do Google
 router.get(

@@ -2,7 +2,7 @@ import S from "./signIn.module.css";
 import { setTheme, userData, setColorBlindness } from "../../redux/User/slice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useState } from "react";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 import PropagateLoader from "react-spinners/PropagateLoader";
@@ -26,6 +26,7 @@ export default function SignIn() {
     server: "",
     status: 200,
   });
+  const [email, setEmail] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,14 +42,24 @@ export default function SignIn() {
     handleSubmit: handleSubmitForgot,
     formState: { errors: errorsForgot },
     reset: resetForgot,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      email: "",
+      phrase: "",
+    }
+  });
 
   const {
     register: registerNewPassword,
     handleSubmit: handleSubmitNewPassword,
     formState: { errors: errorsNewPassword },
     reset: resetNewPassword,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   const onSubmitLogin = async (data) => {
     setIsLoading(true);
@@ -82,6 +93,8 @@ export default function SignIn() {
       });
     } finally {
       setIsLoading(false);
+      resetNewPassword();
+      resetForgot();
     }
   };
 
@@ -98,6 +111,7 @@ export default function SignIn() {
       if (resposta.status === 200) {
         toast.success("Frase verificada com sucesso!");
         setIsForgotPartPrimary(false);
+        setEmail(data.email);
       }
     } catch (error) {
       console.error("Frase de verificação inválida:", error);
@@ -108,9 +122,26 @@ export default function SignIn() {
   };
 
   const onSubmitForgotNewPassword = async (data) => {
-    console.log(data);
-  };
-
+    try{
+      const resposta = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/reset-password`,
+        {
+          email: email,
+          new_password: data.password,
+          confirm_password: data.confirmPassword
+        }
+      );
+    }
+  catch (error) {
+      console.error("Erro ao redefinir a senha:", error);
+      toast.error("Erro ao redefinir a senha.");
+    } finally {
+      setIsLoadingForgot(false);
+      closeModal();
+      resetNewPassword();
+      toast.success("Senha redefinida com sucesso!");
+    }
+  }
   const closeModal = () => {
     setModalForgotPasswordOpen(false);
     setIsForgotPartPrimary(true);
@@ -253,7 +284,6 @@ export default function SignIn() {
                   required: "Senha é obrigatório",
                 })}
                 className={errorsForgot.password ? S.errorInput : ""}
-                autoComplete="new-password"
                 disabled={isLoadingForgot}
               />
               <input 

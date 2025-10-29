@@ -15,16 +15,6 @@ export const addServicesform = async (req, res) => {
             pending_amount,
             name_services,
             number_customer } = req.body;
-        console.log({
-            userId,
-            status,
-            name_customer,
-            date,
-            description,
-            pending_amount,
-            name_services,
-            number_customer
-        });
         //criar a tabela
 
         // const financeData = { userId, name, value, category, payment_method, type_flow };

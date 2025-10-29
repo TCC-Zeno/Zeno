@@ -2,10 +2,8 @@ import {
   createUser,
   getUserByEmail,
   getUserById,
-  /*getUsers, 
-  updateUser,
-  deleteUser,
-  searchUsers*/
+  updateUserPassword,
+
 } from "../services/authService.js";
 import { getEmployeeByEmail, getEmployeeById } from "../services/employeeService.js"
 import argon2 from "argon2";
@@ -31,8 +29,9 @@ export const signup = async (req, res) => {
     }
     // Cria usuário
     const hashedPassword = await argon2.hash(password);
+    const hashedSecurityPhrase = await argon2.hash(security_phrase);
 
-    const userData = { cnpj, email, password: hashedPassword, security_phrase };
+    const userData = { cnpj, email, password: hashedPassword, security_phrase: hashedSecurityPhrase };
     const newUser = await createUser(userData);
     res.status(201).json({
       success: true,
@@ -73,8 +72,8 @@ export const signin = async (req, res) => {
     // Salvar na sessão
     if (user.id) {
       // employee
-      req.session.userId = user.uuid; 
-      req.session.employeeId = user.id; 
+      req.session.userId = user.uuid;
+      req.session.employeeId = user.id;
       req.session.user = {
         id: user.uuid,
         employeeId: user.id,
@@ -230,28 +229,66 @@ export const logout = (req, res) => {
 
 //Verificação de frase
 export const forgotPassword = async (req, res) => {
-  try{
-    const {email, security_phrase} = req.body;
-    
-    const user =  await getUserByEmail (email);
-    if(!user){
+  try {
+    const { email, security_phrase } = req.body;
+
+    const user = await getUserByEmail(email);
+    if (!user) {
       return res.status(404).json({
         success: false,
         error: "Usuário não encontrado"
       });
     }
-    if(user.security_phrase !== security_phrase){
+    if (!await argon2.verify(user.security_phrase, security_phrase)) {
       return res.status(401).json({
         success: false,
-        error: "Frase de segurança inválida"
+        error: "Frase de segurança incorreta"
       });
     }
+
     res.status(200).json({
       success: true,
       message: "Frase de segurança verificada com sucesso"
     });
-  }catch(error){
+  } catch (error) {
     console.error("Erro na verificação da frase de segurança:", error);
+    res.status(500).json({
+      success: false,
+      error: "Erro interno do servidor"
+    });
+  }
+}
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { new_password, confirm_password, email } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        error: "E-mail é obrigatório"
+      });
+    }
+    if (new_password !== confirm_password) {
+      return res.status(400).json({
+        success: false,
+        error: "As senhas não coincidem"
+      });
+    }
+    const hashedPassword = await argon2.hash(new_password);
+    const userData = await updateUserPassword(email, hashedPassword);
+    if (!userData) {
+      return res.status(404).json({
+        success: false,
+        error: "Usuário não encontrado"
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Senha redefinida com sucesso"
+    });
+
+  } catch (error) {
+    console.error("Erro ao resetar a senha:", error);
     res.status(500).json({
       success: false,
       error: "Erro interno do servidor"
@@ -264,7 +301,6 @@ export const sucessGoogleLogin = (req, res) => {
   if (!req.user) {
     res.redirect("/failure");
   }
-  console.log("Usuário autenticado com sucesso:", req.user);
   res.status(200).json({
     message: "Usuário autenticado com sucesso",
     user: req.user,
@@ -276,70 +312,3 @@ export const failureGoogleLogin = (req, res) => {
 };
 
 
-
-
-
-
-
-/*
-export const fetchUsers = async (req, res) => {
-  try {
-    const users = await getUsers();
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-export const fetchUserById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await getUserById(id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-
-
-export const modifyUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updates = req.body;
-    const updatedUser = await updateUser(id, updates);
-    if (!updatedUser || updatedUser.length === 0) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-export const removeUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await deleteUser(id);
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-export const findUsers = async (req, res) => {
-  try {
-    const { query } = req.query;
-    if (!query) {
-      return res.status(400).json({ error: "Search query is required" });
-    }
-    const users = await searchUsers(query);
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-*/

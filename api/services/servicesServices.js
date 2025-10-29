@@ -29,7 +29,6 @@ export const addServices = async (
 };
 
 export const getServicesID = async (uuid) => {
-    console.log("Fetching services for UUID:", uuid); // Log adicionado para depuração
   const { data, error } = await supabase
     .from("services")
     .select("*")
@@ -37,7 +36,6 @@ export const getServicesID = async (uuid) => {
     //.order('created_at', { ascending: true });
 
   if (error) throw new Error(error.message);
-  console.log("Fetched services data:", data); // Log adicionado para depuração
   return data;
 };
 

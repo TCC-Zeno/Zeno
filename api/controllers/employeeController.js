@@ -53,14 +53,12 @@ export const createEmployee = async (req, res) => {
       features: features,
       logo: logo,
     };
-    console.log("Controller employeeData:", employeeData);
     const newUser = await create(employeeData);
     res.status(201).json({
       success: true,
       user: newUser,
     });
 
-    console.log("Novo funcionário criado:", newUser);
   } catch (err) {
     res.status(400).json({
       success: false,
@@ -72,10 +70,8 @@ export const createEmployee = async (req, res) => {
 export const getEmployee = async (req, res) => {
   try {
     const { cnpj } = req.body;
-    console.log("Controller cnpj:", cnpj);
 
     const data = await getEmployeeCnpj(cnpj);
-    console.log("Controller:", data);
     if (!data || data.length === 0) {
       return res.status(404).json("Funcionário não encontrado");
     }
@@ -88,7 +84,6 @@ export const getEmployee = async (req, res) => {
 export const deleteEmployee = async (req, res) => {
   try {
     const { id } = req.body;
-    console.log("Controller ID to delete:", id);
     if (!id) {
       return res.status(400).json({ error: "ID do funcionário é obrigatório" });
     }

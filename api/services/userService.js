@@ -17,7 +17,6 @@ export const updateUser = async (uuid, updateData = {}) => {
     .select();
 
   if (error) throw new Error(error.message);
-  console.log(error)
   return data;
 };
 export const getUserById = async (uuid) => {

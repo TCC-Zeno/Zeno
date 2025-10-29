@@ -18,7 +18,7 @@ export const getUserByEmail = async (email) => {
     .select("*")
     .eq("email", email)
     .maybeSingle();
-    // coloquei para garantir que não de erro, já que o single dá erro se não encontrar
+  // coloquei para garantir que não de erro, já que o single dá erro se não encontrar
 
   if (error && error.code !== "PGRST116") throw new Error(error.message);
   return data;
@@ -33,43 +33,13 @@ export const getUserById = async (id) => {
   if (error) throw new Error(error.message);
   return data;
 };
-/*
-export const getUsers = async () =>{
-    const {data, error} = await supabase.from('users').select("*");
 
-        if (error) throw new error (error.message)
-        return data;
-};
-
-
-export const updateUser = async (id, updates) => {
+export const updateUserPassword = async (email, hashedPassword) => {
   const { data, error } = await supabase
     .from("users")
-    .update(updates)
-    .eq("id", id)
+    .update({ password: hashedPassword })
+    .eq("email", email)
     .select();
-
   if (error) throw new Error(error.message);
   return data;
-};
-
-export const deleteUser = async (id) => {
-  const { error } = await supabase
-    .from("users")
-    .delete()
-    .eq("id", id);
-
-  if (error) throw new Error(error.message);
-  return { success: true, message: "User deleted successfully" };
-};
-
-export const searchUsers = async (query) => {
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .ilike("name", `%${query}%`);
-
-  if (error) throw new Error(error.message);
-  return data;
-};
-*/
+}

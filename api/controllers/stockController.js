@@ -115,7 +115,6 @@ export const createProduct = async (req, res) => {
       supplierId
     );
 
-    console.log("Produto criado com sucesso:", productData);
     return res.status(201).json(productData);
   } catch (error) {
     console.error("Erro no createProduct:", error);
@@ -206,9 +205,7 @@ export const deleteProductById = async (req, res) => {
 
 export const readSupplier = async (req, res) => {
   try {
-    console.log("Lendo fornecedor com ID:", req.body);
     const userId = req.body.uuid;
-    console.log("Lendo fornecedor com ID:", userId);
     const data = await getSupplier(userId);
     res.status(200).json(data);
   } catch (error) {
