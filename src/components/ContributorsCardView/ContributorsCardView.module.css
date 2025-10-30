@@ -1,10 +1,13 @@
 .containerContributors {
   display: flex;
-  flex-direction: row;
-  border-radius: 35px;
+  flex-direction: row; /* muda para coluna, se quiser empilhar os elementos */
   border: 2px solid rgb(var(--color-primary));
   transition: all 0.5s;
-  width: 700px;
+  border-radius: 35px;
+  padding: 5px;
+  margin: 10px auto;
+  width: fit-content;
+  box-sizing: border-box;
 }
 .containerContributors:hover {
   border: 2px solid rgb(var(--color-secondary));
@@ -55,11 +58,11 @@
   transform: scale(1.1);
 }
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
   .containerContributors {
-    width: 100%;
+    width: fit-content;
   }
-}
+} */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
   .containerContributors {
     width: 100%;

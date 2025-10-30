@@ -60,3 +60,17 @@
   color: whitesmoke;
   transform: scaleX(1.05);
 }
+
+@media (max-width: 768px) {
+  .containerText h1 {
+    font-size: 70pt;
+  }
+  .containerText p {
+    font-size: 18pt;
+  }
+  .goHomeButton,
+  .contactButton {
+    font-size: 12pt;
+    padding: 8px 20px;
+  }
+}
