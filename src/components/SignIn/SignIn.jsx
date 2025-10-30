@@ -19,6 +19,7 @@ export default function SignIn() {
   const [isLoadingForgot, setIsLoadingForgot] = useState(false);
   const [modalForgotPasswordOpen, setModalForgotPasswordOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswords, setShowPasswords] = useState(false);
   const [isForgotPartPrimary, setIsForgotPartPrimary] = useState(true);
   const [error, setError] = useState({
     user: "",
@@ -46,7 +47,7 @@ export default function SignIn() {
     defaultValues: {
       email: "",
       phrase: "",
-    }
+    },
   });
 
   const {
@@ -122,17 +123,16 @@ export default function SignIn() {
   };
 
   const onSubmitForgotNewPassword = async (data) => {
-    try{
+    try {
       const resposta = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/reset-password`,
         {
           email: email,
           new_password: data.password,
-          confirm_password: data.confirmPassword
+          confirm_password: data.confirmPassword,
         }
       );
-    }
-  catch (error) {
+    } catch (error) {
       console.error("Erro ao redefinir a senha:", error);
       toast.error("Erro ao redefinir a senha.");
     } finally {
@@ -141,7 +141,7 @@ export default function SignIn() {
       resetNewPassword();
       toast.success("Senha redefinida com sucesso!");
     }
-  }
+  };
   const closeModal = () => {
     setModalForgotPasswordOpen(false);
     setIsForgotPartPrimary(true);
@@ -244,7 +244,7 @@ export default function SignIn() {
 
               <input
                 type="text"
-                placeholder="Código de Verificação"
+                placeholder="Frase de recuperação"
                 {...registerForgot("phrase", {
                   required: "A frase de Verificação é obrigatória",
                 })}
@@ -277,25 +277,46 @@ export default function SignIn() {
             </p>
 
             <form onSubmit={handleSubmitNewPassword(onSubmitForgotNewPassword)}>
-              <input
-                type="password"
-                placeholder="Nova Senha"
-                {...registerNewPassword("password", {
-                  required: "Senha é obrigatório",
-                })}
-                className={errorsForgot.password ? S.errorInput : ""}
-                disabled={isLoadingForgot}
-              />
-              <input 
-                type="password"
-                placeholder="Confirmar Nova Senha"
-                {...registerNewPassword("confirmPassword", {
-                  required: "Confirmação de senha é obrigatório",
-                })}
-                className={errorsForgot.password ? S.errorInput : ""}
-                autoComplete="new-password"
-                disabled={isLoadingForgot}
-              />
+              <div className={S.passwordWrapper}>
+                <input
+                  type={showPasswords ? "text" : "password"}
+                  placeholder="Nova Senha"
+                  {...registerNewPassword("password", {
+                    required: "Senha é obrigatório",
+                  })}
+                  className={errorsForgot.password ? S.errorInput : ""}
+                  disabled={isLoadingForgot}
+                />
+                <button
+                  type="button"
+                  className={S.togglePassword}
+                  onClick={() => setShowPasswords((prev) => !prev)}
+                  tabIndex={-1}
+                >
+                  {showPasswords ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+
+              <div className={S.passwordWrapper}>
+                <input
+                  type={showPasswords ? "text" : "password"}
+                  placeholder="Confirmar Nova Senha"
+                  {...registerNewPassword("confirmPassword", {
+                    required: "Confirmação de senha é obrigatório",
+                  })}
+                  className={errorsForgot.password ? S.errorInput : ""}
+                  autoComplete="new-password"
+                  disabled={isLoadingForgot}
+                />
+                <button
+                  type="button"
+                  className={S.togglePassword}
+                  onClick={() => setShowPasswords((prev) => !prev)}
+                  tabIndex={-1}
+                >
+                  {showPasswords ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
               {errorsForgot.password && (
                 <span className={S.errorText}>
                   {errorsForgot.password.message}
