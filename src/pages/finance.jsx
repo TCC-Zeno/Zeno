@@ -116,9 +116,9 @@ export default function Finance() {
   }, [watchedFilters, dataFinance, applyFilters]);
 
   // Função inutil, só esta aqui pra não dar erro
-  // const onFilterSubmit = async (data) => {
-  //   console.log("Filtros aplicados:", data);
-  // };
+  const onFilterSubmit = async (data) => {
+    console.log("Filtros aplicados:", data);
+  };
 
   // Limpa os filtros
   const clearFilters = () => {
