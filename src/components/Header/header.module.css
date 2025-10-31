@@ -563,7 +563,7 @@ button.manegerOption {
 .deleteBtn:hover {
   transform: scale(1.05);
 }
-.actionsButtons{
+.actionsButtons {
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
@@ -597,6 +597,17 @@ button.manegerOption {
   }
   .addContributorForm {
     width: 100%;
+  }
+  .checkboxsContainer {
+    max-width: 100%;
+  }
+  .blockWrapper {
+    margin: 5px;
+    gap: 5px;
+  }
+  .blockLabel {
+    font-size: 13px;
+    padding-left: 5px;
   }
 }
 
