@@ -167,7 +167,8 @@ body,
 
 .function .functionCard {
   flex: 0 0 auto;
-  background-color: rgb(109, 6, 210);
+  background-color: rgb(109 6 210);
+  /* background-color: rgb(70, 135, 243); */
   padding: 20px;
   width: 18%;
   min-width: 205px;
@@ -203,13 +204,15 @@ body,
 .function .functionCard h2 {
   font-family: "Coolvetica Rg";
   text-align: center;
+  font-size: 14pt;
   font-weight: 500;
-  color: whitesmoke;
+  color: white;
 }
 .function .functionCard p {
   text-align: center;
   color: whitesmoke;
   padding-top: 5px;
+  font-weight: 600;
 }
 .guide {
   display: flex;

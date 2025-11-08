@@ -151,7 +151,7 @@ export default function Dashboard() {
             >
               <div className={S.cashTitle}>
                 <h1>Resumo de caixa</h1>
-                <select
+                {/* <select
                   className={S.cashSelectPeriod}
                   name="cash-summary-period"
                   id="cash-summary-period"
@@ -161,7 +161,7 @@ export default function Dashboard() {
                   <option value="daily">Diário</option>
                   <option value="monthly">Mensal</option>
                   <option value="annual">Anual</option>
-                </select>
+                </select> */}
               </div>
               <div className={S.cashContainer}>
                 <div className={S.cashAmount}>
