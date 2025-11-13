@@ -203,7 +203,8 @@ export function CardOfStock({ product, fetchData }) {
               className={S.inputQuantity}
               value={localQuantity}
               onChange={(e) => {
-                const value = e.target.value === "" ? 0 : Number(e.target.value);
+                const value =
+                  e.target.value === "" ? 0 : Number(e.target.value);
                 setLocalQuantity(value);
                 updateQuantity(value);
               }}
@@ -390,7 +391,7 @@ export function CardOfStock({ product, fetchData }) {
                 <h3 className={S.ModalTitle}>
                   Quantidade:{" "}
                   <span className={S.ModalTxt}>
-                    {product.quantity_of_product}
+                    {product.quantity_of_product.toFixed(2)}
                   </span>
                 </h3>
                 <h3 className={S.ModalTitle}>
@@ -437,22 +438,45 @@ export function CardOfStock({ product, fetchData }) {
               <div className={S.ModalQuanti}>
                 <h3 className={S.ModalTitle}>
                   Quantidade fixa em Estoque:{" "}
-                  <span className={S.ModalTxt}>{product.fixed_quantity}</span>
+                  <span className={S.ModalTxt}>
+                    {typeof product.fixed_quantity === "number"
+                      ? product.fixed_quantity.toFixed(2)
+                      : "0.00"}
+                  </span>
                 </h3>
                 <h3 className={S.ModalTitle}>
                   Quantidade mínima para comprar:{" "}
-                  <span className={S.ModalTxt}>{product.minimum_quantity}</span>
+                  <span className={S.ModalTxt}>
+                    {typeof product.minimum_quantity === "number"
+                      ? product.minimum_quantity.toFixed(2)
+                      : "0.00"}
+                  </span>
                 </h3>
                 <h3 className={S.ModalTitle}>
-                  Custo: <span className={S.ModalTxt}>R$ {product.price}</span>
+                  Custo:{" "}
+                  <span className={S.ModalTxt}>
+                    R${" "}
+                    {typeof product.price === "number"
+                      ? product.price.toFixed(2)
+                      : "0.00"}
+                  </span>
                 </h3>
                 <h3 className={S.ModalTitle}>
-                  Preço: <span className={S.ModalTxt}>R$ {product.price1}</span>
+                  Preço:{" "}
+                  <span className={S.ModalTxt}>
+                    R${" "}
+                    {typeof product.price1 === "number"
+                      ? product.price1.toFixed(2)
+                      : "0.00"}
+                  </span>
                 </h3>
                 <h3 className={S.ModalTitle}>
                   Lucro:{" "}
                   <span className={S.ModalTxt}>
-                    R$ {product.price1 - product.price}
+                    {typeof product.price === "number" &&
+                    typeof product.price1 === "number"
+                      ? `R$ ${(product.price1 - product.price).toFixed(2)}`
+                      : "R$ 0.00"}
                   </span>
                 </h3>
               </div>

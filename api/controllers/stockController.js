@@ -23,15 +23,14 @@ export const createProduct = async (req, res) => {
     const Price1 = Number(req.body.Price1.replace(",", "."));
     const StockQuantity = Number(req.body.StockQuantity);
     const MinQuantity = Number(req.body.MinQuantity);
-    const FixedQuantity = Number(req.body.FixedQuantity);
+    const FixedQuantity = req.body.FixedQuantity;
     const userId = req.body.userId;
 
     if (
       isNaN(Price) ||
       isNaN(Price1) ||
       isNaN(StockQuantity) ||
-      isNaN(MinQuantity) ||
-      isNaN(FixedQuantity)
+      isNaN(MinQuantity) 
     ) {
       return res.status(400).json({
         error: "Valores numéricos inválidos. Verifique preços e quantidades.",

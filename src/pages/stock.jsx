@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { stock } from "../redux/Route/slice";
 import style from "./../styles/stock.module.css";
@@ -36,6 +36,7 @@ export default function Stock() {
   const [costPrice, setCostPrice] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);
   const [profit, setProfit] = useState(0);
+  const [loadingStock, setLoadingStock] = useState(false);
 
   useEffect(() => {
     const cost = parseFloat(costPrice) || 0;
@@ -134,6 +135,7 @@ export default function Stock() {
   };
 
   const onSubmit = async (data) => {
+    setLoadingStock(true);
     const addProductData = {
       ProductName: data.ProductName,
       FixedQuantity: data.FixedQuantity,
@@ -153,7 +155,6 @@ export default function Stock() {
           }
         : Number(data.Supplier) || null,
     };
-
 
     try {
       const formData = new FormData();
@@ -207,7 +208,9 @@ export default function Stock() {
       if (response.status === 201) {
         toast.success("Produto adicionado com sucesso!");
         fetchData();
+        readSupplier();
         reset();
+        
         setModalBigOpen(false);
       }
     } catch (error) {
@@ -218,6 +221,8 @@ export default function Stock() {
         "Erro ao adicionar produto";
       toast.error(errorMessage);
       console.error("Erro ao adicionar produto:", errorMessage);
+    } finally {
+      setLoadingStock(false);
     }
   };
 
@@ -363,9 +368,9 @@ export default function Stock() {
                 />
                 <input
                   className={style.inputAdd}
-                  type="number"
+                  type="text"
                   placeholder="Quantidade Fixa"
-                  {...register("FixedQuantity", { required: true })}
+                  {...register("FixedQuantity", { required: true, })}
                 />
                 <input
                   className={style.inputAdd}
@@ -701,8 +706,9 @@ export default function Stock() {
             {/* Botões */}
             <div className={style.buttonsCad}>
               <div className={style.buttonCad1}>
+
                 <button className={style.buttonSalveCad} type="submit">
-                  Salvar
+                  {loadingStock ? "Salvando..." : "Salvar"}
                 </button>
               </div>
               <div className={style.buttonCad1}>
@@ -716,11 +722,12 @@ export default function Stock() {
                     setCostPrice(0);
                     setFinalPrice(0);
                     setProfit(0);
+                    setLoadingStock(false);
                     setSelectedFile(null);
                     setModalBigOpen(false);
                   }}
                 >
-                  Excluir
+                  Limpar
                 </button>
               </div>
             </div>
