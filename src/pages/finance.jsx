@@ -24,6 +24,7 @@ export default function Finance() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadingAdd, setLoadingAdd] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -127,6 +128,7 @@ export default function Finance() {
 
   // Função para adicionar finanças
   const onAddSubmit = async (data) => {
+    setLoadingAdd(true);
     const priceDot = data.price?.toString().replace(",", ".");
     try {
       const response = await axios.post(
@@ -149,6 +151,8 @@ export default function Finance() {
     } catch (error) {
       console.error("Erro ao adicionar finança:", error);
       toast.error("Erro ao adicionar finança!");
+    } finally {
+      setLoadingAdd(false);
     }
   };
 
@@ -262,12 +266,6 @@ export default function Finance() {
     .reduce((acc, curr) => acc + parseFloat(curr.value), 0);
 
   const profitValue = amountValue - expensesValue;
-
-  // useEffect para buscar dados
-  // useEffect(() => {
-  //   fetchData();
-  //   ReadCategory();
-  // }, [userId.uuid]);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -595,10 +593,13 @@ export default function Finance() {
                   <option value="Entrada">Entrada</option>
                   <option value="Saída">Saída</option>
                 </select>
+
                 <input
                   className={style.buttonM}
                   type="submit"
                   id="btn-submit"
+                  disabled={loadingAdd}
+                  
                 />
               </div>
             </form>

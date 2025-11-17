@@ -180,13 +180,6 @@ export default function Settings() {
             />
             <div className={S.containerInternalForm}>
               <div className={S.containerForm}>
-                <h2>Altere a sua senha</h2>
-                <div className={S.containerPassword}>
-                  <button className={S.togglePassword}>
-                    <RiKey2Line />
-                    Alterar senha
-                  </button>
-                </div>
                 <h2>Qual a cor para o site?</h2>
                 <div className={S.colorContainer}>
                   <button
