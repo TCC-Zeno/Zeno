@@ -138,7 +138,7 @@ body,
   width: 100%;
   max-width: 1200px;
   height: 500px;
-  padding: 70px 30px 60px 30px;
+  padding: 70px 30px 40px 30px;
   display: flex;
   overflow-x: auto;
   overflow-y: visible;
@@ -197,9 +197,14 @@ body,
   align-self: center;
   color: whitesmoke;
 }
+
 .function .functionCard .text {
   height: 60%;
-  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 15px;
 }
 .function .functionCard h2 {
   font-family: "Coolvetica Rg";
@@ -207,6 +212,8 @@ body,
   font-size: 14pt;
   font-weight: 500;
   color: white;
+  /* margin-bottom: 10px; */
+  margin-top: 0;
 }
 .function .functionCard p {
   text-align: center;

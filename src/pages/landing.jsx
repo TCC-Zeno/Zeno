@@ -271,7 +271,8 @@ export default function LandingPage() {
             <BsFillBoxSeamFill className={S.icon} />
             <div className={S.text}>
               <h2>Controle de estoque</h2>
-              <p>Gerencie seu estoque da forma mais eficaz.</p>
+              <p>Monitore suas mercadorias com precisão. Evite faltas ou
+              perdas e mantenha o inventário sempre organizado.</p>
             </div>
           </div>
           <div className={S.functionCard}>
@@ -300,7 +301,7 @@ export default function LandingPage() {
               <h2>Organize tudo</h2>
               <p>
                 Deixe as suas tarefas em ordem, e sua produtividade em alta.
-                Gerencie demandas, delegue funções e mantenha tudo sob controle.
+                Gerencie demandas e mantenha tudo sob controle.
               </p>
             </div>
           </div>
@@ -310,8 +311,7 @@ export default function LandingPage() {
             <div className={S.text}>
               <h2>Serviços</h2>
               <p>
-                Tenha a facilidade para gerenciar seus serviços, controlar seus
-                pedidos, acompanhar os prazos e aumentar sua eficiência com
+                Tenha a facilidade para gerenciar seus serviços, acompanhar os prazos e aumentar sua eficiência com
                 poucos cliques!
               </p>
             </div>

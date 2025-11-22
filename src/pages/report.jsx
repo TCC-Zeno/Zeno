@@ -3,15 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { report } from "../redux/Route/slice";
 import style from "./../styles/report.module.css";
-// import ReactMarkdown from "react-markdown";
-// import remarkGfm from "remark-gfm";
 import axios from "axios";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import CurrencyInput from "react-currency-input-field";
-// import Modal from "../components/Modal/Modal";
 import { toast } from "react-toastify";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -26,7 +23,6 @@ export default function Report() {
   const [dataOfFlowType, setDataOfFlowType] = useState({});
   const [dataOfOthersCount, setDataOfOthersCount] = useState({});
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  // const [modalPermitionOpen, setModalPermitionOpen] = useState(false);
 
   function dateFormatter(dateString) {
     const date = new Date(dateString);
@@ -90,7 +86,6 @@ export default function Report() {
     calculatePeriodDates("daily")
   );
   const dispatch = useDispatch();
-  // const [reportData, setReportData] = useState("");
   const [dataArray, setDataArray] = useState([]);
 
   useEffect(() => {
@@ -98,10 +93,6 @@ export default function Report() {
   }, [dispatch]);
 
   async function generateReport(start = selectedPeriod) {
-    // if (localStorage.getItem("LGPDAccepted") !== "true") {
-    //   setModalPermitionOpen(true);
-    //   return;
-    // }
     const end = dateFormatter(getEndOfDay(new Date()));
     setLoading(true);
     try {
@@ -116,7 +107,6 @@ export default function Report() {
       if (response.status == 200) {
         toast.success("Relatório gerado com sucesso!");
         setDataArray(response.data.table);
-        // setReportData(response.data.report);
       }
     } catch (err) {
       toast.error("Erro ao gerar relatório");
@@ -157,7 +147,7 @@ export default function Report() {
         { selector: ".pdfOnlyHeader", name: "Cabeçalho" },
         { selector: `.${style.containerChart}`, name: "Gráficos" },
         { selector: `.${style.textIA}`, name: "Análise" },
-        { selector: `.pdf-only-table`, name: "Tabela" }, // Busca pela classe específica
+        { selector: `.pdf-only-table`, name: "Tabela" },
       ];
 
       let currentY = margin;
@@ -279,7 +269,7 @@ export default function Report() {
       console.error("Erro ao gerar PDF:", error);
       toast.error("Erro ao gerar PDF. Tente novamente.");
     } finally {
-      document.body.classList.remove("generating-pdf"); // Remove classe do body
+      document.body.classList.remove("generating-pdf");
       setIsGeneratingPDF(false);
     }
   };
@@ -609,74 +599,7 @@ export default function Report() {
                           />
                         </li>
                       </ul>
-
-                      {/* <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          components={{
-                            h1: (props) => (
-                              <h1 className={style.markdownH1} {...props} />
-                            ),
-                            h2: (props) => (
-                              <h2 className={style.markdownH2} {...props} />
-                            ),
-                            h3: (props) => (
-                              <h3 className={style.markdownH3} {...props} />
-                            ),
-                            p: (props) => (
-                              <p className={style.markdownP} {...props} />
-                            ),
-                            ul: (props) => (
-                              <ul className={style.markdownUl} {...props} />
-                            ),
-                            ol: (props) => (
-                              <ol className={style.markdownOl} {...props} />
-                            ),
-                            li: (props) => (
-                              <li className={style.markdownLi} {...props} />
-                            ),
-                            strong: (props) => (
-                              <strong
-                                className={style.markdownStrong}
-                                {...props}
-                              />
-                            ),
-                            table: (props) => (
-                              <div className={style.markdownTableContainer}>
-                                <table
-                                  className={style.markdownTable}
-                                  {...props}
-                                />
-                              </div>
-                            ),
-                            thead: (props) => (
-                              <thead
-                                className={style.markdownThead}
-                                {...props}
-                              />
-                            ),
-                            tbody: (props) => (
-                              <tbody
-                                className={style.markdownTbody}
-                                {...props}
-                              />
-                            ),
-                            tr: (props) => (
-                              <tr className={style.markdownTr} {...props} />
-                            ),
-                            th: (props) => (
-                              <th className={style.markdownTh} {...props} />
-                            ),
-                            td: (props) => (
-                              <td className={style.markdownTd} {...props} />
-                            ),
-                          }}
-                        >
-                          {reportData}
-                        </ReactMarkdown> */}
                     </>
-                    {/* ) : (
-                      <p>Carregando análise da IA...</p>
-                    )} */}
                   </div>
 
                   {isGeneratingPDF && (
@@ -767,40 +690,6 @@ export default function Report() {
             )
           ) : null}
         </div>
-        {/* <Modal
-          isOpen={modalPermitionOpen}
-          onClose={() => setModalPermitionOpen(false)}
-        >
-          <div className={style.modalContainer}>
-            <h1 className={style.title}>Permissão Necessária</h1>
-            <p>
-              Para gerar relatórios, é necessário aceitar nossa política de
-              privacidade e termos de uso, garantindo a conformidade com a LGPD.
-            </p>
-            <p style={{ marginTop: "10px" }}>
-              Ao aceitar você concorda que TODOS os dados inseridos na página
-              Fluxo de Caixa possam ser enviados para a inteligência artificial
-              do Google, que gerará relatórios baseados nas suas transações.
-            </p>
-            <div className={style.modalButtons}>
-              <button
-                className={style.cancelButton}
-                onClick={() => setModalPermitionOpen(false)}
-              >
-                Recusar
-              </button>
-              <button
-                className={style.acceptButton}
-                onClick={() => {
-                  localStorage.setItem("LGPDAccepted", "true");
-                  setModalPermitionOpen(false);
-                }}
-              >
-                Aceitar
-              </button>
-            </div>
-          </div>
-        </Modal> */}
       </DefaultLayout>
     </>
   );

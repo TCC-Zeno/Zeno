@@ -148,7 +148,7 @@ export function ProfileContent() {
                 onClick={() => setDropdownContributors(!dropdownContributors)}
               >
                 <IoPeopleSharp />
-                <span>Contribuintes</span>
+                <span>Colaboradores</span>
               </button>
             </>
           )}
