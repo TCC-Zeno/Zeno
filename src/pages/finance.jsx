@@ -62,7 +62,6 @@ export default function Finance() {
     handleSubmit: handleEditSubmit,
     control: editControl,
     reset: editReset,
-    formState: { errors: editErrors },
   } = useForm({
     mode: "onChange",
   });
@@ -313,6 +312,8 @@ export default function Finance() {
                   groupSeparator="."
                   value={amountValue.toFixed(2)}
                   className={style.currencyInput}
+                  readOnly
+                  disabled
                 />
               </h2>
             </div>
@@ -328,6 +329,8 @@ export default function Finance() {
                   groupSeparator="."
                   value={expensesValue.toFixed(2)}
                   className={style.currencyInput}
+                  readOnly
+                  disabled
                 />
               </h2>
             </div>
@@ -352,6 +355,8 @@ export default function Finance() {
                   groupSeparator="."
                   value={profitValue.toFixed(2)}
                   className={style.currencyInput}
+                  readOnly
+                  disabled
                 />
               </h2>
             </div>
@@ -599,7 +604,6 @@ export default function Finance() {
                   type="submit"
                   id="btn-submit"
                   disabled={loadingAdd}
-                  
                 />
               </div>
             </form>

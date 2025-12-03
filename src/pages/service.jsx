@@ -40,9 +40,14 @@ export default function Service() {
     handleSubmit: handleSubmitEdit,
     control: editControl,
     reset: editReset,
-    setValue: setEditValue,
-    formState: { errors: editErrors },
   } = useForm();
+
+  const formatCurrency = (value) => {
+    return value
+      .toFixed(2)
+      .replace(".", ",")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
 
   const onSubmit = async (data) => {
     const priceDot = data.price?.toString().replace(",", ".");
@@ -361,7 +366,7 @@ export default function Service() {
                 <MdAttachMoney className={style.iconReceb} />
               </div>
               <div className={style.valueReceb}>
-                <h1 className={style.value4}>{value.toFixed(2)}</h1>
+                <h1 className={style.value4}>{formatCurrency(value)}</h1>
               </div>
             </div>
           </div>
@@ -428,10 +433,10 @@ export default function Service() {
                     >
                       <td className={style.td}>{service.name_services}</td>
                       <td className={style.td}>{service.name_customer}</td>
-                      <td className={style.td}>{service.date}</td>
+                      <td className={style.td}>{service.date?new Date(service.date).toLocaleDateString(): ""}</td>
                       {viewStatus(service.status, service.id)}
                       <td className={style.td}>
-                        R$ {parseFloat(service.pending_amount).toFixed(2)}
+                        R$ {formatCurrency(parseFloat(service.pending_amount))}
                       </td>
                     </tr>
                   ))}

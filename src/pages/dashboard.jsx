@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(false);
-  const [selectedPeriod, setSelectedPeriod] = useState("daily");
   const profileinfo = useSelector((state) => state.userReducer.userData);
 
   const [dataFinance, setDataFinance] = useState([]);
@@ -31,6 +30,12 @@ export default function Dashboard() {
     defaultValues: { price: 0 },
     mode: "onChange",
   });
+
+const formatCurrency = (value) => {
+  return value.toFixed(2)
+    .replace('.', ',')
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
 
   async function fetchData() {
     if (!profileinfo?.uuid) return;
@@ -151,30 +156,19 @@ export default function Dashboard() {
             >
               <div className={S.cashTitle}>
                 <h1>Resumo de caixa</h1>
-                {/* <select
-                  className={S.cashSelectPeriod}
-                  name="cash-summary-period"
-                  id="cash-summary-period"
-                  value={selectedPeriod}
-                  onChange={(e) => setSelectedPeriod(e.target.value)}
-                >
-                  <option value="daily">Diário</option>
-                  <option value="monthly">Mensal</option>
-                  <option value="annual">Anual</option>
-                </select> */}
               </div>
               <div className={S.cashContainer}>
                 <div className={S.cashAmount}>
                   <h4>Montante</h4>
-                  <p id="amount-value">R$ {amountValue.toFixed(2)}</p>
+                  <p id="amount-value">R$ {formatCurrency(amountValue)}</p>
                 </div>
                 <div className={S.cashProfit}>
                   <h4>Lucro</h4>
-                  <p id="profit-value">R$ {profitValue.toFixed(2)}</p>
+                  <p id="profit-value">R$ {formatCurrency(profitValue)}</p>
                 </div>
                 <div className={S.cashExpenses}>
                   <h4>Despesas</h4>
-                  <p id="expenses-value">R$ {expensesValue.toFixed(2)}</p>
+                  <p id="expenses-value">R$ {formatCurrency(expensesValue)}</p>
                 </div>
               </div>
             </section>

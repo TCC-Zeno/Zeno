@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { useForm, Controller, set } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import { stock } from "../redux/Route/slice";
 import style from "./../styles/stock.module.css";
@@ -73,6 +73,12 @@ export default function Stock() {
         toast.info("Arquivo excede o tamanho máximo de 25MB");
         return;
       }
+      if (!["image/jpeg", "image/jpg", "image/png"].includes(file.type)) {
+        toast.error(
+          "Formato de arquivo inválido. Apenas JPEG, JPG e PNG são aceitos."
+        );
+        return;
+      }
       setSelectedFile(file);
     }
   };
@@ -94,6 +100,12 @@ export default function Stock() {
     if (file) {
       if (file.size > FILE_LIMIT) {
         toast.info("Arquivo excede o tamanho máximo de 25MB");
+        return;
+      }
+      if (!["image/jpeg", "image/jpg", "image/png"].includes(file.type)) {
+        toast.error(
+          "Formato de arquivo inválido. Apenas JPEG, JPG e PNG são aceitos."
+        );
         return;
       }
       fileInputRef.current.files = e.dataTransfer.files;
@@ -210,7 +222,7 @@ export default function Stock() {
         fetchData();
         readSupplier();
         reset();
-        
+
         setModalBigOpen(false);
       }
     } catch (error) {
@@ -370,7 +382,7 @@ export default function Stock() {
                   className={style.inputAdd}
                   type="text"
                   placeholder="Quantidade Fixa"
-                  {...register("FixedQuantity", { required: true, })}
+                  {...register("FixedQuantity", { required: true })}
                 />
                 <input
                   className={style.inputAdd}
@@ -706,7 +718,6 @@ export default function Stock() {
             {/* Botões */}
             <div className={style.buttonsCad}>
               <div className={style.buttonCad1}>
-
                 <button className={style.buttonSalveCad} type="submit">
                   {loadingStock ? "Salvando..." : "Salvar"}
                 </button>

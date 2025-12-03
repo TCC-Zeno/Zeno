@@ -21,9 +21,6 @@ export default function Settings() {
     (state) => state.userReducer.colorBlindness
   );
   const theme = useSelector((state) => state.userReducer.theme);
-  const blockedResources = useSelector(
-    (state) => state.userReducer.blockedResources
-  );
   const profileinfo = useSelector((state) => state.userReducer.userData);
   const dispatch = useDispatch();
 
@@ -56,9 +53,6 @@ export default function Settings() {
     }
   };
 
-  const [functionGuideOpen, setFunctionGuideOpen] = useState(false);
-  const [blockGuideOpen, setBlockGuideOpen] = useState(false);
-
   const [companyName, setCompanyName] = useState(
     profileinfo.company_name ?? ""
   );
@@ -72,10 +66,6 @@ export default function Settings() {
   const handleColorBlindnessSelect = async (value) => {
     dispatch(setColorBlindness(value));
     await updateinfos({ accessibility: value });
-  };
-
-  const handleBlockResource = (resource, blocked) => {
-    dispatch(toggleBlockedResource({ resource, blocked }));
   };
 
   // updateinfos agora aceita um objeto opcional para sobrescrever campos
@@ -300,9 +290,6 @@ export default function Settings() {
                 <Dropzone id="logo-dropzone" />
                 <h2>
                   Funções
-                  <button onClick={() => setFunctionGuideOpen(true)}>
-                    <IoHelpCircleOutline />
-                  </button>
                 </h2>
                 <div className={S.toggleContainer}>
                   <div className={S.toggleRow}>
@@ -362,118 +349,10 @@ export default function Settings() {
                     </div>
                   </div>
                 </div>
-                {/* Triste não usar isso */}
-                {/* <h2>
-                  Bloquear funções com senha
-                  <button onClick={() => setBlockGuideOpen(true)}>
-                    <IoHelpCircleOutline />
-                  </button>
-                </h2>
-                <div className={S.buttonBlockOpen}>
-                  <button onClick={() => setModalBlockResourcesOpen(true)}>
-                    <TbLock />
-                    Bloquear
-                  </button>
-                </div> */}
               </div>
             </div>
           </div>
         </div>
-        <Modal
-          isOpen={functionGuideOpen}
-          onClose={() => setFunctionGuideOpen(false)}
-        >
-          Batata da função?
-        </Modal>
-        <Modal isOpen={blockGuideOpen} onClose={() => setBlockGuideOpen(false)}>
-          Isso não está funcionando no momento.
-        </Modal>
-        {/* <Modal
-          isOpen={modalBlockResourcesOpen}
-          onClose={() => setModalBlockResourcesOpen(false)}
-        >
-          <div className={S.blockContainer}>
-            <div className={S.blockRow}>
-              <div className={S.blockWrapper}>
-                <input
-                  type="checkbox"
-                  className={S.switch}
-                  checked={blockedResources.cash}
-                  onChange={(e) =>
-                    handleBlockResource("cash", e.target.checked)
-                  }
-                />
-                <span className={S.blockLabel}>Resumo de caixa</span>
-              </div>
-              <div className={S.blockWrapper}>
-                <input
-                  type="checkbox"
-                  className={S.switch}
-                  checked={blockedResources.stock}
-                  onChange={(e) =>
-                    handleBlockResource("stock", e.target.checked)
-                  }
-                />
-                <span className={S.blockLabel}>Estoque</span>
-              </div>
-            </div>
-            <div className={S.blockRow}>
-              <div className={S.blockWrapper}>
-                <input
-                  type="checkbox"
-                  className={S.switch}
-                  checked={blockedResources.finance}
-                  onChange={(e) =>
-                    handleBlockResource("finance", e.target.checked)
-                  }
-                />
-                <span className={S.blockLabel}>Fluxo de caixa</span>
-              </div>
-              <div className={S.blockWrapper}>
-                <input
-                  type="checkbox"
-                  className={S.switch}
-                  checked={blockedResources.calendar}
-                  onChange={(e) =>
-                    handleBlockResource("calendar", e.target.checked)
-                  }
-                />
-                <span className={S.blockLabel}>Agenda</span>
-              </div>
-            </div>
-            <div className={S.blockRow}>
-              <div className={S.blockWrapper}>
-                <input
-                  type="checkbox"
-                  className={S.switch}
-                  checked={blockedResources.organizer}
-                  onChange={(e) =>
-                    handleBlockResource("organizer", e.target.checked)
-                  }
-                />
-                <span className={S.blockLabel}>Organizador</span>
-              </div>
-              <div className={S.blockWrapper}>
-                <input
-                  type="checkbox"
-                  className={S.switch}
-                  checked={blockedResources.service}
-                  onChange={(e) =>
-                    handleBlockResource("service", e.target.checked)
-                  }
-                />
-                <span className={S.blockLabel}>Serviços</span>
-              </div>
-            </div>
-            <div className={S.blockRow}>
-              <div className={S.buttonBlockClose}>
-                <button onClick={() => setModalBlockResourcesOpen(false)}>
-                  Salvar e sair
-                </button>
-              </div>
-            </div>
-          </div>
-        </Modal> */}
       </section>
     </DefaultLayout>
   );

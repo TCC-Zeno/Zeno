@@ -46,20 +46,6 @@ export const dashboardSteps = [
     },
   },
   {
-    target: "#cash-summary-period",
-    content: (
-      <div>
-        <h3 style={{ margin: "0 0 10px 0" }}>🗓️ Filtro de Período</h3>
-        <p>
-          Selecione entre <strong>Diário</strong>, <strong>Mensal</strong> ou{" "}
-          <strong>Anual</strong> para ver diferentes perspectivas dos seus
-          dados.
-        </p>
-      </div>
-    ),
-    placement: "bottom",
-  },
-  {
     target: ".sectionFinance",
     content: (
       <div>

@@ -10,6 +10,7 @@ import multiMonth from "@fullcalendar/multimonth";
 import Modal from "../components/Modal/Modal";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Calendar() {
   //? documentação da lib: https://fullcalendar.io/docs
@@ -71,7 +72,7 @@ export default function Calendar() {
       handleModalClose();
       await fetchEvents(); 
     } catch (err) {
-      alert(err.response?.data?.error || "Erro ao atualizar informações");
+      toast.error(err.response?.data?.error || "Erro ao atualizar informações");
     }
   };
 
@@ -101,7 +102,7 @@ export default function Calendar() {
       setModalEditEvent(false);
       await fetchEvents();
     } catch (err) {
-      alert(err.response?.data?.error || "Erro ao atualizar informações");
+      toast.error(err.response?.data?.error || "Erro ao atualizar informações");
     }
   };
 
@@ -136,7 +137,7 @@ export default function Calendar() {
       await fetchEvents();
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.error || "Erro ao atualizar informações");
+      toast.error(err.response?.data?.error || "Erro ao atualizar informações");
     }
   };
 
@@ -154,7 +155,7 @@ export default function Calendar() {
       setDataEdit(resposta.data[0]);
       setModalEditEvent(true);
     } catch (err) {
-      alert(err.response?.data?.error || "Erro ao atualizar informações");
+      toast.error(err.response?.data?.error || "Erro ao atualizar informações");
     }
   };
 
@@ -172,8 +173,9 @@ export default function Calendar() {
       addReset();
       setModalEditEvent(false);
       await fetchEvents();
+      toast.success("Evento excluído com sucesso!");
     } catch (err) {
-      alert(err.response?.data?.error || "Erro ao excluir evento");
+      toast.error(err.response?.data?.error || "Erro ao excluir evento");
       console.error(err)
     }
   };

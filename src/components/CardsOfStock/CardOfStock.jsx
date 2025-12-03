@@ -391,7 +391,7 @@ export function CardOfStock({ product, fetchData }) {
                 <h3 className={S.ModalTitle}>
                   Quantidade:{" "}
                   <span className={S.ModalTxt}>
-                    {product.quantity_of_product.toFixed(2)}
+                    {product.quantity_of_product}
                   </span>
                 </h3>
                 <h3 className={S.ModalTitle}>
@@ -440,16 +440,16 @@ export function CardOfStock({ product, fetchData }) {
                   Quantidade fixa em Estoque:{" "}
                   <span className={S.ModalTxt}>
                     {typeof product.fixed_quantity === "number"
-                      ? product.fixed_quantity.toFixed(2)
-                      : "0.00"}
+                      ? product.fixed_quantity
+                      : "0"}
                   </span>
                 </h3>
                 <h3 className={S.ModalTitle}>
                   Quantidade mínima para comprar:{" "}
                   <span className={S.ModalTxt}>
                     {typeof product.minimum_quantity === "number"
-                      ? product.minimum_quantity.toFixed(2)
-                      : "0.00"}
+                      ? product.minimum_quantity
+                      : "0"}
                   </span>
                 </h3>
                 <h3 className={S.ModalTitle}>
@@ -490,7 +490,7 @@ export function CardOfStock({ product, fetchData }) {
                   alt="produto"
                 />
                 <h3 className={S.ModalTitle}>
-                  Alerta: <span className={S.ModalTxt}>{product.alert}</span>
+                  Alerta: <span className={S.ModalTxt}>{product.alert == "default" ? "Em estoque" : product.alert == "low_stock" ? "Estoque baixo" : "Sem estoque"}</span>
                 </h3>
                 <h3 className={S.ModalTitle}>
                   Categoria:{" "}
